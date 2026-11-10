@@ -269,6 +269,7 @@ figure.diagram svg { max-width: 100%; height: auto; }
 .pager a::before { content: ''; position: absolute; top: 1.05rem; width: 7px; height: 7px; border-radius: 50%; background: var(--canvas); border: 1px solid var(--ink-faint); }
 .pager a.prev::before { left: -4px; }
 .pager a.next::before { right: -4px; }
+.sitefoot .stamp { font-weight: 600; color: var(--ink); }
 .sitefoot { display: flex; justify-content: space-between; gap: 1rem; padding: 1.5rem 1.25rem; border-top: 1px solid var(--rule); background: var(--canvas-deep); font-size: .8rem; color: var(--ink-muted); }
 
 /* landing grid of node cards */
