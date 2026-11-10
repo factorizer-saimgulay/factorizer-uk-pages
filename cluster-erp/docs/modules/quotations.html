@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quotations module (quotations) · Cluster ERP Wiki</title>
+<meta name="description" content="Module page for quotations, the sales quotes for customer RFQs with feasibility, BOM and costing steps, management approval, versions, and line roll-up.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../modules/quotations.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.html">Overview</a></li>
+<li class=""><a href="../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.html">Platform core</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../platform/change-history.html">Change history</a></li>
+<li class=""><a href="../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../platform/event-bus.html">Event bus</a></li>
+<li class=""><a href="../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class=""><a href="../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../web-app/generic-form.html">Generic form</a></li>
+<li class=""><a href="../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class=""><a href="../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.html">Desktop client</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class=""><a href="../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.html">Business modules</a></li>
+<li class=""><a href="../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class=""><a href="../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../modules/auth.html">Auth module (auth)</a></li>
+<li class=""><a href="../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class=""><a href="../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class=""><a href="../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../modules/intranet/requests.html">Intranet requests</a></li>
+<li class=""><a href="../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../modules/mail.html">Mail module (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class=""><a href="../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../modules/production/work-orders.html">Work orders</a></li>
+<li class=""><a href="../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class="current"><a href="../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.html">API reference</a></li>
+<li class=""><a href="../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.html">Documents API (documents)</a></li>
+<li class=""><a href="../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.html">API overview</a></li>
+<li class=""><a href="../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class=""><a href="../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.html">Operations</a></li>
+<li class=""><a href="../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class=""><a href="../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class=""><a href="../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.html">Reference</a></li>
+<li class=""><a href="../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.html">Home</a> / Business modules</div>
+    <header class="page-head">
+      <p class="eyebrow">Module</p>
+      <h1>Quotations module (quotations)</h1>
+      <p class="lede">Module page for quotations, the sales quotes for customer RFQs with feasibility, BOM and costing steps, management approval, versions, and line roll-up.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#at-a-glance">At a glance</a></li>
+<li class="lvl2"><a href="#what-the-module-does">What the module does</a></li>
+<li class="lvl2"><a href="#sub-modules">Sub-modules</a></li>
+<li class="lvl2"><a href="#data-model">Data model</a></li>
+<li class="lvl2"><a href="#screens-and-metadata">Screens and metadata</a></li>
+<li class="lvl2"><a href="#status-and-actions">Status and actions</a></li>
+<li class="lvl2"><a href="#business-rules">Business rules</a></li>
+<li class="lvl2"><a href="#events-and-queries">Events and queries</a></li>
+<li class="lvl2"><a href="#permissions">Permissions</a></li>
+<li class="lvl2"><a href="#privacy-retention-and-history">Privacy, retention, and history</a></li>
+<li class="lvl2"><a href="#analytics-facts">Analytics facts</a></li>
+<li class="lvl2"><a href="#settings-and-reference-data">Settings and reference data</a></li>
+<li class="lvl2"><a href="#tests">Tests</a></li>
+<li class="lvl2"><a href="#discrepancies">Discrepancies</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p>The <code>quotations</code> module in <code>src/cluster_erp/modules/quotations/</code> holds sales quotations. A quote (<code>Quote</code>) answers a customer RFQ of the <code>crm</code> module and moves through feasibility, design, BOM, costing, and a management approval before it is sent. Its lines carry cost and price, and the header totals and margin are rolled up from them. Sales orders reference quote lines, which can mark a quote as won.</p>
+<h2 id="at-a-glance">At a glance<a class="headerlink" href="#at-a-glance">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Value</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Package</td>
+<td><code>src/cluster_erp/modules/quotations/</code></td>
+<td>folder</td>
+</tr>
+<tr>
+<td>Module class</td>
+<td><code>Module</code></td>
+<td><code>src/cluster_erp/modules/quotations/module.py:18</code></td>
+</tr>
+<tr>
+<td><code>name</code> / <code>version</code></td>
+<td><code>quotations</code> / <code>0.1.0</code></td>
+<td><code>src/cluster_erp/modules/quotations/module.py:20-25</code></td>
+</tr>
+<tr>
+<td>API prefix</td>
+<td><code>/api/v1/quotations</code> (<code>ModuleBase.api_prefix</code>)</td>
+<td><code>src/cluster_erp/core/module_base.py:37-38</code></td>
+</tr>
+<tr>
+<td>Sub-modules</td>
+<td>2: <code>quotes</code>, <code>line_items</code></td>
+<td>folder listing</td>
+</tr>
+<tr>
+<td>Tables</td>
+<td>5: <code>quot_quotes</code>, <code>quot_mgmt_approvals</code>, <code>quot_quote_line_items</code>, <code>quot_rejection_reasons</code>, <code>quot_document_flow</code></td>
+<td><code>__tablename__</code> in the two <code>models.py</code> files</td>
+</tr>
+<tr>
+<td>Entities in metadata</td>
+<td>5 keys in <code>entities</code></td>
+<td><code>src/cluster_erp/modules/quotations/module.py:224-230</code></td>
+</tr>
+<tr>
+<td>Routes</td>
+<td>34 route decorators in the package</td>
+<td><code>grep</code> for <code>@...router.get/post/put/patch/delete</code></td>
+</tr>
+<tr>
+<td>Actions</td>
+<td>15 <code>ActionMeta</code> entries</td>
+<td><code>grep "ActionMeta("</code> in the package</td>
+</tr>
+<tr>
+<td>Migrations</td>
+<td>20 files</td>
+<td>files in <code>migrations/versions/</code> whose text contains one of the five table names</td>
+</tr>
+<tr>
+<td>Web app presence</td>
+<td>Catalogue app <code>quotations</code></td>
+<td><code>src/cluster_erp/modules/app_store/catalog.json</code> (entry <code>quotations</code>)</td>
+</tr>
+<tr>
+<td>Desktop presence</td>
+<td>generic widgets only</td>
+<td><code>src/cluster_erp/desktop/modules/</code> has no <code>quotations</code> folder</td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-the-module-does">What the module does<a class="headerlink" href="#what-the-module-does">¶</a></h2>
+<ul>
+<li>Creates a quote for a customer RFQ, one active quote per RFQ, and takes commercial defaults from the customer (<code>src/cluster_erp/modules/quotations/quotes/services.py:175-239</code>).</li>
+<li>Moves the quote through feasibility, optional design, BOM, and costing (<code>src/cluster_erp/modules/quotations/quotes/services.py:59-71</code>).</li>
+<li>Records a management approval meeting and its decision (<code>src/cluster_erp/modules/quotations/quotes/services.py:467-549</code>).</li>
+<li>Sends the quote after an approval and a completeness check, then marks it won, lost, or expired (<code>src/cluster_erp/modules/quotations/quotes/services.py:550-686</code>).</li>
+<li>Rolls up total price, total cost, and margin from the lines (<code>src/cluster_erp/modules/quotations/rollup.py:1-17</code>).</li>
+<li>Records which sales order lines reference which quote lines (<code>src/cluster_erp/modules/quotations/quotes/services.py:925-1042</code>).</li>
+</ul>
+<h2 id="sub-modules">Sub-modules<a class="headerlink" href="#sub-modules">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Sub-module</th>
+<th>Purpose</th>
+<th>Main entities</th>
+<th>Router</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>quotes</code></td>
+<td>Quotes, approvals, lifecycle, versions, history, document flow</td>
+<td><code>Quote</code>, <code>MgmtApproval</code></td>
+<td><code>/quotes</code></td>
+<td><code>src/cluster_erp/modules/quotations/quotes/routes.py:37-52</code></td>
+</tr>
+<tr>
+<td><code>line_items</code></td>
+<td>Lines, rejection reasons, document flow rows</td>
+<td><code>QuoteLineItem</code>, <code>QuoteRejectionReason</code>, <code>QuoteDocumentFlow</code></td>
+<td><code>/quotes/.../line-items</code></td>
+<td><code>src/cluster_erp/modules/quotations/line_items/routes.py:21-24</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="data-model">Data model<a class="headerlink" href="#data-model">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Entity</th>
+<th>Table</th>
+<th>Key fields</th>
+<th>Notes</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Quote</code></td>
+<td><code>quot_quotes</code></td>
+<td><code>quote_no</code>, <code>rfq_id</code>, <code>version_no</code>, <code>status</code>, <code>feasibility_done</code>, <code>requires_new_design</code>, <code>bom_id</code>, <code>nesting_id</code>, <code>costing_id</code>, <code>mgmt_approval_id</code>, <code>superseded_by_id</code>, <code>total_price</code>, <code>total_cost</code>, <code>overall_margin_pct</code>, <code>currency</code>, <code>validity_days</code>, <code>payment_terms</code>, <code>incoterm</code>, <code>sent_at</code>, <code>won_at</code>, <code>lost_at</code>, <code>lost_reason</code></td>
+<td>totals <code>Numeric(19, 4)</code>, margin <code>Numeric(5, 2)</code></td>
+<td><code>src/cluster_erp/modules/quotations/quotes/models.py:37-169</code></td>
+</tr>
+<tr>
+<td><code>MgmtApproval</code></td>
+<td><code>quot_mgmt_approvals</code></td>
+<td><code>quote_id</code>, <code>scheduled_at</code>, <code>held_at</code>, <code>attendees</code>, <code>decision</code>, <code>adjustments</code>, <code>notes</code>, <code>recorded_by</code></td>
+<td><code>decision</code> is <code>approved</code>, <code>conditional</code>, or <code>rejected</code></td>
+<td><code>src/cluster_erp/modules/quotations/quotes/models.py:171-199</code>, <code>src/cluster_erp/modules/quotations/quotes/schemas.py:24</code></td>
+</tr>
+<tr>
+<td><code>QuoteLineItem</code></td>
+<td><code>quot_quote_line_items</code></td>
+<td><code>quote_id</code>, <code>line_no</code>, <code>ordered_qty</code>, <code>part_id</code>, <code>part_model_id</code>, <code>part_version_id</code>, <code>customer_part_id</code>, <code>qty</code>, <code>uom</code>, <code>unit_cost</code>, <code>margin_pct</code>, <code>unit_price</code>, <code>line_total</code>, <code>currency</code>, <code>bom_id</code>, <code>costing_id</code>, <code>reason_for_rejection</code></td>
+<td>money <code>Numeric(18, 4)</code></td>
+<td><code>src/cluster_erp/modules/quotations/line_items/models.py:49-137</code></td>
+</tr>
+<tr>
+<td><code>QuoteRejectionReason</code></td>
+<td><code>quot_rejection_reasons</code></td>
+<td><code>code</code>, <code>label_en</code>, <code>label_tr</code>, <code>is_active</code></td>
+<td>reference data</td>
+<td><code>src/cluster_erp/modules/quotations/line_items/models.py:23-46</code></td>
+</tr>
+<tr>
+<td><code>QuoteDocumentFlow</code></td>
+<td><code>quot_document_flow</code></td>
+<td><code>quote_id</code>, <code>quote_line_item_id</code>, <code>order_id</code>, <code>order_line_id</code>, <code>referenced_qty</code>, <code>referenced_value</code>, <code>currency</code></td>
+<td>one row per sales order reference</td>
+<td><code>src/cluster_erp/modules/quotations/line_items/models.py:139-171</code></td>
+</tr>
+</tbody>
+</table>
+<p>Line breakdowns are checked with <code>ensure_product_breakdown</code> (<code>src/cluster_erp/modules/quotations/line_items/services.py:102-106</code>, <code>src/cluster_erp/modules/quotations/line_items/services.py:131-136</code>).</p>
+<h2 id="screens-and-metadata">Screens and metadata<a class="headerlink" href="#screens-and-metadata">¶</a></h2>
+<p><code>get_metadata</code> declares a sidebar group <strong>Sales Quotations</strong> (Turkish <strong>Satış Teklifleri</strong>) with one list section of the same name (<code>src/cluster_erp/modules/quotations/module.py:203-222</code>). The entities are <code>quote</code>, <code>quote_line_item</code>, <code>mgmt_approval</code>, <code>quote_document_flow</code>, and <code>quote_history</code> (<code>src/cluster_erp/modules/quotations/module.py:224-230</code>). The quote card reads its completeness, document flow, history, versions, and similar projects from dedicated routes (<code>src/cluster_erp/modules/quotations/quotes/routes.py:384-439</code>). See <a href="../web-app/generic-detail.html">generic detail</a>.</p>
+<h2 id="status-and-actions">Status and actions<a class="headerlink" href="#status-and-actions">¶</a></h2>
+<p>The service allows these transitions (<code>src/cluster_erp/modules/quotations/quotes/services.py:59-74</code>).</p>
+<figure class="diagram"><pre class="mermaid">stateDiagram-v2
+ [*] --&gt; draft
+ draft --&gt; feasibility: start_feasibility
+ feasibility --&gt; design_required: mark_design_required
+ feasibility --&gt; bom_pending: complete_feasibility
+ design_required --&gt; bom_pending: complete_design
+ bom_pending --&gt; costing: attach_bom
+ costing --&gt; bom_pending: return_to_bom
+ costing --&gt; pending_mgmt_approval: attach_costing
+ pending_mgmt_approval --&gt; mgmt_rejected: decision rejected
+ pending_mgmt_approval --&gt; sent: send
+ sent --&gt; won: mark_won
+ sent --&gt; lost: mark_lost
+ sent --&gt; expired: mark_expired</pre></figure>
+<p>In prose: a quote starts as <code>draft</code> and goes through feasibility. If a new design is needed it passes <code>design_required</code>. A BOM moves it to <code>costing</code>, and a costing to <code>pending_mgmt_approval</code>. A rejected decision ends it as <code>mgmt_rejected</code>. Sending needs an <code>approved</code> or <code>conditional</code> decision (<code>src/cluster_erp/modules/quotations/quotes/services.py:550-616</code>). <code>won</code>, <code>lost</code>, <code>expired</code>, and <code>mgmt_rejected</code> are terminal; <code>revise</code> creates a new version from <code>pending_mgmt_approval</code>, <code>mgmt_rejected</code>, <code>expired</code>, or <code>lost</code> (<code>src/cluster_erp/modules/quotations/quotes/services.py:73</code>, <code>src/cluster_erp/modules/quotations/quotes/services.py:687-743</code>). <code>feasibility_failed</code> soft-deletes the quote and emits <code>RfqDeclined</code> (<code>src/cluster_erp/modules/quotations/quotes/services.py:744-774</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Label</th>
+<th>Condition</th>
+<th>Endpoint</th>
+<th>Permission</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>start_feasibility</code></td>
+<td><strong>Start Feasibility</strong></td>
+<td><code>status</code> is <code>draft</code></td>
+<td><code>POST /quotes/{id}/start-feasibility</code></td>
+<td><code>quote.start_feasibility</code></td>
+<td><code>src/cluster_erp/modules/quotations/quotes/metadata.py:103-113</code></td>
+</tr>
+<tr>
+<td><code>mark_design_required</code></td>
+<td><strong>Design Required</strong></td>
+<td><code>status</code> is <code>feasibility</code></td>
+<td><code>POST /quotes/{id}/mark-design-required</code></td>
+<td><code>quote.mark_design_required</code></td>
+<td><code>src/cluster_erp/modules/quotations/quotes/metadata.py:114-127</code></td>
+</tr>
+<tr>
+<td><code>complete_feasibility</code></td>
+<td><strong>Complete Feasibility</strong></td>
+<td><code>status</code> is <code>feasibility</code></td>
+<td><code>POST /quotes/{id}/complete-feasibility</code></td>
+<td><code>quote.complete_feasibility</code></td>
+<td><code>src/cluster_erp/modules/quotations/quotes/metadata.py:128-152</code></td>
+</tr>
+<tr>
+<td><code>complete_design</code></td>
+<td><strong>Design Complete</strong></td>
+<td><code>status</code> is <code>design_required</code></td>
+<td><code>POST /quotes/{id}/complete-design</code></td>
+<td><code>quote.complete_design</code></td>
+<td><code>src/cluster_erp/modules/quotations/quotes/metadata.py:153-166</code></td>
+</tr>
+<tr>
+<td><code>attach_bom</code></td>
+<td><strong>Attach BOM</strong></td>
+<td><code>status</code> is <code>bom_pending</code></td>
+<td><code>POST /quotes/{id}/attach-bom</code></td>
+<td><code>quote.attach_bom</code></td>
+<td><code>src/cluster_erp/modules/quotations/quotes/metadata.py:167-202</code></td>
+</tr>
+<tr>
+<td><code>attach_costing</code></td>
+<td><strong>Attach Costing</strong></td>
+<td><code>status</code> is <code>costing</code></td>
+<td><code>POST /quotes/{id}/attach-costing</code></td>
+<td><code>quote.attach_costing</code></td>
+<td><code>src/cluster_erp/modules/quotations/quotes/metadata.py:203-249</code></td>
+</tr>
+<tr>
+<td><code>schedule_mgmt_approval</code></td>
+<td><strong>Schedule Approval</strong></td>
+<td><code>status</code> is <code>pending_mgmt_approval</code></td>
+<td><code>POST /quotes/{id}/schedule-mgmt-approval</code></td>
+<td><code>quote.schedule_mgmt_approval</code></td>
+<td><code>src/cluster_erp/modules/quotations/quotes/metadata.py:250-285</code></td>
+</tr>
+<tr>
+<td><code>record_decision</code></td>
+<td><strong>Record Decision</strong></td>
+<td>on an approval row</td>
+<td><code>POST /quotes/{parent_id}/record-mgmt-decision</code></td>
+<td><code>mgmt_approval.record_decision</code></td>
+<td><code>src/cluster_erp/modules/quotations/quotes/metadata.py:790-819</code></td>
+</tr>
+<tr>
+<td><code>send</code></td>
+<td><strong>Send to Customer</strong></td>
+<td><code>status</code> is <code>pending_mgmt_approval</code></td>
+<td><code>POST /quotes/{id}/send</code></td>
+<td><code>quote.send</code></td>
+<td><code>src/cluster_erp/modules/quotations/quotes/metadata.py:286-307</code></td>
+</tr>
+<tr>
+<td><code>mark_won</code>, <code>mark_lost</code>, <code>mark_expired</code></td>
+<td><strong>Mark as Won</strong>, <strong>Mark as Lost</strong>, <strong>Mark as Expired</strong></td>
+<td><code>status</code> is <code>sent</code></td>
+<td><code>POST /quotes/{id}/mark-won</code>, <code>/mark-lost</code>, <code>/mark-expired</code></td>
+<td><code>quote.mark_won</code>, <code>quote.mark_lost</code>, <code>quote.mark_expired</code></td>
+<td><code>src/cluster_erp/modules/quotations/quotes/metadata.py:308-338</code>, <code>src/cluster_erp/modules/quotations/quotes/metadata.py:394-407</code></td>
+</tr>
+<tr>
+<td><code>revise</code></td>
+<td><strong>Revise</strong></td>
+<td><code>status</code> is <code>pending_mgmt_approval</code>, <code>mgmt_rejected</code>, <code>expired</code>, or <code>lost</code></td>
+<td><code>POST /quotes/{id}/revise</code></td>
+<td><code>quote.revise</code></td>
+<td><code>src/cluster_erp/modules/quotations/quotes/metadata.py:339-354</code></td>
+</tr>
+<tr>
+<td><code>feasibility_failed</code></td>
+<td><strong>Feasibility Failed</strong></td>
+<td><code>status</code> is <code>feasibility</code></td>
+<td><code>POST /quotes/{id}/feasibility-failed</code></td>
+<td><code>quote.feasibility_failed</code></td>
+<td><code>src/cluster_erp/modules/quotations/quotes/metadata.py:357-379</code></td>
+</tr>
+<tr>
+<td><code>return_to_bom</code></td>
+<td><strong>Return to BOM</strong></td>
+<td><code>status</code> is <code>costing</code></td>
+<td><code>POST /quotes/{id}/return-to-bom</code></td>
+<td><code>quote.return_to_bom</code></td>
+<td><code>src/cluster_erp/modules/quotations/quotes/metadata.py:380-393</code></td>
+</tr>
+</tbody>
+</table>
+<p>Routes and permissions are in <code>src/cluster_erp/modules/quotations/quotes/routes.py:156-366</code>.</p>
+<h2 id="business-rules">Business rules<a class="headerlink" href="#business-rules">¶</a></h2>
+<ul>
+<li>A quote needs an existing RFQ, read with <code>GetRfqById</code>; only one active quote per RFQ is allowed (<code>src/cluster_erp/modules/quotations/quotes/services.py:175-190</code>, <code>src/cluster_erp/modules/quotations/quotes/services.py:1297-1317</code>).</li>
+<li>Currency and payment terms default from the customer through <code>GetCustomerById</code> when not given (<code>src/cluster_erp/modules/quotations/quotes/services.py:190-205</code>).</li>
+<li><code>quote_no</code> comes from the yearly sequence <code>quotation</code>; versions count per RFQ (<code>src/cluster_erp/modules/quotations/quotes/services.py:209</code>, <code>src/cluster_erp/modules/quotations/quotes/services.py:1318-1326</code>).</li>
+<li>Attaching a costing reads <code>GetCostingById</code>; the header cost falls back to the costing's total cost when no line carries a unit cost (<code>src/cluster_erp/modules/quotations/quotes/services.py:399-466</code>).</li>
+<li>The roll-up sets total price to the sum of line totals, total cost to the sum of quantity times unit cost, and margin to price minus cost over cost times 100. Amounts are rounded with <code>ROUND_HALF_EVEN</code> to the decimal places of the currency in the <code>Currency</code> reference table (<code>src/cluster_erp/modules/quotations/rollup.py:35-117</code>).</li>
+<li>A management decision can be recorded once per approval; a price adjustment overrides the net value (<code>src/cluster_erp/modules/quotations/quotes/services.py:492-549</code>).</li>
+<li>Sending is blocked while the completeness log has unmet items: a non-rejected line, a total price, a currency, and payment terms (<code>src/cluster_erp/modules/quotations/quotes/services.py:574-588</code>, <code>src/cluster_erp/modules/quotations/quotes/services.py:828-876</code>).</li>
+<li>Lines cannot change after the quote is sent; a rejection reason must exist and be active (<code>src/cluster_erp/modules/quotations/line_items/services.py:150-175</code>, <code>src/cluster_erp/modules/quotations/line_items/services.py:255-270</code>).</li>
+<li>A sent quote cannot be deleted; delete sets <code>deleted_at</code> (<code>src/cluster_erp/modules/quotations/quotes/services.py:273-287</code>).</li>
+<li>When sales order references cover every referenceable line, a <code>sent</code> quote becomes <code>won</code> and <code>QuoteWon</code> is emitted (<code>src/cluster_erp/modules/quotations/quotes/services.py:925-997</code>).</li>
+</ul>
+<h2 id="events-and-queries">Events and queries<a class="headerlink" href="#events-and-queries">¶</a></h2>
+<p>The module consumes 6 contracts and produces 18, counted as on the <a href="parties/index.html">parties module</a> page. The full list is on the <a href="../platform/contracts-reference.html">contracts reference</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Direction</th>
+<th>Contract class</th>
+<th>Handler or emitter</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>emits</td>
+<td><code>QuoteCreated</code>, <code>QuoteFeasibilityCompleted</code>, <code>QuoteBomAttached</code>, <code>QuoteCostingCompleted</code>, <code>QuoteMgmtApprovalRecorded</code>, <code>QuoteSent</code>, <code>QuoteWon</code>, <code>QuoteLost</code>, <code>QuoteExpired</code>, <code>RfqDeclined</code></td>
+<td><code>QuoteService</code> lifecycle methods</td>
+<td><code>src/cluster_erp/modules/quotations/quotes/services.py:230</code>, <code>src/cluster_erp/modules/quotations/quotes/services.py:340</code>, <code>src/cluster_erp/modules/quotations/quotes/services.py:631</code>, <code>src/cluster_erp/modules/quotations/quotes/services.py:766</code>, <code>src/cluster_erp/modules/quotations/quotes/services.py:989</code></td>
+</tr>
+<tr>
+<td>queries</td>
+<td><code>GetRfqById</code>, <code>GetCustomerById</code>, <code>GetCostingById</code>, <code>GetRfqIdsByCustomer</code></td>
+<td>services</td>
+<td><code>src/cluster_erp/modules/quotations/quotes/services.py:178</code>, <code>src/cluster_erp/modules/quotations/quotes/services.py:414</code></td>
+</tr>
+<tr>
+<td>answers query</td>
+<td><code>GetQuoteById</code>, <code>GetQuoteLineItems</code>, <code>ReferenceQuoteLines</code>, <code>ReleaseQuoteLineReferences</code></td>
+<td>handlers in <code>module.py</code></td>
+<td><code>src/cluster_erp/modules/quotations/module.py:63-68</code></td>
+</tr>
+<tr>
+<td>subscribes</td>
+<td><code>DescribeAnalyticsFacts</code>, <code>DescribeFieldConsumers</code></td>
+<td>analytics and tenant fields</td>
+<td><code>src/cluster_erp/modules/quotations/module.py:69-84</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="permissions">Permissions<a class="headerlink" href="#permissions">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Permission key</th>
+<th>Used by</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>quote.read</code>, <code>.create</code>, <code>.update</code>, <code>.delete</code>, <code>.bulk_delete</code></td>
+<td>quote records and read routes</td>
+<td><code>src/cluster_erp/modules/quotations/quotes/routes.py:52-141</code>, <code>src/cluster_erp/modules/quotations/quotes/routes.py:384-439</code></td>
+</tr>
+<tr>
+<td>one key per lifecycle route, for example <code>quote.send</code> and <code>quote.revise</code></td>
+<td>lifecycle routes</td>
+<td><code>src/cluster_erp/modules/quotations/quotes/routes.py:156-366</code></td>
+</tr>
+<tr>
+<td><code>mgmt_approval.read</code>, <code>mgmt_approval.record_decision</code></td>
+<td>approval routes</td>
+<td><code>src/cluster_erp/modules/quotations/quotes/routes.py:236</code>, <code>src/cluster_erp/modules/quotations/quotes/routes.py:267</code></td>
+</tr>
+<tr>
+<td><code>quote_line_item.read</code>, <code>.create</code>, <code>.update</code>, <code>.delete</code>, <code>.bulk_delete</code></td>
+<td>line routes</td>
+<td><code>src/cluster_erp/modules/quotations/line_items/routes.py:24-142</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="privacy-retention-and-history">Privacy, retention, and history<a class="headerlink" href="#privacy-retention-and-history">¶</a></h2>
+<p>The module has no <code>privacy_handlers.py</code>. Quotes and lines are soft-deleted (<code>src/cluster_erp/modules/quotations/quotes/services.py:273-287</code>). The route <code>GET /quotes/{quote_id}/history</code> reads the quote's change history (<code>src/cluster_erp/modules/quotations/quotes/services.py:1094-1183</code>); see <a href="../platform/change-history.html">change history</a>.</p>
+<h2 id="analytics-facts">Analytics facts<a class="headerlink" href="#analytics-facts">¶</a></h2>
+<p><code>analytics_facts.py</code> contributes the fact set <code>sales_quote</code> over <code>quot_quotes</code>, with the measures <code>quote_count</code>, <code>total_price</code>, <code>total_cost</code>, and <code>median_price</code> in the field <code>currency</code>, read with <code>quote.read</code> (<code>src/cluster_erp/modules/quotations/analytics_facts.py:25-108</code>). See <a href="analytics/analytics-facts.html">analytics facts</a>.</p>
+<h2 id="settings-and-reference-data">Settings and reference data<a class="headerlink" href="#settings-and-reference-data">¶</a></h2>
+<p>Rejection reasons are reference data in <code>quot_rejection_reasons</code>, listed by <code>GET /quotes/rejection-reasons</code> (<code>src/cluster_erp/modules/quotations/line_items/routes.py:24</code>). The currency's decimal places come from the core currency table (<code>src/cluster_erp/modules/quotations/rollup.py:35-45</code>); see <a href="../platform/money-and-decimal.html">money and decimal</a>.</p>
+<h2 id="tests">Tests<a class="headerlink" href="#tests">¶</a></h2>
+<p>Found by a <code>grep</code> for <code>modules.quotations</code> in <code>tests/</code> (no hit) and for the path <code>/quotations/</code> and file names in <code>web-client/</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Kind</th>
+<th>File</th>
+<th>Covers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_quotations_app.mjs</code></td>
+<td>the quotations app</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_quote_line_bom.mjs</code></td>
+<td>quote line to order line to BOM chain</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_order_shipment_chain.mjs</code></td>
+<td>quote to order to shipment</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_project_otd.mjs</code>, <code>web-client/_e2e_mrp_pir_faz1.mjs</code></td>
+<td>quotes as demand context</td>
+</tr>
+</tbody>
+</table>
+<h2 id="discrepancies">Discrepancies<a class="headerlink" href="#discrepancies">¶</a></h2>
+<aside class="adm adm-warning" role="note"><p class="adm-title">Warning</p><p>Discrepancy. The project's written engineering rules make language support data-driven: a new language is a new JSON file with no code change. <code>QuoteRejectionReason</code> stores its label in two fixed columns, <code>label_en</code> and <code>label_tr</code> (<code>src/cluster_erp/modules/quotations/line_items/models.py:42-43</code>). This page documents the code.</p>
+</aside>
+<h2 id="terms-introduced">Terms introduced<a class="headerlink" href="#terms-introduced">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Code identifier</th>
+<th>Definition</th>
+<th>Turkish term</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sales quote</td>
+<td><code>Quote</code></td>
+<td>A priced offer to a customer that answers a customer RFQ.</td>
+<td>Satış teklifi</td>
+<td><code>src/cluster_erp/modules/quotations/quotes/models.py:37</code></td>
+</tr>
+<tr>
+<td>management approval</td>
+<td><code>MgmtApproval</code></td>
+<td>The meeting record and decision that releases a quote for sending.</td>
+<td>Yönetim onayı</td>
+<td><code>src/cluster_erp/modules/quotations/quotes/models.py:171</code></td>
+</tr>
+<tr>
+<td>document flow</td>
+<td><code>QuoteDocumentFlow</code></td>
+<td>The record of which sales order lines reference which quote lines.</td>
+<td>Belge akışı</td>
+<td><code>src/cluster_erp/modules/quotations/line_items/models.py:139</code></td>
+</tr>
+<tr>
+<td>completeness log</td>
+<td><code>QuoteRequirement</code></td>
+<td>The list of checks that must pass before a quote is sent.</td>
+<td>Eksiksizlik günlüğü</td>
+<td><code>src/cluster_erp/modules/quotations/quotes/services.py:77-88</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="index.html">Modules index</a></li>
+<li><a href="crm/index.html">CRM module</a></li>
+<li><a href="sales_orders/index.html">Sales orders module</a></li>
+<li><a href="costing.html">Costing module</a></li>
+<li><a href="bom.html">BOM module</a></li>
+<li><a href="../api/quotations.html">API reference for this module</a></li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../modules/purchasing_quotations.html"><span class="eyebrow">Previous</span><span>Purchasing quotations module (purchasing_quotations)</span></a><a class="next" href="../modules/records.html"><span class="eyebrow">Next</span><span>Records module (records)</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#at-a-glance">At a glance</a></li>
+<li class="lvl2"><a href="#what-the-module-does">What the module does</a></li>
+<li class="lvl2"><a href="#sub-modules">Sub-modules</a></li>
+<li class="lvl2"><a href="#data-model">Data model</a></li>
+<li class="lvl2"><a href="#screens-and-metadata">Screens and metadata</a></li>
+<li class="lvl2"><a href="#status-and-actions">Status and actions</a></li>
+<li class="lvl2"><a href="#business-rules">Business rules</a></li>
+<li class="lvl2"><a href="#events-and-queries">Events and queries</a></li>
+<li class="lvl2"><a href="#permissions">Permissions</a></li>
+<li class="lvl2"><a href="#privacy-retention-and-history">Privacy, retention, and history</a></li>
+<li class="lvl2"><a href="#analytics-facts">Analytics facts</a></li>
+<li class="lvl2"><a href="#settings-and-reference-data">Settings and reference data</a></li>
+<li class="lvl2"><a href="#tests">Tests</a></li>
+<li class="lvl2"><a href="#discrepancies">Discrepancies</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>App store module (app_store) · Cluster ERP Wiki</title>
+<meta name="description" content="Module page for app_store, which holds the app catalogue, the licence, role seat assignments, app requests, and the deployment&#x27;s install state.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../modules/app_store.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.html">Overview</a></li>
+<li class=""><a href="../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.html">Platform core</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../platform/change-history.html">Change history</a></li>
+<li class=""><a href="../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../platform/event-bus.html">Event bus</a></li>
+<li class=""><a href="../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class=""><a href="../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../web-app/generic-form.html">Generic form</a></li>
+<li class=""><a href="../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class=""><a href="../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.html">Desktop client</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class=""><a href="../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.html">Business modules</a></li>
+<li class=""><a href="../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class="current"><a href="../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../modules/auth.html">Auth module (auth)</a></li>
+<li class=""><a href="../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class=""><a href="../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class=""><a href="../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../modules/intranet/requests.html">Intranet requests</a></li>
+<li class=""><a href="../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../modules/mail.html">Mail module (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class=""><a href="../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../modules/production/work-orders.html">Work orders</a></li>
+<li class=""><a href="../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.html">API reference</a></li>
+<li class=""><a href="../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.html">Documents API (documents)</a></li>
+<li class=""><a href="../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.html">API overview</a></li>
+<li class=""><a href="../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class=""><a href="../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.html">Operations</a></li>
+<li class=""><a href="../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class=""><a href="../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class=""><a href="../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.html">Reference</a></li>
+<li class=""><a href="../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.html">Home</a> / Business modules</div>
+    <header class="page-head">
+      <p class="eyebrow">Module</p>
+      <h1>App store module (app_store)</h1>
+      <p class="lede">Module page for app_store, which holds the app catalogue, the licence, role seat assignments, app requests, and the deployment&#x27;s install state.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#at-a-glance">At a glance</a></li>
+<li class="lvl2"><a href="#what-the-module-does">What the module does</a></li>
+<li class="lvl2"><a href="#sub-modules">Sub-modules</a></li>
+<li class="lvl2"><a href="#data-model">Data model</a></li>
+<li class="lvl2"><a href="#screens-and-metadata">Screens and metadata</a></li>
+<li class="lvl2"><a href="#status-and-actions">Status and actions</a></li>
+<li class="lvl2"><a href="#business-rules">Business rules</a></li>
+<li class="lvl2"><a href="#events-and-queries">Events and queries</a></li>
+<li class="lvl2"><a href="#permissions">Permissions</a></li>
+<li class="lvl2"><a href="#privacy-retention-and-history">Privacy, retention, and history</a></li>
+<li class="lvl2"><a href="#analytics-facts">Analytics facts</a></li>
+<li class="lvl2"><a href="#settings-and-reference-data">Settings and reference data</a></li>
+<li class="lvl2"><a href="#tests">Tests</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p>The <code>app_store</code> module in <code>src/cluster_erp/modules/app_store/</code> is a platform module. It keeps the catalogue of sellable apps, the uploaded licence, which roles may use which app, users' requests for apps, and which apps the deployment has installed. Administrators manage it through the store and app manager apps; every user's launcher is rendered from its registry. The enforcement on other modules' APIs is in <code>server/entitlements.py</code> and is explained in <a href="../identity-access/app-store-licensing-and-entitlements.html">app store licensing and entitlements</a>.</p>
+<h2 id="at-a-glance">At a glance<a class="headerlink" href="#at-a-glance">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Value</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Package</td>
+<td><code>src/cluster_erp/modules/app_store/</code></td>
+<td>folder</td>
+</tr>
+<tr>
+<td>Module class</td>
+<td><code>Module</code></td>
+<td><code>src/cluster_erp/modules/app_store/module.py:18</code></td>
+</tr>
+<tr>
+<td><code>name</code> / <code>version</code></td>
+<td><code>app_store</code> / <code>0.1.0</code></td>
+<td><code>src/cluster_erp/modules/app_store/module.py:26-32</code></td>
+</tr>
+<tr>
+<td>API prefix</td>
+<td><code>/api/v1/app_store</code> (<code>ModuleBase.api_prefix</code>)</td>
+<td><code>src/cluster_erp/core/module_base.py:37-38</code>, <code>src/cluster_erp/modules/app_store/module.py:54-57</code></td>
+</tr>
+<tr>
+<td>Sub-modules</td>
+<td>0; a flat module with <code>license.py</code>, <code>models.py</code>, <code>routes.py</code>, <code>services.py</code>, and <code>catalog.json</code></td>
+<td>folder listing</td>
+</tr>
+<tr>
+<td>Tables</td>
+<td>5: <code>app_store_apps</code>, <code>app_store_licenses</code>, <code>app_store_assignments</code>, <code>app_store_requests</code>, <code>app_store_installs</code></td>
+<td><code>src/cluster_erp/modules/app_store/models.py:32-138</code></td>
+</tr>
+<tr>
+<td>Entities in metadata</td>
+<td>0; no sidebar content</td>
+<td><code>src/cluster_erp/modules/app_store/module.py:65-79</code></td>
+</tr>
+<tr>
+<td>Web app presence</td>
+<td>System apps <code>store</code>, <code>app-library</code>, and <code>app-manager</code> in the catalogue; gallery folders in <code>webapp/store/</code></td>
+<td><code>src/cluster_erp/modules/app_store/catalog.json</code></td>
+</tr>
+<tr>
+<td>Desktop presence</td>
+<td>none; no folder in <code>src/cluster_erp/desktop/modules/</code></td>
+<td>folder</td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-the-module-does">What the module does<a class="headerlink" href="#what-the-module-does">¶</a></h2>
+<ul>
+<li>Converges the catalogue table to the shipped <code>catalog.json</code> at every start-up and installs new apps on first boot (<code>src/cluster_erp/modules/app_store/module.py:38-52</code>, <code>src/cluster_erp/modules/app_store/services.py:91-135</code>).</li>
+<li>Serves each user's registry: every enabled app with its entitled, installed, seat, and reconsent state (<code>src/cluster_erp/modules/app_store/routes.py:18-39</code>).</li>
+<li>Stores and re-verifies the licence (<code>src/cluster_erp/modules/app_store/services.py:191-265</code>).</li>
+<li>Keeps role seat rules and app requests (<code>src/cluster_erp/modules/app_store/services.py:267-361</code>).</li>
+<li>Installs, reconsents, and uninstalls apps (<code>src/cluster_erp/modules/app_store/services.py:169-189</code>).</li>
+<li>Serves per-app JavaScript bundles from <code>gated_apps/</code> after a layer check (<code>src/cluster_erp/modules/app_store/routes.py:95-155</code>).</li>
+</ul>
+<h2 id="sub-modules">Sub-modules<a class="headerlink" href="#sub-modules">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Sub-module</th>
+<th>Purpose</th>
+<th>Main entities</th>
+<th>Router</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>none (flat module)</td>
+<td>Catalogue, licence, seats, requests, installs</td>
+<td><code>StoreApp</code>, <code>AppLicense</code>, <code>AppAssignment</code>, <code>AppRequest</code>, <code>AppInstall</code></td>
+<td><code>/api/v1/app_store</code></td>
+<td><code>src/cluster_erp/modules/app_store/routes.py</code> (<code>router</code>)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="data-model">Data model<a class="headerlink" href="#data-model">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Entity</th>
+<th>Table</th>
+<th>Key fields</th>
+<th>Notes</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>StoreApp</code></td>
+<td><code>app_store_apps</code></td>
+<td><code>app_key</code>, <code>enabled</code>, <code>sort</code>, <code>manifest</code></td>
+<td><code>manifest</code> is JSONB with labels, screen wiring, and covered modules</td>
+<td><code>src/cluster_erp/modules/app_store/models.py:14-52</code></td>
+</tr>
+<tr>
+<td><code>AppLicense</code></td>
+<td><code>app_store_licenses</code></td>
+<td><code>raw_text</code>, <code>licensee</code>, <code>status_cache</code>, <code>last_seen_at</code></td>
+<td>newest live row wins</td>
+<td><code>src/cluster_erp/modules/app_store/models.py:55-75</code></td>
+</tr>
+<tr>
+<td><code>AppAssignment</code></td>
+<td><code>app_store_assignments</code></td>
+<td><code>app_key</code>, <code>role_id</code>, <code>intent</code></td>
+<td>unique <code>(app_key, role_id)</code> among live rows</td>
+<td><code>src/cluster_erp/modules/app_store/models.py:77-104</code></td>
+</tr>
+<tr>
+<td><code>AppRequest</code></td>
+<td><code>app_store_requests</code></td>
+<td><code>app_key</code>, <code>requested_by</code>, <code>status</code>, <code>decided_by</code>, <code>decision_reason</code></td>
+<td></td>
+<td><code>src/cluster_erp/modules/app_store/models.py:107-120</code></td>
+</tr>
+<tr>
+<td><code>AppInstall</code></td>
+<td><code>app_store_installs</code></td>
+<td><code>app_key</code>, <code>status</code>, <code>app_version</code>, <code>consented_modules</code></td>
+<td>unique <code>app_key</code> among live rows</td>
+<td><code>src/cluster_erp/modules/app_store/models.py:123-162</code></td>
+</tr>
+</tbody>
+</table>
+<p>The catalogue holds 28 apps, 6 of them system apps, counted from the entries of <code>catalog.json</code>.</p>
+<h2 id="screens-and-metadata">Screens and metadata<a class="headerlink" href="#screens-and-metadata">¶</a></h2>
+<p>The module declares no metadata entities; its surfaces are dedicated apps, not metadata screens (<code>src/cluster_erp/modules/app_store/module.py:65-79</code>). The licence card shows <strong>License Status</strong> (<code>webapp/i18n/en.json</code> key <code>license.status_title</code>) and the store shows <strong>License required</strong> for an unlicensed app (<code>webapp/i18n/en.json</code> key <code>store.license_needed</code>). The client code is documented in <a href="../web-app/gated-app-bundles.html">gated app bundles</a>.</p>
+<h2 id="status-and-actions">Status and actions<a class="headerlink" href="#status-and-actions">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Record</th>
+<th>Values</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Licence state</td>
+<td><code>none</code>, <code>invalid</code>, <code>active</code>, <code>grace</code>, <code>read_only</code></td>
+<td><code>src/cluster_erp/modules/app_store/license.py:9-14</code></td>
+</tr>
+<tr>
+<td><code>AppInstall.status</code></td>
+<td><code>installed</code>, <code>uninstalled</code></td>
+<td><code>src/cluster_erp/modules/app_store/services.py:169-189</code></td>
+</tr>
+<tr>
+<td><code>AppRequest.status</code></td>
+<td><code>pending</code>, <code>approved</code>, <code>denied</code></td>
+<td><code>src/cluster_erp/modules/app_store/models.py:114-116</code>, <code>src/cluster_erp/modules/app_store/services.py:352</code></td>
+</tr>
+<tr>
+<td><code>AppAssignment.intent</code></td>
+<td><code>required</code>, <code>available</code>, <code>blocked</code></td>
+<td><code>src/cluster_erp/modules/app_store/services.py:282</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Label</th>
+<th>Condition</th>
+<th>Endpoint</th>
+<th>Permission</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>upload licence</td>
+<td><strong>Upload and Verify</strong> (<code>license.upload</code>)</td>
+<td>licensing armed; document verifies</td>
+<td><code>POST /api/v1/app_store/license</code></td>
+<td><code>license.manage</code></td>
+<td><code>src/cluster_erp/modules/app_store/routes.py:71-82</code></td>
+</tr>
+<tr>
+<td>remove licence</td>
+<td>none in metadata</td>
+<td>a licence exists</td>
+<td><code>DELETE /api/v1/app_store/license</code></td>
+<td><code>license.manage</code></td>
+<td><code>src/cluster_erp/modules/app_store/routes.py:85-92</code></td>
+</tr>
+<tr>
+<td>request app</td>
+<td>none in metadata</td>
+<td>authenticated</td>
+<td><code>POST /api/v1/app_store/apps/{app_key}/request</code></td>
+<td>authentication only</td>
+<td><code>src/cluster_erp/modules/app_store/routes.py:184-191</code></td>
+</tr>
+<tr>
+<td>decide request</td>
+<td>none in metadata</td>
+<td>request <code>pending</code></td>
+<td><code>POST /api/v1/app_store/requests/{request_id}/decide</code></td>
+<td><code>store_app.assign</code></td>
+<td><code>src/cluster_erp/modules/app_store/routes.py:228-264</code></td>
+</tr>
+<tr>
+<td>install, reconsent</td>
+<td>none in metadata</td>
+<td>known app; reconsent needs <code>installed</code></td>
+<td><code>POST /api/v1/app_store/apps/{app_key}/install</code>, <code>/reconsent</code></td>
+<td><code>store_app.install</code></td>
+<td><code>src/cluster_erp/modules/app_store/routes.py:267-285</code></td>
+</tr>
+<tr>
+<td>uninstall</td>
+<td>none in metadata</td>
+<td>not a system app</td>
+<td><code>POST /api/v1/app_store/apps/{app_key}/uninstall</code></td>
+<td><code>store_app.uninstall</code></td>
+<td><code>src/cluster_erp/modules/app_store/routes.py:288-295</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="business-rules">Business rules<a class="headerlink" href="#business-rules">¶</a></h2>
+<ul>
+<li>A seat rule <code>blocked</code> on any of the user's roles wins; once any <code>required</code> or <code>available</code> rule exists, only those roles get the app; an app without rules is open (<code>src/cluster_erp/modules/app_store/services.py:23-47</code>).</li>
+<li>Approving an app request makes the app <code>available</code> for every live role of the requester (<code>src/cluster_erp/modules/app_store/services.py:357-361</code>, <code>src/cluster_erp/modules/app_store/routes.py:243-252</code>).</li>
+<li>Re-seeding never re-enables an app that an operator withdrew from sale (<code>src/cluster_erp/modules/app_store/services.py:91-99</code>).</li>
+<li>A replaced or removed licence stays as a deactivated row (<code>src/cluster_erp/modules/app_store/services.py:246-265</code>).</li>
+</ul>
+<h2 id="events-and-queries">Events and queries<a class="headerlink" href="#events-and-queries">¶</a></h2>
+<p>The module registers no EventBus handlers (<code>src/cluster_erp/modules/app_store/module.py:59-60</code>). It reads role ids through <code>role_ids_for</code> in <code>modules/auth/guards.py</code> (<code>src/cluster_erp/modules/app_store/routes.py:250-252</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Direction</th>
+<th>Contract class</th>
+<th>Handler or emitter</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>none</td>
+<td>none</td>
+<td>none</td>
+<td><code>src/cluster_erp/modules/app_store/module.py:59-60</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="permissions">Permissions<a class="headerlink" href="#permissions">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Permission key</th>
+<th>Used by</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>license.manage</code></td>
+<td>licence upload and removal</td>
+<td><code>src/cluster_erp/modules/app_store/routes.py:71-92</code></td>
+</tr>
+<tr>
+<td><code>store_app.assign</code></td>
+<td>assignments, request list, request decision</td>
+<td><code>src/cluster_erp/modules/app_store/routes.py:158-264</code></td>
+</tr>
+<tr>
+<td><code>store_app.install</code></td>
+<td>install and reconsent</td>
+<td><code>src/cluster_erp/modules/app_store/routes.py:267-285</code></td>
+</tr>
+<tr>
+<td><code>store_app.uninstall</code></td>
+<td>uninstall</td>
+<td><code>src/cluster_erp/modules/app_store/routes.py:288-295</code></td>
+</tr>
+</tbody>
+</table>
+<p>The four codes are seeded as extra codes (<code>src/cluster_erp/server/app.py:801-807</code>). The registry, the licence read, the asset route, and app requests need authentication only (<code>src/cluster_erp/modules/app_store/routes.py:18-66</code>, <code>src/cluster_erp/modules/app_store/routes.py:103-110</code>).</p>
+<h2 id="privacy-retention-and-history">Privacy, retention, and history<a class="headerlink" href="#privacy-retention-and-history">¶</a></h2>
+<p>The module holds no personal data beyond user and role ids on requests and assignments; it has no <code>privacy_handlers.py</code>. All tables derive from <code>BaseModel</code>, so their changes are in change history; see <a href="../platform/change-history.html">change history</a>.</p>
+<h2 id="analytics-facts">Analytics facts<a class="headerlink" href="#analytics-facts">¶</a></h2>
+<p>This module has no <code>analytics_facts.py</code>.</p>
+<h2 id="settings-and-reference-data">Settings and reference data<a class="headerlink" href="#settings-and-reference-data">¶</a></h2>
+<p><code>license_public_key</code> arms licensing; when empty, every catalogue app is entitled (<code>src/cluster_erp/config/settings.py:566-569</code>). The catalogue itself is vendor data in <code>catalog.json</code> (<code>src/cluster_erp/modules/app_store/services.py:50-63</code>).</p>
+<h2 id="tests">Tests<a class="headerlink" href="#tests">¶</a></h2>
+<p>Found by file name in <code>tests/</code> and <code>web-client/</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Kind</th>
+<th>File</th>
+<th>Covers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pytest</td>
+<td><code>tests/test_entitlement_stamp.py</code></td>
+<td>entitlement cache version stamp (2 tests)</td>
+</tr>
+<tr>
+<td>pytest</td>
+<td><code>tests/test_store_catalog_assets.py</code></td>
+<td>catalogue screenshots and captions (4 tests)</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_app_store.mjs</code>, <code>web-client/_e2e_store.mjs</code>, <code>web-client/_e2e_store_uibook.mjs</code></td>
+<td>store and app manager</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_license.mjs</code></td>
+<td>licence upload and states</td>
+</tr>
+</tbody>
+</table>
+<h2 id="terms-introduced">Terms introduced<a class="headerlink" href="#terms-introduced">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Code identifier</th>
+<th>Definition</th>
+<th>Turkish term</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app request</td>
+<td><code>AppRequest</code></td>
+<td>A user's request to be granted a seat on an app.</td>
+<td>uygulama isteği</td>
+<td><code>src/cluster_erp/modules/app_store/models.py:107</code></td>
+</tr>
+<tr>
+<td>system app</td>
+<td><code>manifest.system</code></td>
+<td>A catalogue app that is always entitled and cannot be uninstalled.</td>
+<td>sistem uygulaması</td>
+<td><code>src/cluster_erp/modules/app_store/services.py:182-189</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="index.html">Modules index</a></li>
+<li><a href="../api/app_store.html">API reference for this module</a></li>
+<li><a href="../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../modules/analytics/statistics-and-inference.html"><span class="eyebrow">Previous</span><span>Analytics statistics and inference</span></a><a class="next" href="../modules/auth.html"><span class="eyebrow">Next</span><span>Auth module (auth)</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#at-a-glance">At a glance</a></li>
+<li class="lvl2"><a href="#what-the-module-does">What the module does</a></li>
+<li class="lvl2"><a href="#sub-modules">Sub-modules</a></li>
+<li class="lvl2"><a href="#data-model">Data model</a></li>
+<li class="lvl2"><a href="#screens-and-metadata">Screens and metadata</a></li>
+<li class="lvl2"><a href="#status-and-actions">Status and actions</a></li>
+<li class="lvl2"><a href="#business-rules">Business rules</a></li>
+<li class="lvl2"><a href="#events-and-queries">Events and queries</a></li>
+<li class="lvl2"><a href="#permissions">Permissions</a></li>
+<li class="lvl2"><a href="#privacy-retention-and-history">Privacy, retention, and history</a></li>
+<li class="lvl2"><a href="#analytics-facts">Analytics facts</a></li>
+<li class="lvl2"><a href="#settings-and-reference-data">Settings and reference data</a></li>
+<li class="lvl2"><a href="#tests">Tests</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

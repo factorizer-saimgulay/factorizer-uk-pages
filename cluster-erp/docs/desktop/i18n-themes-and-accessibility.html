@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Languages, themes, and accessibility · Cluster ERP Wiki</title>
+<meta name="description" content="Reference of the desktop translator, language files, theme engine and tokens, accessibility manager, preferences dialog, and local settings.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../desktop/i18n-themes-and-accessibility.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.html">Overview</a></li>
+<li class=""><a href="../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.html">Platform core</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../platform/change-history.html">Change history</a></li>
+<li class=""><a href="../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../platform/event-bus.html">Event bus</a></li>
+<li class=""><a href="../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class=""><a href="../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../web-app/generic-form.html">Generic form</a></li>
+<li class=""><a href="../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class=""><a href="../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.html">Desktop client</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class="current"><a href="../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class=""><a href="../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.html">Business modules</a></li>
+<li class=""><a href="../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class=""><a href="../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../modules/auth.html">Auth module (auth)</a></li>
+<li class=""><a href="../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class=""><a href="../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class=""><a href="../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../modules/intranet/requests.html">Intranet requests</a></li>
+<li class=""><a href="../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../modules/mail.html">Mail module (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class=""><a href="../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../modules/production/work-orders.html">Work orders</a></li>
+<li class=""><a href="../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.html">API reference</a></li>
+<li class=""><a href="../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.html">Documents API (documents)</a></li>
+<li class=""><a href="../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.html">API overview</a></li>
+<li class=""><a href="../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class=""><a href="../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.html">Operations</a></li>
+<li class=""><a href="../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class=""><a href="../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class=""><a href="../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.html">Reference</a></li>
+<li class=""><a href="../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.html">Home</a> / Desktop client</div>
+    <header class="page-head">
+      <p class="eyebrow">Reference</p>
+      <h1>Languages, themes, and accessibility</h1>
+      <p class="lede">Reference of the desktop translator, language files, theme engine and tokens, accessibility manager, preferences dialog, and local settings.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#scope-and-source">Scope and source</a></li>
+<li class="lvl2"><a href="#language-files">Language files</a></li>
+<li class="lvl2"><a href="#translator">Translator</a></li>
+<li class="lvl2"><a href="#theme-engine">Theme engine</a></li>
+<li class="lvl3"><a href="#theme-tokens">Theme tokens</a></li>
+<li class="lvl3"><a href="#icons">Icons</a></li>
+<li class="lvl2"><a href="#accessibility-settings">Accessibility settings</a></li>
+<li class="lvl2"><a href="#preferences-dialog">Preferences dialog</a></li>
+<li class="lvl2"><a href="#local-settings">Local settings</a></li>
+<li class="lvl2"><a href="#constraints-and-validation">Constraints and validation</a></li>
+<li class="lvl2"><a href="#discrepancies">Discrepancies</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p>This reference describes how the desktop client chooses its language, colours, fonts, and accessibility adjustments, and where it keeps these choices. It covers <code>i18n/translator.py</code>, <code>i18n/en.json</code>, <code>i18n/tr.json</code>, <code>themes/theme_engine.py</code>, <code>themes/style.qss</code>, <code>core/accessibility_manager.py</code>, <code>core/settings_store.py</code>, <code>widgets/preferences_dialog.py</code>, and <code>widgets/accessibility_dialog.py</code> under <code>src/cluster_erp/desktop/</code>. The web client's equivalents are on <a href="../web-app/i18n-and-languages.html">internationalisation and languages</a> and <a href="../web-app/themes-tokens-and-accessibility.html">themes, tokens, and accessibility</a>.</p>
+<h2 id="scope-and-source">Scope and source<a class="headerlink" href="#scope-and-source">¶</a></h2>
+<ul>
+<li>Defined in: <code>Translator</code> (<code>src/cluster_erp/desktop/i18n/translator.py:32</code>), <code>ThemeEngine</code> and <code>THEMES</code> (<code>src/cluster_erp/desktop/themes/theme_engine.py:661-881</code>), <code>AccessibilityManager</code> (<code>src/cluster_erp/desktop/core/accessibility_manager.py:207</code>), <code>SettingsStore</code> (<code>src/cluster_erp/desktop/core/settings_store.py:8</code>).</li>
+<li>Counts: language keys were counted as the top-level keys of each JSON file; theme tokens as the keys of each <code>THEMES</code> palette; stylesheet tokens as the distinct <code>@name</code> placeholders in <code>style.qss</code>, excluding the word in its header comment; icons as the keys of <code>_ICON_PATHS</code>; settings keys by searching for calls of <code>get</code>, <code>set</code>, and <code>remove</code> on the settings store and <code>QSettings</code>.</li>
+</ul>
+<h2 id="language-files">Language files<a class="headerlink" href="#language-files">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Keys</th>
+<th><code>_meta.name</code></th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>en.json</code></td>
+<td>2,077</td>
+<td><code>English</code></td>
+<td><code>src/cluster_erp/desktop/i18n/en.json</code> key <code>_meta.name</code></td>
+</tr>
+<tr>
+<td><code>tr.json</code></td>
+<td>2,077</td>
+<td><code>Türkçe</code></td>
+<td><code>src/cluster_erp/desktop/i18n/tr.json</code> key <code>_meta.name</code></td>
+</tr>
+</tbody>
+</table>
+<p>Both files have the same key set. The keys are flat strings with a dotted prefix. The largest prefixes are <code>procurement</code> (269 keys), <code>error</code> (177), <code>bom_explorer</code> (174), <code>chat</code> (123), <code>nesting_job</code> (74), <code>resource</code> (58), <code>product</code> (56), <code>purq</code> (54), <code>logs</code> (54), and <code>common</code> (48). The folder also holds an empty file <code>en_keys.txt</code>.</p>
+<h2 id="translator">Translator<a class="headerlink" href="#translator">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Behaviour</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>constructor</td>
+<td>Reads the setting <code>language</code>, default <code>tr</code>, loads <code>en.json</code> as the fallback and the chosen file as the main table</td>
+<td><code>src/cluster_erp/desktop/i18n/translator.py:35-55</code></td>
+</tr>
+<tr>
+<td><code>t(key, fallback, **kwargs)</code></td>
+<td>Looks up the main table, then metadata labels in the current language or English, then <code>en.json</code>, then the given fallback, then the key itself; fills <code>{name}</code> placeholders</td>
+<td><code>src/cluster_erp/desktop/i18n/translator.py:57-67</code></td>
+</tr>
+<tr>
+<td><code>register_meta(key, translations)</code></td>
+<td>Stores a metadata label for <code>t</code></td>
+<td><code>src/cluster_erp/desktop/i18n/translator.py:69-70</code></td>
+</tr>
+<tr>
+<td><code>set_language(locale)</code></td>
+<td>Saves the setting, reloads the table, and emits <code>language_changed</code></td>
+<td><code>src/cluster_erp/desktop/i18n/translator.py:76-80</code></td>
+</tr>
+<tr>
+<td><code>upper</code>, <code>title</code></td>
+<td>Use Turkish dotted and dotless i rules when the language is <code>tr</code></td>
+<td><code>src/cluster_erp/desktop/i18n/translator.py:12-29</code>, <code>src/cluster_erp/desktop/i18n/translator.py:82-90</code></td>
+</tr>
+<tr>
+<td><code>available_languages()</code></td>
+<td>Returns code and <code>_meta.name</code> for every <code>*.json</code> file in the folder</td>
+<td><code>src/cluster_erp/desktop/i18n/translator.py:92-99</code></td>
+</tr>
+</tbody>
+</table>
+<p>A new desktop language is a new JSON file in <code>src/cluster_erp/desktop/i18n/</code>. The language selectors of the sign-in dialog and the preferences dialog list every file that <code>available_languages</code> finds (<code>src/cluster_erp/desktop/widgets/login_dialog.py:214-226</code>, <code>src/cluster_erp/desktop/widgets/preferences_dialog.py:62-69</code>). The desktop folder has no <code>languages.json</code>. The API client sends the current language as <code>Accept-Language</code> and follows every change (<code>src/cluster_erp/desktop/main.py:169-172</code>).</p>
+<p>Widgets that show translated text connect to <code>Translator.language_changed</code> and set their texts again. For example <code>MainWindow._retranslate_ui</code> renames section tabs (<code>src/cluster_erp/desktop/widgets/main_window.py:64</code>, <code>src/cluster_erp/desktop/widgets/main_window.py:628-648</code>).</p>
+<h2 id="theme-engine">Theme engine<a class="headerlink" href="#theme-engine">¶</a></h2>
+<p><code>ThemeEngine</code> reads the setting <code>theme</code>, default <code>dark</code>, and applies it at once (<code>src/cluster_erp/desktop/themes/theme_engine.py:717-726</code>). Applying a theme does four things (<code>src/cluster_erp/desktop/themes/theme_engine.py:798-848</code>):</p>
+<ol>
+<li>It merges the palette with the current overrides from accessibility.</li>
+<li>It sets a <code>QPalette</code> for the application from the merged values.</li>
+<li>It writes the icon SVG files in the icon colour and the check-box SVG files, only when their colours changed.</li>
+<li>It reads <code>style.qss</code>, replaces each <code>@token</code> with its value, longest token name first, sets the stylesheet, and repolishes every widget.</li>
+</ol>
+<p><code>set_overrides</code> waits 150 ms before it applies, so several changes in a row cause one repaint (<code>src/cluster_erp/desktop/themes/theme_engine.py:777-790</code>). <code>toggle</code> switches between <code>light</code> and <code>dark</code> (<code>src/cluster_erp/desktop/themes/theme_engine.py:880-881</code>). <code>current_colors</code> returns the merged palette for widgets that paint themselves (<code>src/cluster_erp/desktop/themes/theme_engine.py:875-878</code>).</p>
+<h3 id="theme-tokens">Theme tokens<a class="headerlink" href="#theme-tokens">¶</a></h3>
+<p>Each palette has 24 keys (<code>src/cluster_erp/desktop/themes/theme_engine.py:661-714</code>). <code>style.qss</code> uses 20 of them plus <code>cb-dir</code>, the folder of the generated check-box images (<code>src/cluster_erp/desktop/themes/theme_engine.py:844</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Dark</th>
+<th>Light</th>
+<th>In <code>style.qss</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>window</code></td>
+<td><code>#111113</code></td>
+<td><code>#FBFBFC</code></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>base</code></td>
+<td><code>#19191C</code></td>
+<td><code>#FFFFFF</code></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>alternate-base</code></td>
+<td><code>#232327</code></td>
+<td><code>#EDEDF0</code></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>text</code></td>
+<td><code>#ECECEF</code></td>
+<td><code>#1C1C1E</code></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>dimmed</code></td>
+<td><code>#87878F</code></td>
+<td><code>#87878F</code></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>muted</code></td>
+<td><code>#55555C</code></td>
+<td><code>#B0B0B8</code></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>accent</code></td>
+<td><code>#4C8EF7</code></td>
+<td><code>#3E7BFA</code></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>accent-hover</code></td>
+<td><code>#6BA1F8</code></td>
+<td><code>#2E6AE6</code></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>highlight</code></td>
+<td><code>#2B4A7C</code></td>
+<td><code>#D5E4FD</code></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>border</code></td>
+<td><code>#2A2A2E</code></td>
+<td><code>#E6E6E9</code></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>input</code></td>
+<td><code>#19191C</code></td>
+<td><code>#FFFFFF</code></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>sidebar</code></td>
+<td><code>#111113</code></td>
+<td><code>#F0F0F2</code></td>
+<td>no</td>
+</tr>
+<tr>
+<td><code>sidebar-hover</code></td>
+<td><code>#1E1E21</code></td>
+<td><code>#E6E6E9</code></td>
+<td>no</td>
+</tr>
+<tr>
+<td><code>sidebar-active</code></td>
+<td><code>#252528</code></td>
+<td><code>#DDDDE0</code></td>
+<td>no</td>
+</tr>
+<tr>
+<td><code>danger</code></td>
+<td><code>#E5484D</code></td>
+<td><code>#E5484D</code></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>warning</code></td>
+<td><code>#F5A623</code></td>
+<td><code>#F5A623</code></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>success</code></td>
+<td><code>#30A46C</code></td>
+<td><code>#30A46C</code></td>
+<td>no</td>
+</tr>
+<tr>
+<td><code>button-gradient</code></td>
+<td><code>#2C2C31</code></td>
+<td><code>#F4F4F7</code></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>button-shadow</code></td>
+<td><code>#18181B</code></td>
+<td><code>#C8C8CC</code></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>primary-shadow</code></td>
+<td><code>#1E3560</code></td>
+<td><code>#B0C4E0</code></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>font-family</code></td>
+<td><code>"Segoe UI"</code></td>
+<td><code>"Segoe UI"</code></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>font-size</code></td>
+<td><code>9pt</code></td>
+<td><code>9pt</code></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>font-size-small</code></td>
+<td><code>8pt</code></td>
+<td><code>8pt</code></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>font-size-large</code></td>
+<td><code>13pt</code></td>
+<td><code>13pt</code></td>
+<td>yes</td>
+</tr>
+</tbody>
+</table>
+<p>The four keys marked no are read by widgets through <code>current_colors</code>, for example the sidebar (<code>src/cluster_erp/desktop/widgets/sidebar.py:321-334</code>) and the status bar (<code>src/cluster_erp/desktop/widgets/status_bar.py:76-88</code>).</p>
+<h3 id="icons">Icons<a class="headerlink" href="#icons">¶</a></h3>
+<p><code>_ICON_PATHS</code> holds 123 icon glyphs as SVG path fragments (<code>src/cluster_erp/desktop/themes/theme_engine.py:23-649</code>). The engine writes them as files in a temporary folder in the <code>dimmed</code> colour, and <code>icon(name)</code> loads a file, or returns an empty icon for an unknown name (<code>src/cluster_erp/desktop/themes/theme_engine.py:14</code>, <code>src/cluster_erp/desktop/themes/theme_engine.py:652-654</code>, <code>src/cluster_erp/desktop/themes/theme_engine.py:728-734</code>). Metadata sections and actions name icons by these keys (<code>src/cluster_erp/desktop/widgets/sidebar.py:202-205</code>).</p>
+<h2 id="accessibility-settings">Accessibility settings<a class="headerlink" href="#accessibility-settings">¶</a></h2>
+<p><code>AccessibilityManager</code> reads its settings under the prefix <code>accessibility/</code>, computes theme overrides, and emits <code>settings_changed</code> after every change (<code>src/cluster_erp/desktop/core/accessibility_manager.py:195</code>, <code>src/cluster_erp/desktop/core/accessibility_manager.py:207-237</code>). <code>main()</code> applies them before the sign-in dialog (<code>src/cluster_erp/desktop/main.py:164-165</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Values</th>
+<th>Effect</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>font_scale</code></td>
+<td><code>small</code>, <code>default</code>, <code>large</code>, <code>xlarge</code></td>
+<td>Multiplies the 9 pt base font by 0.87, 1.0, 1.13, or 1.27 and scales the three font-size tokens</td>
+<td><code>src/cluster_erp/desktop/core/accessibility_manager.py:12-17</code>, <code>src/cluster_erp/desktop/core/accessibility_manager.py:390-397</code></td>
+</tr>
+<tr>
+<td><code>high_contrast</code></td>
+<td><code>off</code>, <code>light</code></td>
+<td>Replaces the palette with a high-contrast light palette</td>
+<td><code>src/cluster_erp/desktop/core/accessibility_manager.py:19-39</code>, <code>src/cluster_erp/desktop/core/accessibility_manager.py:406-407</code></td>
+</tr>
+<tr>
+<td><code>color_blind_mode</code></td>
+<td><code>off</code>, <code>protanopia</code>, <code>deuteranopia</code>, <code>tritanopia</code></td>
+<td>Replaces accent, highlight, danger, warning, and success colours</td>
+<td><code>src/cluster_erp/desktop/core/accessibility_manager.py:41-66</code>, <code>src/cluster_erp/desktop/core/accessibility_manager.py:409-410</code></td>
+</tr>
+<tr>
+<td><code>reading_bg</code></td>
+<td><code>off</code>, <code>peach</code>, <code>orange</code>, <code>yellow</code></td>
+<td>Tints background colours, with a light and a dark variant each</td>
+<td><code>src/cluster_erp/desktop/core/accessibility_manager.py:68-158</code>, <code>src/cluster_erp/desktop/core/accessibility_manager.py:412-415</code></td>
+</tr>
+<tr>
+<td><code>brightness</code></td>
+<td>50 to 150, default 100</td>
+<td>Lightens or darkens nine background keys</td>
+<td><code>src/cluster_erp/desktop/core/accessibility_manager.py:161-189</code>, <code>src/cluster_erp/desktop/core/accessibility_manager.py:323-328</code>, <code>src/cluster_erp/desktop/core/accessibility_manager.py:417-423</code></td>
+</tr>
+<tr>
+<td><code>dyslexia_font</code></td>
+<td>true or false</td>
+<td>Switches to the first installed font of a list, with wider letter and word spacing</td>
+<td><code>src/cluster_erp/desktop/core/accessibility_manager.py:192</code>, <code>src/cluster_erp/desktop/core/accessibility_manager.py:360-388</code></td>
+</tr>
+<tr>
+<td><code>reduced_motion</code></td>
+<td>true or false</td>
+<td>Stored and shown in the dialog</td>
+<td><code>src/cluster_erp/desktop/core/accessibility_manager.py:295-298</code></td>
+</tr>
+<tr>
+<td><code>welcomed</code></td>
+<td>set once</td>
+<td>Hides the welcome banner of the accessibility dialog after the first visit</td>
+<td><code>src/cluster_erp/desktop/core/accessibility_manager.py:269-274</code>, <code>src/cluster_erp/desktop/widgets/accessibility_dialog.py:233-234</code></td>
+</tr>
+</tbody>
+</table>
+<p>A stored high-contrast value <code>dark</code> is migrated to <code>light</code>; any other unknown value becomes <code>off</code> (<code>src/cluster_erp/desktop/core/accessibility_manager.py:221-229</code>). <code>reset_all</code> removes the seven adjustable settings and applies the defaults (<code>src/cluster_erp/desktop/core/accessibility_manager.py:330-352</code>). When the theme changes, the overrides are computed again if any adjustment is active (<code>src/cluster_erp/desktop/core/accessibility_manager.py:431-446</code>).</p>
+<p>The <strong>Accessibility</strong> dialog (key <code>accessibility.title</code>) offers segmented controls for font size, high contrast, colour-blind mode, and reading background, a brightness slider from 50 to 150, check boxes for reduced motion and the dyslexia font, and <strong>Reset All Settings</strong> (key <code>accessibility.reset_all</code>) with a confirmation (<code>src/cluster_erp/desktop/widgets/accessibility_dialog.py:216-400</code>, <code>src/cluster_erp/desktop/widgets/accessibility_dialog.py:477-489</code>). It opens from the sidebar, from the sign-in dialog, and through <code>MainWindow._show_accessibility</code> (<code>src/cluster_erp/desktop/widgets/sidebar.py:129</code>, <code>src/cluster_erp/desktop/widgets/login_dialog.py:230-240</code>, <code>src/cluster_erp/desktop/widgets/main_window.py:614-624</code>).</p>
+<h2 id="preferences-dialog">Preferences dialog<a class="headerlink" href="#preferences-dialog">¶</a></h2>
+<p>The <strong>Preferences</strong> dialog (key <code>settings.title</code>) applies each change at once and saves it (<code>src/cluster_erp/desktop/widgets/preferences_dialog.py:37-133</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Control</th>
+<th>Setting</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Theme</strong> (key <code>settings.theme</code>)</td>
+<td><code>theme</code>, through <code>ThemeEngine.apply</code></td>
+<td><code>src/cluster_erp/desktop/widgets/preferences_dialog.py:53-60</code>, <code>src/cluster_erp/desktop/widgets/preferences_dialog.py:102-105</code></td>
+</tr>
+<tr>
+<td><strong>Language</strong> (key <code>settings.language</code>)</td>
+<td><code>language</code>, through <code>Translator.set_language</code></td>
+<td><code>src/cluster_erp/desktop/widgets/preferences_dialog.py:62-69</code>, <code>src/cluster_erp/desktop/widgets/preferences_dialog.py:107-110</code></td>
+</tr>
+<tr>
+<td><strong>Timezone</strong> (key <code>settings.timezone</code>)</td>
+<td><code>timezone</code>; an editable list of 16 common zones that exist on the system</td>
+<td><code>src/cluster_erp/desktop/widgets/preferences_dialog.py:71-82</code>, <code>src/cluster_erp/desktop/core/timezone_utils.py:8-30</code></td>
+</tr>
+<tr>
+<td><strong>Server URL</strong> (key <code>settings.api_url</code>)</td>
+<td><code>api_url</code>; a change asks for a restart</td>
+<td><code>src/cluster_erp/desktop/widgets/preferences_dialog.py:84-89</code>, <code>src/cluster_erp/desktop/widgets/preferences_dialog.py:117-133</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="local-settings">Local settings<a class="headerlink" href="#local-settings">¶</a></h2>
+<p><code>SettingsStore</code> wraps <code>QSettings</code> with the organisation <code>ClusterERP</code> and the application <code>DesktopClient</code>, and writes through at once (<code>src/cluster_erp/desktop/core/settings_store.py:8-21</code>). The client uses 16 keys:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Written by</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>api_url</code></td>
+<td>sign-in dialog, preferences dialog</td>
+<td><code>src/cluster_erp/desktop/widgets/login_dialog.py:283</code>, <code>src/cluster_erp/desktop/widgets/preferences_dialog.py:123</code></td>
+</tr>
+<tr>
+<td><code>server_urls</code></td>
+<td>sign-in dialog</td>
+<td><code>src/cluster_erp/desktop/widgets/login_dialog.py:282</code></td>
+</tr>
+<tr>
+<td><code>language</code></td>
+<td><code>Translator.set_language</code></td>
+<td><code>src/cluster_erp/desktop/i18n/translator.py:78</code></td>
+</tr>
+<tr>
+<td><code>theme</code></td>
+<td><code>ThemeEngine.apply</code></td>
+<td><code>src/cluster_erp/desktop/themes/theme_engine.py:794</code></td>
+</tr>
+<tr>
+<td><code>timezone</code></td>
+<td>preferences dialog</td>
+<td><code>src/cluster_erp/desktop/widgets/preferences_dialog.py:112-126</code></td>
+</tr>
+<tr>
+<td><code>window/geometry</code>, <code>window/state</code></td>
+<td><code>MainWindow.closeEvent</code></td>
+<td><code>src/cluster_erp/desktop/widgets/main_window.py:698-699</code></td>
+</tr>
+<tr>
+<td><code>panes/layout</code></td>
+<td><code>PaneContainer.save_state</code></td>
+<td><code>src/cluster_erp/desktop/widgets/pane_container.py:28</code>, <code>src/cluster_erp/desktop/widgets/pane_container.py:270</code></td>
+</tr>
+<tr>
+<td><code>accessibility/font_scale</code>, <code>high_contrast</code>, <code>reduced_motion</code>, <code>dyslexia_font</code>, <code>color_blind_mode</code>, <code>reading_bg</code>, <code>brightness</code>, <code>welcomed</code></td>
+<td><code>AccessibilityManager</code></td>
+<td><code>src/cluster_erp/desktop/core/accessibility_manager.py:207-352</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>get_user_timezone</code> and <code>BomExplorer</code> read the same store through their own <code>QSettings</code> objects (<code>src/cluster_erp/desktop/core/timezone_utils.py:37-43</code>, <code>src/cluster_erp/desktop/modules/bom/bom_explorer.py:1412-1419</code>).</p>
+<h2 id="constraints-and-validation">Constraints and validation<a class="headerlink" href="#constraints-and-validation">¶</a></h2>
+<ul>
+<li>Setters ignore values outside their lists, and brightness is clamped to 50 to 150 (<code>src/cluster_erp/desktop/core/accessibility_manager.py:278-328</code>).</li>
+<li>An unknown time zone name falls back to <code>UTC</code> (<code>src/cluster_erp/desktop/core/timezone_utils.py:37-43</code>).</li>
+<li>No code outside <code>AccessibilityManager</code> and the accessibility dialog reads <code>reduced_motion</code>, found by searching <code>src/cluster_erp/desktop/</code> for the name.</li>
+<li>Desktop language files are also checked by tests outside the desktop folder, for example for the presence of error keys (<code>tests/test_bom_bugfix_batch_2026_10_08.py:123-130</code>).</li>
+</ul>
+<h2 id="discrepancies">Discrepancies<a class="headerlink" href="#discrepancies">¶</a></h2>
+<aside class="adm adm-warning" role="note"><p class="adm-title">Warning</p><p>Discrepancy. The project's written engineering rules forbid hard-coded strings and values. The translator has language-specific code for <code>tr</code> in <code>upper</code> and <code>title</code> and uses <code>tr</code> as the default language (<code>src/cluster_erp/desktop/i18n/translator.py:38</code>, <code>src/cluster_erp/desktop/i18n/translator.py:82-90</code>). The crash dialog carries English fallback texts and a literal title for the start-up error box (<code>src/cluster_erp/desktop/main.py:92-104</code>, <code>src/cluster_erp/desktop/main.py:127</code>). Font family lists and palettes are literals in code (<code>src/cluster_erp/desktop/main.py:153</code>, <code>src/cluster_erp/desktop/core/accessibility_manager.py:192-193</code>, <code>src/cluster_erp/desktop/themes/theme_engine.py:661-714</code>). This page documents the code.</p>
+<p><strong>Warning:</strong> Discrepancy. The sidebar reads the token <code>font-size-sm</code> (<code>src/cluster_erp/desktop/widgets/sidebar.py:381</code>). The palettes define <code>font-size-small</code> and no <code>font-size-sm</code> (<code>src/cluster_erp/desktop/themes/theme_engine.py:685</code>, <code>src/cluster_erp/desktop/themes/theme_engine.py:711</code>), so the sidebar uses its literal default. This page documents the code.</p>
+</aside>
+<h2 id="terms-introduced">Terms introduced<a class="headerlink" href="#terms-introduced">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Code identifier</th>
+<th>Definition</th>
+<th>Turkish term</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>translator</td>
+<td><code>Translator</code></td>
+<td>The desktop object that loads a language file and resolves keys and metadata labels.</td>
+<td>çevirmen</td>
+<td><code>src/cluster_erp/desktop/i18n/translator.py:32</code></td>
+</tr>
+<tr>
+<td>theme engine</td>
+<td><code>ThemeEngine</code></td>
+<td>The desktop object that applies a palette, the stylesheet with tokens, and generated icons.</td>
+<td>tema motoru</td>
+<td><code>src/cluster_erp/desktop/themes/theme_engine.py:717</code></td>
+</tr>
+<tr>
+<td>theme token</td>
+<td><code>@token</code></td>
+<td>A placeholder in <code>style.qss</code> that the theme engine replaces with a palette value.</td>
+<td>tema belirteci</td>
+<td><code>src/cluster_erp/desktop/themes/theme_engine.py:844-846</code></td>
+</tr>
+<tr>
+<td>accessibility manager</td>
+<td><code>AccessibilityManager</code></td>
+<td>The desktop object that stores accessibility choices and turns them into font changes and theme overrides.</td>
+<td>erişilebilirlik yöneticisi</td>
+<td><code>src/cluster_erp/desktop/core/accessibility_manager.py:207</code></td>
+</tr>
+<tr>
+<td>settings store</td>
+<td><code>SettingsStore</code></td>
+<td>The wrapper around the local <code>QSettings</code> store of the desktop client.</td>
+<td>ayar deposu</td>
+<td><code>src/cluster_erp/desktop/core/settings_store.py:8</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="index.html">Desktop client</a></li>
+<li><a href="run-the-desktop-client.html">Run the desktop client</a></li>
+<li><a href="../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li><a href="../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li><a href="../decisions/data-driven-languages.html">Data-driven languages</a></li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../desktop/generic-widgets.html"><span class="eyebrow">Previous</span><span>Generic widgets</span></a><a class="next" href="../desktop/metadata-store-and-fk-cache.html"><span class="eyebrow">Next</span><span>Metadata store and foreign-key cache</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#scope-and-source">Scope and source</a></li>
+<li class="lvl2"><a href="#language-files">Language files</a></li>
+<li class="lvl2"><a href="#translator">Translator</a></li>
+<li class="lvl2"><a href="#theme-engine">Theme engine</a></li>
+<li class="lvl3"><a href="#theme-tokens">Theme tokens</a></li>
+<li class="lvl3"><a href="#icons">Icons</a></li>
+<li class="lvl2"><a href="#accessibility-settings">Accessibility settings</a></li>
+<li class="lvl2"><a href="#preferences-dialog">Preferences dialog</a></li>
+<li class="lvl2"><a href="#local-settings">Local settings</a></li>
+<li class="lvl2"><a href="#constraints-and-validation">Constraints and validation</a></li>
+<li class="lvl2"><a href="#discrepancies">Discrepancies</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

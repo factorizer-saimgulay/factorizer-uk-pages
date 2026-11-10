@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Web app overview · Cluster ERP Wiki</title>
+<meta name="description" content="Layout of the webapp folder, how the server serves it under /app with a content stamp, and the metadata-driven rule that shapes every screen.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../web-app/overview.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.html">Overview</a></li>
+<li class=""><a href="../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.html">Platform core</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../platform/change-history.html">Change history</a></li>
+<li class=""><a href="../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../platform/event-bus.html">Event bus</a></li>
+<li class=""><a href="../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class=""><a href="../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../web-app/generic-form.html">Generic form</a></li>
+<li class=""><a href="../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class="current"><a href="../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.html">Desktop client</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class=""><a href="../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.html">Business modules</a></li>
+<li class=""><a href="../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class=""><a href="../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../modules/auth.html">Auth module (auth)</a></li>
+<li class=""><a href="../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class=""><a href="../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class=""><a href="../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../modules/intranet/requests.html">Intranet requests</a></li>
+<li class=""><a href="../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../modules/mail.html">Mail module (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class=""><a href="../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../modules/production/work-orders.html">Work orders</a></li>
+<li class=""><a href="../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.html">API reference</a></li>
+<li class=""><a href="../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.html">Documents API (documents)</a></li>
+<li class=""><a href="../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.html">API overview</a></li>
+<li class=""><a href="../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class=""><a href="../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.html">Operations</a></li>
+<li class=""><a href="../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class=""><a href="../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class=""><a href="../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.html">Reference</a></li>
+<li class=""><a href="../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.html">Home</a> / Web app</div>
+    <header class="page-head">
+      <p class="eyebrow">Explanation</p>
+      <h1>Web app overview</h1>
+      <p class="lede">Layout of the webapp folder, how the server serves it under /app with a content stamp, and the metadata-driven rule that shapes every screen.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#in-short">In short</a></li>
+<li class="lvl2"><a href="#how-it-works">How it works</a></li>
+<li class="lvl3"><a href="#folder-layout">Folder layout</a></li>
+<li class="lvl3"><a href="#module-groups-in-the-js-folder">Module groups in the js folder</a></li>
+<li class="lvl3"><a href="#serving-and-the-asset-stamp">Serving and the asset stamp</a></li>
+<li class="lvl3"><a href="#security-headers-that-shape-the-client">Security headers that shape the client</a></li>
+<li class="lvl2"><a href="#why-it-is-built-this-way">Why it is built this way</a></li>
+<li class="lvl2"><a href="#rules-and-boundaries">Rules and boundaries</a></li>
+<li class="lvl2"><a href="#interaction-with-other-parts">Interaction with other parts</a></li>
+<li class="lvl2"><a href="#limits-and-open-points">Limits and open points</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p>The web app is a single-page browser client kept in the <code>webapp/</code> folder at the repository root. The API server serves it from the same origin under <code>/app</code>, so the browser calls <code>/api/v1</code> without cross-origin requests. This page describes the folder layout, how files are served and cached, and the rule that screens come from server metadata. Start-up and the API layer are on <a href="boot-session-and-api.html">boot, session, and API calls</a>.</p>
+<h2 id="in-short">In short<a class="headerlink" href="#in-short">¶</a></h2>
+<ul>
+<li>The web app is plain ES modules with no build step: <code>index.html</code> loads one module script, <code>js/main.js</code> (<code>webapp/index.html:406</code>).</li>
+<li><code>webapp/js/</code> holds 51 JavaScript files plus the <code>vendor/</code> folder (counted with <code>ls webapp/js</code>: 52 entries).</li>
+<li>The server mounts the folder twice: <code>/app</code> with revalidation on every load, and <code>/app/v/&lt;stamp&gt;/</code> as immutable files (<code>src/cluster_erp/server/app.py:1633-1644</code> at commit 7793ff4).</li>
+<li>Every list, form, card, action, and module tab is built from <code>GET /api/v1/_meta</code> (<code>webapp/js/meta.js:16-47</code>). The project's written engineering rules make the web app fully metadata-driven.</li>
+</ul>
+<h2 id="how-it-works">How it works<a class="headerlink" href="#how-it-works">¶</a></h2>
+<h3 id="folder-layout">Folder layout<a class="headerlink" href="#folder-layout">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Content</th>
+<th>Count</th>
+<th>How counted</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>webapp/index.html</code></td>
+<td>The shell: sign-in screen, home screen, app view, overlays, and the module script</td>
+<td>1 file, 408 lines</td>
+<td><code>wc -l</code></td>
+</tr>
+<tr>
+<td><code>webapp/operator.html</code></td>
+<td>The operator console page</td>
+<td>1 file</td>
+<td><code>ls webapp</code></td>
+</tr>
+<tr>
+<td><code>webapp/js/</code></td>
+<td>Engine and screen modules</td>
+<td>51 <code>.js</code> files and <code>vendor/</code></td>
+<td><code>ls webapp/js</code></td>
+</tr>
+<tr>
+<td><code>webapp/js/vendor/pdfjs/</code></td>
+<td>Vendored PDF renderer (<code>pdfjs-dist</code> 6.2.108, Apache-2.0)</td>
+<td>4 files</td>
+<td><code>webapp/js/vendor/pdfjs/README.txt</code></td>
+</tr>
+<tr>
+<td><code>webapp/css/</code></td>
+<td><code>tokens.css</code>, <code>app.css</code>, <code>gen.css</code>, <code>tiles.css</code>, <code>mail.css</code></td>
+<td>5 files</td>
+<td><code>ls webapp/css</code></td>
+</tr>
+<tr>
+<td><code>webapp/i18n/</code></td>
+<td><code>en.json</code>, <code>tr.json</code>, and the manifest <code>languages.json</code></td>
+<td>3 files</td>
+<td><code>ls webapp/i18n</code></td>
+</tr>
+<tr>
+<td><code>webapp/fonts/</code></td>
+<td>Self-hosted Manrope font files, <code>manrope.css</code>, and <code>OFL.txt</code></td>
+<td>8 files</td>
+<td><code>ls webapp/fonts</code></td>
+</tr>
+<tr>
+<td><code>webapp/assets/</code></td>
+<td>Chat wallpaper images for the assistant screen</td>
+<td>2 files</td>
+<td><code>ls webapp/assets</code></td>
+</tr>
+<tr>
+<td><code>webapp/store/</code></td>
+<td>Screenshot galleries for app store entries, one folder per app</td>
+<td>26 folders</td>
+<td><code>ls webapp/store</code></td>
+</tr>
+</tbody>
+</table>
+<p>The operator console is documented on <a href="../identity-access/operator-console.html">operator console</a>. The comment in <code>webapp/index.html:8-12</code> states that the typeface is served from the node so that no visitor request leaves the deployment for a font.</p>
+<h3 id="module-groups-in-the-js-folder">Module groups in the js folder<a class="headerlink" href="#module-groups-in-the-js-folder">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Group</th>
+<th>Files</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Boot and transport</td>
+<td><code>main.js</code>, <code>api.js</code>, <code>app-session.js</code>, <code>gen-api.js</code>, <code>meta.js</code>, <code>data-bus.js</code>, <code>ui-state.js</code></td>
+</tr>
+<tr>
+<td>Generic engines</td>
+<td><code>gen-list.js</code>, <code>gen-form.js</code>, <code>gen-detail.js</code>, <code>gen-tree.js</code>, <code>gen-settings.js</code>, <code>entity.js</code>, <code>action-sheet.js</code>, <code>customselect.js</code>, <code>form-drafts.js</code>, <code>table-align.js</code>, <code>avatar.js</code></td>
+</tr>
+<tr>
+<td>Shell</td>
+<td><code>home.js</code>, <code>module-app.js</code>, <code>app-scope.js</code>, <code>nav.js</code>, <code>app-wheel.js</code>, <code>tiles.js</code>, <code>touch-gate.js</code>, <code>device-class.js</code>, <code>search-index.js</code>, <code>custom-widgets.js</code></td>
+</tr>
+<tr>
+<td>Widgets</td>
+<td><code>widget-ai.js</code>, <code>widget-approvals.js</code>, <code>widget-scope.js</code></td>
+</tr>
+<tr>
+<td>Language and appearance</td>
+<td><code>i18n.js</code>, <code>prefs.js</code>, <code>a11y.js</code>, <code>a11y-ui.js</code>, <code>icons.js</code>, <code>ui.js</code></td>
+</tr>
+<tr>
+<td>Screens</td>
+<td><code>general.js</code>, <code>retention.js</code>, <code>changed.js</code>, <code>logs.js</code>, <code>profile.js</code>, <code>mail.js</code>, <code>mail-settings.js</code>, <code>signup.js</code>, <code>record-docs.js</code>, <code>viewer.js</code>, <code>share.js</code>, <code>assistant.js</code>, <code>chat-task.js</code></td>
+</tr>
+<tr>
+<td>Operator page</td>
+<td><code>operator.js</code></td>
+</tr>
+</tbody>
+</table>
+<p>The grouping follows the header comment of each file. It is a reading aid, not a structure in code.</p>
+<h3 id="serving-and-the-asset-stamp">Serving and the asset stamp<a class="headerlink" href="#serving-and-the-asset-stamp">¶</a></h3>
+<p><code>webapp/index.html</code> links every stylesheet, module, and font under <code>./v/__ASSET_STAMP__/</code> (<code>webapp/index.html:13-74</code>). When the server returns <code>index.html</code>, it replaces the placeholder with <code>asset_stamp(webapp_dir)</code>, a digest over every file in the folder, and answers with <code>Cache-Control: no-cache</code> and an ETag (<code>src/cluster_erp/server/app.py:1616-1625</code> at commit 7793ff4). A file requested under the current stamp is sent with <code>public, max-age=31536000, immutable</code>. A file under an older stamp is sent with <code>no-cache</code> (<code>src/cluster_erp/server/app.py:1599-1614</code>). A deploy therefore produces a new set of URLs. The stamp function is documented on <a href="../platform/cache-and-asset-stamp.html">cache and asset stamp</a>.</p>
+<p>The <code>modulepreload</code> list in <code>index.html</code> is generated by <code>web-client/_gen_modulepreload.mjs</code> and is marked as not for hand editing (<code>webapp/index.html:24</code>).</p>
+<h3 id="security-headers-that-shape-the-client">Security headers that shape the client<a class="headerlink" href="#security-headers-that-shape-the-client">¶</a></h3>
+<p>The server sends a content security policy with every response. Scripts may load only from the same origin and from <code>blob:</code> URLs. The comment states that <code>blob:</code> is required for the gated-app module import and for object-URL previews (<code>src/cluster_erp/server/app.py:1325-1352</code> at commit 7793ff4). Framing is limited to the same origin, which the duplicated home tiles need (<code>src/cluster_erp/server/app.py:1348-1351</code>). See <a href="gated-app-bundles.html">gated app bundles</a> and <a href="home-dock-and-launcher.html">home screen, dock, and launcher</a>.</p>
+<h2 id="why-it-is-built-this-way">Why it is built this way<a class="headerlink" href="#why-it-is-built-this-way">¶</a></h2>
+<ul>
+<li>Same-origin serving: the comment in <code>src/cluster_erp/server/app.py:1574-1576</code> (at commit 7793ff4) states that serving the front end from the API server lets the browser reach the API with no CORS.</li>
+<li>Two mounts: the comment in <code>src/cluster_erp/server/app.py:1578-1588</code> states that a reload previously cost 62 revalidation round trips, and that versioned URLs remove them while <code>index.html</code> still picks up a deploy at once.</li>
+<li>Metadata-driven screens: the project's written engineering rules require that screen, form, list, and action behaviour comes from metadata and forbid UI-specific embedded rules. See <a href="../decisions/metadata-driven-ui.html">metadata-driven UI</a>.</li>
+</ul>
+<h2 id="rules-and-boundaries">Rules and boundaries<a class="headerlink" href="#rules-and-boundaries">¶</a></h2>
+<ul>
+<li>The generic engines <code>gen-list.js</code>, <code>gen-detail.js</code>, <code>gen-form.js</code>, <code>entity.js</code>, and <code>gen-settings.js</code> must not compare against business module names. <code>tests/test_architecture_boundaries.py:75</code> (<code>test_generic_web_engines_do_not_branch_on_business_module_names</code>) enforces this.</li>
+<li>Generic web files must not name module paths, module permissions, or per-language columns, and must not branch on a language code. <code>tests/test_metadata_driven_rules.py:85</code> enforces this for eleven files.</li>
+<li>The web app is mounted only when the <code>webapp</code> folder exists next to the package (<code>src/cluster_erp/server/app.py:1633-1634</code>).</li>
+</ul>
+<aside class="adm adm-warning" role="note"><p class="adm-title">Warning</p><p>Discrepancy. The project's written engineering rules forbid hard-coded values and require metadata-driven screens. <code>webapp/js/home.js:3448-3461</code> (<code>SYSTEM_APP_SETTINGS</code>) names the module <code>currencies</code> and a fixed colour, and <code>webapp/js/home.js:3479-3515</code> (<code>settingsRows</code>) fixes the rows and colours of the Settings app in code. This page documents the code.</p>
+</aside>
+<h2 id="interaction-with-other-parts">Interaction with other parts<a class="headerlink" href="#interaction-with-other-parts">¶</a></h2>
+<ul>
+<li>The server side of metadata is documented on <a href="../platform/metadata-model.html">metadata model</a>.</li>
+<li>Session cookies and sign-in are documented on <a href="../identity-access/authentication-and-sessions.html">authentication and sessions</a>.</li>
+<li>The app catalogue and entitlements behind the home screen are documented on <a href="../identity-access/app-store-licensing-and-entitlements.html">app store, licensing, and entitlements</a>.</li>
+<li>The desktop client renders the same metadata; see the <a href="../desktop/index.html">desktop section</a>.</li>
+</ul>
+<h2 id="limits-and-open-points">Limits and open points<a class="headerlink" href="#limits-and-open-points">¶</a></h2>
+<ul>
+<li>The folder <code>web-client/</code> holds the browser test battery and a separate Vite project. Whether that project is in use is not determined from code; see <a href="../overview/repository-map.html">repository map</a>.</li>
+<li><code>index.html</code> declares <code>lang="tr"</code> and a Turkish sign-in label in markup (<code>webapp/index.html:2</code>, <code>webapp/index.html:161</code>). Both are replaced at boot by the selected language (<code>webapp/js/i18n.js:81</code>, <code>webapp/js/main.js:221</code>).</li>
+</ul>
+<h2 id="terms-introduced">Terms introduced<a class="headerlink" href="#terms-introduced">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Code identifier</th>
+<th>Definition</th>
+<th>Turkish term</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>web app</td>
+<td><code>webapp/</code></td>
+<td>The browser client in <code>webapp/</code> that the server serves at <code>/app</code>.</td>
+<td>web uygulaması</td>
+<td><code>src/cluster_erp/server/app.py:1633</code></td>
+</tr>
+<tr>
+<td>asset stamp placeholder</td>
+<td><code>__ASSET_STAMP__</code></td>
+<td>The token in <code>index.html</code> that the server replaces with the current asset stamp.</td>
+<td>varlık damgası yer tutucusu</td>
+<td><code>webapp/index.html:18</code></td>
+</tr>
+<tr>
+<td>versioned mount</td>
+<td><code>/app/v</code></td>
+<td>The static mount that serves files under a stamp as immutable.</td>
+<td>sürümlü bağlama</td>
+<td><code>src/cluster_erp/server/app.py:1635-1639</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="index.html">Web app platform</a></li>
+<li><a href="boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li><a href="metadata-rendering.html">Metadata rendering</a></li>
+<li><a href="../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li><a href="../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../web-app/module-apps-and-app-scope.html"><span class="eyebrow">Previous</span><span>Module apps and app scope</span></a><a class="next" href="../web-app/records-documents-viewer-and-share.html"><span class="eyebrow">Next</span><span>Record documents, viewer, and share</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#in-short">In short</a></li>
+<li class="lvl2"><a href="#how-it-works">How it works</a></li>
+<li class="lvl3"><a href="#folder-layout">Folder layout</a></li>
+<li class="lvl3"><a href="#module-groups-in-the-js-folder">Module groups in the js folder</a></li>
+<li class="lvl3"><a href="#serving-and-the-asset-stamp">Serving and the asset stamp</a></li>
+<li class="lvl3"><a href="#security-headers-that-shape-the-client">Security headers that shape the client</a></li>
+<li class="lvl2"><a href="#why-it-is-built-this-way">Why it is built this way</a></li>
+<li class="lvl2"><a href="#rules-and-boundaries">Rules and boundaries</a></li>
+<li class="lvl2"><a href="#interaction-with-other-parts">Interaction with other parts</a></li>
+<li class="lvl2"><a href="#limits-and-open-points">Limits and open points</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

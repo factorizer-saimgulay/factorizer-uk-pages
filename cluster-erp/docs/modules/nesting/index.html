@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nesting module (nesting) · Cluster ERP Wiki</title>
+<meta name="description" content="Module page for nesting, which prepares sheet-metal nesting jobs, takes layouts from an external tool, costs them, and turns leftovers into remnants.">
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="icon" href="../../assets/mark.svg" type="image/svg+xml">
+<script defer src="../../assets/mermaid.min.js"></script>
+<script defer src="../../assets/site.js" data-root="../../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../../modules/nesting/index.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../../overview/index.html">Overview</a></li>
+<li class=""><a href="../../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../../platform/index.html">Platform core</a></li>
+<li class=""><a href="../../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../../platform/change-history.html">Change history</a></li>
+<li class=""><a href="../../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../../platform/event-bus.html">Event bus</a></li>
+<li class=""><a href="../../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class=""><a href="../../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class=""><a href="../../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class=""><a href="../../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class=""><a href="../../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../../web-app/generic-form.html">Generic form</a></li>
+<li class=""><a href="../../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class=""><a href="../../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../../desktop/index.html">Desktop client</a></li>
+<li class=""><a href="../../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class=""><a href="../../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class=""><a href="../../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../../modules/index.html">Business modules</a></li>
+<li class=""><a href="../../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="sub"><a href="../../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class=""><a href="../../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../../modules/auth.html">Auth module (auth)</a></li>
+<li class=""><a href="../../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class=""><a href="../../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="sub"><a href="../../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="sub"><a href="../../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class=""><a href="../../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="sub"><a href="../../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../../modules/intranet/requests.html">Intranet requests</a></li>
+<li class=""><a href="../../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../../modules/mail.html">Mail module (mail)</a></li>
+<li class="current"><a href="../../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class=""><a href="../../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="sub"><a href="../../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="sub"><a href="../../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../../modules/production/work-orders.html">Work orders</a></li>
+<li class=""><a href="../../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class=""><a href="../../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../../api/index.html">API reference</a></li>
+<li class=""><a href="../../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../../api/documents.html">Documents API (documents)</a></li>
+<li class=""><a href="../../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../../api/overview.html">API overview</a></li>
+<li class=""><a href="../../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class=""><a href="../../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../../api/records.html">Records API (records)</a></li>
+<li class=""><a href="../../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../../operations/index.html">Operations</a></li>
+<li class=""><a href="../../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class=""><a href="../../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class=""><a href="../../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../../reference/index.html">Reference</a></li>
+<li class=""><a href="../../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../../index.html">Home</a> / Business modules</div>
+    <header class="page-head">
+      <p class="eyebrow">Module</p>
+      <h1>Nesting module (nesting)</h1>
+      <p class="lede">Module page for nesting, which prepares sheet-metal nesting jobs, takes layouts from an external tool, costs them, and turns leftovers into remnants.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#at-a-glance">At a glance</a></li>
+<li class="lvl2"><a href="#what-the-module-does">What the module does</a></li>
+<li class="lvl2"><a href="#sub-modules">Sub-modules</a></li>
+<li class="lvl2"><a href="#data-model">Data model</a></li>
+<li class="lvl2"><a href="#screens-and-metadata">Screens and metadata</a></li>
+<li class="lvl2"><a href="#status-and-actions">Status and actions</a></li>
+<li class="lvl3"><a href="#the-nesting-pipeline">The nesting pipeline</a></li>
+<li class="lvl2"><a href="#business-rules">Business rules</a></li>
+<li class="lvl2"><a href="#events-and-queries">Events and queries</a></li>
+<li class="lvl2"><a href="#permissions">Permissions</a></li>
+<li class="lvl2"><a href="#privacy-retention-and-history">Privacy, retention, and history</a></li>
+<li class="lvl2"><a href="#analytics-facts">Analytics facts</a></li>
+<li class="lvl2"><a href="#settings-and-reference-data">Settings and reference data</a></li>
+<li class="lvl2"><a href="#tests">Tests</a></li>
+<li class="lvl2"><a href="#discrepancies">Discrepancies</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p>The <code>nesting</code> module in <code>src/cluster_erp/modules/nesting/</code> plans how parts are cut from metal sheets. A nesting job describes the sheet and the parts; the job is exported to an external nesting tool, and the tool's layout is imported back, checked, and stored. The module then draws the layout as SVG or DXF, costs the material, reserves and consumes sheet stock through the <code>inventory</code> module, records reusable remnants, and reports utilisation KPIs. The layout itself is not computed inside the module; see <a href="engine.html">nesting engine</a>.</p>
+<h2 id="at-a-glance">At a glance<a class="headerlink" href="#at-a-glance">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Value</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Package</td>
+<td><code>src/cluster_erp/modules/nesting/</code></td>
+<td>folder</td>
+</tr>
+<tr>
+<td>Module class</td>
+<td><code>Module</code></td>
+<td><code>src/cluster_erp/modules/nesting/module.py:15</code></td>
+</tr>
+<tr>
+<td><code>name</code> / <code>version</code></td>
+<td><code>nesting</code> / <code>0.1.0</code></td>
+<td><code>src/cluster_erp/modules/nesting/module.py:16-22</code></td>
+</tr>
+<tr>
+<td>API prefix</td>
+<td><code>/api/v1/nesting</code> (<code>ModuleBase.api_prefix</code>)</td>
+<td><code>src/cluster_erp/core/module_base.py:37-38</code></td>
+</tr>
+<tr>
+<td>Sub-modules</td>
+<td>6 folders: <code>nesting_jobs</code>, <code>nesting_parts</code>, <code>nesting_remnants</code>, <code>integration</code>, <code>kpi</code>, <code>engine</code></td>
+<td>folder listing</td>
+</tr>
+<tr>
+<td>Tables</td>
+<td>3: <code>nesting_nesting_jobs</code>, <code>nesting_nesting_parts</code>, <code>nesting_nesting_remnants</code></td>
+<td><code>src/cluster_erp/modules/nesting/nesting_jobs/models.py:23</code>, <code>src/cluster_erp/modules/nesting/nesting_parts/models.py:14</code>, <code>src/cluster_erp/modules/nesting/nesting_remnants/models.py:15</code></td>
+</tr>
+<tr>
+<td>Entities in metadata</td>
+<td>3: <code>nesting_job</code>, <code>nesting_part</code>, <code>nesting_remnant</code></td>
+<td><code>src/cluster_erp/modules/nesting/module.py:212-216</code></td>
+</tr>
+<tr>
+<td>Routes</td>
+<td>27 route decorators in the package</td>
+<td><code>grep</code> for <code>@router.</code></td>
+</tr>
+<tr>
+<td>Web app presence</td>
+<td>Catalogue app <code>nesting</code>, with the custom widget <code>nesting_viewer</code> from a gated bundle</td>
+<td><code>src/cluster_erp/modules/app_store/catalog.json</code> (entry <code>nesting</code>), <code>gated_apps/nesting/app.js</code></td>
+</tr>
+<tr>
+<td>Desktop presence</td>
+<td>Generic widgets only; the desktop skips the custom viewer section</td>
+<td><code>src/cluster_erp/modules/nesting/module.py:178-187</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-the-module-does">What the module does<a class="headerlink" href="#what-the-module-does">¶</a></h2>
+<ul>
+<li>Records a nesting job with sheet size, thickness, material grade, coating, kerf, part gap, edge margin, allowed rotations, mirroring, maximum sheets, and an optional sheet material breakdown and warehouse (<code>src/cluster_erp/modules/nesting/nesting_jobs/models.py:22-291</code>).</li>
+<li>Lists the parts to place, by hand or pulled from production and sales orders (<code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:676-802</code>).</li>
+<li>Exports a job for an external tool and imports the tool's placements, remnants, and part outlines (<code>src/cluster_erp/modules/nesting/integration/services.py:114-363</code>).</li>
+<li>Draws the layout as SVG and writes it as DXF (<code>src/cluster_erp/modules/nesting/nesting_jobs/routes.py:307-396</code>).</li>
+<li>Costs the material, credits remnants, and allocates the net cost to parts (<code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:555-675</code>).</li>
+<li>Approves a job, consumes reserved material, creates remnants, and posts them to stock (<code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:311-390</code>).</li>
+<li>Reports utilisation and scrap KPIs over a period (<code>src/cluster_erp/modules/nesting/kpi/services.py:36-238</code>).</li>
+</ul>
+<h2 id="sub-modules">Sub-modules<a class="headerlink" href="#sub-modules">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Sub-module</th>
+<th>Purpose</th>
+<th>Main entities</th>
+<th>Router</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>nesting_jobs</code></td>
+<td>Jobs, lifecycle, material, costs, drawings</td>
+<td><code>NestingJob</code></td>
+<td><code>/api/v1/nesting/nesting-jobs</code></td>
+<td><code>src/cluster_erp/modules/nesting/nesting_jobs/routes.py:30</code></td>
+</tr>
+<tr>
+<td><code>nesting_parts</code></td>
+<td>Parts of a job</td>
+<td><code>NestingPart</code></td>
+<td><code>/api/v1/nesting/nesting-parts</code></td>
+<td><code>src/cluster_erp/modules/nesting/nesting_parts/routes.py:25</code></td>
+</tr>
+<tr>
+<td><code>nesting_remnants</code></td>
+<td>Reusable leftovers</td>
+<td><code>NestingRemnant</code></td>
+<td><code>/api/v1/nesting/nesting-remnants</code></td>
+<td><code>src/cluster_erp/modules/nesting/nesting_remnants/routes.py:27</code></td>
+</tr>
+<tr>
+<td><code>integration</code></td>
+<td>Export and import with an external tool</td>
+<td>none</td>
+<td>used by <code>nesting_jobs</code> routes</td>
+<td><code>src/cluster_erp/modules/nesting/integration/services.py:109</code></td>
+</tr>
+<tr>
+<td><code>kpi</code></td>
+<td>Utilisation KPIs</td>
+<td>none</td>
+<td><code>/api/v1/nesting/nesting-jobs/kpi</code></td>
+<td><code>src/cluster_erp/modules/nesting/kpi/routes.py:13-16</code></td>
+</tr>
+<tr>
+<td><code>engine</code></td>
+<td>Geometry types, transforms, DXF and SVG output</td>
+<td>none</td>
+<td>none</td>
+<td><code>src/cluster_erp/modules/nesting/engine/</code></td>
+</tr>
+</tbody>
+</table>
+<p>Details are on <a href="jobs-parts-and-remnants.html">jobs, parts, and remnants</a>, <a href="integration-and-kpi.html">integration and KPI</a>, and <a href="engine.html">nesting engine</a>.</p>
+<h2 id="data-model">Data model<a class="headerlink" href="#data-model">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Entity</th>
+<th>Table</th>
+<th>Key fields</th>
+<th>Notes</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>NestingJob</code></td>
+<td><code>nesting_nesting_jobs</code></td>
+<td><code>code</code>, <code>name</code>, <code>status</code>, sheet and process fields, <code>sheet_material_id</code> triple, <code>warehouse_id</code>, <code>result_source</code>, <code>external_software</code>, <code>layout_placements</code>, <code>remnants</code>, utilisation and area fields, cost fields</td>
+<td>layout and remnants are JSON</td>
+<td><code>src/cluster_erp/modules/nesting/nesting_jobs/models.py:22-291</code></td>
+</tr>
+<tr>
+<td><code>NestingPart</code></td>
+<td><code>nesting_nesting_parts</code></td>
+<td><code>nesting_job_id</code>, <code>part_id</code>, <code>qty_requested</code>, <code>qty_placed</code>, <code>part_length_mm</code>, <code>part_width_mm</code>, <code>geometry_polygon</code>, placement fields, <code>source_order_id</code>, <code>allocated_material_cost</code></td>
+<td>one live row per job and part</td>
+<td><code>src/cluster_erp/modules/nesting/nesting_parts/models.py:13-131</code></td>
+</tr>
+<tr>
+<td><code>NestingRemnant</code></td>
+<td><code>nesting_nesting_remnants</code></td>
+<td><code>code</code>, <code>nesting_job_id</code>, <code>sheet_index</code>, <code>x</code>, <code>y</code>, <code>width</code>, <code>height</code>, <code>area_mm2</code>, <code>material_grade</code>, <code>thickness_mm</code>, <code>status</code>, <code>warehouse_id</code></td>
+<td>status starts <code>available</code></td>
+<td><code>src/cluster_erp/modules/nesting/nesting_remnants/models.py:14-98</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="screens-and-metadata">Screens and metadata<a class="headerlink" href="#screens-and-metadata">¶</a></h2>
+<p><code>get_metadata</code> declares a sidebar group <strong>Nesting &amp; Optimization</strong> (Turkish <strong>Yerleşim &amp; Optimizasyon</strong>) with three sections: the layout viewer (custom widget <code>nesting_viewer</code>), <strong>Nesting Jobs</strong>, and <strong>Remnants</strong> (<code>src/cluster_erp/modules/nesting/module.py:162-217</code>). The viewer shows the KPIs, the job list, a summary, the SVG drawing, and downloads; a client without the widget skips the section (<code>src/cluster_erp/modules/nesting/module.py:178-187</code>).</p>
+<h2 id="status-and-actions">Status and actions<a class="headerlink" href="#status-and-actions">¶</a></h2>
+<p>Job statuses are <code>queued</code>, <code>running</code>, <code>completed</code>, and <code>failed</code> (<code>src/cluster_erp/modules/nesting/nesting_jobs/schemas.py:10</code>). A job starts <code>queued</code> and becomes <code>completed</code> when a result is imported (<code>src/cluster_erp/modules/nesting/nesting_jobs/models.py:31-36</code>, <code>src/cluster_erp/modules/nesting/integration/services.py:322</code>). A <code>grep</code> for <code>"running"</code> and <code>"failed"</code> finds no code that sets either status at this commit. Remnant statuses include <code>available</code>, <code>reserved</code>, <code>consumed</code>, and <code>scrapped</code> (<code>src/cluster_erp/modules/nesting/nesting_remnants/services.py:83</code>, <code>src/cluster_erp/modules/nesting/nesting_remnants/services.py:188-194</code>, <code>src/cluster_erp/modules/nesting/nesting_remnants/services.py:256-262</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Label</th>
+<th>Condition</th>
+<th>Endpoint</th>
+<th>Permission</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>approve</code></td>
+<td><strong>Approve</strong></td>
+<td><code>status</code> is <code>completed</code></td>
+<td><code>POST /nesting-jobs/{id}/approve</code></td>
+<td><code>nesting_job.approve</code></td>
+<td><code>src/cluster_erp/modules/nesting/nesting_jobs/metadata.py:79-86</code>, <code>src/cluster_erp/modules/nesting/nesting_jobs/routes.py:213-224</code></td>
+</tr>
+<tr>
+<td><code>pull_parts</code></td>
+<td><strong>Pull Parts from Orders</strong></td>
+<td><code>status</code> is <code>queued</code> or <code>failed</code></td>
+<td><code>POST /nesting-jobs/{id}/pull-parts</code></td>
+<td><code>nesting_job.update</code></td>
+<td><code>src/cluster_erp/modules/nesting/nesting_jobs/metadata.py:87-94</code>, <code>src/cluster_erp/modules/nesting/nesting_jobs/routes.py:284-293</code></td>
+</tr>
+<tr>
+<td><code>calculate_costs</code></td>
+<td><strong>Calculate Costs</strong></td>
+<td><code>status</code> is <code>completed</code></td>
+<td><code>POST /nesting-jobs/{id}/calculate-costs</code></td>
+<td><code>nesting_job.update</code></td>
+<td><code>src/cluster_erp/modules/nesting/nesting_jobs/metadata.py:95-105</code>, <code>src/cluster_erp/modules/nesting/nesting_jobs/routes.py:227-236</code></td>
+</tr>
+<tr>
+<td><code>reserve_material</code></td>
+<td><strong>Reserve Material</strong></td>
+<td><code>status</code> is <code>queued</code> or <code>failed</code></td>
+<td><code>POST /nesting-jobs/{id}/reserve-material</code></td>
+<td><code>nesting_job.update</code></td>
+<td><code>src/cluster_erp/modules/nesting/nesting_jobs/metadata.py:106-116</code>, <code>src/cluster_erp/modules/nesting/nesting_jobs/routes.py:239-248</code></td>
+</tr>
+<tr>
+<td><code>scrap</code> (remnant)</td>
+<td><strong>Scrap</strong></td>
+<td><code>status</code> is <code>available</code> or <code>reserved</code></td>
+<td><code>POST /nesting-remnants/{id}/scrap</code></td>
+<td><code>nesting_remnant.update</code></td>
+<td><code>src/cluster_erp/modules/nesting/nesting_remnants/metadata.py:41-54</code>, <code>src/cluster_erp/modules/nesting/nesting_remnants/routes.py:113-123</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="the-nesting-pipeline">The nesting pipeline<a class="headerlink" href="#the-nesting-pipeline">¶</a></h3>
+<p>The diagram shows the path of a job from creation to approval.</p>
+<figure class="diagram"><pre class="mermaid">flowchart TD
+ A[&quot;create job (queued)&quot;] --&gt; B[&quot;add parts or pull parts from orders&quot;]
+ B --&gt; C[&quot;reserve material (optional, ReserveStock)&quot;]
+ C --&gt; D[&quot;export job&quot;]
+ D --&gt; E[&quot;external nesting tool&quot;]
+ E --&gt; F[&quot;import-result: check and store layout (completed)&quot;]
+ F --&gt; G[&quot;svg and dxf drawings&quot;]
+ F --&gt; H[&quot;calculate costs (NestingCostCalculated)&quot;]
+ H --&gt; I[&quot;approve (NestingApproved)&quot;]
+ I --&gt; J[&quot;consume material (ConsumeReservation, PostGoodsIssue)&quot;]
+ I --&gt; K[&quot;create remnants and post to stock (PostGoodsReceipt)&quot;]
+ I --&gt; L[&quot;NestingScrapRecorded&quot;]</pre></figure>
+<p>In prose: a job is created <code>queued</code> and filled with parts (<code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:111-160</code>). Sheet stock can be reserved while the job is queued (<code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:394-468</code>). The job is exported, nested by an external tool, and the result is imported, which checks the placements and marks the job <code>completed</code> (<code>src/cluster_erp/modules/nesting/integration/services.py:114-363</code>). A completed job can be drawn and costed (<code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:555-675</code>). Approval checks utilisation, then consumes reserved material, creates remnants from the imported leftovers, posts them to stock, and records scrap (<code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:311-390</code>).</p>
+<h2 id="business-rules">Business rules<a class="headerlink" href="#business-rules">¶</a></h2>
+<ul>
+<li>A job's sheet material is optional; when given, its model and version are validated (<code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:116-122</code>).</li>
+<li>A job can be edited and deleted only while <code>queued</code> or <code>failed</code>; a completed job accepts only <code>low_utilization_acknowledged</code> and <code>notes</code> (<code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:187-199</code>, <code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:228-232</code>).</li>
+<li>Approval of a job whose utilisation is below the threshold needs <code>low_utilization_acknowledged</code>; the threshold is the setting <code>nesting_low_utilization_threshold</code>, 60 by default (<code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:332-342</code>, <code>src/cluster_erp/modules/nesting/nesting_jobs/routes.py:221-222</code>, <code>src/cluster_erp/config/settings.py:418</code>).</li>
+<li>Reserving material needs a sheet material breakdown and a warehouse (<code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:394-426</code>).</li>
+<li>Money results are rounded to four places with <code>ROUND_HALF_EVEN</code> (<code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:594-628</code>).</li>
+<li><code>code</code> comes from the yearly sequences <code>nesting_job</code> and <code>nesting_remnant</code> (<code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:123</code>, <code>src/cluster_erp/modules/nesting/nesting_remnants/services.py:135</code>).</li>
+</ul>
+<h2 id="events-and-queries">Events and queries<a class="headerlink" href="#events-and-queries">¶</a></h2>
+<p>The module consumes 2 contracts and produces 16, counted as on the <a href="../parties/index.html">parties module</a> page.</p>
+<table>
+<thead>
+<tr>
+<th>Direction</th>
+<th>Contract class</th>
+<th>Handler or emitter</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>emits</td>
+<td><code>NestingCompleted</code></td>
+<td>import</td>
+<td><code>src/cluster_erp/modules/nesting/integration/services.py:350-361</code></td>
+</tr>
+<tr>
+<td>emits</td>
+<td><code>NestingApproved</code>, <code>NestingScrapRecorded</code></td>
+<td>approve</td>
+<td><code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:351-359</code>, <code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:377-388</code></td>
+</tr>
+<tr>
+<td>emits</td>
+<td><code>NestingMaterialReserved</code>, <code>NestingMaterialConsumed</code></td>
+<td>reserve, consume</td>
+<td><code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:458-466</code>, <code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:544-552</code></td>
+</tr>
+<tr>
+<td>emits</td>
+<td><code>NestingCostCalculated</code></td>
+<td>calculate costs</td>
+<td><code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:661-669</code></td>
+</tr>
+<tr>
+<td>emits</td>
+<td><code>NestingRemnantCreated</code>, <code>NestingRemnantConsumed</code>, <code>NestingRemnantScrapped</code></td>
+<td>remnant service</td>
+<td><code>src/cluster_erp/modules/nesting/nesting_remnants/services.py:166-174</code>, <code>src/cluster_erp/modules/nesting/nesting_remnants/services.py:236-242</code>, <code>src/cluster_erp/modules/nesting/nesting_remnants/services.py:273</code></td>
+</tr>
+<tr>
+<td>queries</td>
+<td><code>ReserveStock</code>, <code>ConsumeReservation</code>, <code>PostGoodsIssue</code>, <code>PostGoodsReceipt</code></td>
+<td>material and remnant flows</td>
+<td><code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:432-443</code>, <code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:496-528</code>, <code>src/cluster_erp/modules/nesting/nesting_remnants/services.py:324-341</code></td>
+</tr>
+<tr>
+<td>queries</td>
+<td><code>GetProductById</code>, <code>GetProductionOrderById</code>, <code>GetSalesOrderById</code></td>
+<td>pull parts, costs</td>
+<td><code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:572-576</code>, <code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:709-714</code></td>
+</tr>
+<tr>
+<td>answers query</td>
+<td><code>GetNestingJobById</code></td>
+<td><code>_handle_get_nesting_job</code></td>
+<td><code>src/cluster_erp/modules/nesting/module.py:61-64</code>, <code>src/cluster_erp/modules/nesting/module.py:70-109</code></td>
+</tr>
+<tr>
+<td>answers query</td>
+<td><code>GetAvailableRemnants</code></td>
+<td><code>_handle_get_available_remnants</code></td>
+<td><code>src/cluster_erp/modules/nesting/module.py:65-68</code>, <code>src/cluster_erp/modules/nesting/module.py:111-140</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>GetNestingJobById</code> returns money and area values as strings, including <code>net_material_cost</code>, which the <code>costing</code> module reads (<code>src/cluster_erp/modules/nesting/module.py:82-108</code>). The full list is on the <a href="../../platform/contracts-reference.html">contracts reference</a>.</p>
+<h2 id="permissions">Permissions<a class="headerlink" href="#permissions">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Permission key</th>
+<th>Used by</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>nesting_job.read</code>, <code>.create</code>, <code>.update</code>, <code>.delete</code>, <code>.bulk_delete</code></td>
+<td>job routes, drawings, export, summary, KPI</td>
+<td><code>src/cluster_erp/modules/nesting/nesting_jobs/routes.py:128-367</code>, <code>src/cluster_erp/modules/nesting/kpi/routes.py:22</code></td>
+</tr>
+<tr>
+<td><code>nesting_job.approve</code></td>
+<td>approve</td>
+<td><code>src/cluster_erp/modules/nesting/nesting_jobs/routes.py:216</code></td>
+</tr>
+<tr>
+<td><code>nesting_job.run</code></td>
+<td>import a result</td>
+<td><code>src/cluster_erp/modules/nesting/nesting_jobs/routes.py:271</code></td>
+</tr>
+<tr>
+<td><code>nesting_part.read</code>, <code>.create</code>, <code>.update</code>, <code>.delete</code>, <code>.bulk_delete</code></td>
+<td>part routes</td>
+<td><code>src/cluster_erp/modules/nesting/nesting_parts/routes.py:33-107</code></td>
+</tr>
+<tr>
+<td><code>nesting_remnant.read</code>, <code>.update</code></td>
+<td>remnant routes and scrap</td>
+<td><code>src/cluster_erp/modules/nesting/nesting_remnants/routes.py:37-117</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="privacy-retention-and-history">Privacy, retention, and history<a class="headerlink" href="#privacy-retention-and-history">¶</a></h2>
+<p>The module stores no personal data and has no <code>privacy_handlers.py</code>. Jobs are soft-deleted; deleting a job also soft-deletes its parts and remnants (<code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:219-249</code>, <code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:289-309</code>). Changes are captured by <a href="../../platform/change-history.html">change history</a>.</p>
+<h2 id="analytics-facts">Analytics facts<a class="headerlink" href="#analytics-facts">¶</a></h2>
+<p>This module has no <code>analytics_facts.py</code>. Its own KPI service is described on <a href="integration-and-kpi.html">integration and KPI</a>.</p>
+<h2 id="settings-and-reference-data">Settings and reference data<a class="headerlink" href="#settings-and-reference-data">¶</a></h2>
+<p>The module reads one setting, <code>nesting_low_utilization_threshold</code> (<code>src/cluster_erp/config/settings.py:420</code>). It has no settings section and seeds nothing (<code>src/cluster_erp/modules/nesting/module.py:28-30</code>). See <a href="../../platform/settings-reference.html">settings reference</a>.</p>
+<h2 id="tests">Tests<a class="headerlink" href="#tests">¶</a></h2>
+<p>Found by a <code>grep</code> for <code>modules.nesting</code> in <code>tests/</code> and by file name in <code>web-client/</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Kind</th>
+<th>File</th>
+<th>Covers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pytest</td>
+<td><code>tests/test_nesting_units.py</code></td>
+<td>geometry, measurement, DXF and SVG output, KPI and costing helpers (12 tests)</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_nesting_app.mjs</code></td>
+<td>the nesting app: KPI, job list, summary, drawing, downloads, jobs, and remnants</td>
+</tr>
+</tbody>
+</table>
+<h2 id="discrepancies">Discrepancies<a class="headerlink" href="#discrepancies">¶</a></h2>
+<aside class="adm adm-warning" role="note"><p class="adm-title">Warning</p><p>Discrepancy. The project's written engineering rules make the product, model, and version breakdown mandatory for stock and movement keys. <code>NestingPart</code> stores only <code>part_id</code>, and its unique index is per job and part (<code>src/cluster_erp/modules/nesting/nesting_parts/models.py:15-35</code>). The sheet material carries the full breakdown (<code>src/cluster_erp/modules/nesting/nesting_jobs/models.py:199-213</code>). This page documents the code.</p>
+</aside>
+<h2 id="terms-introduced">Terms introduced<a class="headerlink" href="#terms-introduced">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Code identifier</th>
+<th>Definition</th>
+<th>Turkish term</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>nesting job</td>
+<td><code>NestingJob</code></td>
+<td>A plan to cut a set of parts from sheets of one material and thickness.</td>
+<td>Yerleşim işi</td>
+<td><code>src/cluster_erp/modules/nesting/nesting_jobs/models.py:22</code></td>
+</tr>
+<tr>
+<td>remnant</td>
+<td><code>NestingRemnant</code></td>
+<td>A reusable leftover rectangle of a nested sheet.</td>
+<td>Artık</td>
+<td><code>src/cluster_erp/modules/nesting/nesting_remnants/models.py:14</code></td>
+</tr>
+<tr>
+<td>utilisation</td>
+<td><code>utilization_pct</code></td>
+<td>The share of sheet area covered by placed parts, in percent.</td>
+<td>Kullanım oranı</td>
+<td><code>src/cluster_erp/modules/nesting/nesting_jobs/models.py:99</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="../index.html">Modules index</a></li>
+<li><a href="engine.html">Nesting engine</a></li>
+<li><a href="jobs-parts-and-remnants.html">Jobs, parts, and remnants</a></li>
+<li><a href="integration-and-kpi.html">Integration and KPI</a></li>
+<li><a href="../costing.html">Costing module</a></li>
+<li><a href="../inventory.html">Inventory module</a></li>
+<li><a href="../../api/nesting.html">API reference for this module</a></li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../../modules/mail.html"><span class="eyebrow">Previous</span><span>Mail module (mail)</span></a><a class="next" href="../../modules/nesting/engine.html"><span class="eyebrow">Next</span><span>Nesting engine</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#at-a-glance">At a glance</a></li>
+<li class="lvl2"><a href="#what-the-module-does">What the module does</a></li>
+<li class="lvl2"><a href="#sub-modules">Sub-modules</a></li>
+<li class="lvl2"><a href="#data-model">Data model</a></li>
+<li class="lvl2"><a href="#screens-and-metadata">Screens and metadata</a></li>
+<li class="lvl2"><a href="#status-and-actions">Status and actions</a></li>
+<li class="lvl3"><a href="#the-nesting-pipeline">The nesting pipeline</a></li>
+<li class="lvl2"><a href="#business-rules">Business rules</a></li>
+<li class="lvl2"><a href="#events-and-queries">Events and queries</a></li>
+<li class="lvl2"><a href="#permissions">Permissions</a></li>
+<li class="lvl2"><a href="#privacy-retention-and-history">Privacy, retention, and history</a></li>
+<li class="lvl2"><a href="#analytics-facts">Analytics facts</a></li>
+<li class="lvl2"><a href="#settings-and-reference-data">Settings and reference data</a></li>
+<li class="lvl2"><a href="#tests">Tests</a></li>
+<li class="lvl2"><a href="#discrepancies">Discrepancies</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

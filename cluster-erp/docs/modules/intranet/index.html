@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Intranet module (intranet) · Cluster ERP Wiki</title>
+<meta name="description" content="Module page for intranet, the company-to-employee hub with posts, events, leave, requests, official deliveries, notifications, directory, and recognition.">
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="icon" href="../../assets/mark.svg" type="image/svg+xml">
+<script defer src="../../assets/mermaid.min.js"></script>
+<script defer src="../../assets/site.js" data-root="../../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../../modules/intranet/index.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../../overview/index.html">Overview</a></li>
+<li class=""><a href="../../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../../platform/index.html">Platform core</a></li>
+<li class=""><a href="../../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../../platform/change-history.html">Change history</a></li>
+<li class=""><a href="../../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../../platform/event-bus.html">Event bus</a></li>
+<li class=""><a href="../../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class=""><a href="../../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class=""><a href="../../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class=""><a href="../../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class=""><a href="../../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../../web-app/generic-form.html">Generic form</a></li>
+<li class=""><a href="../../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class=""><a href="../../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../../desktop/index.html">Desktop client</a></li>
+<li class=""><a href="../../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class=""><a href="../../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class=""><a href="../../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../../modules/index.html">Business modules</a></li>
+<li class=""><a href="../../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="sub"><a href="../../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class=""><a href="../../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../../modules/auth.html">Auth module (auth)</a></li>
+<li class=""><a href="../../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class=""><a href="../../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="sub"><a href="../../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="sub"><a href="../../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class="current"><a href="../../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="sub"><a href="../../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../../modules/intranet/requests.html">Intranet requests</a></li>
+<li class=""><a href="../../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../../modules/mail.html">Mail module (mail)</a></li>
+<li class=""><a href="../../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class=""><a href="../../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="sub"><a href="../../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="sub"><a href="../../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../../modules/production/work-orders.html">Work orders</a></li>
+<li class=""><a href="../../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class=""><a href="../../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../../api/index.html">API reference</a></li>
+<li class=""><a href="../../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../../api/documents.html">Documents API (documents)</a></li>
+<li class=""><a href="../../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../../api/overview.html">API overview</a></li>
+<li class=""><a href="../../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class=""><a href="../../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../../api/records.html">Records API (records)</a></li>
+<li class=""><a href="../../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../../operations/index.html">Operations</a></li>
+<li class=""><a href="../../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class=""><a href="../../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class=""><a href="../../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../../reference/index.html">Reference</a></li>
+<li class=""><a href="../../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../../index.html">Home</a> / Business modules</div>
+    <header class="page-head">
+      <p class="eyebrow">Module</p>
+      <h1>Intranet module (intranet)</h1>
+      <p class="lede">Module page for intranet, the company-to-employee hub with posts, events, leave, requests, official deliveries, notifications, directory, and recognition.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#at-a-glance">At a glance</a></li>
+<li class="lvl2"><a href="#what-the-module-does">What the module does</a></li>
+<li class="lvl2"><a href="#sub-modules">Sub-modules</a></li>
+<li class="lvl2"><a href="#data-model">Data model</a></li>
+<li class="lvl2"><a href="#screens-and-metadata">Screens and metadata</a></li>
+<li class="lvl2"><a href="#status-and-actions">Status and actions</a></li>
+<li class="lvl2"><a href="#business-rules">Business rules</a></li>
+<li class="lvl2"><a href="#events-and-queries">Events and queries</a></li>
+<li class="lvl2"><a href="#permissions">Permissions</a></li>
+<li class="lvl2"><a href="#privacy-retention-and-history">Privacy, retention, and history</a></li>
+<li class="lvl2"><a href="#analytics-facts">Analytics facts</a></li>
+<li class="lvl2"><a href="#settings-and-reference-data">Settings and reference data</a></li>
+<li class="lvl2"><a href="#tests">Tests</a></li>
+<li class="lvl2"><a href="#discrepancies">Discrepancies</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p>The <code>intranet</code> module in <code>src/cluster_erp/modules/intranet/</code> is the communication hub between a company and its employees. It covers posts and policies with mandatory-read acknowledgement, company events, leave and request self-service, official document delivery with a signed receipt, an in-app notification inbox, an employee directory, recognition, quick links, and emergency alerts (<code>src/cluster_erp/modules/intranet/module.py:1-11</code>). This page is the overview; each sub-topic has its own page.</p>
+<h2 id="at-a-glance">At a glance<a class="headerlink" href="#at-a-glance">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Value</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Package</td>
+<td><code>src/cluster_erp/modules/intranet/</code></td>
+<td>folder</td>
+</tr>
+<tr>
+<td>Module class</td>
+<td><code>Module</code></td>
+<td><code>src/cluster_erp/modules/intranet/module.py:30</code></td>
+</tr>
+<tr>
+<td><code>name</code> / <code>version</code></td>
+<td><code>intranet</code> / <code>0.1.0</code></td>
+<td><code>src/cluster_erp/modules/intranet/module.py:35-41</code></td>
+</tr>
+<tr>
+<td>API prefix</td>
+<td><code>/api/v1/intranet</code></td>
+<td><code>src/cluster_erp/modules/intranet/module.py:172</code></td>
+</tr>
+<tr>
+<td>Sub-modules</td>
+<td>10: <code>content</code>, <code>feed</code>, <code>events</code>, <code>leave</code>, <code>requests</code>, <code>delivery</code>, <code>directory</code>, <code>notifications</code>, <code>engagement</code>, <code>my_documents</code>; plus <code>access.py</code>, <code>context.py</code>, <code>notify.py</code>, <code>privacy_handlers.py</code>, <code>retention_handlers.py</code>, <code>validation.py</code></td>
+<td>folder listing</td>
+</tr>
+<tr>
+<td>Tables</td>
+<td>30, all in one <code>models.py</code></td>
+<td><code>__tablename__</code> in <code>src/cluster_erp/modules/intranet/models.py</code></td>
+</tr>
+<tr>
+<td>Entities in metadata</td>
+<td>17 keys in <code>entities</code></td>
+<td><code>src/cluster_erp/modules/intranet/module.py:539-557</code></td>
+</tr>
+<tr>
+<td>Routes</td>
+<td>117 route decorators in the package</td>
+<td><code>grep</code> for <code>@...router.get/post/put/patch/delete</code></td>
+</tr>
+<tr>
+<td>Actions</td>
+<td>23 <code>ActionMeta(</code> occurrences; <code>events/metadata.py</code> builds its actions through one helper</td>
+<td><code>grep "ActionMeta("</code> in the package</td>
+</tr>
+<tr>
+<td>Migrations</td>
+<td>8 files</td>
+<td>files in <code>migrations/versions/</code> whose text contains one of the 30 table names</td>
+</tr>
+<tr>
+<td>Contracts</td>
+<td>consumes 6, produces 18</td>
+<td>see the section "Events and queries"</td>
+</tr>
+<tr>
+<td>Web app presence</td>
+<td>Catalogue app <code>intranet</code>; custom widgets <code>feed</code>, <code>home</code>, <code>events</code>, <code>me</code>, and <code>admin</code> from a gated bundle</td>
+<td><code>src/cluster_erp/modules/app_store/catalog.json</code> (entry <code>intranet</code>), <code>gated_apps/intranet/app.js:1407</code></td>
+</tr>
+<tr>
+<td>Desktop presence</td>
+<td>generic widgets only</td>
+<td><code>src/cluster_erp/desktop/modules/</code> has no <code>intranet</code> folder</td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-the-module-does">What the module does<a class="headerlink" href="#what-the-module-does">¶</a></h2>
+<ul>
+<li>Publishes posts, pages, policies, and alerts in spaces, with review, approval, versioned publication, and acknowledgement of mandatory reads (<code>src/cluster_erp/modules/intranet/content/services.py:1-12</code>). See <a href="content-and-feed.html">content and feed</a>.</li>
+<li>Merges posts, events, and recognition into one timeline (<code>src/cluster_erp/modules/intranet/feed/services.py:1-5</code>).</li>
+<li>Runs company events with invitations, RSVPs, capacity, and a change log (<code>src/cluster_erp/modules/intranet/events/lifecycle.py:1-21</code>). See <a href="events.html">events</a>.</li>
+<li>Handles leave types, balances, and leave requests with approval (<code>src/cluster_erp/modules/intranet/leave/services.py:1-7</code>). See <a href="leave.html">leave</a>.</li>
+<li>Handles configurable employee requests such as advances and equipment (<code>src/cluster_erp/modules/intranet/requests/services.py:1-2</code>). See <a href="requests.html">requests</a>.</li>
+<li>Delivers official documents to employees with a receipt (<code>src/cluster_erp/modules/intranet/delivery/services.py:1-4</code>). See <a href="notifications-and-delivery.html">notifications and delivery</a>.</li>
+<li>Shows a live directory and org chart read from the employee and party records (<code>src/cluster_erp/modules/intranet/directory/services.py:1-8</code>). See <a href="directory.html">directory</a>.</li>
+<li>Keeps recognition, quick links, and emergency alerts (<code>src/cluster_erp/modules/intranet/engagement/services.py:1-6</code>). See <a href="engagement.html">engagement</a>.</li>
+<li>Lists the documents attached to the employee's own party card (<code>src/cluster_erp/modules/intranet/my_documents/services.py:10-15</code>). See <a href="my-documents.html">my documents</a>.</li>
+</ul>
+<h2 id="sub-modules">Sub-modules<a class="headerlink" href="#sub-modules">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Sub-module</th>
+<th>Purpose</th>
+<th>Routers</th>
+<th>Page</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>content</code></td>
+<td>Spaces, posts, segments, access grants, settings, comments</td>
+<td><code>/spaces</code>, <code>/content</code>, <code>/acl</code>, <code>/segments</code>, <code>/settings</code>, <code>/comments</code></td>
+<td><a href="content-and-feed.html">Content and feed</a></td>
+</tr>
+<tr>
+<td><code>feed</code></td>
+<td>One timeline over posts, events, and recognition</td>
+<td><code>/feed</code></td>
+<td><a href="content-and-feed.html">Content and feed</a></td>
+</tr>
+<tr>
+<td><code>events</code></td>
+<td>Company events and media</td>
+<td><code>/events</code>, <code>/media</code></td>
+<td><a href="events.html">Events</a></td>
+</tr>
+<tr>
+<td><code>leave</code></td>
+<td>Leave types, balances, requests</td>
+<td><code>/leave-types</code>, <code>/leave-balances</code>, <code>/leave-requests</code></td>
+<td><a href="leave.html">Leave</a></td>
+</tr>
+<tr>
+<td><code>requests</code></td>
+<td>Request types and requests</td>
+<td><code>/request-types</code>, <code>/requests</code></td>
+<td><a href="requests.html">Requests</a></td>
+</tr>
+<tr>
+<td><code>delivery</code></td>
+<td>Official document delivery</td>
+<td><code>/deliveries</code></td>
+<td><a href="notifications-and-delivery.html">Notifications and delivery</a></td>
+</tr>
+<tr>
+<td><code>notifications</code></td>
+<td>The in-app inbox</td>
+<td><code>/notifications</code></td>
+<td><a href="notifications-and-delivery.html">Notifications and delivery</a></td>
+</tr>
+<tr>
+<td><code>directory</code></td>
+<td>Live employee directory</td>
+<td><code>/directory</code></td>
+<td><a href="directory.html">Directory</a></td>
+</tr>
+<tr>
+<td><code>engagement</code></td>
+<td>Recognition, quick links, emergency alerts</td>
+<td><code>/kudos</code>, <code>/quick-links</code>, <code>/alerts</code></td>
+<td><a href="engagement.html">Engagement</a></td>
+</tr>
+<tr>
+<td><code>my_documents</code></td>
+<td>The employee's own documents</td>
+<td><code>/my-documents</code></td>
+<td><a href="my-documents.html">My documents</a></td>
+</tr>
+</tbody>
+</table>
+<p>All 21 routers are included in one module router with the prefix <code>/api/v1/intranet</code> (<code>src/cluster_erp/modules/intranet/module.py:133-197</code>). Access, audience, and retention rules are on <a href="access-audience-and-retention.html">access, audience, and retention</a>.</p>
+<h2 id="data-model">Data model<a class="headerlink" href="#data-model">¶</a></h2>
+<p>All 30 tables are declared in <code>src/cluster_erp/modules/intranet/models.py</code>. Each sub-module page lists its fields. The model docstring states the binding decisions: access grants and audience segments are separate axes, content is a state machine, acknowledgement is an audit record kept apart from analytics, analytics is aggregate-only with a minimum group size, and employee data is never stored here (<code>src/cluster_erp/modules/intranet/models.py:6-33</code>). The closed vocabularies for statuses, channels, and categories are tuples at the top of the file (<code>src/cluster_erp/modules/intranet/models.py:64-147</code>). Leave day counts are <code>Numeric</code> so that half days are exact (<code>src/cluster_erp/modules/intranet/models.py:734-771</code>).</p>
+<h2 id="screens-and-metadata">Screens and metadata<a class="headerlink" href="#screens-and-metadata">¶</a></h2>
+<p><code>get_metadata</code> declares a sidebar group <strong>Intranet</strong> (Turkish <strong>İntranet</strong>) (<code>src/cluster_erp/modules/intranet/module.py:398-537</code>). Five sections form the experience: <strong>Feed</strong>, <strong>Events</strong>, <strong>People</strong>, <strong>Me</strong>, and <strong>Manage</strong>. <strong>Feed</strong>, <strong>Events</strong>, <strong>Me</strong>, and <strong>Manage</strong> are custom widgets; <strong>People</strong> is a list over <code>intranet_employee_projection</code>. <strong>Manage</strong> needs <code>intranet_settings.update</code> (<code>src/cluster_erp/modules/intranet/module.py:405-442</code>). Ten more sections carry <code>hidden_from_bar=True</code> and remain reachable from search and deep links: <strong>Posts</strong>, <strong>Event records</strong>, <strong>Leave</strong>, <strong>Requests</strong>, <strong>My Documents</strong>, <strong>Official Deliveries</strong>, <strong>Notifications</strong>, <strong>Recognition</strong>, <strong>Emergency alerts</strong>, and <strong>Settings</strong> (<code>src/cluster_erp/modules/intranet/module.py:443-536</code>). The settings view has six tabs: spaces, segments, leave types, request types, quick links, and intranet settings (<code>src/cluster_erp/modules/intranet/module.py:521-536</code>). The web bundle maps the custom widget keys to its renderers (<code>gated_apps/intranet/app.js:1407</code>); see <a href="../../web-app/gated-app-bundles.html">gated app bundles</a>.</p>
+<h2 id="status-and-actions">Status and actions<a class="headerlink" href="#status-and-actions">¶</a></h2>
+<p>Each sub-module page lists its statuses and actions. All lifecycles move through action routes; the update paths do not change the status (<code>src/cluster_erp/modules/intranet/content/services.py:794-806</code>). Decision actions need an elevated permission on top of <code>.update</code>: <code>intranet_content.publish</code> for editorial actions, <code>intranet_leave_request.approve</code> and <code>intranet_request.approve</code> for approvals (<code>src/cluster_erp/modules/intranet/content/routes.py:255-257</code>, <code>src/cluster_erp/modules/intranet/leave/routes.py:274-276</code>, <code>src/cluster_erp/modules/intranet/requests/routes.py:197-199</code>).</p>
+<h2 id="business-rules">Business rules<a class="headerlink" href="#business-rules">¶</a></h2>
+<ul>
+<li>A personal record (leave, request, delivery) may name only a party that is an active employee (<code>src/cluster_erp/modules/intranet/access.py:124-144</code>).</li>
+<li>The acting person is resolved from the signed-in user's employee link through <code>GetPartyForEmployee</code>; a login without an employee link has no party (<code>src/cluster_erp/modules/intranet/context.py:20-30</code>).</li>
+<li>Business keys come from house sequences, for example <code>intranet_official_delivery</code> (<code>src/cluster_erp/modules/intranet/delivery/services.py:137</code>).</li>
+<li>A blank string in a form payload counts as no value (<code>src/cluster_erp/modules/intranet/validation.py:1-25</code>).</li>
+</ul>
+<h2 id="events-and-queries">Events and queries<a class="headerlink" href="#events-and-queries">¶</a></h2>
+<p>The module consumes 6 contracts and produces 18, counted as on the <a href="../fleet/index.html">fleet module</a> page with multi-line calls included. The full list is on the <a href="../../platform/contracts-reference.html">contracts reference</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Direction</th>
+<th>Contract class</th>
+<th>Handler or emitter</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>subscribes</td>
+<td><code>IntranetNotify</code></td>
+<td><code>_handle_notify</code></td>
+<td><code>src/cluster_erp/modules/intranet/module.py:199-203</code>, <code>src/cluster_erp/modules/intranet/module.py:305-345</code></td>
+</tr>
+<tr>
+<td>answers query</td>
+<td><code>GetUpcomingIntranetEvents</code></td>
+<td><code>_handle_upcoming_events</code></td>
+<td><code>src/cluster_erp/modules/intranet/module.py:205-206</code>, <code>src/cluster_erp/modules/intranet/module.py:291-303</code></td>
+</tr>
+<tr>
+<td>subscribes</td>
+<td><code>CollectSubjectData</code>, <code>AnonymiseSubject</code></td>
+<td><code>privacy_handlers.py</code></td>
+<td><code>src/cluster_erp/modules/intranet/module.py:207-223</code></td>
+</tr>
+<tr>
+<td>subscribes</td>
+<td><code>RetentionSweep</code></td>
+<td><code>sweep_retention</code></td>
+<td><code>src/cluster_erp/modules/intranet/module.py:224-229</code></td>
+</tr>
+<tr>
+<td>subscribes</td>
+<td><code>DescribeFieldConsumers</code></td>
+<td><code>_describe_field_consumers</code></td>
+<td><code>src/cluster_erp/modules/intranet/module.py:230-236</code>, <code>src/cluster_erp/modules/intranet/module.py:238-289</code></td>
+</tr>
+<tr>
+<td>emits</td>
+<td><code>IntranetPostPublished</code></td>
+<td>content publish route</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:266-283</code></td>
+</tr>
+<tr>
+<td>emits</td>
+<td><code>IntranetEventPublished</code>, <code>IntranetEventUpdated</code>, <code>IntranetEventCancelled</code></td>
+<td><code>EventService</code></td>
+<td><code>src/cluster_erp/modules/intranet/events/services.py:432</code>, <code>src/cluster_erp/modules/intranet/events/services.py:498</code>, <code>src/cluster_erp/modules/intranet/events/services.py:591</code></td>
+</tr>
+<tr>
+<td>queries</td>
+<td><code>GetPartyForEmployee</code>, <code>GetTeamPartyIds</code>, <code>ListDirectoryEmployees</code>, <code>SearchParties</code>, <code>GetProjectMemberPartyIds</code></td>
+<td>access, directory, segments</td>
+<td><code>src/cluster_erp/modules/intranet/context.py:25-27</code>, <code>src/cluster_erp/modules/intranet/access.py:181-186</code>, <code>src/cluster_erp/modules/intranet/directory/services.py:57-90</code>, <code>src/cluster_erp/modules/intranet/content/services.py:494-502</code></td>
+</tr>
+<tr>
+<td>queries</td>
+<td><code>GetApprovalChainForAction</code>, <code>SubmitForApproval</code></td>
+<td>leave and requests</td>
+<td><code>src/cluster_erp/modules/intranet/leave/services.py:740-772</code>, <code>src/cluster_erp/modules/intranet/requests/services.py:289-309</code></td>
+</tr>
+<tr>
+<td>queries</td>
+<td><code>GetCompanyDefaultTimezone</code>, <code>GetOwnerWorkingDays</code>, <code>GetPartyById</code></td>
+<td>leave day counting and gender check</td>
+<td><code>src/cluster_erp/modules/intranet/leave/services.py:290-306</code>, <code>src/cluster_erp/modules/intranet/leave/services.py:453</code></td>
+</tr>
+<tr>
+<td>emits</td>
+<td><code>ResolveEntityEmails</code>, <code>SendTransactionalEmail</code></td>
+<td><code>fan_out_email</code></td>
+<td><code>src/cluster_erp/modules/intranet/notify.py:20-65</code></td>
+</tr>
+<tr>
+<td>queries</td>
+<td><code>GetDocumentsForEntity</code>, <code>ResolveDocumentVersionFile</code></td>
+<td>my documents, delivery download</td>
+<td><code>src/cluster_erp/modules/intranet/my_documents/services.py:17-28</code>, <code>src/cluster_erp/modules/intranet/delivery/routes.py:143-150</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="permissions">Permissions<a class="headerlink" href="#permissions">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Permission key family</th>
+<th>Used by</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>intranet_content.read</code>, <code>.create</code>, <code>.update</code>, <code>.delete</code>, <code>.publish</code>, <code>.read_all</code></td>
+<td>content, comments, access grants, feed, media</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:116-546</code>, <code>src/cluster_erp/modules/intranet/feed/routes.py:34</code></td>
+</tr>
+<tr>
+<td><code>intranet_space.*</code>, <code>intranet_segment.*</code>, <code>intranet_settings.*</code></td>
+<td>spaces, segments, settings</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:47-679</code></td>
+</tr>
+<tr>
+<td><code>intranet_event.*</code></td>
+<td>events</td>
+<td><code>src/cluster_erp/modules/intranet/events/routes.py:57-298</code></td>
+</tr>
+<tr>
+<td><code>intranet_leave_type.*</code>, <code>intranet_leave_balance.*</code>, <code>intranet_leave_request.*</code> including <code>.approve</code> and <code>.read_all</code></td>
+<td>leave</td>
+<td><code>src/cluster_erp/modules/intranet/leave/routes.py:40-286</code></td>
+</tr>
+<tr>
+<td><code>intranet_request_type.*</code>, <code>intranet_request.*</code> including <code>.approve</code> and <code>.read_all</code></td>
+<td>requests</td>
+<td><code>src/cluster_erp/modules/intranet/requests/routes.py:34-209</code></td>
+</tr>
+<tr>
+<td><code>intranet_official_delivery.*</code> including <code>.read_all</code></td>
+<td>deliveries</td>
+<td><code>src/cluster_erp/modules/intranet/delivery/routes.py:50-245</code></td>
+</tr>
+<tr>
+<td><code>intranet_notification.read</code>, <code>.update</code></td>
+<td>inbox</td>
+<td><code>src/cluster_erp/modules/intranet/notifications/routes.py:31-193</code></td>
+</tr>
+<tr>
+<td><code>intranet_employee_projection.read</code></td>
+<td>directory</td>
+<td><code>src/cluster_erp/modules/intranet/directory/routes.py:22-75</code></td>
+</tr>
+<tr>
+<td><code>intranet_kudos.*</code>, <code>intranet_quick_link.*</code>, <code>intranet_alert.*</code></td>
+<td>engagement</td>
+<td><code>src/cluster_erp/modules/intranet/engagement/routes.py:35-242</code></td>
+</tr>
+</tbody>
+</table>
+<p>The row-level tiers built on these keys are on <a href="access-audience-and-retention.html">access, audience, and retention</a>.</p>
+<h2 id="privacy-retention-and-history">Privacy, retention, and history<a class="headerlink" href="#privacy-retention-and-history">¶</a></h2>
+<p><code>privacy_handlers.py</code> answers data-subject requests for twelve intranet record classes, from comments to official deliveries. Anonymisation follows the operator's decision on employment records (<code>src/cluster_erp/modules/intranet/privacy_handlers.py:1-11</code>); see <a href="../../identity-access/privacy-and-data-subject-requests.html">privacy and data-subject requests</a>. <code>retention_handlers.py</code> deletes analytics events past the tenant's window on each retention sweep (<code>src/cluster_erp/modules/intranet/retention_handlers.py:1-55</code>). Other deletes set <code>deleted_at</code>, for example on posts (<code>src/cluster_erp/modules/intranet/content/routes.py:287-301</code>). Changes are captured by <a href="../../platform/change-history.html">change history</a>.</p>
+<h2 id="analytics-facts">Analytics facts<a class="headerlink" href="#analytics-facts">¶</a></h2>
+<p>This module has no <code>analytics_facts.py</code>. Read analytics of a post live inside the module with a minimum group size; see <a href="access-audience-and-retention.html">access, audience, and retention</a>.</p>
+<h2 id="settings-and-reference-data">Settings and reference data<a class="headerlink" href="#settings-and-reference-data">¶</a></h2>
+<ul>
+<li>One settings row per tenant database holds the minimum group size (default 5), the review interval, the analytics retention window (default 730 days), the emergency banner, the home layout, and the welcome message (<code>src/cluster_erp/modules/intranet/models.py:155-200</code>). The row is created on start (<code>src/cluster_erp/modules/intranet/module.py:55-64</code>).</li>
+<li>Leave types and request types are seeded on start when their codes are missing; the organisation extends both lists (<code>src/cluster_erp/modules/intranet/module.py:66-131</code>, <code>src/cluster_erp/modules/intranet/leave/seeds.py:1-12</code>, <code>src/cluster_erp/modules/intranet/requests/seeds.py:8-36</code>).</li>
+<li>The module tells the tenant field screen that the party field <code>manager_party_id</code> is a soft dependency, and <code>gender</code> a hard one while a gender-restricted leave type exists (<code>src/cluster_erp/modules/intranet/module.py:238-289</code>). See <a href="../../platform/tenant-fields.html">tenant fields</a>.</li>
+</ul>
+<h2 id="tests">Tests<a class="headerlink" href="#tests">¶</a></h2>
+<p>Found by name (<code>web-client/_e2e_intranet*.mjs</code>) and by a <code>grep</code> for <code>intranet</code> in <code>tests/*.py</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Kind</th>
+<th>File</th>
+<th>Covers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_intranet.mjs</code>, <code>web-client/_e2e_intranet_services.mjs</code></td>
+<td>the module end to end</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_intranet_acl.mjs</code>, <code>web-client/_e2e_intranet_authz.mjs</code>, <code>web-client/_e2e_intranet_confidential.mjs</code>, <code>web-client/_e2e_intranet_isolation.mjs</code></td>
+<td>access grants, permissions, confidential deliveries, isolation</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_intranet_audience.mjs</code></td>
+<td>the audience builder</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_intranet_feed_ui.mjs</code>, <code>web-client/_e2e_intranet_compose_ui.mjs</code>, <code>web-client/_e2e_intranet_home.mjs</code></td>
+<td>feed, composer, home</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_intranet_events_lifecycle.mjs</code></td>
+<td>events</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_intranet_leave_rules.mjs</code>, <code>web-client/_e2e_intranet_selfservice.mjs</code></td>
+<td>leave and self-service</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_intranet_mydocs.mjs</code>, <code>web-client/_e2e_intranet_notif_i18n.mjs</code></td>
+<td>my documents, localised notifications</td>
+</tr>
+<tr>
+<td>pytest</td>
+<td><code>tests/test_intranet_event_lifecycle.py</code>, <code>tests/test_intranet_request_type_seeds.py</code>, <code>tests/test_leave_day_math.py</code></td>
+<td>event rules, request seeds, leave day counting</td>
+</tr>
+<tr>
+<td>pytest</td>
+<td><code>tests/test_data_map_package1.py</code>, <code>tests/test_sensitive_fields_policy.py</code>, <code>tests/test_system_mail.py</code>, <code>tests/test_tenant_fields.py</code>, <code>tests/test_demo_data_live.py</code></td>
+<td>files that mention <code>intranet</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="discrepancies">Discrepancies<a class="headerlink" href="#discrepancies">¶</a></h2>
+<aside class="adm adm-warning" role="note"><p class="adm-title">Warning</p><p>Discrepancy. The project's written engineering rules target all countries and forbid hardcoded values. When no company calendar answers, leave day counting falls back to Monday to Friday as working days (<code>src/cluster_erp/modules/intranet/leave/services.py:270-275</code>, <code>src/cluster_erp/modules/intranet/leave/services.py:322</code>).</p>
+<p><strong>Warning:</strong> Discrepancy. The project's written engineering rules require user-visible text through i18n keys. The seeded request types carry a single-language English <code>description</code>, stored in a plain text column (<code>src/cluster_erp/modules/intranet/requests/seeds.py:13</code>, <code>src/cluster_erp/modules/intranet/models.py:863</code>).</p>
+</aside>
+<h2 id="terms-introduced">Terms introduced<a class="headerlink" href="#terms-introduced">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Code identifier</th>
+<th>Definition</th>
+<th>Turkish term</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>space</td>
+<td><code>IntranetSpace</code></td>
+<td>A container that groups intranet content and can carry access grants.</td>
+<td>Alan</td>
+<td><code>src/cluster_erp/modules/intranet/models.py:202</code></td>
+</tr>
+<tr>
+<td>official delivery</td>
+<td><code>IntranetOfficialDelivery</code></td>
+<td>A formal hand-over of a document to an employee with a receipt.</td>
+<td>Tebligat</td>
+<td><code>src/cluster_erp/modules/intranet/models.py:936</code></td>
+</tr>
+<tr>
+<td>segment</td>
+<td><code>IntranetSegment</code></td>
+<td>A rule-based audience of employees used to target content and events.</td>
+<td>Hedef kitle</td>
+<td><code>src/cluster_erp/modules/intranet/models.py:410</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="../index.html">Modules index</a></li>
+<li><a href="content-and-feed.html">Content and feed</a></li>
+<li><a href="events.html">Events</a></li>
+<li><a href="leave.html">Leave</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="directory.html">Directory</a></li>
+<li><a href="notifications-and-delivery.html">Notifications and delivery</a></li>
+<li><a href="engagement.html">Engagement</a></li>
+<li><a href="my-documents.html">My documents</a></li>
+<li><a href="access-audience-and-retention.html">Access, audience, and retention</a></li>
+<li><a href="../../api/intranet.html">API reference for this module</a></li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../../modules/fleet/tco-telematics-and-analytics.html"><span class="eyebrow">Previous</span><span>Fleet TCO, telematics, and analytics</span></a><a class="next" href="../../modules/intranet/access-audience-and-retention.html"><span class="eyebrow">Next</span><span>Intranet access, audience, and retention</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#at-a-glance">At a glance</a></li>
+<li class="lvl2"><a href="#what-the-module-does">What the module does</a></li>
+<li class="lvl2"><a href="#sub-modules">Sub-modules</a></li>
+<li class="lvl2"><a href="#data-model">Data model</a></li>
+<li class="lvl2"><a href="#screens-and-metadata">Screens and metadata</a></li>
+<li class="lvl2"><a href="#status-and-actions">Status and actions</a></li>
+<li class="lvl2"><a href="#business-rules">Business rules</a></li>
+<li class="lvl2"><a href="#events-and-queries">Events and queries</a></li>
+<li class="lvl2"><a href="#permissions">Permissions</a></li>
+<li class="lvl2"><a href="#privacy-retention-and-history">Privacy, retention, and history</a></li>
+<li class="lvl2"><a href="#analytics-facts">Analytics facts</a></li>
+<li class="lvl2"><a href="#settings-and-reference-data">Settings and reference data</a></li>
+<li class="lvl2"><a href="#tests">Tests</a></li>
+<li class="lvl2"><a href="#discrepancies">Discrepancies</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

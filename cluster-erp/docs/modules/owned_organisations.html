@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Owned organisations module (owned_organisations) · Cluster ERP Wiki</title>
+<meta name="description" content="Module page for owned_organisations, which holds the company&#x27;s own organisations, their departments, the employees, and their assignments.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../modules/owned_organisations.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.html">Overview</a></li>
+<li class=""><a href="../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.html">Platform core</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../platform/change-history.html">Change history</a></li>
+<li class=""><a href="../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../platform/event-bus.html">Event bus</a></li>
+<li class=""><a href="../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class=""><a href="../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../web-app/generic-form.html">Generic form</a></li>
+<li class=""><a href="../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class=""><a href="../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.html">Desktop client</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class=""><a href="../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.html">Business modules</a></li>
+<li class=""><a href="../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class=""><a href="../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../modules/auth.html">Auth module (auth)</a></li>
+<li class=""><a href="../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class=""><a href="../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class=""><a href="../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../modules/intranet/requests.html">Intranet requests</a></li>
+<li class=""><a href="../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../modules/mail.html">Mail module (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class="current"><a href="../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../modules/production/work-orders.html">Work orders</a></li>
+<li class=""><a href="../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.html">API reference</a></li>
+<li class=""><a href="../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.html">Documents API (documents)</a></li>
+<li class=""><a href="../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.html">API overview</a></li>
+<li class=""><a href="../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class=""><a href="../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.html">Operations</a></li>
+<li class=""><a href="../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class=""><a href="../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class=""><a href="../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.html">Reference</a></li>
+<li class=""><a href="../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.html">Home</a> / Business modules</div>
+    <header class="page-head">
+      <p class="eyebrow">Module</p>
+      <h1>Owned organisations module (owned_organisations)</h1>
+      <p class="lede">Module page for owned_organisations, which holds the company&#x27;s own organisations, their departments, the employees, and their assignments.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#at-a-glance">At a glance</a></li>
+<li class="lvl2"><a href="#what-the-module-does">What the module does</a></li>
+<li class="lvl2"><a href="#sub-modules">Sub-modules</a></li>
+<li class="lvl2"><a href="#data-model">Data model</a></li>
+<li class="lvl2"><a href="#screens-and-metadata">Screens and metadata</a></li>
+<li class="lvl2"><a href="#status-and-actions">Status and actions</a></li>
+<li class="lvl2"><a href="#business-rules">Business rules</a></li>
+<li class="lvl2"><a href="#events-and-queries">Events and queries</a></li>
+<li class="lvl2"><a href="#permissions">Permissions</a></li>
+<li class="lvl2"><a href="#privacy-retention-and-history">Privacy, retention, and history</a></li>
+<li class="lvl2"><a href="#analytics-facts">Analytics facts</a></li>
+<li class="lvl2"><a href="#settings-and-reference-data">Settings and reference data</a></li>
+<li class="lvl2"><a href="#tests">Tests</a></li>
+<li class="lvl2"><a href="#discrepancies">Discrepancies</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p>The <code>owned_organisations</code> module in <code>src/cluster_erp/modules/owned_organisations/</code> holds the organisations that the company itself owns, such as a head office and branches, with their department trees. It also holds the company-level employee record of each person and the assignments that place a person in an organisation, a department, and a position. Every organisation and every employee is a role of a party; see <a href="parties/party-unification.html">party unification</a>.</p>
+<h2 id="at-a-glance">At a glance<a class="headerlink" href="#at-a-glance">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Value</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Package</td>
+<td><code>src/cluster_erp/modules/owned_organisations/</code></td>
+<td>folder</td>
+</tr>
+<tr>
+<td>Module class</td>
+<td><code>Module</code></td>
+<td><code>src/cluster_erp/modules/owned_organisations/module.py:18</code></td>
+</tr>
+<tr>
+<td><code>name</code> / <code>version</code></td>
+<td><code>owned_organisations</code> / <code>0.1.0</code></td>
+<td><code>src/cluster_erp/modules/owned_organisations/module.py:19-25</code></td>
+</tr>
+<tr>
+<td>API prefix</td>
+<td><code>/api/v1/owned_organisations</code> (<code>ModuleBase.api_prefix</code>)</td>
+<td><code>src/cluster_erp/core/module_base.py:37-38</code></td>
+</tr>
+<tr>
+<td>Sub-modules</td>
+<td>3: <code>organisations</code>, <code>departments</code>, <code>employees</code></td>
+<td>folder listing</td>
+</tr>
+<tr>
+<td>Tables</td>
+<td>4: <code>owned_orgs_organisations</code>, <code>owned_orgs_departments</code>, <code>owned_orgs_employees</code>, <code>owned_orgs_assignments</code></td>
+<td><code>src/cluster_erp/modules/owned_organisations/models.py:1-17</code></td>
+</tr>
+<tr>
+<td>Entities in metadata</td>
+<td>4: <code>organisation</code>, <code>department</code>, <code>employee</code>, <code>assignment</code></td>
+<td><code>src/cluster_erp/modules/owned_organisations/module.py:443-448</code></td>
+</tr>
+<tr>
+<td>Routes</td>
+<td>28 route decorators in the package</td>
+<td><code>grep</code> for <code>@router.</code></td>
+</tr>
+<tr>
+<td>Web app presence</td>
+<td>Part of the catalogue app <code>parties</code>, as the <strong>Organisations</strong> tab of the parties list</td>
+<td><code>src/cluster_erp/modules/app_store/catalog.json</code> (entry <code>parties</code>), <code>src/cluster_erp/modules/parties/module.py:589-597</code></td>
+</tr>
+<tr>
+<td>Desktop presence</td>
+<td>Generic widgets only; no folder in <code>src/cluster_erp/desktop/modules/</code></td>
+<td>folder</td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-the-module-does">What the module does<a class="headerlink" href="#what-the-module-does">¶</a></h2>
+<ul>
+<li>Records each owned organisation with a name, a description, a founding date, a head-office flag, and a default IANA time zone (<code>src/cluster_erp/modules/owned_organisations/organisations/models.py:21-51</code>).</li>
+<li>Records departments as a tree inside an organisation (<code>src/cluster_erp/modules/owned_organisations/departments/models.py:16-39</code>).</li>
+<li>Keeps one company-level employee record per person, with employment, statutory, diet, emergency-contact, and manager fields (<code>src/cluster_erp/modules/owned_organisations/employees/models.py:18-66</code>).</li>
+<li>Places an employee in one or more organisations through assignments with a position, an employment type, and dates (<code>src/cluster_erp/modules/owned_organisations/employees/models.py:69-108</code>).</li>
+<li>Answers other modules' questions about the head office, the company time zone, the directory, and a manager's team (<code>src/cluster_erp/modules/owned_organisations/module.py:90-99</code>).</li>
+</ul>
+<h2 id="sub-modules">Sub-modules<a class="headerlink" href="#sub-modules">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Sub-module</th>
+<th>Purpose</th>
+<th>Main entities</th>
+<th>Router</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>organisations</code></td>
+<td>Owned organisations</td>
+<td><code>OwnedOrganisation</code></td>
+<td><code>/api/v1/owned_organisations/organisations</code></td>
+<td><code>src/cluster_erp/modules/owned_organisations/organisations/routes.py:28</code></td>
+</tr>
+<tr>
+<td><code>departments</code></td>
+<td>Department trees</td>
+<td><code>Department</code></td>
+<td><code>/api/v1/owned_organisations/departments</code></td>
+<td><code>src/cluster_erp/modules/owned_organisations/departments/routes.py:21</code></td>
+</tr>
+<tr>
+<td><code>employees</code></td>
+<td>Employees and assignments</td>
+<td><code>Employee</code>, <code>Assignment</code></td>
+<td><code>/api/v1/owned_organisations/employees/</code>, <code>/api/v1/owned_organisations/assignments/</code></td>
+<td><code>src/cluster_erp/modules/owned_organisations/employees/routes.py:35</code></td>
+</tr>
+</tbody>
+</table>
+<p>The three routers sit under one module router that depends on the app entitlement (<code>src/cluster_erp/modules/owned_organisations/module.py:49-54</code>). All four metadata entities are declared in <code>organisations/metadata.py</code> (<code>src/cluster_erp/modules/owned_organisations/module.py:427-432</code>).</p>
+<h2 id="data-model">Data model<a class="headerlink" href="#data-model">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Entity</th>
+<th>Table</th>
+<th>Key fields</th>
+<th>Notes</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>OwnedOrganisation</code></td>
+<td><code>owned_orgs_organisations</code></td>
+<td><code>code</code>, <code>party_id</code>, <code>name</code>, <code>description</code>, <code>is_headquarters</code>, <code>founded_date</code>, <code>is_active</code>, <code>default_timezone</code>, <code>extra</code></td>
+<td>one live organisation per party (partial unique index)</td>
+<td><code>src/cluster_erp/modules/owned_organisations/organisations/models.py:21-60</code></td>
+</tr>
+<tr>
+<td><code>Department</code></td>
+<td><code>owned_orgs_departments</code></td>
+<td><code>code</code>, <code>organisation_id</code>, <code>name</code>, <code>description</code>, <code>parent_id</code>, <code>is_active</code>, <code>extra</code></td>
+<td><code>parent_id</code> points at another department</td>
+<td><code>src/cluster_erp/modules/owned_organisations/departments/models.py:16-39</code></td>
+</tr>
+<tr>
+<td><code>Employee</code></td>
+<td><code>owned_orgs_employees</code></td>
+<td><code>code</code>, <code>party_id</code>, <code>employee_number</code>, <code>hire_date</code>, <code>tax_no</code>, <code>national_id_no</code>, <code>social_security_no</code>, <code>blood_group</code>, <code>diet_preferences</code>, <code>diet_note</code>, emergency contact fields, <code>manager_party_id</code>, <code>is_active</code>, <code>extra</code></td>
+<td>one live employee per party</td>
+<td><code>src/cluster_erp/modules/owned_organisations/employees/models.py:18-66</code></td>
+</tr>
+<tr>
+<td><code>Assignment</code></td>
+<td><code>owned_orgs_assignments</code></td>
+<td><code>code</code>, <code>employee_id</code>, <code>party_id</code>, <code>organisation_id</code>, <code>department_id</code>, <code>position</code>, <code>employment_type</code>, <code>start_date</code>, <code>end_date</code>, <code>is_active</code>, <code>extra</code></td>
+<td><code>party_id</code> copies the employee's party</td>
+<td><code>src/cluster_erp/modules/owned_organisations/employees/models.py:69-108</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>party_id</code> and <code>manager_party_id</code> are plain UUID columns, not foreign keys into the <code>parties</code> tables (<code>src/cluster_erp/modules/owned_organisations/organisations/models.py:41</code>, <code>src/cluster_erp/modules/owned_organisations/employees/models.py:59-61</code>). The model comment of <code>OwnedOrganisation</code> states that the partial unique index lets a user deactivate an organisation and open a new one for the same party (<code>src/cluster_erp/modules/owned_organisations/organisations/models.py:38-40</code>).</p>
+<h2 id="screens-and-metadata">Screens and metadata<a class="headerlink" href="#screens-and-metadata">¶</a></h2>
+<p>The module declares no sidebar group of its own; its organisations are a tab of the parties list (<code>src/cluster_erp/modules/owned_organisations/module.py:440-442</code>, <code>src/cluster_erp/modules/parties/module.py:589-597</code>). Organisation, employee, and assignment declare <code>IdentityMeta</code>, so opening one opens the party card (<code>src/cluster_erp/modules/owned_organisations/organisations/metadata.py:53</code>, <code>src/cluster_erp/modules/owned_organisations/organisations/metadata.py:355</code>, <code>src/cluster_erp/modules/owned_organisations/organisations/metadata.py:590</code>). The organisation detail has the tabs <strong>General</strong>, <strong>Departments</strong> (a tree), and <strong>Employees</strong> (the organisation's assignments) (<code>src/cluster_erp/modules/owned_organisations/organisations/metadata.py:90-110</code>). Departments use a tree view under their organisation (<code>src/cluster_erp/modules/owned_organisations/organisations/metadata.py:252-281</code>). Six employee fields carry <code>permission="employee.read_sensitive"</code>: tax number, national id, social security number, blood group, diet preferences, and diet note (<code>src/cluster_erp/modules/owned_organisations/organisations/metadata.py:469-549</code>).</p>
+<h2 id="status-and-actions">Status and actions<a class="headerlink" href="#status-and-actions">¶</a></h2>
+<p>The module declares no <code>ActionMeta</code> (a <code>grep</code> for <code>ActionMeta(</code> in the package finds none). Records carry an <code>is_active</code> flag and no status field (<code>src/cluster_erp/modules/owned_organisations/organisations/models.py:46</code>, <code>src/cluster_erp/modules/owned_organisations/employees/models.py:62</code>, <code>src/cluster_erp/modules/owned_organisations/employees/models.py:102</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Label</th>
+<th>Condition</th>
+<th>Endpoint</th>
+<th>Permission</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>none</td>
+<td>none</td>
+<td>none</td>
+<td>none</td>
+<td>none</td>
+<td><code>src/cluster_erp/modules/owned_organisations/organisations/metadata.py</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="business-rules">Business rules<a class="headerlink" href="#business-rules">¶</a></h2>
+<ul>
+<li>An organisation created without a <code>party_id</code> gets one through <code>EnsurePartyForOrganisation</code>; if no party comes back, the create fails (<code>src/cluster_erp/modules/owned_organisations/organisations/services.py:74-94</code>).</li>
+<li><code>default_timezone</code> must be a known IANA zone name or empty (<code>src/cluster_erp/modules/owned_organisations/organisations/schemas.py:13-19</code>).</li>
+<li>Creating an employee for a party that already has a live employee record returns the existing record (<code>src/cluster_erp/modules/owned_organisations/employees/services.py:63-66</code>).</li>
+<li>An employee needs an emergency contact name and phone on create (<code>src/cluster_erp/modules/owned_organisations/employees/schemas.py:47-49</code>).</li>
+<li>An assignment may name the party instead of the employee; the service then finds or creates the person's employee record (<code>src/cluster_erp/modules/owned_organisations/employees/services.py:194-203</code>, <code>src/cluster_erp/modules/owned_organisations/employees/services.py:78-86</code>).</li>
+<li>Employment types are <code>full_time</code>, <code>part_time</code>, <code>contract</code>, <code>intern</code>, and <code>freelance</code>; blood groups are the eight ABO and Rh groups (<code>src/cluster_erp/modules/owned_organisations/employees/schemas.py:11-29</code>).</li>
+<li>Fields gated by <code>employee.read_sensitive</code> are removed from responses and ignored on input for a caller without the code (<code>src/cluster_erp/modules/owned_organisations/employees/routes.py:57-78</code>); see <a href="../identity-access/field-and-row-access.html">field and row access</a>.</li>
+<li>Codes come from the yearly sequences <code>owned_organisation</code>, <code>department</code>, <code>employee</code>, and <code>assignment</code> (<code>src/cluster_erp/modules/owned_organisations/organisations/services.py:71</code>, <code>src/cluster_erp/modules/owned_organisations/departments/services.py:46</code>, <code>src/cluster_erp/modules/owned_organisations/employees/services.py:89</code>, <code>src/cluster_erp/modules/owned_organisations/employees/services.py:214</code>).</li>
+</ul>
+<h2 id="events-and-queries">Events and queries<a class="headerlink" href="#events-and-queries">¶</a></h2>
+<p>The module consumes 10 contracts and produces 5, counted as on the <a href="parties/index.html">parties module</a> page.</p>
+<table>
+<thead>
+<tr>
+<th>Direction</th>
+<th>Contract class</th>
+<th>Handler or emitter</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>emits</td>
+<td><code>OrganisationCreated</code>, <code>OrganisationUpdated</code></td>
+<td><code>OwnedOrganisationService.create</code>, <code>.update</code></td>
+<td><code>src/cluster_erp/modules/owned_organisations/organisations/services.py:103-110</code>, <code>src/cluster_erp/modules/owned_organisations/organisations/services.py:138-145</code></td>
+</tr>
+<tr>
+<td>emits</td>
+<td><code>PartyRoleSet</code></td>
+<td><code>EmployeeService._insert</code>, <code>.delete</code></td>
+<td><code>src/cluster_erp/modules/owned_organisations/employees/services.py:93-100</code>, <code>src/cluster_erp/modules/owned_organisations/employees/services.py:132-139</code></td>
+</tr>
+<tr>
+<td>emits</td>
+<td><code>EmployeeAdded</code></td>
+<td><code>AssignmentService.create</code></td>
+<td><code>src/cluster_erp/modules/owned_organisations/employees/services.py:232-239</code></td>
+</tr>
+<tr>
+<td>queries</td>
+<td><code>EnsurePartyForOrganisation</code></td>
+<td><code>OwnedOrganisationService.create</code></td>
+<td><code>src/cluster_erp/modules/owned_organisations/organisations/services.py:77-84</code></td>
+</tr>
+<tr>
+<td>answers query</td>
+<td><code>GetOrganisationById</code></td>
+<td><code>_handle_get_org</code></td>
+<td><code>src/cluster_erp/modules/owned_organisations/module.py:90</code>, <code>src/cluster_erp/modules/owned_organisations/module.py:228-249</code></td>
+</tr>
+<tr>
+<td>answers query</td>
+<td><code>GetHeadquartersOrganisation</code></td>
+<td><code>_handle_get_headquarters</code></td>
+<td><code>src/cluster_erp/modules/owned_organisations/module.py:93</code>, <code>src/cluster_erp/modules/owned_organisations/module.py:251-277</code></td>
+</tr>
+<tr>
+<td>answers query</td>
+<td><code>GetCompanyDefaultTimezone</code></td>
+<td><code>_handle_get_company_default_timezone</code></td>
+<td><code>src/cluster_erp/modules/owned_organisations/module.py:94-96</code>, <code>src/cluster_erp/modules/owned_organisations/module.py:279-343</code></td>
+</tr>
+<tr>
+<td>answers query</td>
+<td><code>GetPartyForEmployee</code></td>
+<td><code>_handle_get_party_for_employee</code></td>
+<td><code>src/cluster_erp/modules/owned_organisations/module.py:97</code>, <code>src/cluster_erp/modules/owned_organisations/module.py:101-126</code></td>
+</tr>
+<tr>
+<td>answers query</td>
+<td><code>ListDirectoryEmployees</code></td>
+<td><code>_handle_list_directory_employees</code></td>
+<td><code>src/cluster_erp/modules/owned_organisations/module.py:98</code>, <code>src/cluster_erp/modules/owned_organisations/module.py:128-195</code></td>
+</tr>
+<tr>
+<td>answers query</td>
+<td><code>GetTeamPartyIds</code></td>
+<td><code>_handle_get_team_party_ids</code></td>
+<td><code>src/cluster_erp/modules/owned_organisations/module.py:99</code>, <code>src/cluster_erp/modules/owned_organisations/module.py:197-226</code></td>
+</tr>
+<tr>
+<td>subscribes</td>
+<td><code>PartyDeleted</code>, <code>RecordActivated</code></td>
+<td><code>_on_party_deleted</code>, <code>_on_record_activated</code></td>
+<td><code>src/cluster_erp/modules/owned_organisations/module.py:70-71</code>, <code>src/cluster_erp/modules/owned_organisations/module.py:348-420</code></td>
+</tr>
+<tr>
+<td>subscribes</td>
+<td><code>CollectSubjectData</code>, <code>AnonymiseSubject</code></td>
+<td><code>collect_subject_data</code>, <code>anonymise_subject</code></td>
+<td><code>src/cluster_erp/modules/owned_organisations/module.py:81-88</code></td>
+</tr>
+</tbody>
+</table>
+<p>Three answers carry rules worth knowing:</p>
+<ul>
+<li>The head office is the organisation flagged <code>is_headquarters</code>, else the oldest live one (<code>src/cluster_erp/modules/owned_organisations/module.py:251-277</code>).</li>
+<li>The company time zone is the given organisation's own zone, then the head office's, then any active organisation's, ordered by head-office flag and id. A warning is logged when several organisations are flagged as head office (<code>src/cluster_erp/modules/owned_organisations/module.py:279-343</code>). The <a href="../platform/working-time.html">working time</a> page explains where the zone is used.</li>
+<li>A manager's team is every live, active employee below the manager in the <code>manager_party_id</code> chain, found with a recursive query that stops on cycles (<code>src/cluster_erp/modules/owned_organisations/module.py:197-226</code>).</li>
+</ul>
+<h2 id="permissions">Permissions<a class="headerlink" href="#permissions">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Permission key</th>
+<th>Used by</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>organisation.read</code>, <code>.create</code>, <code>.update</code>, <code>.delete</code>, <code>.bulk_delete</code></td>
+<td>organisation routes</td>
+<td><code>src/cluster_erp/modules/owned_organisations/organisations/routes.py:49-125</code></td>
+</tr>
+<tr>
+<td><code>department.read</code>, <code>.create</code>, <code>.update</code>, <code>.delete</code>, <code>.bulk_delete</code></td>
+<td>department routes</td>
+<td><code>src/cluster_erp/modules/owned_organisations/departments/routes.py:39-127</code></td>
+</tr>
+<tr>
+<td><code>employee.read</code>, <code>.create</code>, <code>.update</code>, <code>.delete</code>, <code>.bulk_delete</code></td>
+<td>employee routes</td>
+<td><code>src/cluster_erp/modules/owned_organisations/employees/routes.py:48-132</code></td>
+</tr>
+<tr>
+<td><code>employee.read_sensitive</code></td>
+<td>field gate on six employee fields</td>
+<td><code>src/cluster_erp/modules/owned_organisations/organisations/metadata.py:469-549</code></td>
+</tr>
+<tr>
+<td><code>assignment.read</code>, <code>.create</code>, <code>.update</code>, <code>.delete</code>, <code>.bulk_delete</code></td>
+<td>assignment routes</td>
+<td><code>src/cluster_erp/modules/owned_organisations/employees/routes.py:149-268</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="privacy-retention-and-history">Privacy, retention, and history<a class="headerlink" href="#privacy-retention-and-history">¶</a></h2>
+<p><code>privacy_handlers.py</code> reports the employment records a person holds. It anonymises identifiers, health data, and emergency-contact fields only when the request carries <code>include_employment_records</code>, because employment records have statutory retention duties, as its docstring states (<code>src/cluster_erp/modules/owned_organisations/privacy_handlers.py:1-9</code>). When a party is deactivated, its employee records are soft-deleted with the reason <code>party_deactivated</code>; reactivating the party restores exactly those rows (<code>src/cluster_erp/modules/owned_organisations/module.py:348-420</code>). See <a href="../identity-access/privacy-and-data-subject-requests.html">privacy and data-subject requests</a> and <a href="../platform/change-history.html">change history</a>.</p>
+<h2 id="analytics-facts">Analytics facts<a class="headerlink" href="#analytics-facts">¶</a></h2>
+<p>This module has no <code>analytics_facts.py</code>.</p>
+<h2 id="settings-and-reference-data">Settings and reference data<a class="headerlink" href="#settings-and-reference-data">¶</a></h2>
+<p>The module has no settings section and seeds nothing at start-up (<code>src/cluster_erp/modules/owned_organisations/module.py:31-33</code>). Organisations, departments, employees, and assignments accept tenant-defined fields in <code>extra</code> (<code>src/cluster_erp/modules/owned_organisations/organisations/metadata.py:36-48</code>); see <a href="../platform/tenant-fields.html">tenant fields</a>.</p>
+<h2 id="tests">Tests<a class="headerlink" href="#tests">¶</a></h2>
+<p>Found by a <code>grep</code> for <code>modules.owned_organisations</code> in <code>tests/</code> and by file name in <code>web-client/</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Kind</th>
+<th>File</th>
+<th>Covers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pytest</td>
+<td><code>tests/test_party_form_contract.py</code></td>
+<td>the employee metadata used by the party form</td>
+</tr>
+<tr>
+<td>pytest</td>
+<td><code>tests/test_data_map_package2.py</code></td>
+<td>the sensitive-field gate on the employee card</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_employee_field_gate.mjs</code></td>
+<td>the field gate against the live server</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_parties.mjs</code></td>
+<td>the organisation detail inside the parties app</td>
+</tr>
+</tbody>
+</table>
+<h2 id="discrepancies">Discrepancies<a class="headerlink" href="#discrepancies">¶</a></h2>
+<aside class="adm adm-warning" role="note"><p class="adm-title">Warning</p><p>Discrepancy. The project's written engineering rules list a desktop folder <code>desktop/modules/owned_organisations/</code>. The folder <code>src/cluster_erp/desktop/modules/</code> has no such folder. This page documents the code.</p>
+</aside>
+<h2 id="terms-introduced">Terms introduced<a class="headerlink" href="#terms-introduced">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Code identifier</th>
+<th>Definition</th>
+<th>Turkish term</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>owned organisation</td>
+<td><code>OwnedOrganisation</code></td>
+<td>An organisation the company itself owns, such as a head office or a branch.</td>
+<td>Kuruluş</td>
+<td><code>src/cluster_erp/modules/owned_organisations/organisations/models.py:21</code></td>
+</tr>
+<tr>
+<td>employee record</td>
+<td><code>Employee</code></td>
+<td>The company-level personnel record of a person.</td>
+<td>Çalışan kaydı</td>
+<td><code>src/cluster_erp/modules/owned_organisations/employees/models.py:18</code></td>
+</tr>
+<tr>
+<td>assignment</td>
+<td><code>Assignment</code></td>
+<td>A placement of an employee in an organisation, department, and position for a period.</td>
+<td>Görevlendirme</td>
+<td><code>src/cluster_erp/modules/owned_organisations/employees/models.py:69</code></td>
+</tr>
+<tr>
+<td>head office</td>
+<td><code>is_headquarters</code></td>
+<td>The organisation flagged as the company's head office.</td>
+<td>Merkez</td>
+<td><code>src/cluster_erp/modules/owned_organisations/organisations/models.py:44</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="index.html">Modules index</a></li>
+<li><a href="parties/index.html">Parties module</a></li>
+<li><a href="parties/party-unification.html">Party unification</a></li>
+<li><a href="../platform/working-time.html">Working time</a></li>
+<li><a href="../api/owned_organisations.html">API reference for this module</a></li>
+<li>Related material, historical, not verified: the in-tree note <code>src/cluster_erp/modules/owned_organisations/docs/how-to.md</code>. It describes employee routes per organisation and department and an <code>organisation_id</code> on the employee, which the code no longer has (<code>src/cluster_erp/modules/owned_organisations/employees/routes.py:146-198</code>).</li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../modules/nesting/jobs-parts-and-remnants.html"><span class="eyebrow">Previous</span><span>Nesting jobs, parts, and remnants</span></a><a class="next" href="../modules/parties/index.html"><span class="eyebrow">Next</span><span>Parties module (parties)</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#at-a-glance">At a glance</a></li>
+<li class="lvl2"><a href="#what-the-module-does">What the module does</a></li>
+<li class="lvl2"><a href="#sub-modules">Sub-modules</a></li>
+<li class="lvl2"><a href="#data-model">Data model</a></li>
+<li class="lvl2"><a href="#screens-and-metadata">Screens and metadata</a></li>
+<li class="lvl2"><a href="#status-and-actions">Status and actions</a></li>
+<li class="lvl2"><a href="#business-rules">Business rules</a></li>
+<li class="lvl2"><a href="#events-and-queries">Events and queries</a></li>
+<li class="lvl2"><a href="#permissions">Permissions</a></li>
+<li class="lvl2"><a href="#privacy-retention-and-history">Privacy, retention, and history</a></li>
+<li class="lvl2"><a href="#analytics-facts">Analytics facts</a></li>
+<li class="lvl2"><a href="#settings-and-reference-data">Settings and reference data</a></li>
+<li class="lvl2"><a href="#tests">Tests</a></li>
+<li class="lvl2"><a href="#discrepancies">Discrepancies</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

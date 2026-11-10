@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Server startup and app factory · Cluster ERP Wiki</title>
+<meta name="description" content="How python -m cluster_erp.server.main and server/asgi.py build the FastAPI application with create_app, and what the lifespan does at start-up and shutdown.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../platform/server-startup-and-app-factory.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.html">Overview</a></li>
+<li class=""><a href="../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.html">Platform core</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../platform/change-history.html">Change history</a></li>
+<li class=""><a href="../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../platform/event-bus.html">Event bus</a></li>
+<li class=""><a href="../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class="current"><a href="../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class=""><a href="../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../web-app/generic-form.html">Generic form</a></li>
+<li class=""><a href="../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class=""><a href="../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.html">Desktop client</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class=""><a href="../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.html">Business modules</a></li>
+<li class=""><a href="../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class=""><a href="../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../modules/auth.html">Auth module (auth)</a></li>
+<li class=""><a href="../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class=""><a href="../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class=""><a href="../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../modules/intranet/requests.html">Intranet requests</a></li>
+<li class=""><a href="../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../modules/mail.html">Mail module (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class=""><a href="../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../modules/production/work-orders.html">Work orders</a></li>
+<li class=""><a href="../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.html">API reference</a></li>
+<li class=""><a href="../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.html">Documents API (documents)</a></li>
+<li class=""><a href="../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.html">API overview</a></li>
+<li class=""><a href="../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class=""><a href="../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.html">Operations</a></li>
+<li class=""><a href="../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class=""><a href="../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class=""><a href="../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.html">Reference</a></li>
+<li class=""><a href="../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.html">Home</a> / Platform</div>
+    <header class="page-head">
+      <p class="eyebrow">Explanation</p>
+      <h1>Server startup and app factory</h1>
+      <p class="lede">How python -m cluster_erp.server.main and server/asgi.py build the FastAPI application with create_app, and what the lifespan does at start-up and shutdown.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#in-short">In short</a></li>
+<li class="lvl2"><a href="#how-it-works">How it works</a></li>
+<li class="lvl3"><a href="#entry-points">Entry points</a></li>
+<li class="lvl3"><a href="#the-factory">The factory</a></li>
+<li class="lvl3"><a href="#the-lifespan-at-start-up">The lifespan at start-up</a></li>
+<li class="lvl3"><a href="#the-lifespan-at-shutdown">The lifespan at shutdown</a></li>
+<li class="lvl2"><a href="#why-it-is-built-this-way">Why it is built this way</a></li>
+<li class="lvl2"><a href="#rules-and-boundaries">Rules and boundaries</a></li>
+<li class="lvl2"><a href="#interaction-with-other-parts">Interaction with other parts</a></li>
+<li class="lvl2"><a href="#limits-and-open-points">Limits and open points</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p>This page explains how the Cluster ERP server process starts: the two entry points <code>server/main.py</code> and <code>server/asgi.py</code>, the factory <code>create_app</code> in <code>server/app.py</code>, and the <code>lifespan</code> context that runs at start-up and shutdown. It is for developers and operators. The middleware order is on <a href="request-pipeline-and-middleware.html">request pipeline and middleware</a>, and service units and gunicorn settings are in the <a href="../operations/index.html">operations section</a>.</p>
+<h2 id="in-short">In short<a class="headerlink" href="#in-short">¶</a></h2>
+<ul>
+<li><code>python -m cluster_erp.server.main</code> calls <code>uvicorn.run("cluster_erp.server.app:create_app", factory=True,...)</code> (<code>src/cluster_erp/server/main.py:39-58</code>).</li>
+<li><code>cluster_erp.server.asgi:app</code> is a module-level application made by <code>create_app()</code> for a process manager (<code>src/cluster_erp/server/asgi.py:1-19</code>).</li>
+<li><code>create_app</code> reads <code>Settings</code>, builds the <code>FastAPI</code> object, installs error handlers and middleware, mounts the shared routes and the web app, and returns the app (<code>src/cluster_erp/server/app.py:1287-1646</code>).</li>
+<li>The <code>lifespan</code> context creates the database handle, the <code>EventBus</code>, the <code>ModuleRegistry</code>, and the storage backend, then loads every enabled module (<code>src/cluster_erp/server/app.py:58-140</code>).</li>
+<li>At shutdown the lifespan closes the PDF renderer, cancels background tasks, shuts down every module, and closes the database (<code>src/cluster_erp/server/app.py:196-224</code>).</li>
+</ul>
+<h2 id="how-it-works">How it works<a class="headerlink" href="#how-it-works">¶</a></h2>
+<h3 id="entry-points">Entry points<a class="headerlink" href="#entry-points">¶</a></h3>
+<p>There are two entry points.</p>
+<table>
+<thead>
+<tr>
+<th>Entry point</th>
+<th>Used for</th>
+<th>Behaviour</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>python -m cluster_erp.server.main</code> (console script <code>cluster-erp-server</code>)</td>
+<td>Development and single-process runs</td>
+<td>Runs uvicorn with the factory; enables reload when <code>debug</code> is on; uses <code>server_workers</code> processes when greater than 1 and reload is off</td>
+<td><code>src/cluster_erp/server/main.py:12-58</code>, <code>pyproject.toml:87</code></td>
+</tr>
+<tr>
+<td><code>cluster_erp.server.asgi:app</code></td>
+<td>gunicorn with uvicorn workers</td>
+<td>Creates the app at import time, once per worker</td>
+<td><code>src/cluster_erp/server/asgi.py:1-19</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>main.py</code> ignores <code>server_workers</code> above 1 on Windows and logs a warning (<code>src/cluster_erp/server/main.py:27-35</code>). It passes the proxy-header settings, the access-log switch, and the keep-alive timeout to uvicorn (<code>src/cluster_erp/server/main.py:50-55</code>). See the <a href="settings-reference.html">settings reference</a> for these settings.</p>
+<h3 id="the-factory">The factory<a class="headerlink" href="#the-factory">¶</a></h3>
+<p><code>create_app(settings=None)</code> runs these steps in order:</p>
+<ol>
+<li>Creates <code>Settings()</code> when none is passed (<code>src/cluster_erp/server/app.py:1288-1289</code>).</li>
+<li>Configures logging at DEBUG or INFO (<code>src/cluster_erp/server/app.py:1291-1294</code>).</li>
+<li>Builds <code>FastAPI</code> with title "Cluster ERP", version <code>0.1.0</code>, and the <code>lifespan</code> context. The <code>/api/docs</code> and <code>/api/redoc</code> pages exist only when <code>debug</code> is on (<code>src/cluster_erp/server/app.py:1296-1303</code>).</li>
+<li>Stores the settings on <code>app.state.settings</code> (<code>src/cluster_erp/server/app.py:1304</code>).</li>
+<li>Applies three process-wide settings: change-history redaction columns, the authorisation cache lifetime, and the list count cap (<code>src/cluster_erp/server/app.py:1307-1313</code>).</li>
+<li>Installs the error handlers (<code>src/cluster_erp/server/app.py:1314</code>). See <a href="errors-and-exceptions.html">errors and exceptions</a>.</li>
+<li>Adds five middlewares (<code>src/cluster_erp/server/app.py:1317-1430</code>). See <a href="request-pipeline-and-middleware.html">request pipeline and middleware</a>.</li>
+<li>Includes eight shared routers, and in multi-tenant mode also the signup and vendor routers (<code>src/cluster_erp/server/app.py:1432-1450</code>). See <a href="shared-server-routes.html">shared server routes</a>.</li>
+<li>Defines seven inline routes: <code>GET /api/v1/signup/</code> (single-tenant only), <code>/.well-known/security.txt</code>, <code>/health</code>, <code>/ready</code>, <code>/api/v1/modules</code>, <code>/api/v1/_meta</code>, and <code>/api/v1/_switches</code> (<code>src/cluster_erp/server/app.py:1451-1572</code>).</li>
+<li>Mounts the web app at <code>/app/v</code> and <code>/app</code> when <code>webapp/</code> exists (<code>src/cluster_erp/server/app.py:1633-1644</code>). See <a href="cache-and-asset-stamp.html">cache and asset stamp</a>.</li>
+</ol>
+<p>Module routes are not added by <code>create_app</code>. Each module adds its own routes when the lifespan loads it.</p>
+<h3 id="the-lifespan-at-start-up">The lifespan at start-up<a class="headerlink" href="#the-lifespan-at-start-up">¶</a></h3>
+<p>The sequence diagram shows the start-up path of the <code>lifespan</code> context.</p>
+<figure class="diagram"><pre class="mermaid">sequenceDiagram
+ participant U as uvicorn or gunicorn
+ participant L as lifespan
+ participant R as ModuleRegistry
+ participant M as Module
+ participant D as Database
+ U-&gt;&gt;L: start application
+ L-&gt;&gt;D: Database(settings)
+ L-&gt;&gt;L: EventBus(), ModuleRegistry(), create_storage_backend()
+ L-&gt;&gt;R: load_all(app, bus, database, enabled_modules)
+ R-&gt;&gt;M: initialize, register_routes, register_events
+ L-&gt;&gt;D: seed sequences, permissions, deactivation columns
+ L-&gt;&gt;L: start background tasks
+ L--&gt;&gt;U: yield (serve requests)</pre></figure>
+<p>In order, the lifespan does the following:</p>
+<ol>
+<li>Creates <code>Database(settings)</code>, <code>EventBus()</code>, <code>ModuleRegistry()</code>, and the storage backend, and stores them on <code>app.state</code> (<code>src/cluster_erp/server/app.py:60-92</code>).</li>
+<li>Subscribes a handler to <code>AnonymiseSubject</code> that drops cached user names of an anonymised account (<code>src/cluster_erp/server/app.py:80-90</code>).</li>
+<li>In multi-tenant mode, creates and migrates the default database, opens the <code>TenantRegistry</code>, and ensures the bootstrap operator. In single-tenant mode, checks the connection budget (<code>src/cluster_erp/server/app.py:100-129</code>). Tenancy is documented in <a href="../identity-access/multi-tenancy.html">multi-tenancy</a>.</li>
+<li>Loads the modules listed in <code>enabled_modules</code> (<code>src/cluster_erp/server/app.py:140</code>). See <a href="module-lifecycle.html">module lifecycle</a>.</li>
+<li>Validates that every sub-table tab points at an entity with columns, and fails start-up otherwise (<code>src/cluster_erp/server/app.py:146</code>, <code>src/cluster_erp/server/app.py:547-589</code>).</li>
+<li>Seeds the code sequences (<code>src/cluster_erp/server/app.py:148</code>, <code>src/cluster_erp/server/app.py:1058-1066</code>). See <a href="base-model-and-ids.html">base model and ids</a>.</li>
+<li>Builds the tenant-field specs from every module's metadata (<code>src/cluster_erp/server/app.py:151</code>). See <a href="tenant-fields.html">tenant fields</a>.</li>
+<li>Seeds permissions from metadata, adds missing deactivation columns, and builds the deactivation registry (<code>src/cluster_erp/server/app.py:152-154</code>).</li>
+<li>Runs three data reconciliation passes: CRM customers to parties, party role flags, and orphaned MRP runs (<code>src/cluster_erp/server/app.py:155-157</code>).</li>
+<li>Runs a log retention pass, starts the audit-log redaction backfill as a task, and replays the erasure ledger (<code>src/cluster_erp/server/app.py:160-168</code>).</li>
+<li>Starts background tasks: retention purge, subscription sweep, analytics summary refresh, and in multi-tenant mode the membership expiry loop (<code>src/cluster_erp/server/app.py:170-194</code>).</li>
+<li>Yields; the server now serves requests (<code>src/cluster_erp/server/app.py:196</code>).</li>
+</ol>
+<p>The daily background loops sleep for 24 hours before each pass (<code>src/cluster_erp/server/app.py:384</code>, <code>src/cluster_erp/server/app.py:424</code>, <code>src/cluster_erp/server/app.py:521</code>). The analytics loop sleeps for a configured interval (<code>src/cluster_erp/server/app.py:483</code>). A periodic pass runs only in the worker that wins a PostgreSQL advisory lock (<code>src/cluster_erp/server/app.py:357-369</code>).</p>
+<h3 id="the-lifespan-at-shutdown">The lifespan at shutdown<a class="headerlink" href="#the-lifespan-at-shutdown">¶</a></h3>
+<p>After the yield, the lifespan closes the shared PDF renderer, cancels the background tasks and awaits them, calls <code>registry.shutdown_all()</code>, closes the tenant registry, and closes the database (<code>src/cluster_erp/server/app.py:198-224</code>).</p>
+<h2 id="why-it-is-built-this-way">Why it is built this way<a class="headerlink" href="#why-it-is-built-this-way">¶</a></h2>
+<ul>
+<li>The project's written engineering rules state that the server uses the uvicorn factory pattern.</li>
+<li>The <code>asgi.py</code> docstring states why production uses gunicorn with uvicorn workers: on <code>SIGHUP</code> gunicorn starts new workers that import the current code and stops the old ones, which gives zero-downtime upgrades. The app is created per worker so that a reload loads new code (<code>src/cluster_erp/server/asgi.py:3-12</code>).</li>
+<li>A comment states that <code>main.py</code> keeps one process on Windows because a shared socket was measured slower there (<code>src/cluster_erp/server/main.py:27-34</code>).</li>
+<li>Rationale for the factory itself, beyond the above, is not determined from code.</li>
+</ul>
+<h2 id="rules-and-boundaries">Rules and boundaries<a class="headerlink" href="#rules-and-boundaries">¶</a></h2>
+<ul>
+<li><code>Settings()</code> validates at construction and refuses unsafe combinations, for example multi-tenant mode with <code>debug</code> on (<code>src/cluster_erp/config/settings.py:766-770</code>). The server then does not start. See the <a href="settings-reference.html">settings reference</a>.</li>
+<li>A sub-table tab without columns stops start-up with an error (<code>src/cluster_erp/server/app.py:547-589</code>).</li>
+</ul>
+<aside class="adm adm-warning" role="note"><p class="adm-title">Warning</p><p>Discrepancy. The project's written engineering rules say that a direct <code>uvicorn... :app</code> start does not work and the factory must be used. The code defines a module-level <code>app = create_app()</code> in <code>src/cluster_erp/server/asgi.py:19</code> for gunicorn. There is no module-level <code>app</code> in <code>src/cluster_erp/server/app.py</code>. This page documents the code.</p>
+</aside>
+<h2 id="interaction-with-other-parts">Interaction with other parts<a class="headerlink" href="#interaction-with-other-parts">¶</a></h2>
+<ul>
+<li>Modules are loaded through the <a href="module-lifecycle.html">module lifecycle</a>.</li>
+<li>The <code>EventBus</code> created here is shared by all modules (<code>src/cluster_erp/server/app.py:62</code>, <code>src/cluster_erp/server/app.py:140</code>). See <a href="event-bus.html">event bus</a>.</li>
+<li>Retention and log passes depend on the <code>records</code> and <code>logs</code> modules. See <a href="../modules/records.html">records</a> and <a href="../operations/scheduled-jobs-and-retention.html">scheduled jobs and retention</a>.</li>
+</ul>
+<h2 id="limits-and-open-points">Limits and open points<a class="headerlink" href="#limits-and-open-points">¶</a></h2>
+<ul>
+<li>Whether a single-tenant start applies Alembic migrations is not stated in <code>server/app.py</code>; the lifespan calls <code>upgrade_database_to_head</code> only in multi-tenant mode (<code>src/cluster_erp/server/app.py:100-113</code>). Migration handling is documented in <a href="../operations/database-migrations.html">database migrations</a>.</li>
+<li>Most start-up passes log a warning and continue when they fail, for example <code>_seed_sequences</code> (<code>src/cluster_erp/server/app.py:1058-1066</code>).</li>
+</ul>
+<h2 id="terms-introduced">Terms introduced<a class="headerlink" href="#terms-introduced">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Code identifier</th>
+<th>Definition</th>
+<th>Turkish term</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app factory</td>
+<td><code>create_app</code></td>
+<td>The function that builds and returns the FastAPI application.</td>
+<td>uygulama fabrikası</td>
+<td><code>src/cluster_erp/server/app.py:1287</code></td>
+</tr>
+<tr>
+<td>lifespan</td>
+<td><code>lifespan</code></td>
+<td>The async context that runs start-up work before serving and cleanup after.</td>
+<td>yaşam süresi bağlamı</td>
+<td><code>src/cluster_erp/server/app.py:58-59</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="index.html">Platform core</a></li>
+<li><a href="module-lifecycle.html">Module lifecycle</a></li>
+<li><a href="request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li><a href="settings-reference.html">Settings reference</a></li>
+<li><a href="../operations/service-and-process-manager.html">Service and process manager</a></li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../platform/search-pagination-and-bulk.html"><span class="eyebrow">Previous</span><span>Search, pagination, and bulk operations</span></a><a class="next" href="../platform/settings-reference.html"><span class="eyebrow">Next</span><span>Settings reference</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#in-short">In short</a></li>
+<li class="lvl2"><a href="#how-it-works">How it works</a></li>
+<li class="lvl3"><a href="#entry-points">Entry points</a></li>
+<li class="lvl3"><a href="#the-factory">The factory</a></li>
+<li class="lvl3"><a href="#the-lifespan-at-start-up">The lifespan at start-up</a></li>
+<li class="lvl3"><a href="#the-lifespan-at-shutdown">The lifespan at shutdown</a></li>
+<li class="lvl2"><a href="#why-it-is-built-this-way">Why it is built this way</a></li>
+<li class="lvl2"><a href="#rules-and-boundaries">Rules and boundaries</a></li>
+<li class="lvl2"><a href="#interaction-with-other-parts">Interaction with other parts</a></li>
+<li class="lvl2"><a href="#limits-and-open-points">Limits and open points</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

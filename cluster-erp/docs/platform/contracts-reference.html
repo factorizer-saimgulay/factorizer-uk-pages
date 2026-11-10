@@ -1,0 +1,2671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contracts reference · Cluster ERP Wiki</title>
+<meta name="description" content="All 270 frozen dataclasses in core/contracts.py, grouped by section, with the modules that produce each contract and the modules that handle it.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../platform/contracts-reference.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.html">Overview</a></li>
+<li class=""><a href="../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.html">Platform core</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../platform/change-history.html">Change history</a></li>
+<li class="current"><a href="../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../platform/event-bus.html">Event bus</a></li>
+<li class=""><a href="../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class=""><a href="../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../web-app/generic-form.html">Generic form</a></li>
+<li class=""><a href="../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class=""><a href="../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.html">Desktop client</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class=""><a href="../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.html">Business modules</a></li>
+<li class=""><a href="../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class=""><a href="../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../modules/auth.html">Auth module (auth)</a></li>
+<li class=""><a href="../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class=""><a href="../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class=""><a href="../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../modules/intranet/requests.html">Intranet requests</a></li>
+<li class=""><a href="../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../modules/mail.html">Mail module (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class=""><a href="../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../modules/production/work-orders.html">Work orders</a></li>
+<li class=""><a href="../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.html">API reference</a></li>
+<li class=""><a href="../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.html">Documents API (documents)</a></li>
+<li class=""><a href="../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.html">API overview</a></li>
+<li class=""><a href="../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class=""><a href="../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.html">Operations</a></li>
+<li class=""><a href="../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class=""><a href="../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class=""><a href="../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.html">Reference</a></li>
+<li class=""><a href="../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.html">Home</a> / Platform</div>
+    <header class="page-head">
+      <p class="eyebrow">Reference</p>
+      <h1>Contracts reference</h1>
+      <p class="lede">All 270 frozen dataclasses in core/contracts.py, grouped by section, with the modules that produce each contract and the modules that handle it.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#scope-and-source">Scope and source</a></li>
+<li class="lvl2"><a href="#party-domain">Party domain</a></li>
+<li class="lvl2"><a href="#organisation-domain">Organisation domain</a></li>
+<li class="lvl2"><a href="#product-and-service-domain">Product and service domain</a></li>
+<li class="lvl2"><a href="#auth-domain">Auth domain</a></li>
+<li class="lvl2"><a href="#document-domain">Document domain</a></li>
+<li class="lvl2"><a href="#email-domain">Email domain</a></li>
+<li class="lvl2"><a href="#crm-domain">CRM domain</a></li>
+<li class="lvl2"><a href="#quotation-domain">Quotation domain</a></li>
+<li class="lvl2"><a href="#sales-order-domain">Sales order domain</a></li>
+<li class="lvl2"><a href="#project-domain">Project domain</a></li>
+<li class="lvl2"><a href="#design-and-engineering-domain">Design and engineering domain</a></li>
+<li class="lvl2"><a href="#bom-domain">BOM domain</a></li>
+<li class="lvl2"><a href="#inventory-domain">Inventory domain</a></li>
+<li class="lvl2"><a href="#production-domain">Production domain</a></li>
+<li class="lvl2"><a href="#nesting-domain">Nesting domain</a></li>
+<li class="lvl2"><a href="#costing-domain">Costing domain</a></li>
+<li class="lvl2"><a href="#component-allocation">Component allocation</a></li>
+<li class="lvl2"><a href="#procurement-domain">Procurement domain</a></li>
+<li class="lvl2"><a href="#working-calendar-domain">Working calendar domain</a></li>
+<li class="lvl2"><a href="#analytics-domain">Analytics domain</a></li>
+<li class="lvl2"><a href="#intranet-domain">Intranet domain</a></li>
+<li class="lvl2"><a href="#subscriptions">Subscriptions</a></li>
+<li class="lvl2"><a href="#data-subject-requests">Data-subject requests</a></li>
+<li class="lvl2"><a href="#contracts-after-the-last-section-comment">Contracts after the last section comment</a></li>
+<li class="lvl2"><a href="#constraints-and-validation">Constraints and validation</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p>This page lists every contract in <code>src/cluster_erp/core/contracts.py</code>: the frozen dataclasses that modules exchange through the <code>EventBus</code>. For each contract it gives the kind, the line, the modules that construct it, and the modules that handle it. How the bus delivers contracts is explained on <a href="event-bus.html">event bus</a>; field lists are in the source file.</p>
+<h2 id="scope-and-source">Scope and source<a class="headerlink" href="#scope-and-source">¶</a></h2>
+<ul>
+<li>Defined in: <code>src/cluster_erp/core/contracts.py</code></li>
+<li>Count: 270 classes decorated with <code>@dataclass(frozen=True</code> (counted with <code>grep -c "@dataclass(frozen=True"</code>). Of these, 149 derive from <code>Event</code> (145 directly and 4 through <code>_SubscriptionEvent</code>), 118 derive from <code>Query</code>, and 3 are plain value types used inside <code>DescribeAnalyticsFacts</code> answers.</li>
+<li>153 contracts have at least one handler. 117 have none. 38 have no producer found.</li>
+</ul>
+<p>The columns were produced as follows:</p>
+<ul>
+<li><strong>Kind</strong>: the base class on the <code>class</code> line.</li>
+<li><strong>Line</strong>: the line of the <code>class</code> statement in <code>src/cluster_erp/core/contracts.py</code>.</li>
+<li><strong>Producers</strong>: the modules whose files contain a call <code>Name(</code> (a construction) in <code>src/cluster_erp/modules</code>, <code>src/cluster_erp/server</code>, <code>src/cluster_erp/core</code>, or <code>src/cluster_erp/ai</code>, excluding <code>contracts.py</code>. <code>core</code> and <code>server</code> name those folders. "(by name)" marks the subscription events, which <code>src/cluster_erp/modules/subscriptions/customer_subscriptions/services.py:423-429</code> builds through <code>getattr</code> on the contracts module.</li>
+<li><strong>Consumers</strong>: the modules that pass the contract as the first argument of <code>subscribe(</code> or <code>register_query_handler(</code>, on the same line or the next line.</li>
+<li><code>-</code> means that nothing was found by that method.</li>
+</ul>
+<p>Groups follow the section comments of <code>contracts.py</code>. A group name is the section where the class is declared, not necessarily the module that publishes it; the Producers column shows the real producer.</p>
+<h2 id="party-domain">Party domain<a class="headerlink" href="#party-domain">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Kind</th>
+<th>Line</th>
+<th>Producers</th>
+<th>Consumers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PartyCreated</code></td>
+<td>Event</td>
+<td>24</td>
+<td><code>parties</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PartyUpdated</code></td>
+<td>Event</td>
+<td>31</td>
+<td><code>parties</code></td>
+<td><code>crm</code>, <code>procurement</code></td>
+</tr>
+<tr>
+<td><code>PartyDeleted</code></td>
+<td>Event</td>
+<td>43</td>
+<td><code>parties</code></td>
+<td><code>crm</code>, <code>owned_organisations</code>, <code>procurement</code></td>
+</tr>
+<tr>
+<td><code>PartyRoleSet</code></td>
+<td>Event</td>
+<td>48</td>
+<td><code>crm</code>, <code>owned_organisations</code>, <code>procurement</code></td>
+<td><code>parties</code></td>
+</tr>
+<tr>
+<td><code>GetPartyById</code></td>
+<td>Query</td>
+<td>59</td>
+<td><code>crm</code>, <code>fleet</code>, <code>intranet</code>, <code>inventory</code>, <code>procurement</code>, <code>products_and_services</code>, <code>purchasing_quotations</code>, <code>sales_orders</code></td>
+<td><code>parties</code></td>
+</tr>
+<tr>
+<td><code>GetAddressById</code></td>
+<td>Query</td>
+<td>64</td>
+<td><code>procurement</code>, <code>sales_orders</code></td>
+<td><code>parties</code></td>
+</tr>
+<tr>
+<td><code>SearchParties</code></td>
+<td>Query</td>
+<td>73</td>
+<td><code>intranet</code></td>
+<td><code>parties</code></td>
+</tr>
+<tr>
+<td><code>CountPartyChannels</code></td>
+<td>Query</td>
+<td>81</td>
+<td><code>crm</code></td>
+<td><code>parties</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="organisation-domain">Organisation domain<a class="headerlink" href="#organisation-domain">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Kind</th>
+<th>Line</th>
+<th>Producers</th>
+<th>Consumers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>OrganisationCreated</code></td>
+<td>Event</td>
+<td>95</td>
+<td><code>owned_organisations</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>OrganisationUpdated</code></td>
+<td>Event</td>
+<td>102</td>
+<td><code>owned_organisations</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>EmployeeAdded</code></td>
+<td>Event</td>
+<td>108</td>
+<td><code>owned_organisations</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetOrganisationById</code></td>
+<td>Query</td>
+<td>115</td>
+<td><code>production</code></td>
+<td><code>owned_organisations</code></td>
+</tr>
+<tr>
+<td><code>GetCompanyDefaultTimezone</code></td>
+<td>Query</td>
+<td>120</td>
+<td><code>intranet</code>, <code>production</code></td>
+<td><code>owned_organisations</code></td>
+</tr>
+<tr>
+<td><code>EnsurePartyForOrganisation</code></td>
+<td>Query</td>
+<td>135</td>
+<td><code>owned_organisations</code></td>
+<td><code>parties</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="product-and-service-domain">Product and service domain<a class="headerlink" href="#product-and-service-domain">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Kind</th>
+<th>Line</th>
+<th>Producers</th>
+<th>Consumers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ProductCreated</code></td>
+<td>Event</td>
+<td>149</td>
+<td><code>products_and_services</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>ProductUpdated</code></td>
+<td>Event</td>
+<td>157</td>
+<td><code>products_and_services</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>ProductStatusChanged</code></td>
+<td>Event</td>
+<td>163</td>
+<td><code>products_and_services</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>ProductDeleted</code></td>
+<td>Event</td>
+<td>170</td>
+<td><code>products_and_services</code></td>
+<td><code>bom</code></td>
+</tr>
+<tr>
+<td><code>RecordActivated</code></td>
+<td>Event</td>
+<td>177</td>
+<td><code>records</code></td>
+<td><code>owned_organisations</code>, <code>products_and_services</code></td>
+</tr>
+<tr>
+<td><code>ServiceCreated</code></td>
+<td>Event</td>
+<td>191</td>
+<td><code>products_and_services</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetProductById</code></td>
+<td>Query</td>
+<td>197</td>
+<td><code>bom</code>, <code>inventory</code>, <code>nesting</code>, <code>procurement</code>, <code>production</code>, <code>products_and_services</code>, <code>sales_orders</code></td>
+<td><code>products_and_services</code></td>
+</tr>
+<tr>
+<td><code>CreateScaffoldIntermediate</code></td>
+<td>Query</td>
+<td>202</td>
+<td><code>production</code></td>
+<td><code>products_and_services</code></td>
+</tr>
+<tr>
+<td><code>ValidateProductBreakdown</code></td>
+<td>Query</td>
+<td>219</td>
+<td><code>core</code></td>
+<td><code>products_and_services</code></td>
+</tr>
+<tr>
+<td><code>GetProductDefaultBreakdown</code></td>
+<td>Query</td>
+<td>230</td>
+<td><code>bom</code>, <code>procurement</code>, <code>production</code></td>
+<td><code>products_and_services</code></td>
+</tr>
+<tr>
+<td><code>GetBulkProductDefaultBreakdowns</code></td>
+<td>Query</td>
+<td>240</td>
+<td><code>bom</code>, <code>procurement</code></td>
+<td><code>products_and_services</code></td>
+</tr>
+<tr>
+<td><code>IsProductManufacturable</code></td>
+<td>Query</td>
+<td>248</td>
+<td><code>production</code></td>
+<td><code>products_and_services</code></td>
+</tr>
+<tr>
+<td><code>IsProductPurchasable</code></td>
+<td>Query</td>
+<td>253</td>
+<td>-</td>
+<td><code>products_and_services</code></td>
+</tr>
+<tr>
+<td><code>IsProductSellable</code></td>
+<td>Query</td>
+<td>258</td>
+<td>-</td>
+<td><code>products_and_services</code></td>
+</tr>
+<tr>
+<td><code>GetProductsByMaterialType</code></td>
+<td>Query</td>
+<td>263</td>
+<td>-</td>
+<td><code>products_and_services</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="auth-domain">Auth domain<a class="headerlink" href="#auth-domain">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Kind</th>
+<th>Line</th>
+<th>Producers</th>
+<th>Consumers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ApprovalCompleted</code></td>
+<td>Event</td>
+<td>275</td>
+<td><code>auth</code></td>
+<td><code>documents</code></td>
+</tr>
+<tr>
+<td><code>GetUserById</code></td>
+<td>Query</td>
+<td>283</td>
+<td>-</td>
+<td><code>auth</code></td>
+</tr>
+<tr>
+<td><code>GetUserPermissions</code></td>
+<td>Query</td>
+<td>288</td>
+<td>-</td>
+<td><code>auth</code></td>
+</tr>
+<tr>
+<td><code>GetApprovalChainForAction</code></td>
+<td>Query</td>
+<td>293</td>
+<td><code>documents</code>, <code>intranet</code></td>
+<td><code>auth</code></td>
+</tr>
+<tr>
+<td><code>SubmitForApproval</code></td>
+<td>Query</td>
+<td>299</td>
+<td><code>documents</code>, <code>intranet</code></td>
+<td><code>auth</code></td>
+</tr>
+<tr>
+<td><code>GetApprovalRequestById</code></td>
+<td>Query</td>
+<td>307</td>
+<td><code>documents</code></td>
+<td><code>auth</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="document-domain">Document domain<a class="headerlink" href="#document-domain">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Kind</th>
+<th>Line</th>
+<th>Producers</th>
+<th>Consumers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DocumentCreated</code></td>
+<td>Event</td>
+<td>317</td>
+<td><code>documents</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>DocumentVersionActivated</code></td>
+<td>Event</td>
+<td>322</td>
+<td><code>documents</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>DocumentVersionSuperseded</code></td>
+<td>Event</td>
+<td>329</td>
+<td><code>documents</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>ResolveDocumentVersionFile</code></td>
+<td>Query</td>
+<td>336</td>
+<td><code>intranet</code></td>
+<td><code>documents</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="email-domain">Email domain<a class="headerlink" href="#email-domain">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Kind</th>
+<th>Line</th>
+<th>Producers</th>
+<th>Consumers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ResolveEntityEmails</code></td>
+<td>Event</td>
+<td>352</td>
+<td><code>intranet</code>, <code>server</code></td>
+<td><code>parties</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="crm-domain">CRM domain<a class="headerlink" href="#crm-domain">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Kind</th>
+<th>Line</th>
+<th>Producers</th>
+<th>Consumers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CustomerCreated</code></td>
+<td>Event</td>
+<td>364</td>
+<td><code>crm</code></td>
+<td><code>parties</code></td>
+</tr>
+<tr>
+<td><code>CustomerUpdated</code></td>
+<td>Event</td>
+<td>370</td>
+<td><code>crm</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetCustomerById</code></td>
+<td>Query</td>
+<td>376</td>
+<td><code>quotations</code>, <code>sales_orders</code></td>
+<td><code>crm</code></td>
+</tr>
+<tr>
+<td><code>RfqUpdated</code></td>
+<td>Event</td>
+<td>381</td>
+<td><code>crm</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>RfqReceived</code></td>
+<td>Event</td>
+<td>387</td>
+<td><code>crm</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>RfqAssigned</code></td>
+<td>Event</td>
+<td>394</td>
+<td><code>crm</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>RfqPackageCompleted</code></td>
+<td>Event</td>
+<td>400</td>
+<td><code>crm</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>RfqDeclined</code></td>
+<td>Event</td>
+<td>412</td>
+<td><code>crm</code>, <code>quotations</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>RfqExpired</code></td>
+<td>Event</td>
+<td>418</td>
+<td><code>crm</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>RfqWon</code></td>
+<td>Event</td>
+<td>423</td>
+<td><code>crm</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>RfqLost</code></td>
+<td>Event</td>
+<td>428</td>
+<td><code>crm</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>RfqReopened</code></td>
+<td>Event</td>
+<td>433</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetRfqById</code></td>
+<td>Query</td>
+<td>438</td>
+<td><code>quotations</code>, <code>sales_orders</code></td>
+<td><code>crm</code></td>
+</tr>
+<tr>
+<td><code>GetRfqIdsByCustomer</code></td>
+<td>Query</td>
+<td>443</td>
+<td><code>quotations</code></td>
+<td><code>crm</code></td>
+</tr>
+<tr>
+<td><code>GetCustomerPartById</code></td>
+<td>Query</td>
+<td>448</td>
+<td><code>sales_orders</code></td>
+<td><code>crm</code></td>
+</tr>
+<tr>
+<td><code>GetCustomerPartsByCustomer</code></td>
+<td>Query</td>
+<td>453</td>
+<td>-</td>
+<td><code>crm</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="quotation-domain">Quotation domain<a class="headerlink" href="#quotation-domain">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Kind</th>
+<th>Line</th>
+<th>Producers</th>
+<th>Consumers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>QuoteCreated</code></td>
+<td>Event</td>
+<td>464</td>
+<td><code>quotations</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>QuoteFeasibilityCompleted</code></td>
+<td>Event</td>
+<td>471</td>
+<td><code>quotations</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>QuoteBomAttached</code></td>
+<td>Event</td>
+<td>476</td>
+<td><code>quotations</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>QuoteCostingCompleted</code></td>
+<td>Event</td>
+<td>482</td>
+<td><code>costing</code>, <code>quotations</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>QuoteMgmtApprovalRecorded</code></td>
+<td>Event</td>
+<td>488</td>
+<td><code>quotations</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>QuoteSent</code></td>
+<td>Event</td>
+<td>494</td>
+<td><code>quotations</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>QuoteWon</code></td>
+<td>Event</td>
+<td>500</td>
+<td><code>quotations</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>QuoteLost</code></td>
+<td>Event</td>
+<td>506</td>
+<td><code>quotations</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>QuoteExpired</code></td>
+<td>Event</td>
+<td>512</td>
+<td><code>quotations</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>QuoteFeasibilityFailed</code></td>
+<td>Event</td>
+<td>517</td>
+<td><code>quotations</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>QuoteReturnedToBom</code></td>
+<td>Event</td>
+<td>523</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>QuoteMgmtRejected</code></td>
+<td>Event</td>
+<td>528</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>QuoteRevised</code></td>
+<td>Event</td>
+<td>534</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetQuoteById</code></td>
+<td>Query</td>
+<td>541</td>
+<td><code>sales_orders</code></td>
+<td><code>quotations</code></td>
+</tr>
+<tr>
+<td><code>GetQuoteLineItems</code></td>
+<td>Query</td>
+<td>546</td>
+<td><code>sales_orders</code></td>
+<td><code>quotations</code></td>
+</tr>
+<tr>
+<td><code>ReferenceQuoteLines</code></td>
+<td>Query</td>
+<td>554</td>
+<td><code>sales_orders</code></td>
+<td><code>quotations</code></td>
+</tr>
+<tr>
+<td><code>ReleaseQuoteLineReferences</code></td>
+<td>Query</td>
+<td>570</td>
+<td><code>sales_orders</code></td>
+<td><code>quotations</code></td>
+</tr>
+<tr>
+<td><code>GetPurchasingQuotationById</code></td>
+<td>Query</td>
+<td>580</td>
+<td>-</td>
+<td><code>purchasing_quotations</code></td>
+</tr>
+<tr>
+<td><code>CreateFollowOnFromSupplierQuotation</code></td>
+<td>Query</td>
+<td>585</td>
+<td><code>purchasing_quotations</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>SupplierQuotationAwarded</code></td>
+<td>Event</td>
+<td>607</td>
+<td><code>purchasing_quotations</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>GetInfoRecordPrice</code></td>
+<td>Query</td>
+<td>619</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetPurchaseRfqQuotations</code></td>
+<td>Query</td>
+<td>628</td>
+<td><code>purchasing_quotations</code></td>
+<td><code>procurement</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="sales-order-domain">Sales order domain<a class="headerlink" href="#sales-order-domain">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Kind</th>
+<th>Line</th>
+<th>Producers</th>
+<th>Consumers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SalesOrderPoReceived</code></td>
+<td>Event</td>
+<td>644</td>
+<td><code>sales_orders</code></td>
+<td><code>projects</code></td>
+</tr>
+<tr>
+<td><code>SalesOrderMismatchDetected</code></td>
+<td>Event</td>
+<td>650</td>
+<td><code>sales_orders</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>SalesOrderRevisionRequested</code></td>
+<td>Event</td>
+<td>656</td>
+<td><code>sales_orders</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>SalesOrderMatched</code></td>
+<td>Event</td>
+<td>661</td>
+<td><code>sales_orders</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>SalesOrderOpened</code></td>
+<td>Event</td>
+<td>666</td>
+<td><code>sales_orders</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>SalesOrderCancelled</code></td>
+<td>Event</td>
+<td>675</td>
+<td><code>sales_orders</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>SalesOrderShipped</code></td>
+<td>Event</td>
+<td>681</td>
+<td><code>sales_orders</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>SalesOrderDelivered</code></td>
+<td>Event</td>
+<td>686</td>
+<td><code>sales_orders</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>SalesOrderClosed</code></td>
+<td>Event</td>
+<td>691</td>
+<td><code>sales_orders</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>SalesOrderRevisionLimitReached</code></td>
+<td>Event</td>
+<td>696</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>SalesOrderOnHold</code></td>
+<td>Event</td>
+<td>702</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>SalesOrderResumed</code></td>
+<td>Event</td>
+<td>708</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>SalesOrderPartiallyShipped</code></td>
+<td>Event</td>
+<td>713</td>
+<td><code>sales_orders</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetSalesOrderById</code></td>
+<td>Query</td>
+<td>719</td>
+<td><code>nesting</code>, <code>projects</code></td>
+<td><code>sales_orders</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="project-domain">Project domain<a class="headerlink" href="#project-domain">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Kind</th>
+<th>Line</th>
+<th>Producers</th>
+<th>Consumers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ProjectCreated</code></td>
+<td>Event</td>
+<td>729</td>
+<td><code>projects</code></td>
+<td><code>sales_orders</code></td>
+</tr>
+<tr>
+<td><code>ProjectKickoffCompleted</code></td>
+<td>Event</td>
+<td>737</td>
+<td><code>projects</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>ProjectActionCreated</code></td>
+<td>Event</td>
+<td>742</td>
+<td><code>projects</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>ProjectActionOverdue</code></td>
+<td>Event</td>
+<td>750</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>ProjectSchedulePublished</code></td>
+<td>Event</td>
+<td>757</td>
+<td><code>projects</code></td>
+<td><code>production</code></td>
+</tr>
+<tr>
+<td><code>ProjectActivityChanged</code></td>
+<td>Event</td>
+<td>764</td>
+<td><code>projects</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>ProjectScheduleShared</code></td>
+<td>Event</td>
+<td>776</td>
+<td><code>projects</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>ProjectFixtureRequired</code></td>
+<td>Event</td>
+<td>782</td>
+<td><code>projects</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>ProjectClosed</code></td>
+<td>Event</td>
+<td>791</td>
+<td><code>projects</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>ProjectStatusChanged</code></td>
+<td>Event</td>
+<td>796</td>
+<td><code>projects</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetProjectById</code></td>
+<td>Query</td>
+<td>803</td>
+<td><code>sales_orders</code></td>
+<td><code>projects</code></td>
+</tr>
+<tr>
+<td><code>GetProjectMemberPartyIds</code></td>
+<td>Query</td>
+<td>808</td>
+<td><code>intranet</code></td>
+<td><code>projects</code></td>
+</tr>
+<tr>
+<td><code>IsKickoffCompleted</code></td>
+<td>Query</td>
+<td>818</td>
+<td>-</td>
+<td><code>projects</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="design-and-engineering-domain">Design and engineering domain<a class="headerlink" href="#design-and-engineering-domain">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Kind</th>
+<th>Line</th>
+<th>Producers</th>
+<th>Consumers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DesignCreated</code></td>
+<td>Event</td>
+<td>828</td>
+<td><code>design_engineering</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>DesignApproved</code></td>
+<td>Event</td>
+<td>836</td>
+<td><code>design_engineering</code></td>
+<td><code>bom</code></td>
+</tr>
+<tr>
+<td><code>DesignSuperseded</code></td>
+<td>Event</td>
+<td>844</td>
+<td><code>design_engineering</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>EcnProposed</code></td>
+<td>Event</td>
+<td>851</td>
+<td><code>design_engineering</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>EcnApproved</code></td>
+<td>Event</td>
+<td>859</td>
+<td><code>design_engineering</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>EcnImplemented</code></td>
+<td>Event</td>
+<td>866</td>
+<td><code>design_engineering</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetDesignById</code></td>
+<td>Query</td>
+<td>874</td>
+<td><code>bom</code></td>
+<td><code>design_engineering</code></td>
+</tr>
+<tr>
+<td><code>IsDesignApproved</code></td>
+<td>Query</td>
+<td>879</td>
+<td>-</td>
+<td><code>design_engineering</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="bom-domain">BOM domain<a class="headerlink" href="#bom-domain">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Kind</th>
+<th>Line</th>
+<th>Producers</th>
+<th>Consumers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BomDraftCreated</code></td>
+<td>Event</td>
+<td>889</td>
+<td><code>bom</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>BomActivated</code></td>
+<td>Event</td>
+<td>897</td>
+<td><code>bom</code></td>
+<td><code>costing</code>, <code>procurement</code></td>
+</tr>
+<tr>
+<td><code>BomVersionActivated</code></td>
+<td>Event</td>
+<td>904</td>
+<td><code>bom</code></td>
+<td><code>production</code></td>
+</tr>
+<tr>
+<td><code>BomSuperseded</code></td>
+<td>Event</td>
+<td>921</td>
+<td><code>bom</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>BomLaborUpdated</code></td>
+<td>Event</td>
+<td>928</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>BomItemAdded</code></td>
+<td>Event</td>
+<td>934</td>
+<td>-</td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>BomItemChanged</code></td>
+<td>Event</td>
+<td>941</td>
+<td><code>bom</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>GetBomById</code></td>
+<td>Query</td>
+<td>947</td>
+<td><code>production</code>, <code>sales_orders</code></td>
+<td><code>bom</code></td>
+</tr>
+<tr>
+<td><code>IsBomActive</code></td>
+<td>Query</td>
+<td>952</td>
+<td>-</td>
+<td><code>bom</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="inventory-domain">Inventory domain<a class="headerlink" href="#inventory-domain">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Kind</th>
+<th>Line</th>
+<th>Producers</th>
+<th>Consumers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GoodsReceived</code></td>
+<td>Event</td>
+<td>962</td>
+<td><code>inventory</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>GoodsIssued</code></td>
+<td>Event</td>
+<td>985</td>
+<td><code>inventory</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>StockTransferred</code></td>
+<td>Event</td>
+<td>997</td>
+<td><code>inventory</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>StockAdjusted</code></td>
+<td>Event</td>
+<td>1006</td>
+<td><code>inventory</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>BatchCreated</code></td>
+<td>Event</td>
+<td>1016</td>
+<td><code>inventory</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GoodsMovementReversed</code></td>
+<td>Event</td>
+<td>1023</td>
+<td><code>inventory</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>StockReserved</code></td>
+<td>Event</td>
+<td>1040</td>
+<td><code>inventory</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>StockReservationConsumed</code></td>
+<td>Event</td>
+<td>1050</td>
+<td><code>inventory</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>StockReservationCancelled</code></td>
+<td>Event</td>
+<td>1055</td>
+<td><code>inventory</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetStockLevel</code></td>
+<td>Query</td>
+<td>1060</td>
+<td><code>procurement</code></td>
+<td><code>inventory</code></td>
+</tr>
+<tr>
+<td><code>GrBlockedReceived</code></td>
+<td>Event</td>
+<td>1072</td>
+<td><code>inventory</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GrBlockedReleased</code></td>
+<td>Event</td>
+<td>1082</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>StockCategoryTransferred</code></td>
+<td>Event</td>
+<td>1090</td>
+<td><code>inventory</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>ReturnedToVendor</code></td>
+<td>Event</td>
+<td>1100</td>
+<td><code>inventory</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>ScrapPosted</code></td>
+<td>Event</td>
+<td>1110</td>
+<td><code>inventory</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>UsageDecisionRecorded</code></td>
+<td>Event</td>
+<td>1119</td>
+<td><code>inventory</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetBatchesByProduct</code></td>
+<td>Query</td>
+<td>1131</td>
+<td>-</td>
+<td><code>inventory</code></td>
+</tr>
+<tr>
+<td><code>IsStockAvailable</code></td>
+<td>Query</td>
+<td>1137</td>
+<td>-</td>
+<td><code>inventory</code></td>
+</tr>
+<tr>
+<td><code>GetBomVersionsUpdatedAt</code></td>
+<td>Query</td>
+<td>1149</td>
+<td><code>procurement</code></td>
+<td><code>bom</code></td>
+</tr>
+<tr>
+<td><code>GetBomExplosion</code></td>
+<td>Query</td>
+<td>1158</td>
+<td><code>costing</code>, <code>procurement</code>, <code>production</code></td>
+<td><code>bom</code></td>
+</tr>
+<tr>
+<td><code>GetBomMaterials</code></td>
+<td>Query</td>
+<td>1163</td>
+<td><code>crm</code></td>
+<td><code>bom</code></td>
+</tr>
+<tr>
+<td><code>GetBomItemDisplay</code></td>
+<td>Query</td>
+<td>1171</td>
+<td><code>production</code></td>
+<td><code>bom</code></td>
+</tr>
+<tr>
+<td><code>GetBomVersionDisplay</code></td>
+<td>Query</td>
+<td>1176</td>
+<td><code>production</code></td>
+<td><code>bom</code></td>
+</tr>
+<tr>
+<td><code>ReserveStock</code></td>
+<td>Query</td>
+<td>1181</td>
+<td><code>nesting</code></td>
+<td><code>inventory</code></td>
+</tr>
+<tr>
+<td><code>ConsumeReservation</code></td>
+<td>Query</td>
+<td>1195</td>
+<td><code>nesting</code></td>
+<td><code>inventory</code></td>
+</tr>
+<tr>
+<td><code>CancelReservation</code></td>
+<td>Query</td>
+<td>1200</td>
+<td>-</td>
+<td><code>inventory</code></td>
+</tr>
+<tr>
+<td><code>PostGoodsReceipt</code></td>
+<td>Query</td>
+<td>1205</td>
+<td><code>nesting</code>, <code>procurement</code>, <code>production</code></td>
+<td><code>inventory</code></td>
+</tr>
+<tr>
+<td><code>PostGoodsIssue</code></td>
+<td>Query</td>
+<td>1227</td>
+<td><code>fleet</code>, <code>nesting</code>, <code>production</code></td>
+<td><code>inventory</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="production-domain">Production domain<a class="headerlink" href="#production-domain">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Kind</th>
+<th>Line</th>
+<th>Producers</th>
+<th>Consumers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ProductionOrderCreated</code></td>
+<td>Event</td>
+<td>1251</td>
+<td><code>production</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>ProductionOrderStatusChanged</code></td>
+<td>Event</td>
+<td>1259</td>
+<td><code>production</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetProjectProductionSchedule</code></td>
+<td>Query</td>
+<td>1266</td>
+<td><code>projects</code></td>
+<td><code>production</code></td>
+</tr>
+<tr>
+<td><code>GetProjectSalesDelivery</code></td>
+<td>Query</td>
+<td>1278</td>
+<td><code>projects</code></td>
+<td><code>sales_orders</code></td>
+</tr>
+<tr>
+<td><code>GetProjectProductionEvm</code></td>
+<td>Query</td>
+<td>1286</td>
+<td><code>projects</code></td>
+<td><code>production</code></td>
+</tr>
+<tr>
+<td><code>GetProjectProductionRollup</code></td>
+<td>Query</td>
+<td>1298</td>
+<td><code>projects</code></td>
+<td><code>production</code></td>
+</tr>
+<tr>
+<td><code>GetPlannedOrdersForCapacity</code></td>
+<td>Query</td>
+<td>1309</td>
+<td><code>production</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>CreateProductionOrderFromPlanned</code></td>
+<td>Query</td>
+<td>1319</td>
+<td><code>procurement</code></td>
+<td><code>production</code></td>
+</tr>
+<tr>
+<td><code>CreateBomForProduct</code></td>
+<td>Query</td>
+<td>1334</td>
+<td><code>sales_orders</code></td>
+<td><code>bom</code></td>
+</tr>
+<tr>
+<td><code>CreateProductionOrderForProject</code></td>
+<td>Query</td>
+<td>1356</td>
+<td><code>projects</code></td>
+<td><code>production</code></td>
+</tr>
+<tr>
+<td><code>WorkOrderCompleted</code></td>
+<td>Event</td>
+<td>1375</td>
+<td><code>production</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>ProductionOrderCompleted</code></td>
+<td>Event</td>
+<td>1386</td>
+<td><code>production</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>ProductionOrderCancelled</code></td>
+<td>Event</td>
+<td>1393</td>
+<td><code>production</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>ProductionOrderOnHold</code></td>
+<td>Event</td>
+<td>1399</td>
+<td><code>production</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>MaterialConsumed</code></td>
+<td>Event</td>
+<td>1405</td>
+<td><code>production</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetProductionOrderById</code></td>
+<td>Query</td>
+<td>1413</td>
+<td><code>nesting</code></td>
+<td><code>production</code></td>
+</tr>
+<tr>
+<td><code>GetRoutingForProduct</code></td>
+<td>Query</td>
+<td>1418</td>
+<td><code>production</code></td>
+<td><code>production</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="nesting-domain">Nesting domain<a class="headerlink" href="#nesting-domain">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Kind</th>
+<th>Line</th>
+<th>Producers</th>
+<th>Consumers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>NestingCompleted</code></td>
+<td>Event</td>
+<td>1428</td>
+<td><code>nesting</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>NestingApproved</code></td>
+<td>Event</td>
+<td>1437</td>
+<td><code>nesting</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>NestingLowUtilizationAlert</code></td>
+<td>Event</td>
+<td>1443</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetNestingJobById</code></td>
+<td>Query</td>
+<td>1450</td>
+<td><code>costing</code></td>
+<td><code>nesting</code></td>
+</tr>
+<tr>
+<td><code>NestingRemnantCreated</code></td>
+<td>Event</td>
+<td>1455</td>
+<td><code>nesting</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>NestingRemnantConsumed</code></td>
+<td>Event</td>
+<td>1463</td>
+<td><code>nesting</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>NestingRemnantScrapped</code></td>
+<td>Event</td>
+<td>1469</td>
+<td><code>nesting</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetAvailableRemnants</code></td>
+<td>Query</td>
+<td>1475</td>
+<td>-</td>
+<td><code>nesting</code></td>
+</tr>
+<tr>
+<td><code>NestingMaterialReserved</code></td>
+<td>Event</td>
+<td>1483</td>
+<td><code>nesting</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>NestingMaterialConsumed</code></td>
+<td>Event</td>
+<td>1491</td>
+<td><code>nesting</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>NestingScrapRecorded</code></td>
+<td>Event</td>
+<td>1498</td>
+<td><code>nesting</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>NestingCostCalculated</code></td>
+<td>Event</td>
+<td>1506</td>
+<td><code>nesting</code></td>
+<td><code>costing</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="costing-domain">Costing domain<a class="headerlink" href="#costing-domain">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Kind</th>
+<th>Line</th>
+<th>Producers</th>
+<th>Consumers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CostingCreated</code></td>
+<td>Event</td>
+<td>1520</td>
+<td><code>costing</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>CostingCalculated</code></td>
+<td>Event</td>
+<td>1529</td>
+<td><code>costing</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>CostingApproved</code></td>
+<td>Event</td>
+<td>1540</td>
+<td><code>costing</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>CostingRejected</code></td>
+<td>Event</td>
+<td>1551</td>
+<td><code>costing</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>CostingSuperseded</code></td>
+<td>Event</td>
+<td>1559</td>
+<td><code>costing</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>LowMarginAlert</code></td>
+<td>Event</td>
+<td>1566</td>
+<td><code>costing</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>CostingRateUpdated</code></td>
+<td>Event</td>
+<td>1576</td>
+<td><code>costing</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetCostingById</code></td>
+<td>Query</td>
+<td>1585</td>
+<td><code>quotations</code></td>
+<td><code>costing</code></td>
+</tr>
+<tr>
+<td><code>GetCostingByBomId</code></td>
+<td>Query</td>
+<td>1590</td>
+<td>-</td>
+<td><code>costing</code></td>
+</tr>
+<tr>
+<td><code>GetActiveLaborRate</code></td>
+<td>Query</td>
+<td>1596</td>
+<td>-</td>
+<td><code>costing</code></td>
+</tr>
+<tr>
+<td><code>GetActiveOverheadRates</code></td>
+<td>Query</td>
+<td>1603</td>
+<td>-</td>
+<td><code>costing</code></td>
+</tr>
+<tr>
+<td><code>GetCostBreakdown</code></td>
+<td>Query</td>
+<td>1608</td>
+<td>-</td>
+<td><code>costing</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="component-allocation">Component allocation<a class="headerlink" href="#component-allocation">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Kind</th>
+<th>Line</th>
+<th>Producers</th>
+<th>Consumers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GetComponentAllocations</code></td>
+<td>Query</td>
+<td>1618</td>
+<td><code>bom</code></td>
+<td><code>production</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="procurement-domain">Procurement domain<a class="headerlink" href="#procurement-domain">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Kind</th>
+<th>Line</th>
+<th>Producers</th>
+<th>Consumers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PrCreated</code></td>
+<td>Event</td>
+<td>1629</td>
+<td><code>procurement</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PrApproved</code></td>
+<td>Event</td>
+<td>1636</td>
+<td><code>procurement</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PrCancelled</code></td>
+<td>Event</td>
+<td>1643</td>
+<td><code>procurement</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PoCreated</code></td>
+<td>Event</td>
+<td>1650</td>
+<td><code>procurement</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PoSent</code></td>
+<td>Event</td>
+<td>1658</td>
+<td><code>procurement</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PoAcknowledged</code></td>
+<td>Event</td>
+<td>1665</td>
+<td><code>procurement</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PoReceivedPartial</code></td>
+<td>Event</td>
+<td>1671</td>
+<td><code>procurement</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PoReceivedFull</code></td>
+<td>Event</td>
+<td>1680</td>
+<td><code>procurement</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PoDelayed</code></td>
+<td>Event</td>
+<td>1686</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PoCancelled</code></td>
+<td>Event</td>
+<td>1694</td>
+<td><code>procurement</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>MrpRunCompleted</code></td>
+<td>Event</td>
+<td>1701</td>
+<td><code>procurement</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>MrpRunFailed</code></td>
+<td>Event</td>
+<td>1710</td>
+<td><code>procurement</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>CriticalMaterialAlert</code></td>
+<td>Event</td>
+<td>1717</td>
+<td><code>procurement</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetPurchaseOrderById</code></td>
+<td>Query</td>
+<td>1725</td>
+<td>-</td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>GetPurchaseRequestById</code></td>
+<td>Query</td>
+<td>1730</td>
+<td><code>fleet</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>GetOpenPosForProduct</code></td>
+<td>Query</td>
+<td>1735</td>
+<td><code>procurement</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>ReconcilePoReceiptReversal</code></td>
+<td>Query</td>
+<td>1740</td>
+<td><code>inventory</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>GetOpenPoLinesForReceipt</code></td>
+<td>Query</td>
+<td>1755</td>
+<td><code>procurement</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>GetCriticalMaterials</code></td>
+<td>Query</td>
+<td>1766</td>
+<td><code>procurement</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>GetSubstitutesForProduct</code></td>
+<td>Query</td>
+<td>1771</td>
+<td><code>procurement</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>GetProductVendors</code></td>
+<td>Query</td>
+<td>1776</td>
+<td>-</td>
+<td><code>products_and_services</code></td>
+</tr>
+<tr>
+<td><code>GetProductPlanningData</code></td>
+<td>Query</td>
+<td>1781</td>
+<td><code>bom</code>, <code>procurement</code></td>
+<td><code>products_and_services</code></td>
+</tr>
+<tr>
+<td><code>GetOpenSalesOrderDemand</code></td>
+<td>Query</td>
+<td>1788</td>
+<td><code>procurement</code></td>
+<td><code>sales_orders</code></td>
+</tr>
+<tr>
+<td><code>GetOpenProductionDemand</code></td>
+<td>Query</td>
+<td>1795</td>
+<td><code>procurement</code></td>
+<td><code>production</code></td>
+</tr>
+<tr>
+<td><code>GetProductionSupply</code></td>
+<td>Query</td>
+<td>1802</td>
+<td><code>procurement</code></td>
+<td><code>production</code></td>
+</tr>
+<tr>
+<td><code>GetActiveBomVersionForProduct</code></td>
+<td>Query</td>
+<td>1809</td>
+<td><code>bom</code>, <code>procurement</code>, <code>production</code></td>
+<td><code>bom</code></td>
+</tr>
+<tr>
+<td><code>GetActiveBomItemsForProduct</code></td>
+<td>Query</td>
+<td>1816</td>
+<td><code>procurement</code></td>
+<td><code>bom</code></td>
+</tr>
+<tr>
+<td><code>GetBomScaffoldTree</code></td>
+<td>Query</td>
+<td>1825</td>
+<td><code>production</code></td>
+<td><code>bom</code></td>
+</tr>
+<tr>
+<td><code>GetWarehouseById</code></td>
+<td>Query</td>
+<td>1868</td>
+<td><code>procurement</code></td>
+<td><code>inventory</code></td>
+</tr>
+<tr>
+<td><code>GetBulkStockLevels</code></td>
+<td>Query</td>
+<td>1877</td>
+<td><code>bom</code>, <code>procurement</code></td>
+<td><code>inventory</code></td>
+</tr>
+<tr>
+<td><code>GetConsumptionHistory</code></td>
+<td>Query</td>
+<td>1885</td>
+<td><code>procurement</code></td>
+<td><code>inventory</code></td>
+</tr>
+<tr>
+<td><code>SetProductPlanningClassification</code></td>
+<td>Query</td>
+<td>1898</td>
+<td><code>procurement</code></td>
+<td><code>products_and_services</code></td>
+</tr>
+<tr>
+<td><code>ApplyProductBufferZones</code></td>
+<td>Query</td>
+<td>1907</td>
+<td><code>procurement</code></td>
+<td><code>products_and_services</code></td>
+</tr>
+<tr>
+<td><code>GetBatchExpirySchedule</code></td>
+<td>Query</td>
+<td>1917</td>
+<td><code>procurement</code></td>
+<td><code>inventory</code></td>
+</tr>
+<tr>
+<td><code>GetProductionVersionsBulk</code></td>
+<td>Query</td>
+<td>1927</td>
+<td><code>procurement</code></td>
+<td><code>production</code></td>
+</tr>
+<tr>
+<td><code>CheckProductionCapacity</code></td>
+<td>Query</td>
+<td>1940</td>
+<td><code>procurement</code></td>
+<td><code>production</code></td>
+</tr>
+<tr>
+<td><code>GetPartUsageCounts</code></td>
+<td>Query</td>
+<td>1952</td>
+<td><code>procurement</code>, <code>products_and_services</code></td>
+<td><code>bom</code></td>
+</tr>
+<tr>
+<td><code>GetBulkOpenPos</code></td>
+<td>Query</td>
+<td>1961</td>
+<td><code>bom</code>, <code>procurement</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>GetBulkProductVendors</code></td>
+<td>Query</td>
+<td>1968</td>
+<td><code>procurement</code></td>
+<td><code>products_and_services</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="working-calendar-domain">Working calendar domain<a class="headerlink" href="#working-calendar-domain">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Kind</th>
+<th>Line</th>
+<th>Producers</th>
+<th>Consumers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GetCalendarWindows</code></td>
+<td>Query</td>
+<td>1980</td>
+<td><code>production</code></td>
+<td><code>calendars</code></td>
+</tr>
+<tr>
+<td><code>GetEffectiveWorkingCalendar</code></td>
+<td>Query</td>
+<td>1991</td>
+<td><code>production</code></td>
+<td><code>calendars</code></td>
+</tr>
+<tr>
+<td><code>GetEffectiveWorkingCalendars</code></td>
+<td>Query</td>
+<td>2002</td>
+<td><code>production</code></td>
+<td><code>calendars</code></td>
+</tr>
+<tr>
+<td><code>WorkingCalendarChanged</code></td>
+<td>Event</td>
+<td>2013</td>
+<td><code>calendars</code></td>
+<td><code>production</code></td>
+</tr>
+<tr>
+<td><code>GetOwnerWorkingDays</code></td>
+<td>Query</td>
+<td>2026</td>
+<td><code>intranet</code>, <code>procurement</code>, <code>projects</code>, <code>sales_orders</code></td>
+<td><code>calendars</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="analytics-domain">Analytics domain<a class="headerlink" href="#analytics-domain">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Kind</th>
+<th>Line</th>
+<th>Producers</th>
+<th>Consumers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DescribeAnalyticsFacts</code></td>
+<td>Event</td>
+<td>2060</td>
+<td><code>analytics</code></td>
+<td><code>fleet</code>, <code>inventory</code>, <code>parties</code>, <code>procurement</code>, <code>production</code>, <code>products_and_services</code>, <code>purchasing_quotations</code>, <code>quotations</code>, <code>sales_orders</code></td>
+</tr>
+<tr>
+<td><code>AnalyticsDimension</code></td>
+<td>value type</td>
+<td>2076</td>
+<td><code>analytics</code>, <code>fleet</code>, <code>inventory</code>, <code>parties</code>, <code>procurement</code>, <code>production</code>, <code>products_and_services</code>, <code>purchasing_quotations</code>, <code>quotations</code>, <code>sales_orders</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>AnalyticsMeasure</code></td>
+<td>value type</td>
+<td>2101</td>
+<td><code>fleet</code>, <code>inventory</code>, <code>parties</code>, <code>procurement</code>, <code>production</code>, <code>products_and_services</code>, <code>purchasing_quotations</code>, <code>quotations</code>, <code>sales_orders</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>AnalyticsFactSet</code></td>
+<td>value type</td>
+<td>2126</td>
+<td><code>fleet</code>, <code>inventory</code>, <code>parties</code>, <code>procurement</code>, <code>production</code>, <code>products_and_services</code>, <code>purchasing_quotations</code>, <code>quotations</code>, <code>sales_orders</code></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h2 id="intranet-domain">Intranet domain<a class="headerlink" href="#intranet-domain">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Kind</th>
+<th>Line</th>
+<th>Producers</th>
+<th>Consumers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SendTransactionalEmail</code></td>
+<td>Event</td>
+<td>2163</td>
+<td><code>intranet</code></td>
+<td><code>mail</code></td>
+</tr>
+<tr>
+<td><code>RetentionSweep</code></td>
+<td>Event</td>
+<td>2180</td>
+<td><code>server</code></td>
+<td><code>intranet</code></td>
+</tr>
+<tr>
+<td><code>IntranetEventPublished</code></td>
+<td>Event</td>
+<td>2212</td>
+<td><code>intranet</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>IntranetEventUpdated</code></td>
+<td>Event</td>
+<td>2229</td>
+<td><code>intranet</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>IntranetEventCancelled</code></td>
+<td>Event</td>
+<td>2241</td>
+<td><code>intranet</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>IntranetPostPublished</code></td>
+<td>Event</td>
+<td>2250</td>
+<td><code>intranet</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetUpcomingIntranetEvents</code></td>
+<td>Query</td>
+<td>2262</td>
+<td>-</td>
+<td><code>intranet</code></td>
+</tr>
+<tr>
+<td><code>GetPartyForEmployee</code></td>
+<td>Query</td>
+<td>2274</td>
+<td><code>intranet</code>, <code>projects</code></td>
+<td><code>owned_organisations</code></td>
+</tr>
+<tr>
+<td><code>ListDirectoryEmployees</code></td>
+<td>Query</td>
+<td>2284</td>
+<td><code>intranet</code></td>
+<td><code>owned_organisations</code></td>
+</tr>
+<tr>
+<td><code>GetTeamPartyIds</code></td>
+<td>Query</td>
+<td>2296</td>
+<td><code>intranet</code></td>
+<td><code>owned_organisations</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="subscriptions">Subscriptions<a class="headerlink" href="#subscriptions">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Kind</th>
+<th>Line</th>
+<th>Producers</th>
+<th>Consumers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>_SubscriptionEvent</code></td>
+<td>Event</td>
+<td>2318</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>SubscriptionActivated</code></td>
+<td>Event (<code>_SubscriptionEvent</code>)</td>
+<td>2335</td>
+<td><code>subscriptions</code> (by name)</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>SubscriptionRenewed</code></td>
+<td>Event (<code>_SubscriptionEvent</code>)</td>
+<td>2340</td>
+<td><code>subscriptions</code> (by name)</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>SubscriptionCancelled</code></td>
+<td>Event (<code>_SubscriptionEvent</code>)</td>
+<td>2345</td>
+<td><code>subscriptions</code> (by name)</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>SubscriptionExpired</code></td>
+<td>Event (<code>_SubscriptionEvent</code>)</td>
+<td>2350</td>
+<td><code>subscriptions</code> (by name)</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetSubscriptionPlanById</code></td>
+<td>Query</td>
+<td>2355</td>
+<td>-</td>
+<td><code>subscriptions</code></td>
+</tr>
+<tr>
+<td><code>GetCustomerSubscriptionById</code></td>
+<td>Query</td>
+<td>2360</td>
+<td>-</td>
+<td><code>subscriptions</code></td>
+</tr>
+<tr>
+<td><code>GetDocumentsForEntity</code></td>
+<td>Query</td>
+<td>2365</td>
+<td><code>intranet</code></td>
+<td><code>documents</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="data-subject-requests">Data-subject requests<a class="headerlink" href="#data-subject-requests">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Kind</th>
+<th>Line</th>
+<th>Producers</th>
+<th>Consumers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CollectSubjectData</code></td>
+<td>Event</td>
+<td>2385</td>
+<td><code>privacy</code></td>
+<td><code>auth</code>, <code>crm</code>, <code>documents</code>, <code>intranet</code>, <code>logs</code>, <code>mail</code>, <code>owned_organisations</code>, <code>parties</code>, <code>procurement</code></td>
+</tr>
+<tr>
+<td><code>GetPartyContactValues</code></td>
+<td>Query</td>
+<td>2402</td>
+<td><code>privacy</code></td>
+<td><code>parties</code></td>
+</tr>
+<tr>
+<td><code>AnonymiseSubject</code></td>
+<td>Event</td>
+<td>2411</td>
+<td><code>privacy</code></td>
+<td><code>auth</code>, <code>crm</code>, <code>documents</code>, <code>intranet</code>, <code>logs</code>, <code>mail</code>, <code>owned_organisations</code>, <code>parties</code>, <code>procurement</code>, <code>server</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="contracts-after-the-last-section-comment">Contracts after the last section comment<a class="headerlink" href="#contracts-after-the-last-section-comment">¶</a></h2>
+<p>The contracts below follow the data-subject section in the file and carry no section comment of their own.</p>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Kind</th>
+<th>Line</th>
+<th>Producers</th>
+<th>Consumers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DescribeDisplaySwitches</code></td>
+<td>Event</td>
+<td>2441</td>
+<td><code>server</code></td>
+<td><code>sales_orders</code></td>
+</tr>
+<tr>
+<td><code>TenantFieldValuesChanged</code></td>
+<td>Event</td>
+<td>2452</td>
+<td><code>core</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>DescribeFieldConsumers</code></td>
+<td>Event</td>
+<td>2470</td>
+<td><code>server</code></td>
+<td><code>bom</code>, <code>intranet</code>, <code>inventory</code>, <code>procurement</code>, <code>production</code>, <code>quotations</code>, <code>sales_orders</code></td>
+</tr>
+<tr>
+<td><code>ConvertQuantity</code></td>
+<td>Query</td>
+<td>2484</td>
+<td><code>sales_orders</code></td>
+<td><code>products_and_services</code></td>
+</tr>
+<tr>
+<td><code>GetUnitOfMeasure</code></td>
+<td>Query</td>
+<td>2496</td>
+<td><code>sales_orders</code></td>
+<td><code>products_and_services</code></td>
+</tr>
+<tr>
+<td><code>GetPartyPrimaryAddress</code></td>
+<td>Query</td>
+<td>2503</td>
+<td><code>sales_orders</code></td>
+<td><code>parties</code></td>
+</tr>
+<tr>
+<td><code>GetHeadquartersOrganisation</code></td>
+<td>Query</td>
+<td>2513</td>
+<td><code>sales_orders</code></td>
+<td><code>owned_organisations</code></td>
+</tr>
+<tr>
+<td><code>FindUnitOfMeasure</code></td>
+<td>Query</td>
+<td>2520</td>
+<td><code>sales_orders</code></td>
+<td><code>products_and_services</code></td>
+</tr>
+<tr>
+<td><code>GetCountryByCode</code></td>
+<td>Query</td>
+<td>2529</td>
+<td><code>sales_orders</code></td>
+<td><code>parties</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="constraints-and-validation">Constraints and validation<a class="headerlink" href="#constraints-and-validation">¶</a></h2>
+<ul>
+<li>Every contract is a frozen dataclass. <code>Event</code> and <code>Query</code> are declared <code>frozen=True, kw_only=True</code>, so every field is passed by keyword (<code>src/cluster_erp/core/event_bus.py:24-32</code>).</li>
+<li>Every contract carries <code>source_module</code> and <code>timestamp</code> from <code>Event</code> (<code>src/cluster_erp/core/event_bus.py:25-27</code>).</li>
+<li>A query type may have only one handler; registering a second raises <code>DuplicateQueryHandlerError</code> (<code>src/cluster_erp/core/event_bus.py:73-79</code>).</li>
+<li><code>GetInfoRecordPrice</code> is a query with no producer and no handler found (<code>src/cluster_erp/core/contracts.py:619</code>). Calling <code>bus.query</code> with it would raise <code>QueryHandlerNotFoundError</code> (<code>src/cluster_erp/core/event_bus.py:98-101</code>).</li>
+<li>Contracts with no handler are delivered to nobody when emitted (<code>src/cluster_erp/core/event_bus.py:85-87</code>). Whether each of the 117 is reserved for future use is not determined from code.</li>
+</ul>
+<h2 id="terms-introduced">Terms introduced<a class="headerlink" href="#terms-introduced">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Code identifier</th>
+<th>Definition</th>
+<th>Turkish term</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>contract</td>
+<td><code>core/contracts.py</code> dataclass</td>
+<td>A frozen dataclass that defines the payload of an event or query exchanged between modules.</td>
+<td>sözleşme</td>
+<td><code>src/cluster_erp/core/contracts.py:1-6</code></td>
+</tr>
+<tr>
+<td>producer</td>
+<td>none</td>
+<td>A module that constructs a contract and passes it to <code>emit</code> or <code>query</code>.</td>
+<td>üretici</td>
+<td><code>src/cluster_erp/core/event_bus.py:83</code></td>
+</tr>
+<tr>
+<td>consumer</td>
+<td>none</td>
+<td>A module that registers a handler for a contract.</td>
+<td>tüketici</td>
+<td><code>src/cluster_erp/core/event_bus.py:55</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="index.html">Platform core</a></li>
+<li><a href="event-bus.html">Event bus</a></li>
+<li><a href="module-lifecycle.html">Module lifecycle</a></li>
+<li><a href="../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../platform/change-history.html"><span class="eyebrow">Previous</span><span>Change history</span></a><a class="next" href="../platform/database-and-sessions.html"><span class="eyebrow">Next</span><span>Database and sessions</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#scope-and-source">Scope and source</a></li>
+<li class="lvl2"><a href="#party-domain">Party domain</a></li>
+<li class="lvl2"><a href="#organisation-domain">Organisation domain</a></li>
+<li class="lvl2"><a href="#product-and-service-domain">Product and service domain</a></li>
+<li class="lvl2"><a href="#auth-domain">Auth domain</a></li>
+<li class="lvl2"><a href="#document-domain">Document domain</a></li>
+<li class="lvl2"><a href="#email-domain">Email domain</a></li>
+<li class="lvl2"><a href="#crm-domain">CRM domain</a></li>
+<li class="lvl2"><a href="#quotation-domain">Quotation domain</a></li>
+<li class="lvl2"><a href="#sales-order-domain">Sales order domain</a></li>
+<li class="lvl2"><a href="#project-domain">Project domain</a></li>
+<li class="lvl2"><a href="#design-and-engineering-domain">Design and engineering domain</a></li>
+<li class="lvl2"><a href="#bom-domain">BOM domain</a></li>
+<li class="lvl2"><a href="#inventory-domain">Inventory domain</a></li>
+<li class="lvl2"><a href="#production-domain">Production domain</a></li>
+<li class="lvl2"><a href="#nesting-domain">Nesting domain</a></li>
+<li class="lvl2"><a href="#costing-domain">Costing domain</a></li>
+<li class="lvl2"><a href="#component-allocation">Component allocation</a></li>
+<li class="lvl2"><a href="#procurement-domain">Procurement domain</a></li>
+<li class="lvl2"><a href="#working-calendar-domain">Working calendar domain</a></li>
+<li class="lvl2"><a href="#analytics-domain">Analytics domain</a></li>
+<li class="lvl2"><a href="#intranet-domain">Intranet domain</a></li>
+<li class="lvl2"><a href="#subscriptions">Subscriptions</a></li>
+<li class="lvl2"><a href="#data-subject-requests">Data-subject requests</a></li>
+<li class="lvl2"><a href="#contracts-after-the-last-section-comment">Contracts after the last section comment</a></li>
+<li class="lvl2"><a href="#constraints-and-validation">Constraints and validation</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BOM module (bom) · Cluster ERP Wiki</title>
+<meta name="description" content="Module page for bom, the bills of materials per product breakdown, their versions and items, templates, explosion, and the reads that feed routings.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../modules/bom.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.html">Overview</a></li>
+<li class=""><a href="../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.html">Platform core</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../platform/change-history.html">Change history</a></li>
+<li class=""><a href="../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../platform/event-bus.html">Event bus</a></li>
+<li class=""><a href="../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class=""><a href="../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../web-app/generic-form.html">Generic form</a></li>
+<li class=""><a href="../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class=""><a href="../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.html">Desktop client</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class=""><a href="../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.html">Business modules</a></li>
+<li class=""><a href="../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class=""><a href="../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../modules/auth.html">Auth module (auth)</a></li>
+<li class="current"><a href="../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class=""><a href="../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class=""><a href="../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../modules/intranet/requests.html">Intranet requests</a></li>
+<li class=""><a href="../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../modules/mail.html">Mail module (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class=""><a href="../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../modules/production/work-orders.html">Work orders</a></li>
+<li class=""><a href="../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.html">API reference</a></li>
+<li class=""><a href="../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.html">Documents API (documents)</a></li>
+<li class=""><a href="../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.html">API overview</a></li>
+<li class=""><a href="../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class=""><a href="../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.html">Operations</a></li>
+<li class=""><a href="../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class=""><a href="../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class=""><a href="../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.html">Reference</a></li>
+<li class=""><a href="../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.html">Home</a> / Business modules</div>
+    <header class="page-head">
+      <p class="eyebrow">Module</p>
+      <h1>BOM module (bom)</h1>
+      <p class="lede">Module page for bom, the bills of materials per product breakdown, their versions and items, templates, explosion, and the reads that feed routings.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#at-a-glance">At a glance</a></li>
+<li class="lvl2"><a href="#what-the-module-does">What the module does</a></li>
+<li class="lvl2"><a href="#sub-modules">Sub-modules</a></li>
+<li class="lvl2"><a href="#data-model">Data model</a></li>
+<li class="lvl2"><a href="#screens-and-metadata">Screens and metadata</a></li>
+<li class="lvl2"><a href="#status-and-actions">Status and actions</a></li>
+<li class="lvl2"><a href="#business-rules">Business rules</a></li>
+<li class="lvl3"><a href="#explosion-and-the-operation-bom">Explosion and the operation BOM</a></li>
+<li class="lvl2"><a href="#events-and-queries">Events and queries</a></li>
+<li class="lvl2"><a href="#permissions">Permissions</a></li>
+<li class="lvl2"><a href="#privacy-retention-and-history">Privacy, retention, and history</a></li>
+<li class="lvl2"><a href="#analytics-facts">Analytics facts</a></li>
+<li class="lvl2"><a href="#settings-and-reference-data">Settings and reference data</a></li>
+<li class="lvl2"><a href="#tests">Tests</a></li>
+<li class="lvl2"><a href="#discrepancies">Discrepancies</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p>The <code>bom</code> module in <code>src/cluster_erp/modules/bom/</code> holds the bill of materials (BOM) of each manufactured product breakdown. A BOM card names the product, model, and version it builds; it has numbered versions that move from draft to active to superseded, and each version has a tree of items. The module explodes a version into effective quantities for costing, production, and planning, and it serves the BOM tree that the routing scaffold of the <code>production</code> module reads to derive the operation BOM (eBOM).</p>
+<h2 id="at-a-glance">At a glance<a class="headerlink" href="#at-a-glance">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Value</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Package</td>
+<td><code>src/cluster_erp/modules/bom/</code></td>
+<td>folder</td>
+</tr>
+<tr>
+<td>Module class</td>
+<td><code>Module</code></td>
+<td><code>src/cluster_erp/modules/bom/module.py:19</code></td>
+</tr>
+<tr>
+<td><code>name</code> / <code>version</code></td>
+<td><code>bom</code> / <code>0.1.0</code></td>
+<td><code>src/cluster_erp/modules/bom/module.py:20-26</code></td>
+</tr>
+<tr>
+<td>API prefix</td>
+<td><code>/api/v1/bom</code> (<code>ModuleBase.api_prefix</code>)</td>
+<td><code>src/cluster_erp/core/module_base.py:37-38</code></td>
+</tr>
+<tr>
+<td>Sub-modules</td>
+<td>4: <code>boms</code>, <code>bom_versions</code>, <code>bom_items</code>, <code>bom_templates</code></td>
+<td>folder listing</td>
+</tr>
+<tr>
+<td>Tables</td>
+<td>5: <code>bom_boms</code>, <code>bom_bom_versions</code>, <code>bom_bom_items</code>, <code>bom_bom_templates</code>, <code>bom_bom_template_items</code></td>
+<td><code>__tablename__</code> in the four <code>models.py</code> files</td>
+</tr>
+<tr>
+<td>Entities in metadata</td>
+<td>5: <code>bom</code>, <code>bom_version</code>, <code>bom_item</code>, <code>bom_template</code>, <code>bom_template_item</code></td>
+<td><code>src/cluster_erp/modules/bom/module.py:898-904</code></td>
+</tr>
+<tr>
+<td>Routes</td>
+<td>39 route decorators in the package</td>
+<td><code>grep</code> for <code>@router.</code></td>
+</tr>
+<tr>
+<td>Web app presence</td>
+<td>Catalogue app <code>bom</code>, with the custom widget <code>bom_explorer</code> from a gated bundle</td>
+<td><code>src/cluster_erp/modules/app_store/catalog.json</code> (entry <code>bom</code>), <code>gated_apps/bom/app.js</code></td>
+</tr>
+<tr>
+<td>Desktop presence</td>
+<td><code>src/cluster_erp/desktop/modules/bom/</code> (<code>bom_explorer.py</code>, <code>bom_builder.py</code>)</td>
+<td>folder</td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-the-module-does">What the module does<a class="headerlink" href="#what-the-module-does">¶</a></h2>
+<ul>
+<li>Keeps one BOM card per product breakdown with a base quantity, a usage type, and a status (<code>src/cluster_erp/modules/bom/boms/models.py:17-79</code>).</li>
+<li>Versions the structure: only drafts are editable, and at most one version per BOM is active (<code>src/cluster_erp/modules/bom/bom_versions/models.py:19-42</code>).</li>
+<li>Stores items as a tree inside a version, with find number, quantity, unit, scrap factor, cut sizes, make-or-buy choice, stock material, effectivity dates, and per-unit labour and cost figures (<code>src/cluster_erp/modules/bom/bom_items/models.py:18-142</code>).</li>
+<li>Copies reusable templates into a draft version (<code>src/cluster_erp/modules/bom/bom_versions/services.py:544-651</code>).</li>
+<li>Explodes a version into effective quantities and a rollup per breakdown (<code>src/cluster_erp/modules/bom/bom_versions/services.py:722-820</code>).</li>
+<li>Serves the explorer tree, where-used data, and a purchasing coverage snapshot (<code>src/cluster_erp/modules/bom/bom_versions/services.py:822-836</code>, <code>src/cluster_erp/modules/bom/bom_versions/services.py:1141-1151</code>, <code>src/cluster_erp/modules/bom/bom_versions/services.py:1519-1520</code>).</li>
+<li>Creates a BOM card with a first draft version when a design with a part is approved (<code>src/cluster_erp/modules/bom/module.py:667-775</code>).</li>
+</ul>
+<h2 id="sub-modules">Sub-modules<a class="headerlink" href="#sub-modules">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Sub-module</th>
+<th>Purpose</th>
+<th>Main entities</th>
+<th>Router</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>boms</code></td>
+<td>BOM cards</td>
+<td><code>Bom</code></td>
+<td><code>/api/v1/bom/boms</code></td>
+<td><code>src/cluster_erp/modules/bom/boms/routes.py:31</code></td>
+</tr>
+<tr>
+<td><code>bom_versions</code></td>
+<td>Versions, lifecycle, explosion, tree, coverage, where-used</td>
+<td><code>BomVersion</code></td>
+<td><code>/api/v1/bom/bom-versions</code></td>
+<td><code>src/cluster_erp/modules/bom/bom_versions/routes.py:26</code></td>
+</tr>
+<tr>
+<td><code>bom_items</code></td>
+<td>Items of a version</td>
+<td><code>BomItem</code></td>
+<td><code>/api/v1/bom/bom-items</code></td>
+<td><code>src/cluster_erp/modules/bom/bom_items/routes.py:31</code></td>
+</tr>
+<tr>
+<td><code>bom_templates</code></td>
+<td>Templates and their items</td>
+<td><code>BomTemplate</code>, <code>BomTemplateItem</code></td>
+<td><code>/api/v1/bom/bom-templates</code></td>
+<td><code>src/cluster_erp/modules/bom/bom_templates/routes.py:29</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="data-model">Data model<a class="headerlink" href="#data-model">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Entity</th>
+<th>Table</th>
+<th>Key fields</th>
+<th>Notes</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Bom</code></td>
+<td><code>bom_boms</code></td>
+<td><code>bom_code</code>, <code>name</code>, <code>product_id</code>, <code>product_model_id</code>, <code>product_version_id</code>, <code>owner_design_id</code>, <code>base_quantity</code>, <code>usage_type</code>, <code>status</code>, <code>extra</code></td>
+<td>the three breakdown ids are required</td>
+<td><code>src/cluster_erp/modules/bom/boms/models.py:17-79</code></td>
+</tr>
+<tr>
+<td><code>BomVersion</code></td>
+<td><code>bom_bom_versions</code></td>
+<td><code>bom_id</code>, <code>version_no</code>, <code>status</code>, <code>created_from_template_id</code>, <code>total_weight_kg</code>, <code>total_labor_min</code>, <code>total_material_cost</code>, <code>total_labor_cost</code>, <code>approved_by</code>, <code>approved_at</code>, <code>valid_from</code></td>
+<td>one live active version per BOM; <code>version_no</code> unique per BOM</td>
+<td><code>src/cluster_erp/modules/bom/bom_versions/models.py:19-98</code></td>
+</tr>
+<tr>
+<td><code>BomItem</code></td>
+<td><code>bom_bom_items</code></td>
+<td><code>bom_version_id</code>, <code>parent_item_id</code>, <code>part_id</code>, <code>part_model_id</code>, <code>part_version_id</code>, <code>find_number</code>, <code>qty</code>, <code>uom</code>, <code>level</code>, <code>effective_from</code>, <code>effective_to</code>, <code>cut_length_mm</code>, <code>cut_width_mm</code>, <code>sourcing</code>, <code>stock_material_id</code> triple, <code>scrap_factor</code>, <code>is_phantom</code>, cost and labour per unit, <code>source</code></td>
+<td><code>part_id</code> is a product id</td>
+<td><code>src/cluster_erp/modules/bom/bom_items/models.py:18-142</code></td>
+</tr>
+<tr>
+<td><code>BomTemplate</code></td>
+<td><code>bom_bom_templates</code></td>
+<td><code>template_code</code>, <code>name</code>, <code>family</code>, <code>description</code></td>
+<td></td>
+<td><code>src/cluster_erp/modules/bom/bom_templates/models.py:13-31</code></td>
+</tr>
+<tr>
+<td><code>BomTemplateItem</code></td>
+<td><code>bom_bom_template_items</code></td>
+<td><code>template_id</code>, <code>parent_item_id</code>, <code>part_id</code>, <code>find_number</code>, <code>qty</code>, <code>uom</code>, <code>cut_length_mm</code>, <code>is_phantom</code></td>
+<td>no model or version column</td>
+<td><code>src/cluster_erp/modules/bom/bom_templates/models.py:34-81</code></td>
+</tr>
+</tbody>
+</table>
+<p>Quantities and money are <code>Numeric</code>: item quantity <code>Numeric(18, 4)</code>, costs <code>Numeric(18, 4)</code>, scrap factor <code>Numeric(6, 4)</code> (<code>src/cluster_erp/modules/bom/bom_items/models.py:62-128</code>). The product ids are plain UUID columns; the <code>bom</code> module checks them through the EventBus, not through database foreign keys (<code>src/cluster_erp/modules/bom/boms/services.py:203-213</code>).</p>
+<h2 id="screens-and-metadata">Screens and metadata<a class="headerlink" href="#screens-and-metadata">¶</a></h2>
+<p><code>get_metadata</code> declares a sidebar group <strong>BOM Management</strong> (Turkish <strong>Ürün Ağacı Yönetimi</strong>) with four sections: <strong>BOM Explorer</strong> (the custom widget <code>bom_explorer</code>), <strong>Bills of Materials</strong>, <strong>BOM Versions</strong>, and <strong>BOM Templates</strong> (<code>src/cluster_erp/modules/bom/module.py:838-905</code>). The explorer tabs are labelled <strong>Product Tree · BOM</strong> (<code>webapp/i18n/en.json</code> key <code>bom_explorer.tab.cs03</code>) and <strong>Operation BOM · eBOM</strong> (<code>webapp/i18n/en.json</code> key <code>bom_explorer.tab.ca03</code>). The product card shows a read-only <strong>Bill of Materials</strong> tab for manufacturable products (<code>src/cluster_erp/modules/products_and_services/products/metadata.py:276-285</code>). Gated bundles are described on <a href="../web-app/gated-app-bundles.html">gated app bundles</a>; the desktop explorer on <a href="../desktop/module-screens.html">desktop module screens</a>.</p>
+<h2 id="status-and-actions">Status and actions<a class="headerlink" href="#status-and-actions">¶</a></h2>
+<p>A BOM card is <code>active</code> or <code>archived</code>; its usage type is <code>manufacturing</code>, <code>engineering</code>, or <code>costing</code> (<code>src/cluster_erp/modules/bom/boms/schemas.py:10-11</code>). A version moves from <code>draft</code> to <code>active</code> to <code>superseded</code> (<code>src/cluster_erp/modules/bom/bom_versions/models.py:20-24</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Label</th>
+<th>Condition</th>
+<th>Endpoint</th>
+<th>Permission</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>activate</code></td>
+<td><strong>Activate</strong></td>
+<td><code>status</code> is <code>draft</code></td>
+<td><code>POST /bom-versions/{id}/activate</code></td>
+<td><code>bom.activate</code></td>
+<td><code>src/cluster_erp/modules/bom/bom_versions/metadata.py:48-58</code>, <code>src/cluster_erp/modules/bom/bom_versions/routes.py:145-154</code></td>
+</tr>
+<tr>
+<td><code>copy_from_template</code></td>
+<td><strong>Copy from Template</strong></td>
+<td><code>status</code> is <code>draft</code></td>
+<td><code>POST /bom-versions/{id}/copy-from-template</code></td>
+<td><code>bom.create</code></td>
+<td><code>src/cluster_erp/modules/bom/bom_versions/metadata.py:59-85</code>, <code>src/cluster_erp/modules/bom/bom_versions/routes.py:187-201</code></td>
+</tr>
+<tr>
+<td><code>supersede</code></td>
+<td><strong>Supersede</strong></td>
+<td><code>status</code> is <code>active</code></td>
+<td><code>POST /bom-versions/{id}/supersede</code></td>
+<td><code>bom.activate</code></td>
+<td><code>src/cluster_erp/modules/bom/bom_versions/metadata.py:86-116</code>, <code>src/cluster_erp/modules/bom/bom_versions/routes.py:170-184</code></td>
+</tr>
+</tbody>
+</table>
+<p>The diagram shows a version's lifecycle.</p>
+<figure class="diagram"><pre class="mermaid">stateDiagram-v2
+ [*] --&gt; draft: create, clone, or auto-BOM
+ draft --&gt; active: activate
+ active --&gt; superseded: supersede with a draft successor
+ draft --&gt; [*]: delete
+ superseded --&gt; [*]</pre></figure>
+<p>In prose: a version is created as <code>draft</code> (<code>src/cluster_erp/modules/bom/bom_versions/services.py:231-274</code>). <code>activate</code> needs a draft with at least one live item and no other active version on the BOM (<code>src/cluster_erp/modules/bom/bom_versions/services.py:417-474</code>). <code>supersede</code> turns the active version into <code>superseded</code> and a draft of the same BOM into <code>active</code> in one call (<code>src/cluster_erp/modules/bom/bom_versions/services.py:476-542</code>). Only a draft can be deleted, and its items go with it (<code>src/cluster_erp/modules/bom/bom_versions/services.py:305-333</code>).</p>
+<h2 id="business-rules">Business rules<a class="headerlink" href="#business-rules">¶</a></h2>
+<ul>
+<li>Creating or changing a BOM card checks that the product exists and that model and version belong to it (<code>src/cluster_erp/modules/bom/boms/services.py:80-108</code>, <code>src/cluster_erp/modules/bom/boms/services.py:130-139</code>).</li>
+<li>An archived BOM can only be set back to active (<code>src/cluster_erp/modules/bom/boms/services.py:120-124</code>).</li>
+<li>A BOM with an active or superseded version cannot be deleted; deleting a BOM soft-deletes its versions and their items (<code>src/cluster_erp/modules/bom/boms/services.py:159-176</code>, <code>src/cluster_erp/modules/bom/boms/services.py:215-267</code>).</li>
+<li>Items can be added or changed only in a draft version (<code>src/cluster_erp/modules/bom/bom_items/services.py:135-137</code>).</li>
+<li>A zero quantity is refused; a negative quantity is a co-product (<code>src/cluster_erp/modules/bom/bom_items/services.py:139-146</code>).</li>
+<li>Each item's breakdown is validated; a stock material without model and version takes the product's default ones (<code>src/cluster_erp/modules/bom/bom_items/services.py:91-128</code>, <code>src/cluster_erp/modules/bom/bom_items/services.py:158-169</code>).</li>
+<li>The item level comes from the parent chain; the chain may not loop or go deeper than <code>MAX_BOM_DEPTH</code>, which is 10 (<code>src/cluster_erp/modules/bom/bom_items/services.py:32</code>, <code>src/cluster_erp/modules/bom/bom_items/services.py:430-470</code>).</li>
+<li>A missing scrap factor becomes <code>DEFAULT_SCRAP_FACTOR</code>, 0.0300 (<code>src/cluster_erp/modules/bom/bom_items/services.py:33</code>, <code>src/cluster_erp/modules/bom/bom_items/services.py:180-181</code>).</li>
+<li><code>clone</code> copies any version into a new draft with the next version number and all items (<code>src/cluster_erp/modules/bom/bom_versions/services.py:335-415</code>).</li>
+<li>Version totals: labour minutes and labour cost are per-unit figures times quantity; material cost is per-unit cost times quantity divided by one minus the scrap factor; weight sums the net weight of leaf items from the product master (<code>src/cluster_erp/modules/bom/bom_versions/services.py:671-718</code>).</li>
+<li><code>bom_code</code> comes from the yearly sequence <code>bom</code>, and <code>template_code</code> from <code>bom_template</code> (<code>src/cluster_erp/modules/bom/boms/services.py:89</code>, <code>src/cluster_erp/modules/bom/bom_templates/services.py:101</code>).</li>
+</ul>
+<h3 id="explosion-and-the-operation-bom">Explosion and the operation BOM<a class="headerlink" href="#explosion-and-the-operation-bom">¶</a></h3>
+<p>The diagram shows how a BOM version becomes the explosion that other modules read, and how the routing scaffold reads the tree.</p>
+<figure class="diagram"><pre class="mermaid">flowchart TD
+ V[&quot;BomVersion and BomItem rows&quot;] --&gt; F[&quot;_filter_effective(as_of)&quot;]
+ F --&gt; Q[&quot;effective_qty = qty / (1 - scrap), times each parent qty / (1 - parent scrap)&quot;]
+ Q --&gt; A[&quot;operation_type and work_center_id from production allocations&quot;]
+ A --&gt; R[&quot;rollup per part, model, version&quot;]
+ R --&gt; X[&quot;GetBomExplosion answer&quot;]
+ X --&gt; C[&quot;costing&quot;]
+ X --&gt; P[&quot;production and MRP&quot;]
+ V --&gt; S[&quot;GetBomScaffoldTree answer&quot;]
+ S --&gt; W[&quot;production routing scaffold&quot;]
+ W --&gt; I[&quot;CreateScaffoldIntermediate to products_and_services&quot;]</pre></figure>
+<p>In prose: <code>explosion</code> loads the live items of a version and drops items whose effectivity window does not contain the given date, with their whole subtree (<code>src/cluster_erp/modules/bom/bom_versions/services.py:136-159</code>, <code>src/cluster_erp/modules/bom/bom_versions/services.py:734-741</code>). For each item the effective quantity is the quantity divided by one minus its scrap factor, then multiplied by each parent's quantity divided by one minus that parent's scrap factor, rounded to four places with <code>ROUND_HALF_EVEN</code>; a negative co-product quantity takes no scrap (<code>src/cluster_erp/modules/bom/bom_versions/services.py:128-133</code>, <code>src/cluster_erp/modules/bom/bom_versions/services.py:748-767</code>). The operation type and work centre come from the <code>production</code> module's component allocations (<code>src/cluster_erp/modules/bom/bom_versions/services.py:790-796</code>). The rollup sums effective quantities per part, model, and version (<code>src/cluster_erp/modules/bom/bom_versions/services.py:798-820</code>). Other modules ask for it with <code>GetBomExplosion</code> (<code>src/cluster_erp/modules/bom/module.py:217-228</code>). The explosion follows parent links inside one version; the explorer <code>tree</code> additionally expands items that have their own active BOM (<code>src/cluster_erp/modules/bom/bom_versions/services.py:1141-1151</code>).</p>
+<p>For the operation BOM, the <code>production</code> module's routing scaffold asks <code>GetBomScaffoldTree</code> with a full product breakdown. The <code>bom</code> module answers with the active version of exactly that breakdown, or a named version, and all its live items with resolved make-or-buy; it does not fall back to a default breakdown (<code>src/cluster_erp/modules/bom/module.py:363-420</code>, <code>src/cluster_erp/modules/production/routings/scaffold.py:185-192</code>). The scaffold turns non-phantom items into inputs of a final joining operation and lifts the children of phantom items; this is described in its module docstring (<code>src/cluster_erp/modules/production/routings/scaffold.py:1-43</code>). When an operation of a routing has an output, the scaffold asks <code>products_and_services</code> to create or reuse an intermediate product with <code>CreateScaffoldIntermediate</code> (<code>src/cluster_erp/modules/production/routings/scaffold.py:2221-2239</code>). The routing side is documented on <a href="production/routings-and-operation-types.html">routings and operation types</a>.</p>
+<h2 id="events-and-queries">Events and queries<a class="headerlink" href="#events-and-queries">¶</a></h2>
+<p>The module consumes 15 contracts and produces 14, counted as on the <a href="parties/index.html">parties module</a> page. The full list is on the <a href="../platform/contracts-reference.html">contracts reference</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Direction</th>
+<th>Contract class</th>
+<th>Handler or emitter</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>emits</td>
+<td><code>BomDraftCreated</code></td>
+<td>version create, clone, auto-BOM</td>
+<td><code>src/cluster_erp/modules/bom/bom_versions/services.py:256-264</code>, <code>src/cluster_erp/modules/bom/bom_versions/services.py:406-414</code>, <code>src/cluster_erp/modules/bom/module.py:760-768</code></td>
+</tr>
+<tr>
+<td>emits</td>
+<td><code>BomActivated</code>, <code>BomVersionActivated</code></td>
+<td><code>activate</code>, <code>supersede</code></td>
+<td><code>src/cluster_erp/modules/bom/bom_versions/services.py:455-473</code>, <code>src/cluster_erp/modules/bom/bom_versions/services.py:523-541</code></td>
+</tr>
+<tr>
+<td>emits</td>
+<td><code>BomSuperseded</code></td>
+<td><code>supersede</code></td>
+<td><code>src/cluster_erp/modules/bom/bom_versions/services.py:515-522</code></td>
+</tr>
+<tr>
+<td>emits</td>
+<td><code>BomItemChanged</code></td>
+<td>item create, update, and move</td>
+<td><code>src/cluster_erp/modules/bom/bom_items/services.py:227</code>, <code>src/cluster_erp/modules/bom/bom_items/services.py:324</code>, <code>src/cluster_erp/modules/bom/bom_items/services.py:516</code></td>
+</tr>
+<tr>
+<td>queries</td>
+<td><code>GetProductById</code>, <code>GetProductDefaultBreakdown</code>, <code>GetBulkProductDefaultBreakdowns</code>, <code>GetDesignById</code>, and planning reads</td>
+<td>services and handlers</td>
+<td><code>src/cluster_erp/modules/bom/boms/services.py:204-206</code>, <code>src/cluster_erp/modules/bom/bom_versions/services.py:598-608</code>, <code>src/cluster_erp/modules/bom/module.py:686-688</code></td>
+</tr>
+<tr>
+<td>answers query</td>
+<td><code>GetBomById</code>, <code>CreateBomForProduct</code>, <code>GetPartUsageCounts</code>, <code>IsBomActive</code>, <code>GetBomExplosion</code>, <code>GetActiveBomVersionForProduct</code>, <code>GetBomVersionsUpdatedAt</code>, <code>GetActiveBomItemsForProduct</code>, <code>GetBomScaffoldTree</code>, <code>GetBomItemDisplay</code>, <code>GetBomMaterials</code>, <code>GetBomVersionDisplay</code></td>
+<td>handlers in <code>module.py</code></td>
+<td><code>src/cluster_erp/modules/bom/module.py:85-123</code></td>
+</tr>
+<tr>
+<td>subscribes</td>
+<td><code>DesignApproved</code></td>
+<td><code>_handle_design_approved</code></td>
+<td><code>src/cluster_erp/modules/bom/module.py:124</code>, <code>src/cluster_erp/modules/bom/module.py:667-775</code></td>
+</tr>
+<tr>
+<td>subscribes</td>
+<td><code>ProductDeleted</code></td>
+<td><code>_handle_product_deleted</code></td>
+<td><code>src/cluster_erp/modules/bom/module.py:125</code>, <code>src/cluster_erp/modules/bom/module.py:777-816</code></td>
+</tr>
+<tr>
+<td>subscribes</td>
+<td><code>DescribeFieldConsumers</code></td>
+<td><code>_describe_field_consumers</code></td>
+<td><code>src/cluster_erp/modules/bom/module.py:65</code>, <code>src/cluster_erp/modules/bom/module.py:907-937</code></td>
+</tr>
+</tbody>
+</table>
+<p>Rules carried by the subscriptions:</p>
+<ul>
+<li>On <code>DesignApproved</code>, the module reads the design's part, takes that product's default model and version, and creates an <code>active</code> BOM card named after the design with a draft version 1. It skips a design without a part, a design that already owns a BOM, and a product without a default breakdown (<code>src/cluster_erp/modules/bom/module.py:667-775</code>).</li>
+<li>On <code>ProductDeleted</code>, the module soft-deletes the deleted product's items in draft versions only; active and superseded versions keep their rows (<code>src/cluster_erp/modules/bom/module.py:777-816</code>).</li>
+</ul>
+<h2 id="permissions">Permissions<a class="headerlink" href="#permissions">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Permission key</th>
+<th>Used by</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bom.read</code></td>
+<td>every read route</td>
+<td><code>src/cluster_erp/modules/bom/boms/routes.py:51-99</code>, <code>src/cluster_erp/modules/bom/bom_versions/routes.py:35-295</code>, <code>src/cluster_erp/modules/bom/bom_items/routes.py:61-219</code>, <code>src/cluster_erp/modules/bom/bom_templates/routes.py:38-146</code></td>
+</tr>
+<tr>
+<td><code>bom.create</code></td>
+<td>create, update, delete, bulk delete, clone, copy from template, recalculate, item move</td>
+<td><code>src/cluster_erp/modules/bom/boms/routes.py:131-170</code>, <code>src/cluster_erp/modules/bom/bom_versions/routes.py:109-207</code>, <code>src/cluster_erp/modules/bom/bom_items/routes.py:233-293</code>, <code>src/cluster_erp/modules/bom/bom_templates/routes.py:107-199</code></td>
+</tr>
+<tr>
+<td><code>bom.activate</code></td>
+<td>activate and supersede</td>
+<td><code>src/cluster_erp/modules/bom/bom_versions/routes.py:148</code>, <code>src/cluster_erp/modules/bom/bom_versions/routes.py:174</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="privacy-retention-and-history">Privacy, retention, and history<a class="headerlink" href="#privacy-retention-and-history">¶</a></h2>
+<p>The module stores no personal data and has no <code>privacy_handlers.py</code>. Deletion is soft throughout, and version and item deletions cascade with the same actor (<code>src/cluster_erp/modules/bom/boms/services.py:215-249</code>). Changes are captured by <a href="../platform/change-history.html">change history</a>.</p>
+<h2 id="analytics-facts">Analytics facts<a class="headerlink" href="#analytics-facts">¶</a></h2>
+<p>This module has no <code>analytics_facts.py</code>.</p>
+<h2 id="settings-and-reference-data">Settings and reference data<a class="headerlink" href="#settings-and-reference-data">¶</a></h2>
+<p>The module has no settings section. The stock-unit arithmetic for make-from-stock items reads the kerf, sheet gap, and edge-margin settings through <code>core/stock_conversion.py</code> (<code>src/cluster_erp/modules/bom/bom_versions/services.py:95-125</code>); see <a href="../platform/product-breakdown-and-stock-conversion.html">product breakdown and stock conversion</a>.</p>
+<h2 id="tests">Tests<a class="headerlink" href="#tests">¶</a></h2>
+<p>Found by a <code>grep</code> for <code>modules.bom</code> in <code>tests/</code> and by file name in <code>web-client/</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Kind</th>
+<th>File</th>
+<th>Covers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pytest</td>
+<td><code>tests/test_bom_bugfix_batch_2026_10_08.py</code></td>
+<td>unit pickers, item unit, version totals formula, metadata shape (10 tests)</td>
+</tr>
+<tr>
+<td>pytest</td>
+<td><code>tests/test_record_links.py</code></td>
+<td>record links in BOM metadata (3 tests)</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_bom_app.mjs</code></td>
+<td>the BOM app: explorer and registers</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_bom_me2m.mjs</code>, <code>web-client/_e2e_bom_me2m_matrix.mjs</code></td>
+<td>the purchasing coverage tab and its arithmetic</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_bom_open_in_explorer.mjs</code></td>
+<td>opening a BOM from the product card in the explorer</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_ebom_scaffold.mjs</code>, <code>web-client/_e2e_ebom_wizard.mjs</code>, <code>web-client/_e2e_ebom_operation_staging.mjs</code></td>
+<td>the routing scaffold that reads the BOM tree</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_bom_bugfix_batch.mjs</code></td>
+<td>the BOM forms in a browser</td>
+</tr>
+</tbody>
+</table>
+<h2 id="discrepancies">Discrepancies<a class="headerlink" href="#discrepancies">¶</a></h2>
+<aside class="adm adm-warning" role="note"><p class="adm-title">Warning</p><p>Discrepancy. The project's written engineering rules make the product, model, and version breakdown mandatory and forbid a silent fallback. <code>BomTemplateItem</code> stores only <code>part_id</code> (<code>src/cluster_erp/modules/bom/bom_templates/models.py:51-55</code>). When a template is copied, each item takes its product's default model and version, and the copy fails if a product has none (<code>src/cluster_erp/modules/bom/bom_versions/services.py:596-617</code>). The auto-BOM on design approval also takes the default breakdown (<code>src/cluster_erp/modules/bom/module.py:718-735</code>). This page documents the code.</p>
+<p><strong>Warning:</strong> Discrepancy. The project's written engineering rules forbid fixed values in code and ask for config values. The default scrap factor and the maximum BOM depth are module constants (<code>src/cluster_erp/modules/bom/bom_items/services.py:32-33</code>). This page documents the code.</p>
+</aside>
+<h2 id="terms-introduced">Terms introduced<a class="headerlink" href="#terms-introduced">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Code identifier</th>
+<th>Definition</th>
+<th>Turkish term</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bill of materials</td>
+<td><code>Bom</code></td>
+<td>The card that names the product breakdown a structure builds.</td>
+<td>Ürün ağacı</td>
+<td><code>src/cluster_erp/modules/bom/boms/models.py:17</code></td>
+</tr>
+<tr>
+<td>BOM version</td>
+<td><code>BomVersion</code></td>
+<td>A numbered snapshot of a BOM structure with a lifecycle.</td>
+<td>Ürün ağacı versiyonu</td>
+<td><code>src/cluster_erp/modules/bom/bom_versions/models.py:19</code></td>
+</tr>
+<tr>
+<td>BOM item</td>
+<td><code>BomItem</code></td>
+<td>One position of a BOM version.</td>
+<td>Ürün ağacı kalemi</td>
+<td><code>src/cluster_erp/modules/bom/bom_items/models.py:18</code></td>
+</tr>
+<tr>
+<td>explosion</td>
+<td><code>explosion</code></td>
+<td>The flat item list with effective quantities and a rollup per breakdown.</td>
+<td>Patlatma</td>
+<td><code>src/cluster_erp/modules/bom/bom_versions/services.py:722</code></td>
+</tr>
+<tr>
+<td>effective quantity</td>
+<td><code>effective_qty</code></td>
+<td>Quantity per finished unit after scrap and parent multiplication.</td>
+<td>Etkin miktar</td>
+<td><code>src/cluster_erp/modules/bom/bom_versions/services.py:748-767</code></td>
+</tr>
+<tr>
+<td>co-product</td>
+<td>negative <code>qty</code></td>
+<td>A BOM item with negative quantity, an expected output.</td>
+<td>Ko-ürün</td>
+<td><code>src/cluster_erp/modules/bom/bom_items/services.py:139-146</code></td>
+</tr>
+<tr>
+<td>phantom item</td>
+<td><code>is_phantom</code></td>
+<td>An item that coverage skips because its children carry the multiplied demand.</td>
+<td>Hayalet kalem</td>
+<td><code>src/cluster_erp/modules/bom/bom_versions/services.py:830-831</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="index.html">Modules index</a></li>
+<li><a href="products_and_services.html">Products and services module</a></li>
+<li><a href="design_engineering.html">Design engineering module</a></li>
+<li><a href="costing.html">Costing module</a></li>
+<li><a href="production/index.html">Production module</a></li>
+<li><a href="../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li><a href="../api/bom.html">API reference for this module</a></li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../modules/auth.html"><span class="eyebrow">Previous</span><span>Auth module (auth)</span></a><a class="next" href="../modules/calendars.html"><span class="eyebrow">Next</span><span>Calendars module (calendars)</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#at-a-glance">At a glance</a></li>
+<li class="lvl2"><a href="#what-the-module-does">What the module does</a></li>
+<li class="lvl2"><a href="#sub-modules">Sub-modules</a></li>
+<li class="lvl2"><a href="#data-model">Data model</a></li>
+<li class="lvl2"><a href="#screens-and-metadata">Screens and metadata</a></li>
+<li class="lvl2"><a href="#status-and-actions">Status and actions</a></li>
+<li class="lvl2"><a href="#business-rules">Business rules</a></li>
+<li class="lvl3"><a href="#explosion-and-the-operation-bom">Explosion and the operation BOM</a></li>
+<li class="lvl2"><a href="#events-and-queries">Events and queries</a></li>
+<li class="lvl2"><a href="#permissions">Permissions</a></li>
+<li class="lvl2"><a href="#privacy-retention-and-history">Privacy, retention, and history</a></li>
+<li class="lvl2"><a href="#analytics-facts">Analytics facts</a></li>
+<li class="lvl2"><a href="#settings-and-reference-data">Settings and reference data</a></li>
+<li class="lvl2"><a href="#tests">Tests</a></li>
+<li class="lvl2"><a href="#discrepancies">Discrepancies</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

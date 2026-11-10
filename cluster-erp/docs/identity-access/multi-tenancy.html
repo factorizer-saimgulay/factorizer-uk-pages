@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Multi-tenancy · Cluster ERP Wiki</title>
+<meta name="description" content="The database-per-tenant model in core/tenancy.py, how a request is routed to its tenant database, and how memberships suspend and close tenants.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../identity-access/multi-tenancy.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.html">Overview</a></li>
+<li class=""><a href="../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.html">Platform core</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../platform/change-history.html">Change history</a></li>
+<li class=""><a href="../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../platform/event-bus.html">Event bus</a></li>
+<li class=""><a href="../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class=""><a href="../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class="current"><a href="../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../web-app/generic-form.html">Generic form</a></li>
+<li class=""><a href="../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class=""><a href="../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.html">Desktop client</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class=""><a href="../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.html">Business modules</a></li>
+<li class=""><a href="../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class=""><a href="../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../modules/auth.html">Auth module (auth)</a></li>
+<li class=""><a href="../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class=""><a href="../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class=""><a href="../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../modules/intranet/requests.html">Intranet requests</a></li>
+<li class=""><a href="../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../modules/mail.html">Mail module (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class=""><a href="../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../modules/production/work-orders.html">Work orders</a></li>
+<li class=""><a href="../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.html">API reference</a></li>
+<li class=""><a href="../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.html">Documents API (documents)</a></li>
+<li class=""><a href="../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.html">API overview</a></li>
+<li class=""><a href="../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class=""><a href="../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.html">Operations</a></li>
+<li class=""><a href="../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class=""><a href="../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class=""><a href="../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.html">Reference</a></li>
+<li class=""><a href="../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.html">Home</a> / Identity and access</div>
+    <header class="page-head">
+      <p class="eyebrow">Explanation</p>
+      <h1>Multi-tenancy</h1>
+      <p class="lede">The database-per-tenant model in core/tenancy.py, how a request is routed to its tenant database, and how memberships suspend and close tenants.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#in-short">In short</a></li>
+<li class="lvl2"><a href="#how-it-works">How it works</a></li>
+<li class="lvl3"><a href="#control-plane">Control plane</a></li>
+<li class="lvl3"><a href="#tenant-resolution">Tenant resolution</a></li>
+<li class="lvl3"><a href="#engine-cache">Engine cache</a></li>
+<li class="lvl3"><a href="#background-work-per-tenant">Background work per tenant</a></li>
+<li class="lvl3"><a href="#membership-and-status">Membership and status</a></li>
+<li class="lvl2"><a href="#why-it-is-built-this-way">Why it is built this way</a></li>
+<li class="lvl2"><a href="#rules-and-boundaries">Rules and boundaries</a></li>
+<li class="lvl2"><a href="#interaction-with-other-parts">Interaction with other parts</a></li>
+<li class="lvl2"><a href="#limits-and-open-points">Limits and open points</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p>Cluster ERP can serve many customer companies from one deployment. Each company, a tenant (<code>Tenant</code>), has its own physical PostgreSQL database; a separate control-plane database holds the tenant registry, the commercial memberships, operator accounts, and rate-limit counters. The mode is off by default and turned on with the setting <code>multi_tenant</code>. This page explains <code>core/tenancy.py</code>, the tenant routing in <code>server/dependencies.py</code>, the request context in <code>core/request_context.py</code>, and the membership commands in <code>server/membership.py</code>. Provisioning and offboarding commands are in <a href="../operations/tenant-lifecycle.html">tenant lifecycle</a>.</p>
+<h2 id="in-short">In short<a class="headerlink" href="#in-short">¶</a></h2>
+<ul>
+<li>Isolation is by database: a request resolved to tenant A gets an engine whose connection names A's database, so there is no query filter to forget (<code>src/cluster_erp/core/tenancy.py:1-16</code>).</li>
+<li>Control-plane tables use their own declarative base, <code>ControlBase</code>, so tenant schema creation never creates them and the reverse (<code>src/cluster_erp/core/tenancy.py:86-93</code>).</li>
+<li>A request is routed by the signature-verified tenant claim of its token, or at sign-in by the <code>X-Tenant-Domain</code> header; anything that does not resolve to an <code>active</code> tenant gets one generic HTTP 401 (<code>src/cluster_erp/server/dependencies.py:104-157</code>).</li>
+<li>A tenant has four statuses in the database constraint: <code>provisioning</code>, <code>active</code>, <code>suspended</code>, and <code>closed</code> (<code>src/cluster_erp/core/tenancy.py:124-129</code>).</li>
+<li>A daily pass suspends tenants whose membership period has ended (<code>src/cluster_erp/core/tenancy.py:324-354</code>, <code>src/cluster_erp/server/app.py:372-403</code>).</li>
+</ul>
+<h2 id="how-it-works">How it works<a class="headerlink" href="#how-it-works">¶</a></h2>
+<h3 id="control-plane">Control plane<a class="headerlink" href="#control-plane">¶</a></h3>
+<p><code>ControlBase</code> declares six tables, counted with <code>grep __tablename__</code> in <code>core/tenancy.py</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Entity</th>
+<th>Table</th>
+<th>Purpose</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Tenant</code></td>
+<td><code>control_tenants</code></td>
+<td>Key, name, status, database name, mail domains, region, closing data</td>
+<td><code>src/cluster_erp/core/tenancy.py:96-129</code></td>
+</tr>
+<tr>
+<td><code>Operator</code></td>
+<td><code>control_operators</code></td>
+<td>Operator console accounts</td>
+<td><code>src/cluster_erp/core/tenancy.py:132-154</code></td>
+</tr>
+<tr>
+<td><code>OperatorAction</code></td>
+<td><code>control_operator_actions</code></td>
+<td>Audit trail of operator actions</td>
+<td><code>src/cluster_erp/core/tenancy.py:157-170</code></td>
+</tr>
+<tr>
+<td><code>RateLimitBucket</code></td>
+<td><code>control_rate_limits</code></td>
+<td>Shared fixed-window counters for anonymous routes</td>
+<td><code>src/cluster_erp/core/tenancy.py:173-183</code></td>
+</tr>
+<tr>
+<td><code>ControlRetentionRun</code></td>
+<td><code>control_retention_runs</code></td>
+<td>Summary of each control-plane retention pass</td>
+<td><code>src/cluster_erp/core/tenancy.py:186-198</code></td>
+</tr>
+<tr>
+<td><code>Membership</code></td>
+<td><code>control_memberships</code></td>
+<td>Plan, status, admin e-mail, payment reference, period end, provisioning state, signup tokens as digests</td>
+<td><code>src/cluster_erp/core/tenancy.py:201-285</code></td>
+</tr>
+</tbody>
+</table>
+<p>A tenant key must match a strict identifier pattern because it becomes the database name suffix, <code>tenant_db_prefix</code> plus key (<code>src/cluster_erp/core/tenancy.py:42-46</code>, <code>src/cluster_erp/core/tenancy.py:458-468</code>). Mail domains are stored lower-cased and IDNA-encoded by <code>normalize_domain</code> (<code>src/cluster_erp/core/tenancy.py:53-70</code>). Each tenant has a fixed data-residency <code>region</code>; its database lives on that region's server (<code>src/cluster_erp/core/tenancy.py:107-108</code>, <code>src/cluster_erp/core/tenancy.py:593-595</code>).</p>
+<h3 id="tenant-resolution">Tenant resolution<a class="headerlink" href="#tenant-resolution">¶</a></h3>
+<p>The flowchart shows how <code>get_db_session</code> finds the database of a request.</p>
+<figure class="diagram"><pre class="mermaid">flowchart TD
+ start[&quot;get_db_session&quot;] --&gt; mode{&quot;multi_tenant on?&quot;}
+ mode --&gt;|no| default[&quot;process default Database&quot;]
+ mode --&gt;|yes| token[&quot;routing_token from Bearer or cookies&quot;]
+ token --&gt; claim[&quot;read_tenant_claim, then TenantRegistry.by_key&quot;]
+ claim --&gt; found{&quot;tenant found?&quot;}
+ found --&gt;|no| domain[&quot;X-Tenant-Domain, then TenantRegistry.by_domain&quot;]
+ found --&gt;|yes| active
+ domain --&gt; active{&quot;status active?&quot;}
+ active --&gt;|no| err[&quot;AUTH_TENANT_UNRESOLVED 401&quot;]
+ active --&gt;|yes| ctx[&quot;request.state.tenant_key, set_tenant_context&quot;]
+ ctx --&gt; engine[&quot;TenantRegistry.database_for&quot;]</pre></figure>
+<p>In prose:</p>
+<ol>
+<li>With <code>multi_tenant</code> off, every request uses the process-wide database (<code>src/cluster_erp/server/dependencies.py:116-118</code>).</li>
+<li>Otherwise the dependency takes the Bearer token, the access cookie, or the refresh cookie; for a Bearer refresh it reads the refresh token from the body (<code>src/cluster_erp/server/dependencies.py:127-134</code>, <code>src/cluster_erp/modules/auth/session_cookies.py:87-109</code>).</li>
+<li><code>read_tenant_claim</code> returns the tenant key only from a token whose signature verifies; expiry is ignored so that an expired session can still refresh (<code>src/cluster_erp/modules/auth/jwt_utils.py:63-77</code>).</li>
+<li>Without a usable claim, the <code>X-Tenant-Domain</code> header is matched against live, active tenants (<code>src/cluster_erp/server/dependencies.py:139-142</code>, <code>src/cluster_erp/core/tenancy.py:477-493</code>).</li>
+<li>A missing or non-active tenant raises <code>AUTH_TENANT_UNRESOLVED</code> with HTTP 401 (<code>src/cluster_erp/server/dependencies.py:143-148</code>).</li>
+<li>The tenant key is published on <code>request.state</code> for the login route and in the request context for storage keys (<code>src/cluster_erp/server/dependencies.py:149-150</code>, <code>src/cluster_erp/core/request_context.py:23-27</code>).</li>
+<li><code>database_for</code> returns a cached engine for the tenant (<code>src/cluster_erp/server/dependencies.py:151-157</code>).</li>
+</ol>
+<h3 id="engine-cache">Engine cache<a class="headerlink" href="#engine-cache">¶</a></h3>
+<p><code>TenantRegistry</code> keeps at most <code>tenant_max_engines</code> tenant engines per process and evicts the least recently used one, closing its pool. Each tenant engine uses <code>tenant_pool_size</code> and <code>tenant_pool_max_overflow</code> (<code>src/cluster_erp/core/tenancy.py:288-305</code>, <code>src/cluster_erp/core/tenancy.py:597-615</code>). At start-up the registry warns when the connection budget can exceed the server's limit (<code>src/cluster_erp/server/app.py:119-121</code>).</p>
+<h3 id="background-work-per-tenant">Background work per tenant<a class="headerlink" href="#background-work-per-tenant">¶</a></h3>
+<p>Scheduled jobs iterate over <code>active_tenants</code>, optionally including suspended tenants for retention and log purges (<code>src/cluster_erp/core/tenancy.py:495-510</code>). The session dependency also publishes the request's tenant database in a context variable, so EventBus handlers open their sessions on the caller's tenant (<code>src/cluster_erp/server/dependencies.py:178-184</code>).</p>
+<h3 id="membership-and-status">Membership and status<a class="headerlink" href="#membership-and-status">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Meaning</th>
+<th>Set by</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>provisioning</code></td>
+<td>Registered; the database is being created</td>
+<td><code>create_tenant</code></td>
+<td><code>src/cluster_erp/core/tenancy.py:443-475</code></td>
+</tr>
+<tr>
+<td><code>active</code></td>
+<td>Resolves at sign-in</td>
+<td>provisioning, <code>extend</code>, <code>activate</code></td>
+<td><code>src/cluster_erp/server/membership.py:83-125</code></td>
+</tr>
+<tr>
+<td><code>suspended</code></td>
+<td>Does not resolve; data kept</td>
+<td>expiry sweep, <code>suspend</code></td>
+<td><code>src/cluster_erp/core/tenancy.py:324-354</code>, <code>src/cluster_erp/server/membership.py:108-125</code></td>
+</tr>
+<tr>
+<td><code>closed</code></td>
+<td>Relationship ended; row kept with note; memberships cancelled</td>
+<td><code>close_tenant</code></td>
+<td><code>src/cluster_erp/core/tenancy.py:550-585</code></td>
+</tr>
+</tbody>
+</table>
+<p>The membership command line offers <code>list</code>, <code>sweep</code>, <code>retention</code>, <code>extend</code>, <code>suspend</code>, and <code>activate</code> (<code>src/cluster_erp/server/membership.py:156-170</code>). The operator console offers extend, suspend, and activate as well; see <a href="operator-console.html">operator console</a>.</p>
+<aside class="adm adm-note" role="note"><p class="adm-title">Note</p><p><code>TENANT_STATUSES</code> lists the four values <code>provisioning</code>, <code>active</code>, <code>suspended</code> and <code>closed</code> (<code>src/cluster_erp/core/tenancy.py:50</code>), the same set the database check constraint and <code>close_tenant</code> use (<code>src/cluster_erp/core/tenancy.py:124-129</code>, <code>src/cluster_erp/core/tenancy.py:566</code>).</p>
+</aside>
+<h2 id="why-it-is-built-this-way">Why it is built this way<a class="headerlink" href="#why-it-is-built-this-way">¶</a></h2>
+<ul>
+<li>The module docstring states that one physical database per customer makes isolation hold by construction (<code>src/cluster_erp/core/tenancy.py:10-14</code>).</li>
+<li>Unknown domains and non-active tenants answer like a wrong password so that the endpoint cannot enumerate customers (<code>src/cluster_erp/core/tenancy.py:477-483</code>, <code>src/cluster_erp/server/dependencies.py:112-114</code>).</li>
+<li>The billing state lives on the control plane so that a suspended customer stays suspended whatever its own database says (<code>src/cluster_erp/core/tenancy.py:201-206</code>).</li>
+<li>The engine cache is bounded so that a long-lived worker serving many tenants cannot exhaust database connections (<code>src/cluster_erp/core/tenancy.py:288-296</code>).</li>
+</ul>
+<h2 id="rules-and-boundaries">Rules and boundaries<a class="headerlink" href="#rules-and-boundaries">¶</a></h2>
+<ul>
+<li><code>multi_tenant</code> defaults to false; a single-tenant deployment keeps its previous behaviour (<code>src/cluster_erp/config/settings.py:78-84</code>).</li>
+<li>In multi-tenant mode the settings validator requires storage, backup, and mail encryption keys (<code>src/cluster_erp/config/settings.py:805-821</code>). See <a href="second-factor-and-secret-storage.html">second factor and secret storage</a>.</li>
+<li>Signup and the operator console routes are mounted only in multi-tenant mode (<code>src/cluster_erp/server/app.py:1440-1457</code>).</li>
+<li><code>tests/test_tenancy.py</code> (12 tests) and <code>tests/test_refresh_routing_body.py</code> (3 tests) pin the pure tenancy rules and body routing; the e2e suites <code>web-client/_e2e_tenant_isolation.mjs</code>, <code>web-client/_e2e_sep_companies.mjs</code>, and <code>web-client/_e2e_tenant_regions.mjs</code> cover isolation and regions (counted with <code>grep -c "def test_"</code> and found by name).</li>
+</ul>
+<h2 id="interaction-with-other-parts">Interaction with other parts<a class="headerlink" href="#interaction-with-other-parts">¶</a></h2>
+<ul>
+<li><a href="authentication-and-sessions.html">Authentication and sessions</a> stamps the tenant key into tokens.</li>
+<li><a href="signup.html">Signup</a> creates tenants and memberships.</li>
+<li><a href="../operations/data-residency-check.html">Data residency check</a> verifies regions.</li>
+<li><a href="../platform/database-and-sessions.html">Database and sessions</a> covers the session dependency in general.</li>
+</ul>
+<h2 id="limits-and-open-points">Limits and open points<a class="headerlink" href="#limits-and-open-points">¶</a></h2>
+<ul>
+<li>Moving a tenant to another region is not determined from code; the field comment states that a region never changes (<code>src/cluster_erp/config/settings.py:90-92</code>).</li>
+<li><code>deleted_at</code> on <code>Tenant</code> is set by <code>close_tenant</code> (<code>src/cluster_erp/core/tenancy.py:568-569</code>); a reopen path is not determined from code.</li>
+</ul>
+<h2 id="terms-introduced">Terms introduced<a class="headerlink" href="#terms-introduced">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Code identifier</th>
+<th>Definition</th>
+<th>Turkish term</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tenant</td>
+<td><code>Tenant</code></td>
+<td>One customer company with its own physical database.</td>
+<td>kiracı</td>
+<td><code>src/cluster_erp/core/tenancy.py:96</code></td>
+</tr>
+<tr>
+<td>control plane</td>
+<td><code>ControlBase</code></td>
+<td>The separate database of tenants, memberships, operators, and counters.</td>
+<td>kontrol düzlemi</td>
+<td><code>src/cluster_erp/core/tenancy.py:86</code></td>
+</tr>
+<tr>
+<td>membership</td>
+<td><code>Membership</code></td>
+<td>The commercial record behind a tenant: plan, status, period, and provisioning state.</td>
+<td>Üyelik (<code>webapp/i18n/tr.json</code> key <code>signup.title</code>)</td>
+<td><code>src/cluster_erp/core/tenancy.py:201</code></td>
+</tr>
+<tr>
+<td>tenant key</td>
+<td><code>Tenant.key</code></td>
+<td>The stable lowercase identifier of a tenant, also used as the suffix of its database name.</td>
+<td>kiracı anahtarı</td>
+<td><code>src/cluster_erp/core/tenancy.py:99</code></td>
+</tr>
+<tr>
+<td>tenant registry</td>
+<td><code>TenantRegistry</code></td>
+<td>The per-process accessor of the control plane with a bounded engine cache.</td>
+<td>kiracı kayıt defteri</td>
+<td><code>src/cluster_erp/core/tenancy.py:288</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li><a href="signup.html">Signup</a></li>
+<li><a href="operator-console.html">Operator console</a></li>
+<li><a href="../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li><a href="../platform/settings-reference.html">Settings reference</a></li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../identity-access/field-and-row-access.html"><span class="eyebrow">Previous</span><span>Field and row access</span></a><a class="next" href="../identity-access/notification-rules.html"><span class="eyebrow">Next</span><span>Notification rules</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#in-short">In short</a></li>
+<li class="lvl2"><a href="#how-it-works">How it works</a></li>
+<li class="lvl3"><a href="#control-plane">Control plane</a></li>
+<li class="lvl3"><a href="#tenant-resolution">Tenant resolution</a></li>
+<li class="lvl3"><a href="#engine-cache">Engine cache</a></li>
+<li class="lvl3"><a href="#background-work-per-tenant">Background work per tenant</a></li>
+<li class="lvl3"><a href="#membership-and-status">Membership and status</a></li>
+<li class="lvl2"><a href="#why-it-is-built-this-way">Why it is built this way</a></li>
+<li class="lvl2"><a href="#rules-and-boundaries">Rules and boundaries</a></li>
+<li class="lvl2"><a href="#interaction-with-other-parts">Interaction with other parts</a></li>
+<li class="lvl2"><a href="#limits-and-open-points">Limits and open points</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

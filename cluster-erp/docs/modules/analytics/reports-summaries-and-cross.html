@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Analytics reports, summaries, and cross · Cluster ERP Wiki</title>
+<meta name="description" content="Reference for analytics reports with result snapshots, the pre-aggregated summary cells and their refresh, data profiling, and cross-fact comparison.">
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="icon" href="../../assets/mark.svg" type="image/svg+xml">
+<script defer src="../../assets/mermaid.min.js"></script>
+<script defer src="../../assets/site.js" data-root="../../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../../modules/analytics/reports-summaries-and-cross.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../../overview/index.html">Overview</a></li>
+<li class=""><a href="../../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../../platform/index.html">Platform core</a></li>
+<li class=""><a href="../../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../../platform/change-history.html">Change history</a></li>
+<li class=""><a href="../../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../../platform/event-bus.html">Event bus</a></li>
+<li class=""><a href="../../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class=""><a href="../../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class=""><a href="../../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class=""><a href="../../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class=""><a href="../../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../../web-app/generic-form.html">Generic form</a></li>
+<li class=""><a href="../../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class=""><a href="../../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../../desktop/index.html">Desktop client</a></li>
+<li class=""><a href="../../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class=""><a href="../../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class=""><a href="../../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../../modules/index.html">Business modules</a></li>
+<li class=""><a href="../../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="current sub"><a href="../../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class=""><a href="../../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../../modules/auth.html">Auth module (auth)</a></li>
+<li class=""><a href="../../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class=""><a href="../../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="sub"><a href="../../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="sub"><a href="../../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class=""><a href="../../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="sub"><a href="../../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../../modules/intranet/requests.html">Intranet requests</a></li>
+<li class=""><a href="../../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../../modules/mail.html">Mail module (mail)</a></li>
+<li class=""><a href="../../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class=""><a href="../../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="sub"><a href="../../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="sub"><a href="../../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../../modules/production/work-orders.html">Work orders</a></li>
+<li class=""><a href="../../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class=""><a href="../../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../../api/index.html">API reference</a></li>
+<li class=""><a href="../../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../../api/documents.html">Documents API (documents)</a></li>
+<li class=""><a href="../../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../../api/overview.html">API overview</a></li>
+<li class=""><a href="../../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class=""><a href="../../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../../api/records.html">Records API (records)</a></li>
+<li class=""><a href="../../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../../operations/index.html">Operations</a></li>
+<li class=""><a href="../../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class=""><a href="../../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class=""><a href="../../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../../reference/index.html">Reference</a></li>
+<li class=""><a href="../../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../../index.html">Home</a> / Business modules</div>
+    <header class="page-head">
+      <p class="eyebrow">Reference</p>
+      <h1>Analytics reports, summaries, and cross</h1>
+      <p class="lede">Reference for analytics reports with result snapshots, the pre-aggregated summary cells and their refresh, data profiling, and cross-fact comparison.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#scope-and-source">Scope and source</a></li>
+<li class="lvl2"><a href="#reports">Reports</a></li>
+<li class="lvl2"><a href="#summary-cells">Summary cells</a></li>
+<li class="lvl2"><a href="#profiling">Profiling</a></li>
+<li class="lvl2"><a href="#cross-fact-comparison">Cross-fact comparison</a></li>
+<li class="lvl2"><a href="#constraints-and-validation">Constraints and validation</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p>This page describes four files of the <code>analytics</code> module in <code>src/cluster_erp/modules/analytics/</code>: <code>reports.py</code> (documents built from captured results), <code>summaries.py</code> (pre-aggregated summary cells), <code>profiling.py</code> (data profiles and the shared column allow-list), and <code>cross.py</code> (alignment of two fact sets on a period axis).</p>
+<h2 id="scope-and-source">Scope and source<a class="headerlink" href="#scope-and-source">¶</a></h2>
+<ul>
+<li>Defined in: <code>ReportService</code> (<code>src/cluster_erp/modules/analytics/reports.py:73</code>), the summary functions <code>load_states</code>, <code>refresh</code>, and <code>plan</code> (<code>src/cluster_erp/modules/analytics/summaries.py:345-500</code>), <code>profile_targets</code> and <code>Profiler</code> (<code>src/cluster_erp/modules/analytics/profiling.py:118-142</code>), and the pure functions of <code>cross.py</code> (<code>src/cluster_erp/modules/analytics/cross.py:28-157</code>).</li>
+<li>Tables: <code>analytics_reports</code>, <code>analytics_report_items</code>, <code>analytics_summary_cells</code>, <code>analytics_summary_state</code> (<code>src/cluster_erp/modules/analytics/models.py:66-148</code>).</li>
+<li>Routes: <code>/analysis/reports</code> (9 routes), <code>/analysis/summaries</code> and <code>/analysis/summaries/refresh</code>, <code>/analysis/profile/{fact_key}</code>, <code>/analysis/cross/compare/{fact_a}</code>, and <code>/analysis/cross/correlate/{fact_a}</code> (<code>src/cluster_erp/modules/analytics/routes.py:56-78</code>, <code>src/cluster_erp/modules/analytics/routes.py:686-785</code>, <code>src/cluster_erp/modules/analytics/routes.py:1071-1237</code>).</li>
+</ul>
+<h2 id="reports">Reports<a class="headerlink" href="#reports">¶</a></h2>
+<p>A report is a named document of captured analysis results. A report item stores the kind, fact, and parameters, and also the result snapshot with its capture time, so a report never changes when the data does (<code>src/cluster_erp/modules/analytics/reports.py:1-17</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Detail</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Visibility</td>
+<td>owner plus organisation-wide <code>is_shared</code>; editing is owner-only</td>
+<td><code>src/cluster_erp/modules/analytics/reports.py:10-12</code></td>
+</tr>
+<tr>
+<td>Access answers</td>
+<td>a foreign private report answers not found; a shared report edited by a non-owner answers forbidden</td>
+<td><code>src/cluster_erp/modules/analytics/reports.py:12-14</code></td>
+</tr>
+<tr>
+<td>Content</td>
+<td>snapshots contain semantic keys and computed numbers only</td>
+<td><code>src/cluster_erp/modules/analytics/reports.py:15-17</code></td>
+</tr>
+<tr>
+<td>Items</td>
+<td>add, update, move, and remove items</td>
+<td><code>src/cluster_erp/modules/analytics/reports.py:222-362</code></td>
+</tr>
+<tr>
+<td>Removal</td>
+<td>a report is deactivated with a reason</td>
+<td><code>src/cluster_erp/modules/analytics/reports.py:198-220</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="summary-cells">Summary cells<a class="headerlink" href="#summary-cells">¶</a></h2>
+<p>The summary cells keep, per fact set and per date axis, one row per day and combination of summary dimensions, with the row count and the sum and non-null count of every decomposable measure. A report that fits the cells is answered from them, and the current day is always read live (<code>src/cluster_erp/modules/analytics/summaries.py:1-17</code>).</p>
+<figure class="diagram"><pre class="mermaid">flowchart LR
+ F[&quot;fact table rows&quot;] --&gt;|refresh by updated_at watermark| C[&quot;AnalyticsSummaryCell per day and dims&quot;]
+ F --&gt;|full rebuild| C
+ C --&gt; P{&quot;summaries.plan&quot;}
+ T[&quot;today rows, live&quot;] --&gt; P
+ P --&gt;|fits| S[&quot;answer source summary&quot;]
+ P --&gt;|Ineligible with reason| L[&quot;answer source live&quot;]</pre></figure>
+<p>In prose:</p>
+<ul>
+<li>Cells are keyed by every text and boolean dimension and by the reference dimensions that the contributing module marked <code>rollup</code> (<code>src/cluster_erp/modules/analytics/summaries.py:89-99</code>).</li>
+<li>A measure is served from cells only when its aggregation decomposes: <code>count</code>, <code>sum</code>, and <code>avg</code> as sum over count. <code>count_distinct</code>, <code>median</code>, <code>min</code>, and <code>max</code> stay live (<code>src/cluster_erp/modules/analytics/summaries.py:21-23</code>).</li>
+<li>A query that uses a dimension outside the summary set, a second date axis, or an ordering operator on text runs live; the result states its <code>source</code> and the reason (<code>src/cluster_erp/modules/analytics/summaries.py:24-26</code>, <code>src/cluster_erp/modules/analytics/summaries.py:399-426</code>, <code>src/cluster_erp/modules/analytics/service.py:157-168</code>).</li>
+<li>Cells exclude the rows the live filter excludes; a deactivation changes <code>updated_at</code>, so its day is recomputed (<code>src/cluster_erp/modules/analytics/summaries.py:27-28</code>).</li>
+<li>The refresh is incremental by <code>updated_at</code> every <code>analytics_summary_refresh_seconds</code> (default 60); a full rebuild runs every <code>analytics_summary_rebuild_minutes</code> (default 60). A fact set is served from cells only after its first refresh (<code>src/cluster_erp/modules/analytics/summaries.py:29-40</code>, <code>src/cluster_erp/config/settings.py:528-531</code>, <code>src/cluster_erp/server/app.py:461-470</code>).</li>
+<li><code>GET /analysis/summaries</code> shows the state per fact and axis; <code>POST /analysis/summaries/refresh</code> runs a refresh or a rebuild on demand (<code>src/cluster_erp/modules/analytics/routes.py:1207-1237</code>, <code>src/cluster_erp/modules/analytics/service.py:170-198</code>).</li>
+</ul>
+<p>The docstring states that cells are derived data, so deleting and rewriting a cell is not the deletion of a record (<code>src/cluster_erp/modules/analytics/summaries.py:18-20</code>).</p>
+<h2 id="profiling">Profiling<a class="headerlink" href="#profiling">¶</a></h2>
+<p>A profile covers table-level and column-level metrics by default; dependency discovery runs only on demand and on a sample (<code>src/cluster_erp/modules/analytics/profiling.py:1-14</code>).</p>
+<ul>
+<li><code>profile_targets</code> turns a fact's declared dimensions and measure columns into the list of profilable columns. It is the shared allow-list used by statistics, inference, series, and recipes (<code>src/cluster_erp/modules/analytics/profiling.py:118-140</code>).</li>
+<li>Deactivated rows are excluded through <code>live_scope</code> (<code>src/cluster_erp/modules/analytics/profiling.py:55-68</code>).</li>
+<li>Quantiles use <code>percentile_disc</code>; there is no <code>round()</code> and no float cast in the generated SQL (<code>src/cluster_erp/modules/analytics/profiling.py:24-27</code>).</li>
+<li>A relation larger than <code>analytics_profile_exact_max_rows</code> (default 200000) is profiled on a sample of <code>analytics_profile_sample_rows</code> (default 50000), and the profile says so (<code>src/cluster_erp/modules/analytics/profiling.py:29-33</code>, <code>src/cluster_erp/modules/analytics/profiling.py:166</code>, <code>src/cluster_erp/config/settings.py:485-486</code>).</li>
+<li>For a monetary column whose rows span several currencies, the numeric and ordered metrics are not computed (<code>src/cluster_erp/modules/analytics/profiling.py:216-250</code>).</li>
+</ul>
+<h2 id="cross-fact-comparison">Cross-fact comparison<a class="headerlink" href="#cross-fact-comparison">¶</a></h2>
+<p><code>cross.py</code> aligns two fact sets on a shared period axis built by the same series engine (<code>src/cluster_erp/modules/analytics/cross.py:1-15</code>):</p>
+<ul>
+<li>The join is inner on periods defined on both sides; each side's exclusive periods are counted, not dropped (<code>src/cluster_erp/modules/analytics/cross.py:41-80</code>).</li>
+<li>An optional lag shifts side B by whole periods.</li>
+<li>A categorical side is derived from counts as presence or share, and the derivation is reported (<code>src/cluster_erp/modules/analytics/cross.py:82-115</code>).</li>
+</ul>
+<p>Both fact sets resolve through the caller's permission-filtered catalogue; an unreadable side makes the whole question unknown (<code>src/cluster_erp/modules/analytics/service.py:535-563</code>).</p>
+<h2 id="constraints-and-validation">Constraints and validation<a class="headerlink" href="#constraints-and-validation">¶</a></h2>
+<ul>
+<li>Report items and saved models never store physical names (<code>src/cluster_erp/modules/analytics/reports.py:15-17</code>).</li>
+<li>The summary refresh is a background loop on the server; a deployment with the refresh switched off answers everything live (<code>src/cluster_erp/modules/analytics/summaries.py:38-39</code>).</li>
+</ul>
+<h2 id="terms-introduced">Terms introduced<a class="headerlink" href="#terms-introduced">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Code identifier</th>
+<th>Definition</th>
+<th>Turkish term</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>summary cell</td>
+<td><code>AnalyticsSummaryCell</code></td>
+<td>One pre-aggregated row per fact, date axis, day, and dimension combination.</td>
+<td>Özet hücresi</td>
+<td><code>src/cluster_erp/modules/analytics/models.py:112</code></td>
+</tr>
+<tr>
+<td>report item</td>
+<td><code>AnalyticsReportItem</code></td>
+<td>A captured analysis inside a report, with its result snapshot.</td>
+<td>Rapor kalemi</td>
+<td><code>src/cluster_erp/modules/analytics/models.py:86</code></td>
+</tr>
+<tr>
+<td>profile target</td>
+<td><code>profile_targets</code></td>
+<td>A declared column that profiling and statistics may read.</td>
+<td>Profil hedefi</td>
+<td><code>src/cluster_erp/modules/analytics/profiling.py:118</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="index.html">Analytics module</a></li>
+<li><a href="recipes-and-query-builder.html">Recipes and query builder</a></li>
+<li><a href="forecasting-and-classification.html">Forecasting and classification</a></li>
+<li><a href="analytics-facts.html">Analytics facts</a></li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../../modules/analytics/recipes-and-query-builder.html"><span class="eyebrow">Previous</span><span>Analytics recipes and query builder</span></a><a class="next" href="../../modules/analytics/statistics-and-inference.html"><span class="eyebrow">Next</span><span>Analytics statistics and inference</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#scope-and-source">Scope and source</a></li>
+<li class="lvl2"><a href="#reports">Reports</a></li>
+<li class="lvl2"><a href="#summary-cells">Summary cells</a></li>
+<li class="lvl2"><a href="#profiling">Profiling</a></li>
+<li class="lvl2"><a href="#cross-fact-comparison">Cross-fact comparison</a></li>
+<li class="lvl2"><a href="#constraints-and-validation">Constraints and validation</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

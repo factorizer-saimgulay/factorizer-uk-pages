@@ -1,0 +1,2008 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fleet API (fleet) · Cluster ERP Wiki</title>
+<meta name="description" content="/api/v1/fleet altındaki fleet modülünün HTTP uç noktaları: yetkiler, şemalar, durum kodları ve hata kodlarıyla 116 yol.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="tr"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menü</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.tr.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Wiki&#x27;de ara" aria-label="Wiki&#x27;de ara" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="Eşleşen sayfa yok."></div>
+  </div>
+  <a class="lang-switch" href="../api/fleet.html" lang="en" hreflang="en">English</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Ana sayfa</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.tr.html">Cluster ERP wiki&#x27;si</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Genel bakış</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.tr.html">Genel bakış</a></li>
+<li class=""><a href="../overview/architecture-overview.tr.html">Mimariye genel bakış</a></li>
+<li class=""><a href="../overview/repository-map.tr.html">Depo haritası</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.tr.html">Cluster ERP nedir</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.tr.html">Platform çekirdeği</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.tr.html">Ekler, notlar ve depolama</a></li>
+<li class=""><a href="../platform/base-model-and-ids.tr.html">Temel model ve kimlikler</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.tr.html">Önbellek ve varlık damgası</a></li>
+<li class=""><a href="../platform/change-history.tr.html">Değişiklik geçmişi</a></li>
+<li class=""><a href="../platform/contracts-reference.tr.html">Sözleşmeler başvurusu</a></li>
+<li class=""><a href="../platform/database-and-sessions.tr.html">Veritabanı ve oturumlar</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.tr.html">Hatalar ve istisnalar</a></li>
+<li class=""><a href="../platform/event-bus.tr.html">Olay veri yolu</a></li>
+<li class=""><a href="../platform/metadata-model.tr.html">Metadata modeli</a></li>
+<li class=""><a href="../platform/module-lifecycle.tr.html">Modül yaşam döngüsü</a></li>
+<li class=""><a href="../platform/money-and-decimal.tr.html">Para ve Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.tr.html">PDF ve sistem postası</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.tr.html">Ürün kırılımı ve stok dönüşümü</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.tr.html">Referans veriler ve çekirdek i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.tr.html">İstek hattı ve ara katmanlar</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.tr.html">Arama, sayfalama ve toplu işlemler</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.tr.html">Sunucu açılışı ve uygulama fabrikası</a></li>
+<li class=""><a href="../platform/settings-reference.tr.html">Ayarlar başvurusu</a></li>
+<li class=""><a href="../platform/shared-server-routes.tr.html">Ortak sunucu rotaları</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.tr.html">Yumuşak silme ve kullanımdan kaldırma</a></li>
+<li class=""><a href="../platform/tenant-fields.tr.html">Kiracı alanları</a></li>
+<li class=""><a href="../platform/working-time.tr.html">Çalışma zamanı</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Kimlik ve erişim</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.tr.html">Kimlik, erişim, kiracılık, gizlilik ve lisans</a></li>
+<li class=""><a href="../identity-access/abac-policies.tr.html">ABAC politikaları</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.tr.html">Uygulama mağazası lisansları ve hakları</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.tr.html">Onaylar ve onay zincirleri</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.tr.html">Kimlik doğrulama ve oturumlar</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.tr.html">Alan ve satır erişimi</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.tr.html">Çok kiracılılık</a></li>
+<li class=""><a href="../identity-access/notification-rules.tr.html">Bildirim kuralları</a></li>
+<li class=""><a href="../identity-access/operator-console.tr.html">Operatör konsolu</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.tr.html">Gizlilik ve ilgili kişi başvuruları</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.tr.html">Roller ve izinler</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.tr.html">İkinci doğrulama adımı ve gizli değer saklama</a></li>
+<li class=""><a href="../identity-access/signup.tr.html">Kayıt</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web uygulaması</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.tr.html">Web uygulaması platformu</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.tr.html">Aksiyonlar ve aksiyon kartı</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.tr.html">Asistan ve sohbet ekranları</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.tr.html">Açılış, oturum ve API çağrıları</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.tr.html">Veri tazeleme ve değişiklik sinyalleri</a></li>
+<li class=""><a href="../web-app/device-classes.tr.html">Cihaz sınıfları</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.tr.html">Kapılı uygulama paketleri</a></li>
+<li class=""><a href="../web-app/generic-detail.tr.html">Genel ayrıntı</a></li>
+<li class=""><a href="../web-app/generic-form.tr.html">Genel form</a></li>
+<li class=""><a href="../web-app/generic-list.tr.html">Genel liste</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.tr.html">Genel ağaç ve ayar ekranları</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.tr.html">Ana ekran, dock ve başlatıcı</a></li>
+<li class=""><a href="../web-app/home-widgets.tr.html">Ana ekran bileşenleri</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.tr.html">Web uygulamasına dil ekleyin</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.tr.html">Metadata ile ekran ekleyin</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.tr.html">Uluslararasılaştırma ve diller</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.tr.html">Mail ve profil ekranları</a></li>
+<li class=""><a href="../web-app/metadata-rendering.tr.html">Metadata çizimi</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.tr.html">Modül uygulamaları ve uygulama kapsamı</a></li>
+<li class=""><a href="../web-app/overview.tr.html">Web uygulamasına genel bakış</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.tr.html">Kayıt belgeleri, görüntüleyici ve paylaşım</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.tr.html">Arama ve komut paleti</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.tr.html">Temalar, belirteçler ve erişilebilirlik</a></li>
+<li class=""><a href="../web-app/user-ui-state.tr.html">Kullanıcı arayüz durumu</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Masaüstü istemci</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.tr.html">Masaüstü istemci</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.tr.html">API istemcisi ve çalışanlar</a></li>
+<li class=""><a href="../desktop/chat-widget.tr.html">Sohbet bileşeni</a></li>
+<li class=""><a href="../desktop/generic-widgets.tr.html">Genel bileşenler</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.tr.html">Diller, temalar ve erişilebilirlik</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.tr.html">Metadata deposu ve yabancı anahtar önbelleği</a></li>
+<li class=""><a href="../desktop/module-screens.tr.html">Modül ekranları</a></li>
+<li class=""><a href="../desktop/overview.tr.html">Masaüstü istemciye genel bakış</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.tr.html">Masaüstü istemciyi çalıştırın</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.tr.html">Sinyal veri yolu ve watch_entity</a></li>
+<li class=""><a href="../desktop/tabs-panes-and-layout.tr.html">Sekmeler, bölmeler ve yerleşim</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">İş modülleri</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.tr.html">İş modülleri</a></li>
+<li class=""><a href="../modules/analytics/index.tr.html">Analytics modülü (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.tr.html">Analitik olgular</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.tr.html">Analitik tahmin ve sınıflandırma</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.tr.html">Analitik tarifleri ve sorgu kurucu</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.tr.html">Analitik raporları, özetleri ve çapraz</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.tr.html">Analitik istatistik ve çıkarım</a></li>
+<li class=""><a href="../modules/app_store.tr.html">App store modülü (app_store)</a></li>
+<li class=""><a href="../modules/auth.tr.html">Auth modülü (auth)</a></li>
+<li class=""><a href="../modules/bom.tr.html">BOM modülü (bom)</a></li>
+<li class=""><a href="../modules/calendars.tr.html">Calendars modülü (calendars)</a></li>
+<li class=""><a href="../modules/costing.tr.html">Costing modülü (costing)</a></li>
+<li class=""><a href="../modules/crm/index.tr.html">CRM modülü (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.tr.html">Müşteriler ve müşteri parçaları</a></li>
+<li class="sub"><a href="../modules/crm/inbox.tr.html">Teklif talebi gelen kutusu</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.tr.html">Müşteri teklif talepleri</a></li>
+<li class=""><a href="../modules/currencies.tr.html">Currencies modülü (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.tr.html">Design engineering modülü (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.tr.html">Documents modülü (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.tr.html">Fleet modülü (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.tr.html">Filo araçları</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.tr.html">Filo bakımı ve iş emirleri</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.tr.html">Filo sayaçları ve yakıt</a></li>
+<li class="sub"><a href="../modules/fleet/operations.tr.html">Filo operasyonları</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.tr.html">Filo TCO, telematik ve analitik</a></li>
+<li class=""><a href="../modules/intranet/index.tr.html">Intranet modülü (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.tr.html">İntranet erişimi, hedef kitlesi ve saklama</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.tr.html">İntranet içeriği ve akışı</a></li>
+<li class="sub"><a href="../modules/intranet/directory.tr.html">İntranet rehberi</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.tr.html">İntranet katılımı</a></li>
+<li class="sub"><a href="../modules/intranet/events.tr.html">İntranet etkinlikleri</a></li>
+<li class="sub"><a href="../modules/intranet/leave.tr.html">İntranet izinleri</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.tr.html">İntranet belgelerim</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.tr.html">İntranet bildirimleri ve tebligat</a></li>
+<li class="sub"><a href="../modules/intranet/requests.tr.html">İntranet talepleri</a></li>
+<li class=""><a href="../modules/inventory.tr.html">Inventory modülü (inventory)</a></li>
+<li class=""><a href="../modules/logs.tr.html">Logs modülü (logs)</a></li>
+<li class=""><a href="../modules/mail.tr.html">Mail modülü (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.tr.html">Nesting modülü (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.tr.html">Yerleşim motoru</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.tr.html">Yerleşim entegrasyonu ve KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.tr.html">Yerleşim işleri, parçalar ve artıklar</a></li>
+<li class=""><a href="../modules/owned_organisations.tr.html">Owned organisations modülü (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.tr.html">Parties modülü (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.tr.html">Adresler başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.tr.html">İletişim kanalları başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/parties.tr.html">Parties alt modülü başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.tr.html">Taraf birleştirme</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.tr.html">Kişi dilleri başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.tr.html">Parties ayarları ve başvuru verileri</a></li>
+<li class=""><a href="../modules/privacy.tr.html">Privacy modülü (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.tr.html">Procurement modülü (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.tr.html">Kritik malzemeler ve ikame</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.tr.html">Malzeme ihtiyaç planlaması</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.tr.html">Satın alma sözleşmeleri ve info kayıtları</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.tr.html">Satın alma siparişleri</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.tr.html">Satın alma talepleri</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.tr.html">Satın alma teklif talepleri</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.tr.html">Tedarikçiler</a></li>
+<li class=""><a href="../modules/production/index.tr.html">Production modülü (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.tr.html">Üretim emirleri ve versiyonları</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.tr.html">Rotalar ve operasyon tipleri</a></li>
+<li class="sub"><a href="../modules/production/scheduling.tr.html">Üretim çizelgeleme</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.tr.html">İş merkezleri ve kapasite</a></li>
+<li class="sub"><a href="../modules/production/work-orders.tr.html">İş emirleri</a></li>
+<li class=""><a href="../modules/products_and_services.tr.html">Products and services modülü (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.tr.html">Projects modülü (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.tr.html">Proje aksiyonları, aktiviteleri ve toplantıları</a></li>
+<li class="sub"><a href="../modules/projects/board.tr.html">Proje panosu</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.tr.html">Projeler, kalemler ve fikstürler</a></li>
+<li class="sub"><a href="../modules/projects/schedules.tr.html">Proje çizelgeleri</a></li>
+<li class=""><a href="../modules/purchasing_quotations.tr.html">Purchasing quotations modülü (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.tr.html">Quotations modülü (quotations)</a></li>
+<li class=""><a href="../modules/records.tr.html">Records modülü (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.tr.html">Sales orders modülü (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.tr.html">Satış siparişleri ve sipariş kalemleri</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.tr.html">Sevkiyatlar</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.tr.html">İhracat belgeleri</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.tr.html">Satış siparişi birimleri ve ayarları</a></li>
+<li class=""><a href="../modules/subscriptions.tr.html">Subscriptions modülü (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Asistan</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.tr.html">Niyet asistanı</a></li>
+<li class=""><a href="../ai/intent-assistant.tr.html">Niyet asistanı nasıl çalışır</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">API referansı</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.tr.html">API başvurusu</a></li>
+<li class=""><a href="../api/analytics.tr.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.tr.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.tr.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.tr.html">Kimlik doğrulama ve başlıklar</a></li>
+<li class=""><a href="../api/bom.tr.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.tr.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.tr.html">API kuralları</a></li>
+<li class=""><a href="../api/costing.tr.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.tr.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.tr.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.tr.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.tr.html">Documents API (documents)</a></li>
+<li class=""><a href="../api/errors.tr.html">Hatalar</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.tr.html">İş hata kodları</a></li>
+<li class="current"><a href="../api/fleet.tr.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.tr.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.tr.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.tr.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.tr.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.tr.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.tr.html">API&#x27;ye genel bakış</a></li>
+<li class=""><a href="../api/owned_organisations.tr.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.tr.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.tr.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.tr.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.tr.html">Procurement API: Kritik malzemeler uç noktaları (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.tr.html">Procurement API: Satın alma bilgi kayıtları uç noktaları (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.tr.html">Procurement API: MRP uç noktaları (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.tr.html">Procurement API: Satın alma sözleşmeleri uç noktaları (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.tr.html">Procurement API: Satın alma siparişleri uç noktaları (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.tr.html">Procurement API: Satın alma talepleri uç noktaları (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.tr.html">Procurement API: Satın alma teklif talepleri uç noktaları (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.tr.html">Procurement API: İkame grupları uç noktaları (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.tr.html">Procurement API: Tedarikçiler uç noktaları (suppliers)</a></li>
+<li class=""><a href="../api/production.tr.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.tr.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.tr.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.tr.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.tr.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.tr.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.tr.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.tr.html">Paylaşılan sunucu yolları API</a></li>
+<li class=""><a href="../api/subscriptions.tr.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.tr.html">Sistem uç noktaları API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">İşletme</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.tr.html">İşletim</a></li>
+<li class=""><a href="../operations/backups-and-restore.tr.html">Yedekler ve geri yükleme</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.tr.html">CI hattı ve sürüm</a></li>
+<li class=""><a href="../operations/configuration-reference.tr.html">Yapılandırma başvurusu</a></li>
+<li class=""><a href="../operations/container-measurement.tr.html">Konteyner ölçümü</a></li>
+<li class=""><a href="../operations/data-residency-check.tr.html">Veri ikameti denetimi</a></li>
+<li class=""><a href="../operations/database-migrations.tr.html">Veritabanı göçleri</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.tr.html">Demo ve staging verisi</a></li>
+<li class=""><a href="../operations/environments-and-promotion.tr.html">Ortamlar ve terfi</a></li>
+<li class=""><a href="../operations/install-a-linux-node.tr.html">Bir Linux düğümü kurun</a></li>
+<li class=""><a href="../operations/local-development-setup.tr.html">Yerel geliştirme kurulumu</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.tr.html">PostgreSQL rolleri ve ayarı</a></li>
+<li class=""><a href="../operations/reverse-proxy.tr.html">Ters vekil sunucu</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.tr.html">Zamanlanmış işler ve saklama</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.tr.html">Security.txt ve hazırlık</a></li>
+<li class=""><a href="../operations/service-and-process-manager.tr.html">Servis ve süreç yöneticisi</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.tr.html">Kiracı yaşam döngüsü</a></li>
+<li class=""><a href="../operations/windows-installer.tr.html">Windows kurucusu</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Katkı</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.tr.html">Katkı</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.tr.html">Mimari sınırlar</a></li>
+<li class=""><a href="../contributing/coding-rules.tr.html">Kodlama kuralları</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.tr.html">Geliştirici araçları ve betikleri</a></li>
+<li class=""><a href="../contributing/e2e-battery.tr.html">E2e bataryası</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.tr.html">E2e süit kataloğu</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.tr.html">Lint ve tip denetimi</a></li>
+<li class=""><a href="../contributing/python-tests.tr.html">Python testleri</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.tr.html">Bir arka uç modülü yazın</a></li>
+<li class=""><a href="../contributing/writing-documentation.tr.html">Bir wiki sayfası yazın</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Karar kayıtları</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.tr.html">Karar kayıtları</a></li>
+<li class=""><a href="../decisions/data-driven-languages.tr.html">Veri güdümlü diller</a></li>
+<li class=""><a href="../decisions/decimal-money.tr.html">Decimal para</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.tr.html">Yalnız EventBus ile modüller arası iletişim</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.tr.html">Metadata güdümlü arayüz</a></li>
+<li class=""><a href="../decisions/no-hard-delete.tr.html">Fiziksel silme yok</a></li>
+<li class=""><a href="../decisions/party-unification.tr.html">Taraf birleşimi</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.tr.html">Ürün, model ve versiyon kırılımı</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.tr.html">Sunucu tarafı arayüz durumu</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.tr.html">ULID birincil anahtarlar</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Başvuru</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.tr.html">Başvuru</a></li>
+<li class=""><a href="../reference/glossary.tr.html">Sözlük</a></li>
+<li class=""><a href="../reference/related-material.tr.html">İlgili belgeler</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.tr.html">Ana sayfa</a> / API referansı</div>
+    <header class="page-head">
+      <p class="eyebrow">API</p>
+      <h1>Fleet API (fleet)</h1>
+      <p class="lede">/api/v1/fleet altındaki fleet modülünün HTTP uç noktaları: yetkiler, şemalar, durum kodları ve hata kodlarıyla 116 yol.</p>
+    </header>
+    <nav class="toc" aria-label="İçindekiler"><p class="eyebrow">İçindekiler</p><ul class="outline">
+<li class="lvl2"><a href="#grup-olguları">Grup olguları</a></li>
+<li class="lvl2"><a href="#uç-nokta-özeti">Uç nokta özeti</a></li>
+<li class="lvl2"><a href="#varlıklar-ve-sınıflar-uç-noktaları">Varlıklar ve sınıflar uç noktaları</a></li>
+<li class="lvl2"><a href="#sayaçlar-ve-okumalar-uç-noktaları">Sayaçlar ve okumalar uç noktaları</a></li>
+<li class="lvl2"><a href="#bakım-uç-noktaları">Bakım uç noktaları</a></li>
+<li class="lvl2"><a href="#filo-iş-emirleri-uç-noktaları">Filo iş emirleri uç noktaları</a></li>
+<li class="lvl2"><a href="#operasyonlar-uç-noktaları">Operasyonlar uç noktaları</a></li>
+<li class="lvl2"><a href="#yakıt-ve-uygunluk-uç-noktaları">Yakıt ve uygunluk uç noktaları</a></li>
+<li class="lvl2"><a href="#tco-lastikler-ve-kampanyalar-uç-noktaları">TCO, lastikler ve kampanyalar uç noktaları</a></li>
+<li class="lvl2"><a href="#telematik-uç-noktaları">Telematik uç noktaları</a></li>
+<li class="lvl2"><a href="#hata-kodları">Hata kodları</a></li>
+<li class="lvl2"><a href="#yayımlanan-olaylar">Yayımlanan olaylar</a></li>
+<li class="lvl2"><a href="#i̇lgili-sayfalar">İlgili sayfalar</a></li>
+</ul></nav>
+    <article class="prose">
+<p><code>fleet</code> modülü filo varlıklarını ve sınıflarını, sayaçları ve okumaları, bakım planlarını ve hatırlatıcıları, filo iş emirlerini, operasyonları (atamalar, bağlamalar, muayeneler, kusurlar, rezervasyonlar, olaylar), yakıt ve uygunluğu, TCO'yu, lastikleri, kampanyaları, emisyon faktörlerini ve bir telematik beslemesini sunar. 116 uç noktanın tamamı <code>/api/v1/fleet</code> altındadır. İş anlamı için <a href="../modules/fleet/index.tr.html">Fleet modülü</a> sayfasına bakın.</p>
+<h2 id="grup-olguları">Grup olguları<a class="headerlink" href="#grup-olguları">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Öğe</th>
+<th>Değer</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Temel yol</td>
+<td><code>/api/v1/fleet</code></td>
+<td><code>src/cluster_erp/core/module_base.py:37-38</code>, <code>src/cluster_erp/modules/fleet/module.py:310</code></td>
+</tr>
+<tr>
+<td>Yönlendiriciler</td>
+<td>8 dosyada 25 yönlendirici nesnesi; Uç nokta özeti bölümünde listelenir</td>
+<td><code>src/cluster_erp/modules/fleet/module.py:267</code></td>
+</tr>
+<tr>
+<td>Uç noktalar</td>
+<td>116; <code>register_routes</code> ile bağlanan yönlendiricilerin yol dekoratörleri ve <code>add_api_route</code> çağrılarından sayıldı</td>
+<td><code>src/cluster_erp/modules/fleet/assets/routes.py</code>, <code>src/cluster_erp/modules/fleet/fuel/routes.py</code>, <code>src/cluster_erp/modules/fleet/maintenance/routes.py</code> ...</td>
+</tr>
+<tr>
+<td>Kimlik doğrulama</td>
+<td>Bearer başlığı veya oturum çerezi, <code>get_current_user</code> ile çözülür; bkz. <a href="authentication-and-headers.tr.html">Kimlik doğrulama ve başlıklar</a></td>
+<td><code>src/cluster_erp/modules/auth/guards.py:85-167</code></td>
+</tr>
+<tr>
+<td>Yetki koruması</td>
+<td>116 yolun 116 tanesi <code>require_permission</code> bildirir</td>
+<td><code>src/cluster_erp/modules/auth/guards.py:205-240</code></td>
+</tr>
+<tr>
+<td>Hata biçimi</td>
+<td>JSON gövdesi <code>{"error": {...}}</code>; bkz. <a href="errors.tr.html">Hatalar</a></td>
+<td><code>src/cluster_erp/server/error_handler.py:33-46</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="uç-nokta-özeti">Uç nokta özeti<a class="headerlink" href="#uç-nokta-özeti">¶</a></h2>
+<p>Alt modül klasörü başına bir satır. Yönlendirici öneki temel yola eklenir.</p>
+<table>
+<thead>
+<tr>
+<th>Alt modül</th>
+<th>Yönlendiriciler</th>
+<th>Uç noktalar</th>
+<th>Yönlendirici kaynağı</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>assets</code></td>
+<td><code>asset_router</code> (<code>/assets</code>), <code>class_router</code> (<code>/classes</code>)</td>
+<td>10</td>
+<td><code>src/cluster_erp/modules/fleet/assets/routes.py:34</code>, <code>src/cluster_erp/modules/fleet/assets/routes.py:35</code></td>
+</tr>
+<tr>
+<td><code>meters</code></td>
+<td><code>meter_router</code> (<code>/meters</code>), <code>reading_router</code> (<code>/readings</code>)</td>
+<td>9</td>
+<td><code>src/cluster_erp/modules/fleet/meters/routes.py:29</code>, <code>src/cluster_erp/modules/fleet/meters/routes.py:30</code></td>
+</tr>
+<tr>
+<td><code>maintenance</code></td>
+<td><code>plan_router</code> (<code>/maintenance/plans</code>), <code>reminder_router</code> (<code>/maintenance/reminders</code>)</td>
+<td>9</td>
+<td><code>src/cluster_erp/modules/fleet/maintenance/routes.py:25</code>, <code>src/cluster_erp/modules/fleet/maintenance/routes.py:26</code></td>
+</tr>
+<tr>
+<td><code>workorders</code></td>
+<td><code>wo_router</code> (<code>/work-orders</code>), <code>wo_item_router</code> (<code>/work-order-items</code>), <code>wo_part_router</code> (<code>/work-order-parts</code>)</td>
+<td>14</td>
+<td><code>src/cluster_erp/modules/fleet/workorders/routes.py:27</code>, <code>src/cluster_erp/modules/fleet/workorders/routes.py:28</code>, <code>src/cluster_erp/modules/fleet/workorders/routes.py:29</code></td>
+</tr>
+<tr>
+<td><code>operations</code></td>
+<td><code>assignment_router</code> (<code>/assignments</code>), <code>coupling_router</code> (<code>/couplings</code>), <code>inspection_router</code> (<code>/inspections</code>), <code>defect_router</code> (<code>/defects</code>), <code>reservation_router</code> (<code>/reservations</code>), <code>incident_router</code> (<code>/incidents</code>)</td>
+<td>27</td>
+<td><code>src/cluster_erp/modules/fleet/operations/routes.py:45</code>, <code>src/cluster_erp/modules/fleet/operations/routes.py:46</code>, <code>src/cluster_erp/modules/fleet/operations/routes.py:47</code>, <code>src/cluster_erp/modules/fleet/operations/routes.py:48</code>, <code>src/cluster_erp/modules/fleet/operations/routes.py:49</code>, <code>src/cluster_erp/modules/fleet/operations/routes.py:50</code></td>
+</tr>
+<tr>
+<td><code>fuel</code></td>
+<td><code>fuel_router</code> (<code>/fuel</code>), <code>compliance_router</code> (<code>/compliance</code>), <code>penalty_router</code> (<code>/penalties</code>), <code>period_router</code> (<code>/inspection-periods</code>)</td>
+<td>23</td>
+<td><code>src/cluster_erp/modules/fleet/fuel/routes.py:35</code>, <code>src/cluster_erp/modules/fleet/fuel/routes.py:36</code>, <code>src/cluster_erp/modules/fleet/fuel/routes.py:37</code>, <code>src/cluster_erp/modules/fleet/fuel/routes.py:38</code></td>
+</tr>
+<tr>
+<td><code>tco</code></td>
+<td><code>tco_router</code> (<code>/tco</code>), <code>tire_router</code> (<code>/tires</code>), <code>campaign_router</code> (<code>/campaigns</code>), <code>campaign_asset_router</code> (<code>/campaign-assets</code>), <code>emission_router</code> (<code>/emission-factors</code>)</td>
+<td>23</td>
+<td><code>src/cluster_erp/modules/fleet/tco/routes.py:34</code>, <code>src/cluster_erp/modules/fleet/tco/routes.py:35</code>, <code>src/cluster_erp/modules/fleet/tco/routes.py:36</code>, <code>src/cluster_erp/modules/fleet/tco/routes.py:37</code>, <code>src/cluster_erp/modules/fleet/tco/routes.py:40</code></td>
+</tr>
+<tr>
+<td><code>telematics</code></td>
+<td><code>telematics_router</code> (<code>/telematics</code>)</td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/fleet/telematics.py:34</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="varlıklar-ve-sınıflar-uç-noktaları">Varlıklar ve sınıflar uç noktaları<a class="headerlink" href="#varlıklar-ve-sınıflar-uç-noktaları">¶</a></h2>
+<p><code>/actions/{action}</code> altında durum eylemleriyle varlık kayıtları ve varlık sınıfları.</p>
+<table>
+<thead>
+<tr>
+<th>Yöntem</th>
+<th>Yol</th>
+<th>İşleyici</th>
+<th>Yetki</th>
+<th>İstek</th>
+<th>Sorgu</th>
+<th>Yanıt</th>
+<th>Durum</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/assets/</code></td>
+<td><code>list_assets</code></td>
+<td><code>fleet_asset.read</code></td>
+<td>yok</td>
+<td><code>search</code>, <code>class_id</code>, <code>status</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/assets/routes.py:54</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/assets/</code></td>
+<td><code>create_asset</code></td>
+<td><code>fleet_asset.create</code></td>
+<td><code>FleetAssetCreate</code></td>
+<td>yok</td>
+<td><code>FleetAssetRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/fleet/assets/routes.py:89</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/assets/{asset_id}</code></td>
+<td><code>get_asset</code></td>
+<td><code>fleet_asset.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>FleetAssetRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/assets/routes.py:98</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/fleet/assets/{asset_id}</code></td>
+<td><code>update_asset</code></td>
+<td><code>fleet_asset.update</code></td>
+<td><code>FleetAssetUpdate</code></td>
+<td>yok</td>
+<td><code>FleetAssetRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/assets/routes.py:110</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/assets/{asset_id}/actions/{action}</code></td>
+<td><code>run_asset_action</code></td>
+<td><code>fleet_asset.update</code></td>
+<td><code>dict[str, Any] \| None</code></td>
+<td>yok</td>
+<td><code>FleetAssetRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/assets/routes.py:120</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/fleet/assets/{asset_id}</code></td>
+<td><code>deactivate_asset</code></td>
+<td><code>fleet_asset.delete</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>FleetAssetRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/assets/routes.py:134</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/classes/</code></td>
+<td><code>list_classes</code></td>
+<td><code>fleet_asset_class.read</code></td>
+<td>yok</td>
+<td><code>include_inactive</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/assets/routes.py:146</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/classes/{class_id}</code></td>
+<td><code>get_class</code></td>
+<td><code>fleet_asset_class.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>FleetClassRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/assets/routes.py:159</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/classes/</code></td>
+<td><code>create_class</code></td>
+<td><code>fleet_asset_class.update</code></td>
+<td><code>FleetClassCreate</code></td>
+<td>yok</td>
+<td><code>FleetClassRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/fleet/assets/routes.py:172</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/fleet/classes/{class_id}</code></td>
+<td><code>update_class</code></td>
+<td><code>fleet_asset_class.update</code></td>
+<td><code>FleetClassUpdate</code></td>
+<td>yok</td>
+<td><code>FleetClassRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/assets/routes.py:183</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="sayaçlar-ve-okumalar-uç-noktaları">Sayaçlar ve okumalar uç noktaları<a class="headerlink" href="#sayaçlar-ve-okumalar-uç-noktaları">¶</a></h2>
+<p>Sayaçlar, sayaç türleri, okumalar ve okuma eylemleri.</p>
+<table>
+<thead>
+<tr>
+<th>Yöntem</th>
+<th>Yol</th>
+<th>İşleyici</th>
+<th>Yetki</th>
+<th>İstek</th>
+<th>Sorgu</th>
+<th>Yanıt</th>
+<th>Durum</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/meters/</code></td>
+<td><code>list_meters</code></td>
+<td><code>fleet_meter.read</code></td>
+<td>yok</td>
+<td><code>asset_id</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/meters/routes.py:33</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/meters/</code></td>
+<td><code>create_meter</code></td>
+<td><code>fleet_meter.update</code></td>
+<td><code>FleetMeterCreate</code></td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/fleet/meters/routes.py:43</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/meters/kinds</code></td>
+<td><code>list_meter_kinds</code></td>
+<td><code>fleet_meter.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/meters/routes.py:61</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/meters/{meter_id}</code></td>
+<td><code>get_meter</code></td>
+<td><code>fleet_meter.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/meters/routes.py:81</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/fleet/meters/{meter_id}</code></td>
+<td><code>deactivate_meter</code></td>
+<td><code>fleet_meter.delete</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/meters/routes.py:93</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/readings/</code></td>
+<td><code>list_readings</code></td>
+<td><code>fleet_meter_reading.read</code></td>
+<td>yok</td>
+<td><code>meter_id</code>, <code>asset_id</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/meters/routes.py:105</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/readings/</code></td>
+<td><code>create_reading</code></td>
+<td><code>fleet_meter_reading.update</code></td>
+<td><code>FleetReadingCreate</code></td>
+<td>yok</td>
+<td><code>FleetReadingRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/fleet/meters/routes.py:125</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/readings/{reading_id}</code></td>
+<td><code>get_reading</code></td>
+<td><code>fleet_meter_reading.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>FleetReadingRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/meters/routes.py:145</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/readings/{reading_id}/actions/{action}</code></td>
+<td><code>run_reading_action</code></td>
+<td><code>fleet_meter_reading.update</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>FleetReadingRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/meters/routes.py:157</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="bakım-uç-noktaları">Bakım uç noktaları<a class="headerlink" href="#bakım-uç-noktaları">¶</a></h2>
+<p>Bakım planları, eylemli hatırlatıcılar ve hatırlatıcı yeniden hesaplaması.</p>
+<table>
+<thead>
+<tr>
+<th>Yöntem</th>
+<th>Yol</th>
+<th>İşleyici</th>
+<th>Yetki</th>
+<th>İstek</th>
+<th>Sorgu</th>
+<th>Yanıt</th>
+<th>Durum</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/maintenance/plans/</code></td>
+<td><code>list_plans</code></td>
+<td><code>fleet_maintenance_plan.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/maintenance/routes.py:31</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/maintenance/plans/</code></td>
+<td><code>create_plan</code></td>
+<td><code>fleet_maintenance_plan.update</code></td>
+<td><code>PlanCreate</code></td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/fleet/maintenance/routes.py:40</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/maintenance/plans/{plan_id}</code></td>
+<td><code>get_plan</code></td>
+<td><code>fleet_maintenance_plan.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/maintenance/routes.py:51</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/fleet/maintenance/plans/{plan_id}</code></td>
+<td><code>update_plan</code></td>
+<td><code>fleet_maintenance_plan.update</code></td>
+<td><code>PlanUpdate</code></td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/maintenance/routes.py:63</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/fleet/maintenance/plans/{plan_id}</code></td>
+<td><code>deactivate_plan</code></td>
+<td><code>fleet_maintenance_plan.delete</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/maintenance/routes.py:77</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/maintenance/reminders/</code></td>
+<td><code>list_reminders</code></td>
+<td><code>fleet_maintenance_reminder.read</code></td>
+<td>yok</td>
+<td><code>asset_id</code>, <code>status</code>, <code>plan_id</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/maintenance/routes.py:89</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/maintenance/reminders/{reminder_id}</code></td>
+<td><code>get_reminder</code></td>
+<td><code>fleet_maintenance_reminder.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>ReminderRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/maintenance/routes.py:112</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/maintenance/reminders/{reminder_id}/actions/{action}</code></td>
+<td><code>run_reminder_action</code></td>
+<td><code>fleet_maintenance_reminder.update</code></td>
+<td><code>dict[str, Any] \| None</code></td>
+<td>yok</td>
+<td><code>ReminderRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/maintenance/routes.py:124</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/maintenance/reminders/recompute</code></td>
+<td><code>recompute</code></td>
+<td><code>fleet_maintenance_reminder.update</code></td>
+<td>yok</td>
+<td><code>asset_id</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/maintenance/routes.py:141</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="filo-iş-emirleri-uç-noktaları">Filo iş emirleri uç noktaları<a class="headerlink" href="#filo-iş-emirleri-uç-noktaları">¶</a></h2>
+<p>Eylemli iş emirleri, iş emri kalemleri ve çıkış eylemli parçalar.</p>
+<table>
+<thead>
+<tr>
+<th>Yöntem</th>
+<th>Yol</th>
+<th>İşleyici</th>
+<th>Yetki</th>
+<th>İstek</th>
+<th>Sorgu</th>
+<th>Yanıt</th>
+<th>Durum</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/work-orders/</code></td>
+<td><code>list_work_orders</code></td>
+<td><code>fleet_work_order.read</code></td>
+<td>yok</td>
+<td><code>search</code>, <code>asset_id</code>, <code>status</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/workorders/routes.py:32</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/work-orders/</code></td>
+<td><code>create_work_order</code></td>
+<td><code>fleet_work_order.create</code></td>
+<td><code>WorkOrderCreate</code></td>
+<td>yok</td>
+<td><code>WorkOrderRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/fleet/workorders/routes.py:55</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/work-orders/{wo_id}</code></td>
+<td><code>get_work_order</code></td>
+<td><code>fleet_work_order.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>WorkOrderRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/workorders/routes.py:67</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/fleet/work-orders/{wo_id}</code></td>
+<td><code>update_work_order</code></td>
+<td><code>fleet_work_order.update</code></td>
+<td><code>WorkOrderUpdate</code></td>
+<td>yok</td>
+<td><code>WorkOrderRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/workorders/routes.py:79</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/work-orders/{wo_id}/actions/{action}</code></td>
+<td><code>run_work_order_action</code></td>
+<td><code>fleet_work_order.update</code></td>
+<td><code>dict[str, Any] \| None</code></td>
+<td>yok</td>
+<td><code>WorkOrderRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/workorders/routes.py:94</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/fleet/work-orders/{wo_id}</code></td>
+<td><code>deactivate_work_order</code></td>
+<td><code>fleet_work_order.delete</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>WorkOrderRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/workorders/routes.py:109</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/work-order-items/</code></td>
+<td><code>list_items</code></td>
+<td><code>fleet_work_order_item.read</code></td>
+<td>yok</td>
+<td><code>work_order_id</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/workorders/routes.py:123</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/work-order-items/</code></td>
+<td><code>add_item</code></td>
+<td><code>fleet_work_order_item.update</code></td>
+<td><code>WorkOrderItemCreate</code></td>
+<td>yok</td>
+<td><code>WorkOrderItemRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/fleet/workorders/routes.py:136</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/fleet/work-order-items/{item_id}</code></td>
+<td><code>update_item</code></td>
+<td><code>fleet_work_order_item.update</code></td>
+<td><code>WorkOrderItemUpdate</code></td>
+<td>yok</td>
+<td><code>WorkOrderItemRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/workorders/routes.py:147</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/fleet/work-order-items/{item_id}</code></td>
+<td><code>remove_item</code></td>
+<td><code>fleet_work_order_item.update</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/workorders/routes.py:161</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/work-order-parts/</code></td>
+<td><code>list_parts</code></td>
+<td><code>fleet_work_order_part.read</code></td>
+<td>yok</td>
+<td><code>work_order_id</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/workorders/routes.py:173</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/work-order-parts/</code></td>
+<td><code>add_part</code></td>
+<td><code>fleet_work_order_part.update</code></td>
+<td><code>WorkOrderPartCreate</code></td>
+<td>yok</td>
+<td><code>WorkOrderPartRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/fleet/workorders/routes.py:186</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/work-order-parts/{part_id}/actions/issue</code></td>
+<td><code>issue_part</code></td>
+<td><code>fleet_work_order_part.update</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>WorkOrderPartRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/workorders/routes.py:198</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/fleet/work-order-parts/{part_id}</code></td>
+<td><code>remove_part</code></td>
+<td><code>fleet_work_order_part.update</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/workorders/routes.py:211</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="operasyonlar-uç-noktaları">Operasyonlar uç noktaları<a class="headerlink" href="#operasyonlar-uç-noktaları">¶</a></h2>
+<p>Altı yönlendirici: atamalar (belirli bir andaki okumayla), bağlamalar, muayeneler, kusurlar, rezervasyonlar ve olaylar; her biri bir eylem uç noktasıyla.</p>
+<table>
+<thead>
+<tr>
+<th>Yöntem</th>
+<th>Yol</th>
+<th>İşleyici</th>
+<th>Yetki</th>
+<th>İstek</th>
+<th>Sorgu</th>
+<th>Yanıt</th>
+<th>Durum</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/assignments/</code></td>
+<td><code>list_assignments</code></td>
+<td><code>fleet_assignment.read</code></td>
+<td>yok</td>
+<td><code>asset_id</code>, <code>party_id</code>, <code>open_only</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/operations/routes.py:56</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/assignments/as-of</code></td>
+<td><code>assignments_as_of</code></td>
+<td><code>fleet_assignment.read</code></td>
+<td>yok</td>
+<td><code>asset_id</code>, <code>at</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/operations/routes.py:83</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/assignments/</code></td>
+<td><code>create_assignment</code></td>
+<td><code>fleet_assignment.update</code></td>
+<td><code>AssignmentCreate</code></td>
+<td>yok</td>
+<td><code>AssignmentRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/fleet/operations/routes.py:103</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/assignments/{assignment_id}</code></td>
+<td><code>get_assignment</code></td>
+<td><code>fleet_assignment.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>AssignmentRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/operations/routes.py:115</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/assignments/{assignment_id}/actions/{action}</code></td>
+<td><code>run_assignment_action</code></td>
+<td><code>fleet_assignment.update</code></td>
+<td><code>dict[str, Any] \| None</code></td>
+<td>yok</td>
+<td><code>AssignmentRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/operations/routes.py:127</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/couplings/</code></td>
+<td><code>list_couplings</code></td>
+<td><code>fleet_coupling.read</code></td>
+<td>yok</td>
+<td><code>asset_id</code>, <code>open_only</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/operations/routes.py:145</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/couplings/</code></td>
+<td><code>create_coupling</code></td>
+<td><code>fleet_coupling.update</code></td>
+<td><code>CouplingCreate</code></td>
+<td>yok</td>
+<td><code>CouplingRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/fleet/operations/routes.py:165</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/couplings/{coupling_id}</code></td>
+<td><code>get_coupling</code></td>
+<td><code>fleet_coupling.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>CouplingRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/operations/routes.py:176</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/couplings/{coupling_id}/actions/{action}</code></td>
+<td><code>run_coupling_action</code></td>
+<td><code>fleet_coupling.update</code></td>
+<td><code>dict[str, Any] \| None</code></td>
+<td>yok</td>
+<td><code>CouplingRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/operations/routes.py:188</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/inspections/</code></td>
+<td><code>list_inspections</code></td>
+<td><code>fleet_inspection.read</code></td>
+<td>yok</td>
+<td><code>asset_id</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/operations/routes.py:206</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/inspections/</code></td>
+<td><code>create_inspection</code></td>
+<td><code>fleet_inspection.update</code></td>
+<td><code>InspectionCreate</code></td>
+<td>yok</td>
+<td><code>InspectionRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/fleet/operations/routes.py:223</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/inspections/{inspection_id}</code></td>
+<td><code>get_inspection</code></td>
+<td><code>fleet_inspection.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>InspectionRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/operations/routes.py:234</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/fleet/inspections/{inspection_id}</code></td>
+<td><code>update_inspection</code></td>
+<td><code>fleet_inspection.update</code></td>
+<td><code>InspectionUpdate</code></td>
+<td>yok</td>
+<td><code>InspectionRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/operations/routes.py:246</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/inspections/{inspection_id}/actions/{action}</code></td>
+<td><code>run_inspection_action</code></td>
+<td><code>fleet_inspection.update</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>InspectionRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/operations/routes.py:260</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/defects/</code></td>
+<td><code>list_defects</code></td>
+<td><code>fleet_defect.read</code></td>
+<td>yok</td>
+<td><code>asset_id</code>, <code>status</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/operations/routes.py:276</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/defects/</code></td>
+<td><code>create_defect</code></td>
+<td><code>fleet_defect.update</code></td>
+<td><code>DefectCreate</code></td>
+<td>yok</td>
+<td><code>DefectRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/fleet/operations/routes.py:296</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/defects/{defect_id}</code></td>
+<td><code>get_defect</code></td>
+<td><code>fleet_defect.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>DefectRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/operations/routes.py:305</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/defects/{defect_id}/actions/{action}</code></td>
+<td><code>run_defect_action</code></td>
+<td><code>fleet_defect.update</code></td>
+<td><code>dict[str, Any] \| None</code></td>
+<td>yok</td>
+<td><code>DefectRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/operations/routes.py:317</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/reservations/</code></td>
+<td><code>list_reservations</code></td>
+<td><code>fleet_reservation.read</code></td>
+<td>yok</td>
+<td><code>asset_id</code>, <code>status</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/operations/routes.py:333</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/reservations/</code></td>
+<td><code>create_reservation</code></td>
+<td><code>fleet_reservation.update</code></td>
+<td><code>ReservationCreate</code></td>
+<td>yok</td>
+<td><code>ReservationRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/fleet/operations/routes.py:353</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/reservations/{reservation_id}</code></td>
+<td><code>get_reservation</code></td>
+<td><code>fleet_reservation.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>ReservationRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/operations/routes.py:365</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/reservations/{reservation_id}/actions/{action}</code></td>
+<td><code>run_reservation_action</code></td>
+<td><code>fleet_reservation.update</code></td>
+<td><code>dict[str, Any] \| None</code></td>
+<td>yok</td>
+<td><code>ReservationRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/operations/routes.py:377</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/incidents/</code></td>
+<td><code>list_incidents</code></td>
+<td><code>fleet_incident.read</code></td>
+<td>yok</td>
+<td><code>asset_id</code>, <code>status</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/operations/routes.py:394</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/incidents/</code></td>
+<td><code>create_incident</code></td>
+<td><code>fleet_incident.update</code></td>
+<td><code>IncidentCreate</code></td>
+<td>yok</td>
+<td><code>IncidentRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/fleet/operations/routes.py:414</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/incidents/{incident_id}</code></td>
+<td><code>get_incident</code></td>
+<td><code>fleet_incident.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>IncidentRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/operations/routes.py:425</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/fleet/incidents/{incident_id}</code></td>
+<td><code>update_incident</code></td>
+<td><code>fleet_incident.update</code></td>
+<td><code>IncidentUpdate</code></td>
+<td>yok</td>
+<td><code>IncidentRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/operations/routes.py:437</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/incidents/{incident_id}/actions/{action}</code></td>
+<td><code>run_incident_action</code></td>
+<td><code>fleet_incident.update</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>IncidentRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/operations/routes.py:449</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="yakıt-ve-uygunluk-uç-noktaları">Yakıt ve uygunluk uç noktaları<a class="headerlink" href="#yakıt-ve-uygunluk-uç-noktaları">¶</a></h2>
+<p>Dört yönlendirici: içe aktarmalı yakıt girişleri, uygunluk kalemleri, cezalar ve muayene dönemleri.</p>
+<table>
+<thead>
+<tr>
+<th>Yöntem</th>
+<th>Yol</th>
+<th>İşleyici</th>
+<th>Yetki</th>
+<th>İstek</th>
+<th>Sorgu</th>
+<th>Yanıt</th>
+<th>Durum</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/fuel/</code></td>
+<td><code>list_fuel</code></td>
+<td><code>fleet_fuel_entry.read</code></td>
+<td>yok</td>
+<td><code>asset_id</code>, <code>match_status</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/fuel/routes.py:46</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/fuel/</code></td>
+<td><code>create_fuel</code></td>
+<td><code>fleet_fuel_entry.update</code></td>
+<td><code>FuelEntryCreate</code></td>
+<td>yok</td>
+<td><code>FuelEntryRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/fleet/fuel/routes.py:68</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/fuel/import</code></td>
+<td><code>import_fuel</code></td>
+<td><code>fleet_fuel_entry.update</code></td>
+<td><code>FuelImportRequest</code></td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/fuel/routes.py:79</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/fuel/{entry_id}</code></td>
+<td><code>get_fuel</code></td>
+<td><code>fleet_fuel_entry.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>FuelEntryRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/fuel/routes.py:90</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/fuel/{entry_id}/actions/{action}</code></td>
+<td><code>run_fuel_action</code></td>
+<td><code>fleet_fuel_entry.update</code></td>
+<td><code>dict[str, Any] \| None</code></td>
+<td>yok</td>
+<td><code>FuelEntryRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/fuel/routes.py:102</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/fleet/fuel/{entry_id}</code></td>
+<td><code>deactivate_fuel</code></td>
+<td><code>fleet_fuel_entry.delete</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>FuelEntryRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/fuel/routes.py:115</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/compliance/</code></td>
+<td><code>list_compliance</code></td>
+<td><code>fleet_compliance_item.read</code></td>
+<td>yok</td>
+<td><code>asset_id</code>, <code>kind</code>, <code>status</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/fuel/routes.py:129</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/compliance/</code></td>
+<td><code>create_compliance</code></td>
+<td><code>fleet_compliance_item.update</code></td>
+<td><code>ComplianceCreate</code></td>
+<td>yok</td>
+<td><code>ComplianceRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/fleet/fuel/routes.py:152</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/compliance/{item_id}</code></td>
+<td><code>get_compliance</code></td>
+<td><code>fleet_compliance_item.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>ComplianceRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/fuel/routes.py:163</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/fleet/compliance/{item_id}</code></td>
+<td><code>update_compliance</code></td>
+<td><code>fleet_compliance_item.update</code></td>
+<td><code>ComplianceUpdate</code></td>
+<td>yok</td>
+<td><code>ComplianceRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/fuel/routes.py:175</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/compliance/{item_id}/actions/{action}</code></td>
+<td><code>run_compliance_action</code></td>
+<td><code>fleet_compliance_item.update</code></td>
+<td><code>dict[str, Any] \| None</code></td>
+<td>yok</td>
+<td><code>ComplianceRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/fuel/routes.py:189</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/fleet/compliance/{item_id}</code></td>
+<td><code>deactivate_compliance</code></td>
+<td><code>fleet_compliance_item.delete</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>ComplianceRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/fuel/routes.py:205</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/penalties/</code></td>
+<td><code>list_penalties</code></td>
+<td><code>fleet_penalty.read</code></td>
+<td>yok</td>
+<td><code>asset_id</code>, <code>status</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/fuel/routes.py:219</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/penalties/</code></td>
+<td><code>create_penalty</code></td>
+<td><code>fleet_penalty.update</code></td>
+<td><code>PenaltyCreate</code></td>
+<td>yok</td>
+<td><code>PenaltyRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/fleet/fuel/routes.py:241</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/penalties/{penalty_id}</code></td>
+<td><code>get_penalty</code></td>
+<td><code>fleet_penalty.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>PenaltyRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/fuel/routes.py:252</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/fleet/penalties/{penalty_id}</code></td>
+<td><code>update_penalty</code></td>
+<td><code>fleet_penalty.update</code></td>
+<td><code>PenaltyUpdate</code></td>
+<td>yok</td>
+<td><code>PenaltyRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/fuel/routes.py:264</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/penalties/{penalty_id}/actions/{action}</code></td>
+<td><code>run_penalty_action</code></td>
+<td><code>fleet_penalty.update</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>PenaltyRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/fuel/routes.py:278</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/fleet/penalties/{penalty_id}</code></td>
+<td><code>deactivate_penalty</code></td>
+<td><code>fleet_penalty.delete</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>PenaltyRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/fuel/routes.py:290</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/inspection-periods/</code></td>
+<td><code>list_periods</code></td>
+<td><code>fleet_inspection_period.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/fuel/routes.py:304</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/inspection-periods/</code></td>
+<td><code>create_period</code></td>
+<td><code>fleet_inspection_period.update</code></td>
+<td><code>InspectionPeriodCreate</code></td>
+<td>yok</td>
+<td><code>InspectionPeriodRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/fleet/fuel/routes.py:316</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/inspection-periods/{period_id}</code></td>
+<td><code>get_period</code></td>
+<td><code>fleet_inspection_period.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>InspectionPeriodRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/fuel/routes.py:327</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/fleet/inspection-periods/{period_id}</code></td>
+<td><code>update_period</code></td>
+<td><code>fleet_inspection_period.update</code></td>
+<td><code>InspectionPeriodUpdate</code></td>
+<td>yok</td>
+<td><code>InspectionPeriodRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/fuel/routes.py:339</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/fleet/inspection-periods/{period_id}</code></td>
+<td><code>deactivate_period</code></td>
+<td><code>fleet_inspection_period.delete</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>InspectionPeriodRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/fuel/routes.py:353</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="tco-lastikler-ve-kampanyalar-uç-noktaları">TCO, lastikler ve kampanyalar uç noktaları<a class="headerlink" href="#tco-lastikler-ve-kampanyalar-uç-noktaları">¶</a></h2>
+<p>Beş yönlendirici: varlık TCO ve yenileme sıralaması, lastikler, kampanyalar, kampanya varlıkları ve emisyon faktörleri.</p>
+<table>
+<thead>
+<tr>
+<th>Yöntem</th>
+<th>Yol</th>
+<th>İşleyici</th>
+<th>Yetki</th>
+<th>İstek</th>
+<th>Sorgu</th>
+<th>Yanıt</th>
+<th>Durum</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/tco/assets/{asset_id}</code></td>
+<td><code>asset_tco</code></td>
+<td><code>fleet_asset.read</code></td>
+<td>yok</td>
+<td><code>months</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/tco/routes.py:48</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/tco/renewal</code></td>
+<td><code>renewal_ranking</code></td>
+<td><code>fleet_asset.read</code></td>
+<td>yok</td>
+<td><code>months</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/tco/routes.py:59</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/tires/</code></td>
+<td><code>list_tires</code></td>
+<td><code>fleet_tire.read</code></td>
+<td>yok</td>
+<td><code>asset_id</code>, <code>status</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/tco/routes.py:72</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/tires/</code></td>
+<td><code>create_tire</code></td>
+<td><code>fleet_tire.update</code></td>
+<td><code>TireCreate</code></td>
+<td>yok</td>
+<td><code>TireRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/fleet/tco/routes.py:94</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/tires/{tire_id}</code></td>
+<td><code>get_tire</code></td>
+<td><code>fleet_tire.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>TireRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/tco/routes.py:105</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/fleet/tires/{tire_id}</code></td>
+<td><code>update_tire</code></td>
+<td><code>fleet_tire.update</code></td>
+<td><code>TireUpdate</code></td>
+<td>yok</td>
+<td><code>TireRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/tco/routes.py:117</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/tires/{tire_id}/actions/{action}</code></td>
+<td><code>run_tire_action</code></td>
+<td><code>fleet_tire.update</code></td>
+<td><code>dict[str, Any] \| None</code></td>
+<td>yok</td>
+<td><code>TireRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/tco/routes.py:131</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/fleet/tires/{tire_id}</code></td>
+<td><code>deactivate_tire</code></td>
+<td><code>fleet_tire.delete</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>TireRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/tco/routes.py:145</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/campaigns/</code></td>
+<td><code>list_campaigns</code></td>
+<td><code>fleet_campaign.read</code></td>
+<td>yok</td>
+<td><code>status</code>, <code>search</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/tco/routes.py:157</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/campaigns/</code></td>
+<td><code>create_campaign</code></td>
+<td><code>fleet_campaign.update</code></td>
+<td><code>CampaignCreate</code></td>
+<td>yok</td>
+<td><code>CampaignRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/fleet/tco/routes.py:179</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/campaigns/{campaign_id}</code></td>
+<td><code>get_campaign</code></td>
+<td><code>fleet_campaign.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>CampaignRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/tco/routes.py:190</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/fleet/campaigns/{campaign_id}</code></td>
+<td><code>update_campaign</code></td>
+<td><code>fleet_campaign.update</code></td>
+<td><code>CampaignUpdate</code></td>
+<td>yok</td>
+<td><code>CampaignRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/tco/routes.py:202</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/campaigns/{campaign_id}/actions/{action}</code></td>
+<td><code>run_campaign_action</code></td>
+<td><code>fleet_campaign.update</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>CampaignRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/tco/routes.py:216</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/fleet/campaigns/{campaign_id}</code></td>
+<td><code>deactivate_campaign</code></td>
+<td><code>fleet_campaign.delete</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>CampaignRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/tco/routes.py:228</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/campaign-assets/</code></td>
+<td><code>list_campaign_assets</code></td>
+<td><code>fleet_campaign_asset.read</code></td>
+<td>yok</td>
+<td><code>campaign_id</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/tco/routes.py:242</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/campaign-assets/</code></td>
+<td><code>add_campaign_asset</code></td>
+<td><code>fleet_campaign_asset.update</code></td>
+<td><code>CampaignAssetCreate</code></td>
+<td>yok</td>
+<td><code>CampaignAssetRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/fleet/tco/routes.py:255</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/campaign-assets/{item_id}/actions/{action}</code></td>
+<td><code>run_campaign_asset_action</code></td>
+<td><code>fleet_campaign_asset.update</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>CampaignAssetRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/tco/routes.py:266</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/fleet/campaign-assets/{item_id}</code></td>
+<td><code>remove_campaign_asset</code></td>
+<td><code>fleet_campaign_asset.update</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/tco/routes.py:280</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/emission-factors/</code></td>
+<td><code>list_factors</code></td>
+<td><code>fleet_emission_factor.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/tco/routes.py:292</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/emission-factors/</code></td>
+<td><code>create_factor</code></td>
+<td><code>fleet_emission_factor.update</code></td>
+<td><code>EmissionFactorCreate</code></td>
+<td>yok</td>
+<td><code>EmissionFactorRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/fleet/tco/routes.py:304</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/fleet/emission-factors/{factor_id}</code></td>
+<td><code>get_factor</code></td>
+<td><code>fleet_emission_factor.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>EmissionFactorRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/tco/routes.py:315</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/fleet/emission-factors/{factor_id}</code></td>
+<td><code>update_factor</code></td>
+<td><code>fleet_emission_factor.update</code></td>
+<td><code>EmissionFactorUpdate</code></td>
+<td>yok</td>
+<td><code>EmissionFactorRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/tco/routes.py:327</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/fleet/emission-factors/{factor_id}</code></td>
+<td><code>deactivate_factor</code></td>
+<td><code>fleet_emission_factor.delete</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>EmissionFactorRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/tco/routes.py:341</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="telematik-uç-noktaları">Telematik uç noktaları<a class="headerlink" href="#telematik-uç-noktaları">¶</a></h2>
+<p><code>src/cluster_erp/modules/fleet/telematics.py</code> içinde tanımlı, telematik beslemesi için tek bir alım yolu.</p>
+<table>
+<thead>
+<tr>
+<th>Yöntem</th>
+<th>Yol</th>
+<th>İşleyici</th>
+<th>Yetki</th>
+<th>İstek</th>
+<th>Sorgu</th>
+<th>Yanıt</th>
+<th>Durum</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/fleet/telematics/feed</code></td>
+<td><code>ingest_feed</code></td>
+<td><code>fleet_asset.update</code></td>
+<td><code>TelematicsFeed</code></td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/fleet/telematics.py:52</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="hata-kodları">Hata kodları<a class="headerlink" href="#hata-kodları">¶</a></h2>
+<p>Tablo, <code>src/cluster_erp/modules/fleet/</code> altındaki kodun attığı hata kodlarını listeler. Kodlar, <code>AppError(...)</code> çağrıları, <code>src/cluster_erp/core/errors.py</code> içindeki fabrikalar (<code>not_found</code>, <code>conflict</code>, <code>protected</code>, <code>permission_denied</code>, <code>privilege_escalation</code>, <code>check_version</code>) ve <code>HTTPException(...)</code> için yapılan bir sözdizimi ağacı taramasıyla bulundu. <code>400</code> durumu <code>AppError</code> varsayılanıdır (<code>src/cluster_erp/core/errors.py:23</code>). Koruma hataları (<code>401</code>, <code>403</code>), yetkilendirme kodları ve doğrulama hataları (<code>422</code>) her yol için geçerlidir ve <a href="errors.tr.html">Hatalar</a> sayfasında listelenir.</p>
+<table>
+<thead>
+<tr>
+<th>Kod</th>
+<th>HTTP durumu</th>
+<th>Atıldığı yer</th>
+<th>İlk konum</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FLEET_ASSET_NOT_OPERABLE</code></td>
+<td><code>400</code></td>
+<td><code>meters</code></td>
+<td><code>src/cluster_erp/modules/fleet/meters/services.py:260</code></td>
+</tr>
+<tr>
+<td><code>FLEET_INVALID_CAMPAIGN</code></td>
+<td><code>400</code></td>
+<td><code>tco</code></td>
+<td><code>src/cluster_erp/modules/fleet/tco/services.py:606</code></td>
+</tr>
+<tr>
+<td><code>FLEET_INVALID_COMPLIANCE</code></td>
+<td><code>400</code></td>
+<td><code>fuel</code></td>
+<td><code>src/cluster_erp/modules/fleet/fuel/services.py:466</code></td>
+</tr>
+<tr>
+<td><code>FLEET_INVALID_FUEL</code></td>
+<td><code>400</code></td>
+<td><code>fuel</code></td>
+<td><code>src/cluster_erp/modules/fleet/fuel/services.py:130</code></td>
+</tr>
+<tr>
+<td><code>FLEET_INVALID_METER</code></td>
+<td><code>400</code></td>
+<td><code>meters</code></td>
+<td><code>src/cluster_erp/modules/fleet/meters/services.py:125</code></td>
+</tr>
+<tr>
+<td><code>FLEET_INVALID_OPERATION</code></td>
+<td><code>400</code></td>
+<td><code>operations</code></td>
+<td><code>src/cluster_erp/modules/fleet/operations/services.py:74</code></td>
+</tr>
+<tr>
+<td><code>FLEET_INVALID_PLAN</code></td>
+<td><code>400</code></td>
+<td><code>maintenance</code></td>
+<td><code>src/cluster_erp/modules/fleet/maintenance/services.py:102</code></td>
+</tr>
+<tr>
+<td><code>FLEET_INVALID_REMINDER</code></td>
+<td><code>400</code></td>
+<td><code>maintenance</code></td>
+<td><code>src/cluster_erp/modules/fleet/maintenance/services.py:343</code></td>
+</tr>
+<tr>
+<td><code>FLEET_INVALID_STATUS</code></td>
+<td><code>400</code></td>
+<td><code>assets</code></td>
+<td><code>src/cluster_erp/modules/fleet/assets/services.py:283</code></td>
+</tr>
+<tr>
+<td><code>FLEET_INVALID_TIRE</code></td>
+<td><code>400</code></td>
+<td><code>tco</code></td>
+<td><code>src/cluster_erp/modules/fleet/tco/services.py:428</code></td>
+</tr>
+<tr>
+<td><code>FLEET_INVALID_WO</code></td>
+<td><code>400</code></td>
+<td><code>workorders</code></td>
+<td><code>src/cluster_erp/modules/fleet/workorders/services.py:125</code></td>
+</tr>
+<tr>
+<td><code>FLEET_READING_CHAIN_BLOCKED</code></td>
+<td><code>400</code></td>
+<td><code>meters</code></td>
+<td><code>src/cluster_erp/modules/fleet/meters/services.py:524</code></td>
+</tr>
+<tr>
+<td><code>FLEET_READING_INVALID</code></td>
+<td><code>400</code></td>
+<td><code>meters</code></td>
+<td><code>src/cluster_erp/modules/fleet/meters/services.py:266</code></td>
+</tr>
+<tr>
+<td><code>FLEET_READING_OUT_OF_ORDER</code></td>
+<td><code>400</code></td>
+<td><code>meters</code></td>
+<td><code>src/cluster_erp/modules/fleet/meters/services.py:280</code></td>
+</tr>
+<tr>
+<td><code>RESOURCE_CONFLICT</code></td>
+<td><code>409</code></td>
+<td><code>assets</code>, <code>tco</code></td>
+<td><code>src/cluster_erp/modules/fleet/assets/services.py:76</code></td>
+</tr>
+<tr>
+<td><code>RESOURCE_NOT_FOUND</code></td>
+<td><code>404</code></td>
+<td><code>assets</code>, <code>fuel</code>, <code>maintenance</code>, <code>meters</code>, <code>operations</code>, <code>tco</code>, <code>workorders</code></td>
+<td><code>src/cluster_erp/modules/fleet/assets/routes.py:106</code></td>
+</tr>
+<tr>
+<td><code>VALIDATION_ERROR</code></td>
+<td><code>422</code></td>
+<td><code>operations</code></td>
+<td><code>src/cluster_erp/modules/fleet/operations/routes.py:94</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="yayımlanan-olaylar">Yayımlanan olaylar<a class="headerlink" href="#yayımlanan-olaylar">¶</a></h2>
+<p>Tablo, <code>src/cluster_erp/modules/fleet/</code> altındaki kodun <code>EventBus.emit</code> çağrısına doğrudan verdiği sözleşme sınıflarını listeler; sözdizimi ağacı taramasıyla bulundu. Önce bir değişkene kurulan olaylar sayılmaz. Sözleşmeler <a href="../platform/contracts-reference.tr.html">Sözleşmeler başvurusu</a> sayfasında anlatılır.</p>
+<p>Tarama bir olay bulmadı.</p>
+<h2 id="i̇lgili-sayfalar">İlgili sayfalar<a class="headerlink" href="#i̇lgili-sayfalar">¶</a></h2>
+<ul>
+<li><a href="index.tr.html">API başvurusu</a></li>
+<li><a href="../modules/fleet/index.tr.html">Fleet modülü</a></li>
+<li><a href="conventions.tr.html">API kuralları</a></li>
+<li><a href="errors.tr.html">Hatalar</a></li>
+<li><a href="authentication-and-headers.tr.html">Kimlik doğrulama ve başlıklar</a></li>
+</ul>
+<hr>
+<p>7793ff4 numaralı commit ile 2026-11-09 tarihinde doğrulandı.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Doğrulanan commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../api/errors/business-error-codes.tr.html"><span class="eyebrow">Önceki</span><span>İş hata kodları</span></a><a class="next" href="../api/intranet.tr.html"><span class="eyebrow">Sonraki</span><span>Intranet API (intranet)</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">Bu sayfada</p><ul class="outline">
+<li class="lvl2"><a href="#grup-olguları">Grup olguları</a></li>
+<li class="lvl2"><a href="#uç-nokta-özeti">Uç nokta özeti</a></li>
+<li class="lvl2"><a href="#varlıklar-ve-sınıflar-uç-noktaları">Varlıklar ve sınıflar uç noktaları</a></li>
+<li class="lvl2"><a href="#sayaçlar-ve-okumalar-uç-noktaları">Sayaçlar ve okumalar uç noktaları</a></li>
+<li class="lvl2"><a href="#bakım-uç-noktaları">Bakım uç noktaları</a></li>
+<li class="lvl2"><a href="#filo-iş-emirleri-uç-noktaları">Filo iş emirleri uç noktaları</a></li>
+<li class="lvl2"><a href="#operasyonlar-uç-noktaları">Operasyonlar uç noktaları</a></li>
+<li class="lvl2"><a href="#yakıt-ve-uygunluk-uç-noktaları">Yakıt ve uygunluk uç noktaları</a></li>
+<li class="lvl2"><a href="#tco-lastikler-ve-kampanyalar-uç-noktaları">TCO, lastikler ve kampanyalar uç noktaları</a></li>
+<li class="lvl2"><a href="#telematik-uç-noktaları">Telematik uç noktaları</a></li>
+<li class="lvl2"><a href="#hata-kodları">Hata kodları</a></li>
+<li class="lvl2"><a href="#yayımlanan-olaylar">Yayımlanan olaylar</a></li>
+<li class="lvl2"><a href="#i̇lgili-sayfalar">İlgili sayfalar</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>docs/wiki altındaki Markdown kaynaklarından derlendi</span></footer>
+</body>
+</html>

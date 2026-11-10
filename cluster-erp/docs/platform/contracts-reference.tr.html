@@ -1,0 +1,2671 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sözleşmeler başvurusu · Cluster ERP Wiki</title>
+<meta name="description" content="core/contracts.py içindeki 270 dondurulmuş dataclass; bölümlere göre gruplanmış, her sözleşmeyi üreten ve işleyen modüllerle birlikte.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="tr"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menü</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.tr.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Wiki&#x27;de ara" aria-label="Wiki&#x27;de ara" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="Eşleşen sayfa yok."></div>
+  </div>
+  <a class="lang-switch" href="../platform/contracts-reference.html" lang="en" hreflang="en">English</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Ana sayfa</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.tr.html">Cluster ERP wiki&#x27;si</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Genel bakış</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.tr.html">Genel bakış</a></li>
+<li class=""><a href="../overview/architecture-overview.tr.html">Mimariye genel bakış</a></li>
+<li class=""><a href="../overview/repository-map.tr.html">Depo haritası</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.tr.html">Cluster ERP nedir</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.tr.html">Platform çekirdeği</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.tr.html">Ekler, notlar ve depolama</a></li>
+<li class=""><a href="../platform/base-model-and-ids.tr.html">Temel model ve kimlikler</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.tr.html">Önbellek ve varlık damgası</a></li>
+<li class=""><a href="../platform/change-history.tr.html">Değişiklik geçmişi</a></li>
+<li class="current"><a href="../platform/contracts-reference.tr.html">Sözleşmeler başvurusu</a></li>
+<li class=""><a href="../platform/database-and-sessions.tr.html">Veritabanı ve oturumlar</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.tr.html">Hatalar ve istisnalar</a></li>
+<li class=""><a href="../platform/event-bus.tr.html">Olay veri yolu</a></li>
+<li class=""><a href="../platform/metadata-model.tr.html">Metadata modeli</a></li>
+<li class=""><a href="../platform/module-lifecycle.tr.html">Modül yaşam döngüsü</a></li>
+<li class=""><a href="../platform/money-and-decimal.tr.html">Para ve Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.tr.html">PDF ve sistem postası</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.tr.html">Ürün kırılımı ve stok dönüşümü</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.tr.html">Referans veriler ve çekirdek i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.tr.html">İstek hattı ve ara katmanlar</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.tr.html">Arama, sayfalama ve toplu işlemler</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.tr.html">Sunucu açılışı ve uygulama fabrikası</a></li>
+<li class=""><a href="../platform/settings-reference.tr.html">Ayarlar başvurusu</a></li>
+<li class=""><a href="../platform/shared-server-routes.tr.html">Ortak sunucu rotaları</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.tr.html">Yumuşak silme ve kullanımdan kaldırma</a></li>
+<li class=""><a href="../platform/tenant-fields.tr.html">Kiracı alanları</a></li>
+<li class=""><a href="../platform/working-time.tr.html">Çalışma zamanı</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Kimlik ve erişim</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.tr.html">Kimlik, erişim, kiracılık, gizlilik ve lisans</a></li>
+<li class=""><a href="../identity-access/abac-policies.tr.html">ABAC politikaları</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.tr.html">Uygulama mağazası lisansları ve hakları</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.tr.html">Onaylar ve onay zincirleri</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.tr.html">Kimlik doğrulama ve oturumlar</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.tr.html">Alan ve satır erişimi</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.tr.html">Çok kiracılılık</a></li>
+<li class=""><a href="../identity-access/notification-rules.tr.html">Bildirim kuralları</a></li>
+<li class=""><a href="../identity-access/operator-console.tr.html">Operatör konsolu</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.tr.html">Gizlilik ve ilgili kişi başvuruları</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.tr.html">Roller ve izinler</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.tr.html">İkinci doğrulama adımı ve gizli değer saklama</a></li>
+<li class=""><a href="../identity-access/signup.tr.html">Kayıt</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web uygulaması</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.tr.html">Web uygulaması platformu</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.tr.html">Aksiyonlar ve aksiyon kartı</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.tr.html">Asistan ve sohbet ekranları</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.tr.html">Açılış, oturum ve API çağrıları</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.tr.html">Veri tazeleme ve değişiklik sinyalleri</a></li>
+<li class=""><a href="../web-app/device-classes.tr.html">Cihaz sınıfları</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.tr.html">Kapılı uygulama paketleri</a></li>
+<li class=""><a href="../web-app/generic-detail.tr.html">Genel ayrıntı</a></li>
+<li class=""><a href="../web-app/generic-form.tr.html">Genel form</a></li>
+<li class=""><a href="../web-app/generic-list.tr.html">Genel liste</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.tr.html">Genel ağaç ve ayar ekranları</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.tr.html">Ana ekran, dock ve başlatıcı</a></li>
+<li class=""><a href="../web-app/home-widgets.tr.html">Ana ekran bileşenleri</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.tr.html">Web uygulamasına dil ekleyin</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.tr.html">Metadata ile ekran ekleyin</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.tr.html">Uluslararasılaştırma ve diller</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.tr.html">Mail ve profil ekranları</a></li>
+<li class=""><a href="../web-app/metadata-rendering.tr.html">Metadata çizimi</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.tr.html">Modül uygulamaları ve uygulama kapsamı</a></li>
+<li class=""><a href="../web-app/overview.tr.html">Web uygulamasına genel bakış</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.tr.html">Kayıt belgeleri, görüntüleyici ve paylaşım</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.tr.html">Arama ve komut paleti</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.tr.html">Temalar, belirteçler ve erişilebilirlik</a></li>
+<li class=""><a href="../web-app/user-ui-state.tr.html">Kullanıcı arayüz durumu</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Masaüstü istemci</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.tr.html">Masaüstü istemci</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.tr.html">API istemcisi ve çalışanlar</a></li>
+<li class=""><a href="../desktop/chat-widget.tr.html">Sohbet bileşeni</a></li>
+<li class=""><a href="../desktop/generic-widgets.tr.html">Genel bileşenler</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.tr.html">Diller, temalar ve erişilebilirlik</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.tr.html">Metadata deposu ve yabancı anahtar önbelleği</a></li>
+<li class=""><a href="../desktop/module-screens.tr.html">Modül ekranları</a></li>
+<li class=""><a href="../desktop/overview.tr.html">Masaüstü istemciye genel bakış</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.tr.html">Masaüstü istemciyi çalıştırın</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.tr.html">Sinyal veri yolu ve watch_entity</a></li>
+<li class=""><a href="../desktop/tabs-panes-and-layout.tr.html">Sekmeler, bölmeler ve yerleşim</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">İş modülleri</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.tr.html">İş modülleri</a></li>
+<li class=""><a href="../modules/analytics/index.tr.html">Analytics modülü (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.tr.html">Analitik olgular</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.tr.html">Analitik tahmin ve sınıflandırma</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.tr.html">Analitik tarifleri ve sorgu kurucu</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.tr.html">Analitik raporları, özetleri ve çapraz</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.tr.html">Analitik istatistik ve çıkarım</a></li>
+<li class=""><a href="../modules/app_store.tr.html">App store modülü (app_store)</a></li>
+<li class=""><a href="../modules/auth.tr.html">Auth modülü (auth)</a></li>
+<li class=""><a href="../modules/bom.tr.html">BOM modülü (bom)</a></li>
+<li class=""><a href="../modules/calendars.tr.html">Calendars modülü (calendars)</a></li>
+<li class=""><a href="../modules/costing.tr.html">Costing modülü (costing)</a></li>
+<li class=""><a href="../modules/crm/index.tr.html">CRM modülü (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.tr.html">Müşteriler ve müşteri parçaları</a></li>
+<li class="sub"><a href="../modules/crm/inbox.tr.html">Teklif talebi gelen kutusu</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.tr.html">Müşteri teklif talepleri</a></li>
+<li class=""><a href="../modules/currencies.tr.html">Currencies modülü (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.tr.html">Design engineering modülü (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.tr.html">Documents modülü (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.tr.html">Fleet modülü (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.tr.html">Filo araçları</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.tr.html">Filo bakımı ve iş emirleri</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.tr.html">Filo sayaçları ve yakıt</a></li>
+<li class="sub"><a href="../modules/fleet/operations.tr.html">Filo operasyonları</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.tr.html">Filo TCO, telematik ve analitik</a></li>
+<li class=""><a href="../modules/intranet/index.tr.html">Intranet modülü (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.tr.html">İntranet erişimi, hedef kitlesi ve saklama</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.tr.html">İntranet içeriği ve akışı</a></li>
+<li class="sub"><a href="../modules/intranet/directory.tr.html">İntranet rehberi</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.tr.html">İntranet katılımı</a></li>
+<li class="sub"><a href="../modules/intranet/events.tr.html">İntranet etkinlikleri</a></li>
+<li class="sub"><a href="../modules/intranet/leave.tr.html">İntranet izinleri</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.tr.html">İntranet belgelerim</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.tr.html">İntranet bildirimleri ve tebligat</a></li>
+<li class="sub"><a href="../modules/intranet/requests.tr.html">İntranet talepleri</a></li>
+<li class=""><a href="../modules/inventory.tr.html">Inventory modülü (inventory)</a></li>
+<li class=""><a href="../modules/logs.tr.html">Logs modülü (logs)</a></li>
+<li class=""><a href="../modules/mail.tr.html">Mail modülü (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.tr.html">Nesting modülü (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.tr.html">Yerleşim motoru</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.tr.html">Yerleşim entegrasyonu ve KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.tr.html">Yerleşim işleri, parçalar ve artıklar</a></li>
+<li class=""><a href="../modules/owned_organisations.tr.html">Owned organisations modülü (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.tr.html">Parties modülü (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.tr.html">Adresler başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.tr.html">İletişim kanalları başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/parties.tr.html">Parties alt modülü başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.tr.html">Taraf birleştirme</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.tr.html">Kişi dilleri başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.tr.html">Parties ayarları ve başvuru verileri</a></li>
+<li class=""><a href="../modules/privacy.tr.html">Privacy modülü (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.tr.html">Procurement modülü (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.tr.html">Kritik malzemeler ve ikame</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.tr.html">Malzeme ihtiyaç planlaması</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.tr.html">Satın alma sözleşmeleri ve info kayıtları</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.tr.html">Satın alma siparişleri</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.tr.html">Satın alma talepleri</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.tr.html">Satın alma teklif talepleri</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.tr.html">Tedarikçiler</a></li>
+<li class=""><a href="../modules/production/index.tr.html">Production modülü (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.tr.html">Üretim emirleri ve versiyonları</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.tr.html">Rotalar ve operasyon tipleri</a></li>
+<li class="sub"><a href="../modules/production/scheduling.tr.html">Üretim çizelgeleme</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.tr.html">İş merkezleri ve kapasite</a></li>
+<li class="sub"><a href="../modules/production/work-orders.tr.html">İş emirleri</a></li>
+<li class=""><a href="../modules/products_and_services.tr.html">Products and services modülü (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.tr.html">Projects modülü (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.tr.html">Proje aksiyonları, aktiviteleri ve toplantıları</a></li>
+<li class="sub"><a href="../modules/projects/board.tr.html">Proje panosu</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.tr.html">Projeler, kalemler ve fikstürler</a></li>
+<li class="sub"><a href="../modules/projects/schedules.tr.html">Proje çizelgeleri</a></li>
+<li class=""><a href="../modules/purchasing_quotations.tr.html">Purchasing quotations modülü (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.tr.html">Quotations modülü (quotations)</a></li>
+<li class=""><a href="../modules/records.tr.html">Records modülü (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.tr.html">Sales orders modülü (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.tr.html">Satış siparişleri ve sipariş kalemleri</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.tr.html">Sevkiyatlar</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.tr.html">İhracat belgeleri</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.tr.html">Satış siparişi birimleri ve ayarları</a></li>
+<li class=""><a href="../modules/subscriptions.tr.html">Subscriptions modülü (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Asistan</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.tr.html">Niyet asistanı</a></li>
+<li class=""><a href="../ai/intent-assistant.tr.html">Niyet asistanı nasıl çalışır</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API referansı</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.tr.html">API başvurusu</a></li>
+<li class=""><a href="../api/analytics.tr.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.tr.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.tr.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.tr.html">Kimlik doğrulama ve başlıklar</a></li>
+<li class=""><a href="../api/bom.tr.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.tr.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.tr.html">API kuralları</a></li>
+<li class=""><a href="../api/costing.tr.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.tr.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.tr.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.tr.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.tr.html">Documents API (documents)</a></li>
+<li class=""><a href="../api/errors.tr.html">Hatalar</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.tr.html">İş hata kodları</a></li>
+<li class=""><a href="../api/fleet.tr.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.tr.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.tr.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.tr.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.tr.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.tr.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.tr.html">API&#x27;ye genel bakış</a></li>
+<li class=""><a href="../api/owned_organisations.tr.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.tr.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.tr.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.tr.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.tr.html">Procurement API: Kritik malzemeler uç noktaları (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.tr.html">Procurement API: Satın alma bilgi kayıtları uç noktaları (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.tr.html">Procurement API: MRP uç noktaları (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.tr.html">Procurement API: Satın alma sözleşmeleri uç noktaları (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.tr.html">Procurement API: Satın alma siparişleri uç noktaları (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.tr.html">Procurement API: Satın alma talepleri uç noktaları (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.tr.html">Procurement API: Satın alma teklif talepleri uç noktaları (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.tr.html">Procurement API: İkame grupları uç noktaları (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.tr.html">Procurement API: Tedarikçiler uç noktaları (suppliers)</a></li>
+<li class=""><a href="../api/production.tr.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.tr.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.tr.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.tr.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.tr.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.tr.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.tr.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.tr.html">Paylaşılan sunucu yolları API</a></li>
+<li class=""><a href="../api/subscriptions.tr.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.tr.html">Sistem uç noktaları API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">İşletme</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.tr.html">İşletim</a></li>
+<li class=""><a href="../operations/backups-and-restore.tr.html">Yedekler ve geri yükleme</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.tr.html">CI hattı ve sürüm</a></li>
+<li class=""><a href="../operations/configuration-reference.tr.html">Yapılandırma başvurusu</a></li>
+<li class=""><a href="../operations/container-measurement.tr.html">Konteyner ölçümü</a></li>
+<li class=""><a href="../operations/data-residency-check.tr.html">Veri ikameti denetimi</a></li>
+<li class=""><a href="../operations/database-migrations.tr.html">Veritabanı göçleri</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.tr.html">Demo ve staging verisi</a></li>
+<li class=""><a href="../operations/environments-and-promotion.tr.html">Ortamlar ve terfi</a></li>
+<li class=""><a href="../operations/install-a-linux-node.tr.html">Bir Linux düğümü kurun</a></li>
+<li class=""><a href="../operations/local-development-setup.tr.html">Yerel geliştirme kurulumu</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.tr.html">PostgreSQL rolleri ve ayarı</a></li>
+<li class=""><a href="../operations/reverse-proxy.tr.html">Ters vekil sunucu</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.tr.html">Zamanlanmış işler ve saklama</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.tr.html">Security.txt ve hazırlık</a></li>
+<li class=""><a href="../operations/service-and-process-manager.tr.html">Servis ve süreç yöneticisi</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.tr.html">Kiracı yaşam döngüsü</a></li>
+<li class=""><a href="../operations/windows-installer.tr.html">Windows kurucusu</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Katkı</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.tr.html">Katkı</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.tr.html">Mimari sınırlar</a></li>
+<li class=""><a href="../contributing/coding-rules.tr.html">Kodlama kuralları</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.tr.html">Geliştirici araçları ve betikleri</a></li>
+<li class=""><a href="../contributing/e2e-battery.tr.html">E2e bataryası</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.tr.html">E2e süit kataloğu</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.tr.html">Lint ve tip denetimi</a></li>
+<li class=""><a href="../contributing/python-tests.tr.html">Python testleri</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.tr.html">Bir arka uç modülü yazın</a></li>
+<li class=""><a href="../contributing/writing-documentation.tr.html">Bir wiki sayfası yazın</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Karar kayıtları</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.tr.html">Karar kayıtları</a></li>
+<li class=""><a href="../decisions/data-driven-languages.tr.html">Veri güdümlü diller</a></li>
+<li class=""><a href="../decisions/decimal-money.tr.html">Decimal para</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.tr.html">Yalnız EventBus ile modüller arası iletişim</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.tr.html">Metadata güdümlü arayüz</a></li>
+<li class=""><a href="../decisions/no-hard-delete.tr.html">Fiziksel silme yok</a></li>
+<li class=""><a href="../decisions/party-unification.tr.html">Taraf birleşimi</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.tr.html">Ürün, model ve versiyon kırılımı</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.tr.html">Sunucu tarafı arayüz durumu</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.tr.html">ULID birincil anahtarlar</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Başvuru</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.tr.html">Başvuru</a></li>
+<li class=""><a href="../reference/glossary.tr.html">Sözlük</a></li>
+<li class=""><a href="../reference/related-material.tr.html">İlgili belgeler</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.tr.html">Ana sayfa</a> / Platform</div>
+    <header class="page-head">
+      <p class="eyebrow">Referans</p>
+      <h1>Sözleşmeler başvurusu</h1>
+      <p class="lede">core/contracts.py içindeki 270 dondurulmuş dataclass; bölümlere göre gruplanmış, her sözleşmeyi üreten ve işleyen modüllerle birlikte.</p>
+    </header>
+    <nav class="toc" aria-label="İçindekiler"><p class="eyebrow">İçindekiler</p><ul class="outline">
+<li class="lvl2"><a href="#kapsam-ve-kaynak">Kapsam ve kaynak</a></li>
+<li class="lvl2"><a href="#taraf-alanı">Taraf alanı</a></li>
+<li class="lvl2"><a href="#kuruluş-alanı">Kuruluş alanı</a></li>
+<li class="lvl2"><a href="#ürün-ve-hizmet-alanı">Ürün ve hizmet alanı</a></li>
+<li class="lvl2"><a href="#kimlik-doğrulama-alanı">Kimlik doğrulama alanı</a></li>
+<li class="lvl2"><a href="#belge-alanı">Belge alanı</a></li>
+<li class="lvl2"><a href="#e-posta-alanı">E-posta alanı</a></li>
+<li class="lvl2"><a href="#crm-alanı">CRM alanı</a></li>
+<li class="lvl2"><a href="#teklif-alanı">Teklif alanı</a></li>
+<li class="lvl2"><a href="#satış-siparişi-alanı">Satış siparişi alanı</a></li>
+<li class="lvl2"><a href="#proje-alanı">Proje alanı</a></li>
+<li class="lvl2"><a href="#tasarım-ve-mühendislik-alanı">Tasarım ve mühendislik alanı</a></li>
+<li class="lvl2"><a href="#ürün-ağacı-alanı">Ürün ağacı alanı</a></li>
+<li class="lvl2"><a href="#envanter-alanı">Envanter alanı</a></li>
+<li class="lvl2"><a href="#üretim-alanı">Üretim alanı</a></li>
+<li class="lvl2"><a href="#yerleşim-alanı">Yerleşim alanı</a></li>
+<li class="lvl2"><a href="#maliyetlendirme-alanı">Maliyetlendirme alanı</a></li>
+<li class="lvl2"><a href="#bileşen-tahsisi">Bileşen tahsisi</a></li>
+<li class="lvl2"><a href="#satın-alma-alanı">Satın alma alanı</a></li>
+<li class="lvl2"><a href="#çalışma-takvimi-alanı">Çalışma takvimi alanı</a></li>
+<li class="lvl2"><a href="#analitik-alanı">Analitik alanı</a></li>
+<li class="lvl2"><a href="#i̇ntranet-alanı">İntranet alanı</a></li>
+<li class="lvl2"><a href="#abonelikler">Abonelikler</a></li>
+<li class="lvl2"><a href="#veri-sahibi-talepleri">Veri sahibi talepleri</a></li>
+<li class="lvl2"><a href="#son-bölüm-yorumundan-sonraki-sözleşmeler">Son bölüm yorumundan sonraki sözleşmeler</a></li>
+<li class="lvl2"><a href="#kısıtlar-ve-doğrulama">Kısıtlar ve doğrulama</a></li>
+<li class="lvl2"><a href="#tanıtılan-terimler">Tanıtılan terimler</a></li>
+<li class="lvl2"><a href="#i̇lgili-sayfalar">İlgili sayfalar</a></li>
+</ul></nav>
+    <article class="prose">
+<p>Bu sayfa <code>src/cluster_erp/core/contracts.py</code> içindeki her sözleşmeyi listeler: modüllerin <code>EventBus</code> üzerinden değiş tokuş ettiği dondurulmuş dataclass'lar. Her sözleşme için türü, satırı, onu oluşturan modülleri ve onu işleyen modülleri verir. Veri yolunun sözleşmeleri nasıl ilettiği <a href="event-bus.tr.html">olay veri yolu</a> sayfasında anlatılır; alan listeleri kaynak dosyadadır.</p>
+<h2 id="kapsam-ve-kaynak">Kapsam ve kaynak<a class="headerlink" href="#kapsam-ve-kaynak">¶</a></h2>
+<ul>
+<li>Tanımlandığı yer: <code>src/cluster_erp/core/contracts.py</code></li>
+<li>Sayı: <code>@dataclass(frozen=True</code> ile işaretli 270 sınıf (<code>grep -c "@dataclass(frozen=True"</code> ile sayıldı). Bunların 149'u <code>Event</code>'ten türer (145'i doğrudan, 4'ü <code>_SubscriptionEvent</code> üzerinden), 118'i <code>Query</code>'den türer ve 3'ü <code>DescribeAnalyticsFacts</code> yanıtlarında kullanılan düz değer türleridir.</li>
+<li>153 sözleşmenin en az bir işleyicisi vardır. 117'sinin yoktur. 38'i için üretici bulunamadı.</li>
+</ul>
+<p>Sütunlar şöyle üretildi:</p>
+<ul>
+<li><strong>Tür</strong>: <code>class</code> satırındaki temel sınıf.</li>
+<li><strong>Satır</strong>: <code>src/cluster_erp/core/contracts.py</code> içindeki <code>class</code> ifadesinin satırı.</li>
+<li><strong>Üreticiler</strong>: <code>contracts.py</code> hariç <code>src/cluster_erp/modules</code>, <code>src/cluster_erp/server</code>, <code>src/cluster_erp/core</code> veya <code>src/cluster_erp/ai</code> içinde <code>Name(</code> çağrısı (bir oluşturma) taşıyan dosyaların modülleri. <code>core</code> ve <code>server</code> bu klasörleri adlandırır. "(adla)", <code>src/cluster_erp/modules/subscriptions/customer_subscriptions/services.py:423-429</code> dosyasının sözleşmeler modülü üzerinde <code>getattr</code> ile kurduğu abonelik olaylarını işaretler.</li>
+<li><strong>Tüketiciler</strong>: sözleşmeyi aynı satırda veya sonraki satırda <code>subscribe(</code> ya da <code>register_query_handler(</code> çağrısının ilk argümanı olarak veren modüller.</li>
+<li><code>-</code>, o yöntemle hiçbir şey bulunamadığı anlamına gelir.</li>
+</ul>
+<p>Gruplar <code>contracts.py</code> içindeki bölüm yorumlarını izler. Bir grup adı sınıfın bildirildiği bölümdür, onu yayınlayan modül olmayabilir; gerçek üretici Üreticiler sütunundadır.</p>
+<h2 id="taraf-alanı">Taraf alanı<a class="headerlink" href="#taraf-alanı">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Sözleşme</th>
+<th>Tür</th>
+<th>Satır</th>
+<th>Üreticiler</th>
+<th>Tüketiciler</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PartyCreated</code></td>
+<td>Event</td>
+<td>24</td>
+<td><code>parties</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PartyUpdated</code></td>
+<td>Event</td>
+<td>31</td>
+<td><code>parties</code></td>
+<td><code>crm</code>, <code>procurement</code></td>
+</tr>
+<tr>
+<td><code>PartyDeleted</code></td>
+<td>Event</td>
+<td>43</td>
+<td><code>parties</code></td>
+<td><code>crm</code>, <code>owned_organisations</code>, <code>procurement</code></td>
+</tr>
+<tr>
+<td><code>PartyRoleSet</code></td>
+<td>Event</td>
+<td>48</td>
+<td><code>crm</code>, <code>owned_organisations</code>, <code>procurement</code></td>
+<td><code>parties</code></td>
+</tr>
+<tr>
+<td><code>GetPartyById</code></td>
+<td>Query</td>
+<td>59</td>
+<td><code>crm</code>, <code>fleet</code>, <code>intranet</code>, <code>inventory</code>, <code>procurement</code>, <code>products_and_services</code>, <code>purchasing_quotations</code>, <code>sales_orders</code></td>
+<td><code>parties</code></td>
+</tr>
+<tr>
+<td><code>GetAddressById</code></td>
+<td>Query</td>
+<td>64</td>
+<td><code>procurement</code>, <code>sales_orders</code></td>
+<td><code>parties</code></td>
+</tr>
+<tr>
+<td><code>SearchParties</code></td>
+<td>Query</td>
+<td>73</td>
+<td><code>intranet</code></td>
+<td><code>parties</code></td>
+</tr>
+<tr>
+<td><code>CountPartyChannels</code></td>
+<td>Query</td>
+<td>81</td>
+<td><code>crm</code></td>
+<td><code>parties</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="kuruluş-alanı">Kuruluş alanı<a class="headerlink" href="#kuruluş-alanı">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Sözleşme</th>
+<th>Tür</th>
+<th>Satır</th>
+<th>Üreticiler</th>
+<th>Tüketiciler</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>OrganisationCreated</code></td>
+<td>Event</td>
+<td>95</td>
+<td><code>owned_organisations</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>OrganisationUpdated</code></td>
+<td>Event</td>
+<td>102</td>
+<td><code>owned_organisations</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>EmployeeAdded</code></td>
+<td>Event</td>
+<td>108</td>
+<td><code>owned_organisations</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetOrganisationById</code></td>
+<td>Query</td>
+<td>115</td>
+<td><code>production</code></td>
+<td><code>owned_organisations</code></td>
+</tr>
+<tr>
+<td><code>GetCompanyDefaultTimezone</code></td>
+<td>Query</td>
+<td>120</td>
+<td><code>intranet</code>, <code>production</code></td>
+<td><code>owned_organisations</code></td>
+</tr>
+<tr>
+<td><code>EnsurePartyForOrganisation</code></td>
+<td>Query</td>
+<td>135</td>
+<td><code>owned_organisations</code></td>
+<td><code>parties</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="ürün-ve-hizmet-alanı">Ürün ve hizmet alanı<a class="headerlink" href="#ürün-ve-hizmet-alanı">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Sözleşme</th>
+<th>Tür</th>
+<th>Satır</th>
+<th>Üreticiler</th>
+<th>Tüketiciler</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ProductCreated</code></td>
+<td>Event</td>
+<td>149</td>
+<td><code>products_and_services</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>ProductUpdated</code></td>
+<td>Event</td>
+<td>157</td>
+<td><code>products_and_services</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>ProductStatusChanged</code></td>
+<td>Event</td>
+<td>163</td>
+<td><code>products_and_services</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>ProductDeleted</code></td>
+<td>Event</td>
+<td>170</td>
+<td><code>products_and_services</code></td>
+<td><code>bom</code></td>
+</tr>
+<tr>
+<td><code>RecordActivated</code></td>
+<td>Event</td>
+<td>177</td>
+<td><code>records</code></td>
+<td><code>owned_organisations</code>, <code>products_and_services</code></td>
+</tr>
+<tr>
+<td><code>ServiceCreated</code></td>
+<td>Event</td>
+<td>191</td>
+<td><code>products_and_services</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetProductById</code></td>
+<td>Query</td>
+<td>197</td>
+<td><code>bom</code>, <code>inventory</code>, <code>nesting</code>, <code>procurement</code>, <code>production</code>, <code>products_and_services</code>, <code>sales_orders</code></td>
+<td><code>products_and_services</code></td>
+</tr>
+<tr>
+<td><code>CreateScaffoldIntermediate</code></td>
+<td>Query</td>
+<td>202</td>
+<td><code>production</code></td>
+<td><code>products_and_services</code></td>
+</tr>
+<tr>
+<td><code>ValidateProductBreakdown</code></td>
+<td>Query</td>
+<td>219</td>
+<td><code>core</code></td>
+<td><code>products_and_services</code></td>
+</tr>
+<tr>
+<td><code>GetProductDefaultBreakdown</code></td>
+<td>Query</td>
+<td>230</td>
+<td><code>bom</code>, <code>procurement</code>, <code>production</code></td>
+<td><code>products_and_services</code></td>
+</tr>
+<tr>
+<td><code>GetBulkProductDefaultBreakdowns</code></td>
+<td>Query</td>
+<td>240</td>
+<td><code>bom</code>, <code>procurement</code></td>
+<td><code>products_and_services</code></td>
+</tr>
+<tr>
+<td><code>IsProductManufacturable</code></td>
+<td>Query</td>
+<td>248</td>
+<td><code>production</code></td>
+<td><code>products_and_services</code></td>
+</tr>
+<tr>
+<td><code>IsProductPurchasable</code></td>
+<td>Query</td>
+<td>253</td>
+<td>-</td>
+<td><code>products_and_services</code></td>
+</tr>
+<tr>
+<td><code>IsProductSellable</code></td>
+<td>Query</td>
+<td>258</td>
+<td>-</td>
+<td><code>products_and_services</code></td>
+</tr>
+<tr>
+<td><code>GetProductsByMaterialType</code></td>
+<td>Query</td>
+<td>263</td>
+<td>-</td>
+<td><code>products_and_services</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="kimlik-doğrulama-alanı">Kimlik doğrulama alanı<a class="headerlink" href="#kimlik-doğrulama-alanı">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Sözleşme</th>
+<th>Tür</th>
+<th>Satır</th>
+<th>Üreticiler</th>
+<th>Tüketiciler</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ApprovalCompleted</code></td>
+<td>Event</td>
+<td>275</td>
+<td><code>auth</code></td>
+<td><code>documents</code></td>
+</tr>
+<tr>
+<td><code>GetUserById</code></td>
+<td>Query</td>
+<td>283</td>
+<td>-</td>
+<td><code>auth</code></td>
+</tr>
+<tr>
+<td><code>GetUserPermissions</code></td>
+<td>Query</td>
+<td>288</td>
+<td>-</td>
+<td><code>auth</code></td>
+</tr>
+<tr>
+<td><code>GetApprovalChainForAction</code></td>
+<td>Query</td>
+<td>293</td>
+<td><code>documents</code>, <code>intranet</code></td>
+<td><code>auth</code></td>
+</tr>
+<tr>
+<td><code>SubmitForApproval</code></td>
+<td>Query</td>
+<td>299</td>
+<td><code>documents</code>, <code>intranet</code></td>
+<td><code>auth</code></td>
+</tr>
+<tr>
+<td><code>GetApprovalRequestById</code></td>
+<td>Query</td>
+<td>307</td>
+<td><code>documents</code></td>
+<td><code>auth</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="belge-alanı">Belge alanı<a class="headerlink" href="#belge-alanı">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Sözleşme</th>
+<th>Tür</th>
+<th>Satır</th>
+<th>Üreticiler</th>
+<th>Tüketiciler</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DocumentCreated</code></td>
+<td>Event</td>
+<td>317</td>
+<td><code>documents</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>DocumentVersionActivated</code></td>
+<td>Event</td>
+<td>322</td>
+<td><code>documents</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>DocumentVersionSuperseded</code></td>
+<td>Event</td>
+<td>329</td>
+<td><code>documents</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>ResolveDocumentVersionFile</code></td>
+<td>Query</td>
+<td>336</td>
+<td><code>intranet</code></td>
+<td><code>documents</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="e-posta-alanı">E-posta alanı<a class="headerlink" href="#e-posta-alanı">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Sözleşme</th>
+<th>Tür</th>
+<th>Satır</th>
+<th>Üreticiler</th>
+<th>Tüketiciler</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ResolveEntityEmails</code></td>
+<td>Event</td>
+<td>352</td>
+<td><code>intranet</code>, <code>server</code></td>
+<td><code>parties</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="crm-alanı">CRM alanı<a class="headerlink" href="#crm-alanı">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Sözleşme</th>
+<th>Tür</th>
+<th>Satır</th>
+<th>Üreticiler</th>
+<th>Tüketiciler</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CustomerCreated</code></td>
+<td>Event</td>
+<td>364</td>
+<td><code>crm</code></td>
+<td><code>parties</code></td>
+</tr>
+<tr>
+<td><code>CustomerUpdated</code></td>
+<td>Event</td>
+<td>370</td>
+<td><code>crm</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetCustomerById</code></td>
+<td>Query</td>
+<td>376</td>
+<td><code>quotations</code>, <code>sales_orders</code></td>
+<td><code>crm</code></td>
+</tr>
+<tr>
+<td><code>RfqUpdated</code></td>
+<td>Event</td>
+<td>381</td>
+<td><code>crm</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>RfqReceived</code></td>
+<td>Event</td>
+<td>387</td>
+<td><code>crm</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>RfqAssigned</code></td>
+<td>Event</td>
+<td>394</td>
+<td><code>crm</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>RfqPackageCompleted</code></td>
+<td>Event</td>
+<td>400</td>
+<td><code>crm</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>RfqDeclined</code></td>
+<td>Event</td>
+<td>412</td>
+<td><code>crm</code>, <code>quotations</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>RfqExpired</code></td>
+<td>Event</td>
+<td>418</td>
+<td><code>crm</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>RfqWon</code></td>
+<td>Event</td>
+<td>423</td>
+<td><code>crm</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>RfqLost</code></td>
+<td>Event</td>
+<td>428</td>
+<td><code>crm</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>RfqReopened</code></td>
+<td>Event</td>
+<td>433</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetRfqById</code></td>
+<td>Query</td>
+<td>438</td>
+<td><code>quotations</code>, <code>sales_orders</code></td>
+<td><code>crm</code></td>
+</tr>
+<tr>
+<td><code>GetRfqIdsByCustomer</code></td>
+<td>Query</td>
+<td>443</td>
+<td><code>quotations</code></td>
+<td><code>crm</code></td>
+</tr>
+<tr>
+<td><code>GetCustomerPartById</code></td>
+<td>Query</td>
+<td>448</td>
+<td><code>sales_orders</code></td>
+<td><code>crm</code></td>
+</tr>
+<tr>
+<td><code>GetCustomerPartsByCustomer</code></td>
+<td>Query</td>
+<td>453</td>
+<td>-</td>
+<td><code>crm</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="teklif-alanı">Teklif alanı<a class="headerlink" href="#teklif-alanı">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Sözleşme</th>
+<th>Tür</th>
+<th>Satır</th>
+<th>Üreticiler</th>
+<th>Tüketiciler</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>QuoteCreated</code></td>
+<td>Event</td>
+<td>464</td>
+<td><code>quotations</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>QuoteFeasibilityCompleted</code></td>
+<td>Event</td>
+<td>471</td>
+<td><code>quotations</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>QuoteBomAttached</code></td>
+<td>Event</td>
+<td>476</td>
+<td><code>quotations</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>QuoteCostingCompleted</code></td>
+<td>Event</td>
+<td>482</td>
+<td><code>costing</code>, <code>quotations</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>QuoteMgmtApprovalRecorded</code></td>
+<td>Event</td>
+<td>488</td>
+<td><code>quotations</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>QuoteSent</code></td>
+<td>Event</td>
+<td>494</td>
+<td><code>quotations</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>QuoteWon</code></td>
+<td>Event</td>
+<td>500</td>
+<td><code>quotations</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>QuoteLost</code></td>
+<td>Event</td>
+<td>506</td>
+<td><code>quotations</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>QuoteExpired</code></td>
+<td>Event</td>
+<td>512</td>
+<td><code>quotations</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>QuoteFeasibilityFailed</code></td>
+<td>Event</td>
+<td>517</td>
+<td><code>quotations</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>QuoteReturnedToBom</code></td>
+<td>Event</td>
+<td>523</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>QuoteMgmtRejected</code></td>
+<td>Event</td>
+<td>528</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>QuoteRevised</code></td>
+<td>Event</td>
+<td>534</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetQuoteById</code></td>
+<td>Query</td>
+<td>541</td>
+<td><code>sales_orders</code></td>
+<td><code>quotations</code></td>
+</tr>
+<tr>
+<td><code>GetQuoteLineItems</code></td>
+<td>Query</td>
+<td>546</td>
+<td><code>sales_orders</code></td>
+<td><code>quotations</code></td>
+</tr>
+<tr>
+<td><code>ReferenceQuoteLines</code></td>
+<td>Query</td>
+<td>554</td>
+<td><code>sales_orders</code></td>
+<td><code>quotations</code></td>
+</tr>
+<tr>
+<td><code>ReleaseQuoteLineReferences</code></td>
+<td>Query</td>
+<td>570</td>
+<td><code>sales_orders</code></td>
+<td><code>quotations</code></td>
+</tr>
+<tr>
+<td><code>GetPurchasingQuotationById</code></td>
+<td>Query</td>
+<td>580</td>
+<td>-</td>
+<td><code>purchasing_quotations</code></td>
+</tr>
+<tr>
+<td><code>CreateFollowOnFromSupplierQuotation</code></td>
+<td>Query</td>
+<td>585</td>
+<td><code>purchasing_quotations</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>SupplierQuotationAwarded</code></td>
+<td>Event</td>
+<td>607</td>
+<td><code>purchasing_quotations</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>GetInfoRecordPrice</code></td>
+<td>Query</td>
+<td>619</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetPurchaseRfqQuotations</code></td>
+<td>Query</td>
+<td>628</td>
+<td><code>purchasing_quotations</code></td>
+<td><code>procurement</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="satış-siparişi-alanı">Satış siparişi alanı<a class="headerlink" href="#satış-siparişi-alanı">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Sözleşme</th>
+<th>Tür</th>
+<th>Satır</th>
+<th>Üreticiler</th>
+<th>Tüketiciler</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SalesOrderPoReceived</code></td>
+<td>Event</td>
+<td>644</td>
+<td><code>sales_orders</code></td>
+<td><code>projects</code></td>
+</tr>
+<tr>
+<td><code>SalesOrderMismatchDetected</code></td>
+<td>Event</td>
+<td>650</td>
+<td><code>sales_orders</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>SalesOrderRevisionRequested</code></td>
+<td>Event</td>
+<td>656</td>
+<td><code>sales_orders</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>SalesOrderMatched</code></td>
+<td>Event</td>
+<td>661</td>
+<td><code>sales_orders</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>SalesOrderOpened</code></td>
+<td>Event</td>
+<td>666</td>
+<td><code>sales_orders</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>SalesOrderCancelled</code></td>
+<td>Event</td>
+<td>675</td>
+<td><code>sales_orders</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>SalesOrderShipped</code></td>
+<td>Event</td>
+<td>681</td>
+<td><code>sales_orders</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>SalesOrderDelivered</code></td>
+<td>Event</td>
+<td>686</td>
+<td><code>sales_orders</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>SalesOrderClosed</code></td>
+<td>Event</td>
+<td>691</td>
+<td><code>sales_orders</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>SalesOrderRevisionLimitReached</code></td>
+<td>Event</td>
+<td>696</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>SalesOrderOnHold</code></td>
+<td>Event</td>
+<td>702</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>SalesOrderResumed</code></td>
+<td>Event</td>
+<td>708</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>SalesOrderPartiallyShipped</code></td>
+<td>Event</td>
+<td>713</td>
+<td><code>sales_orders</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetSalesOrderById</code></td>
+<td>Query</td>
+<td>719</td>
+<td><code>nesting</code>, <code>projects</code></td>
+<td><code>sales_orders</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="proje-alanı">Proje alanı<a class="headerlink" href="#proje-alanı">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Sözleşme</th>
+<th>Tür</th>
+<th>Satır</th>
+<th>Üreticiler</th>
+<th>Tüketiciler</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ProjectCreated</code></td>
+<td>Event</td>
+<td>729</td>
+<td><code>projects</code></td>
+<td><code>sales_orders</code></td>
+</tr>
+<tr>
+<td><code>ProjectKickoffCompleted</code></td>
+<td>Event</td>
+<td>737</td>
+<td><code>projects</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>ProjectActionCreated</code></td>
+<td>Event</td>
+<td>742</td>
+<td><code>projects</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>ProjectActionOverdue</code></td>
+<td>Event</td>
+<td>750</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>ProjectSchedulePublished</code></td>
+<td>Event</td>
+<td>757</td>
+<td><code>projects</code></td>
+<td><code>production</code></td>
+</tr>
+<tr>
+<td><code>ProjectActivityChanged</code></td>
+<td>Event</td>
+<td>764</td>
+<td><code>projects</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>ProjectScheduleShared</code></td>
+<td>Event</td>
+<td>776</td>
+<td><code>projects</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>ProjectFixtureRequired</code></td>
+<td>Event</td>
+<td>782</td>
+<td><code>projects</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>ProjectClosed</code></td>
+<td>Event</td>
+<td>791</td>
+<td><code>projects</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>ProjectStatusChanged</code></td>
+<td>Event</td>
+<td>796</td>
+<td><code>projects</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetProjectById</code></td>
+<td>Query</td>
+<td>803</td>
+<td><code>sales_orders</code></td>
+<td><code>projects</code></td>
+</tr>
+<tr>
+<td><code>GetProjectMemberPartyIds</code></td>
+<td>Query</td>
+<td>808</td>
+<td><code>intranet</code></td>
+<td><code>projects</code></td>
+</tr>
+<tr>
+<td><code>IsKickoffCompleted</code></td>
+<td>Query</td>
+<td>818</td>
+<td>-</td>
+<td><code>projects</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="tasarım-ve-mühendislik-alanı">Tasarım ve mühendislik alanı<a class="headerlink" href="#tasarım-ve-mühendislik-alanı">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Sözleşme</th>
+<th>Tür</th>
+<th>Satır</th>
+<th>Üreticiler</th>
+<th>Tüketiciler</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DesignCreated</code></td>
+<td>Event</td>
+<td>828</td>
+<td><code>design_engineering</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>DesignApproved</code></td>
+<td>Event</td>
+<td>836</td>
+<td><code>design_engineering</code></td>
+<td><code>bom</code></td>
+</tr>
+<tr>
+<td><code>DesignSuperseded</code></td>
+<td>Event</td>
+<td>844</td>
+<td><code>design_engineering</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>EcnProposed</code></td>
+<td>Event</td>
+<td>851</td>
+<td><code>design_engineering</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>EcnApproved</code></td>
+<td>Event</td>
+<td>859</td>
+<td><code>design_engineering</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>EcnImplemented</code></td>
+<td>Event</td>
+<td>866</td>
+<td><code>design_engineering</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetDesignById</code></td>
+<td>Query</td>
+<td>874</td>
+<td><code>bom</code></td>
+<td><code>design_engineering</code></td>
+</tr>
+<tr>
+<td><code>IsDesignApproved</code></td>
+<td>Query</td>
+<td>879</td>
+<td>-</td>
+<td><code>design_engineering</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="ürün-ağacı-alanı">Ürün ağacı alanı<a class="headerlink" href="#ürün-ağacı-alanı">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Sözleşme</th>
+<th>Tür</th>
+<th>Satır</th>
+<th>Üreticiler</th>
+<th>Tüketiciler</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BomDraftCreated</code></td>
+<td>Event</td>
+<td>889</td>
+<td><code>bom</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>BomActivated</code></td>
+<td>Event</td>
+<td>897</td>
+<td><code>bom</code></td>
+<td><code>costing</code>, <code>procurement</code></td>
+</tr>
+<tr>
+<td><code>BomVersionActivated</code></td>
+<td>Event</td>
+<td>904</td>
+<td><code>bom</code></td>
+<td><code>production</code></td>
+</tr>
+<tr>
+<td><code>BomSuperseded</code></td>
+<td>Event</td>
+<td>921</td>
+<td><code>bom</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>BomLaborUpdated</code></td>
+<td>Event</td>
+<td>928</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>BomItemAdded</code></td>
+<td>Event</td>
+<td>934</td>
+<td>-</td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>BomItemChanged</code></td>
+<td>Event</td>
+<td>941</td>
+<td><code>bom</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>GetBomById</code></td>
+<td>Query</td>
+<td>947</td>
+<td><code>production</code>, <code>sales_orders</code></td>
+<td><code>bom</code></td>
+</tr>
+<tr>
+<td><code>IsBomActive</code></td>
+<td>Query</td>
+<td>952</td>
+<td>-</td>
+<td><code>bom</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="envanter-alanı">Envanter alanı<a class="headerlink" href="#envanter-alanı">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Sözleşme</th>
+<th>Tür</th>
+<th>Satır</th>
+<th>Üreticiler</th>
+<th>Tüketiciler</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GoodsReceived</code></td>
+<td>Event</td>
+<td>962</td>
+<td><code>inventory</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>GoodsIssued</code></td>
+<td>Event</td>
+<td>985</td>
+<td><code>inventory</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>StockTransferred</code></td>
+<td>Event</td>
+<td>997</td>
+<td><code>inventory</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>StockAdjusted</code></td>
+<td>Event</td>
+<td>1006</td>
+<td><code>inventory</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>BatchCreated</code></td>
+<td>Event</td>
+<td>1016</td>
+<td><code>inventory</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GoodsMovementReversed</code></td>
+<td>Event</td>
+<td>1023</td>
+<td><code>inventory</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>StockReserved</code></td>
+<td>Event</td>
+<td>1040</td>
+<td><code>inventory</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>StockReservationConsumed</code></td>
+<td>Event</td>
+<td>1050</td>
+<td><code>inventory</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>StockReservationCancelled</code></td>
+<td>Event</td>
+<td>1055</td>
+<td><code>inventory</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetStockLevel</code></td>
+<td>Query</td>
+<td>1060</td>
+<td><code>procurement</code></td>
+<td><code>inventory</code></td>
+</tr>
+<tr>
+<td><code>GrBlockedReceived</code></td>
+<td>Event</td>
+<td>1072</td>
+<td><code>inventory</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GrBlockedReleased</code></td>
+<td>Event</td>
+<td>1082</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>StockCategoryTransferred</code></td>
+<td>Event</td>
+<td>1090</td>
+<td><code>inventory</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>ReturnedToVendor</code></td>
+<td>Event</td>
+<td>1100</td>
+<td><code>inventory</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>ScrapPosted</code></td>
+<td>Event</td>
+<td>1110</td>
+<td><code>inventory</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>UsageDecisionRecorded</code></td>
+<td>Event</td>
+<td>1119</td>
+<td><code>inventory</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetBatchesByProduct</code></td>
+<td>Query</td>
+<td>1131</td>
+<td>-</td>
+<td><code>inventory</code></td>
+</tr>
+<tr>
+<td><code>IsStockAvailable</code></td>
+<td>Query</td>
+<td>1137</td>
+<td>-</td>
+<td><code>inventory</code></td>
+</tr>
+<tr>
+<td><code>GetBomVersionsUpdatedAt</code></td>
+<td>Query</td>
+<td>1149</td>
+<td><code>procurement</code></td>
+<td><code>bom</code></td>
+</tr>
+<tr>
+<td><code>GetBomExplosion</code></td>
+<td>Query</td>
+<td>1158</td>
+<td><code>costing</code>, <code>procurement</code>, <code>production</code></td>
+<td><code>bom</code></td>
+</tr>
+<tr>
+<td><code>GetBomMaterials</code></td>
+<td>Query</td>
+<td>1163</td>
+<td><code>crm</code></td>
+<td><code>bom</code></td>
+</tr>
+<tr>
+<td><code>GetBomItemDisplay</code></td>
+<td>Query</td>
+<td>1171</td>
+<td><code>production</code></td>
+<td><code>bom</code></td>
+</tr>
+<tr>
+<td><code>GetBomVersionDisplay</code></td>
+<td>Query</td>
+<td>1176</td>
+<td><code>production</code></td>
+<td><code>bom</code></td>
+</tr>
+<tr>
+<td><code>ReserveStock</code></td>
+<td>Query</td>
+<td>1181</td>
+<td><code>nesting</code></td>
+<td><code>inventory</code></td>
+</tr>
+<tr>
+<td><code>ConsumeReservation</code></td>
+<td>Query</td>
+<td>1195</td>
+<td><code>nesting</code></td>
+<td><code>inventory</code></td>
+</tr>
+<tr>
+<td><code>CancelReservation</code></td>
+<td>Query</td>
+<td>1200</td>
+<td>-</td>
+<td><code>inventory</code></td>
+</tr>
+<tr>
+<td><code>PostGoodsReceipt</code></td>
+<td>Query</td>
+<td>1205</td>
+<td><code>nesting</code>, <code>procurement</code>, <code>production</code></td>
+<td><code>inventory</code></td>
+</tr>
+<tr>
+<td><code>PostGoodsIssue</code></td>
+<td>Query</td>
+<td>1227</td>
+<td><code>fleet</code>, <code>nesting</code>, <code>production</code></td>
+<td><code>inventory</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="üretim-alanı">Üretim alanı<a class="headerlink" href="#üretim-alanı">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Sözleşme</th>
+<th>Tür</th>
+<th>Satır</th>
+<th>Üreticiler</th>
+<th>Tüketiciler</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ProductionOrderCreated</code></td>
+<td>Event</td>
+<td>1251</td>
+<td><code>production</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>ProductionOrderStatusChanged</code></td>
+<td>Event</td>
+<td>1259</td>
+<td><code>production</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetProjectProductionSchedule</code></td>
+<td>Query</td>
+<td>1266</td>
+<td><code>projects</code></td>
+<td><code>production</code></td>
+</tr>
+<tr>
+<td><code>GetProjectSalesDelivery</code></td>
+<td>Query</td>
+<td>1278</td>
+<td><code>projects</code></td>
+<td><code>sales_orders</code></td>
+</tr>
+<tr>
+<td><code>GetProjectProductionEvm</code></td>
+<td>Query</td>
+<td>1286</td>
+<td><code>projects</code></td>
+<td><code>production</code></td>
+</tr>
+<tr>
+<td><code>GetProjectProductionRollup</code></td>
+<td>Query</td>
+<td>1298</td>
+<td><code>projects</code></td>
+<td><code>production</code></td>
+</tr>
+<tr>
+<td><code>GetPlannedOrdersForCapacity</code></td>
+<td>Query</td>
+<td>1309</td>
+<td><code>production</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>CreateProductionOrderFromPlanned</code></td>
+<td>Query</td>
+<td>1319</td>
+<td><code>procurement</code></td>
+<td><code>production</code></td>
+</tr>
+<tr>
+<td><code>CreateBomForProduct</code></td>
+<td>Query</td>
+<td>1334</td>
+<td><code>sales_orders</code></td>
+<td><code>bom</code></td>
+</tr>
+<tr>
+<td><code>CreateProductionOrderForProject</code></td>
+<td>Query</td>
+<td>1356</td>
+<td><code>projects</code></td>
+<td><code>production</code></td>
+</tr>
+<tr>
+<td><code>WorkOrderCompleted</code></td>
+<td>Event</td>
+<td>1375</td>
+<td><code>production</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>ProductionOrderCompleted</code></td>
+<td>Event</td>
+<td>1386</td>
+<td><code>production</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>ProductionOrderCancelled</code></td>
+<td>Event</td>
+<td>1393</td>
+<td><code>production</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>ProductionOrderOnHold</code></td>
+<td>Event</td>
+<td>1399</td>
+<td><code>production</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>MaterialConsumed</code></td>
+<td>Event</td>
+<td>1405</td>
+<td><code>production</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetProductionOrderById</code></td>
+<td>Query</td>
+<td>1413</td>
+<td><code>nesting</code></td>
+<td><code>production</code></td>
+</tr>
+<tr>
+<td><code>GetRoutingForProduct</code></td>
+<td>Query</td>
+<td>1418</td>
+<td><code>production</code></td>
+<td><code>production</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="yerleşim-alanı">Yerleşim alanı<a class="headerlink" href="#yerleşim-alanı">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Sözleşme</th>
+<th>Tür</th>
+<th>Satır</th>
+<th>Üreticiler</th>
+<th>Tüketiciler</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>NestingCompleted</code></td>
+<td>Event</td>
+<td>1428</td>
+<td><code>nesting</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>NestingApproved</code></td>
+<td>Event</td>
+<td>1437</td>
+<td><code>nesting</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>NestingLowUtilizationAlert</code></td>
+<td>Event</td>
+<td>1443</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetNestingJobById</code></td>
+<td>Query</td>
+<td>1450</td>
+<td><code>costing</code></td>
+<td><code>nesting</code></td>
+</tr>
+<tr>
+<td><code>NestingRemnantCreated</code></td>
+<td>Event</td>
+<td>1455</td>
+<td><code>nesting</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>NestingRemnantConsumed</code></td>
+<td>Event</td>
+<td>1463</td>
+<td><code>nesting</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>NestingRemnantScrapped</code></td>
+<td>Event</td>
+<td>1469</td>
+<td><code>nesting</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetAvailableRemnants</code></td>
+<td>Query</td>
+<td>1475</td>
+<td>-</td>
+<td><code>nesting</code></td>
+</tr>
+<tr>
+<td><code>NestingMaterialReserved</code></td>
+<td>Event</td>
+<td>1483</td>
+<td><code>nesting</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>NestingMaterialConsumed</code></td>
+<td>Event</td>
+<td>1491</td>
+<td><code>nesting</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>NestingScrapRecorded</code></td>
+<td>Event</td>
+<td>1498</td>
+<td><code>nesting</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>NestingCostCalculated</code></td>
+<td>Event</td>
+<td>1506</td>
+<td><code>nesting</code></td>
+<td><code>costing</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="maliyetlendirme-alanı">Maliyetlendirme alanı<a class="headerlink" href="#maliyetlendirme-alanı">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Sözleşme</th>
+<th>Tür</th>
+<th>Satır</th>
+<th>Üreticiler</th>
+<th>Tüketiciler</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CostingCreated</code></td>
+<td>Event</td>
+<td>1520</td>
+<td><code>costing</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>CostingCalculated</code></td>
+<td>Event</td>
+<td>1529</td>
+<td><code>costing</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>CostingApproved</code></td>
+<td>Event</td>
+<td>1540</td>
+<td><code>costing</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>CostingRejected</code></td>
+<td>Event</td>
+<td>1551</td>
+<td><code>costing</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>CostingSuperseded</code></td>
+<td>Event</td>
+<td>1559</td>
+<td><code>costing</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>LowMarginAlert</code></td>
+<td>Event</td>
+<td>1566</td>
+<td><code>costing</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>CostingRateUpdated</code></td>
+<td>Event</td>
+<td>1576</td>
+<td><code>costing</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetCostingById</code></td>
+<td>Query</td>
+<td>1585</td>
+<td><code>quotations</code></td>
+<td><code>costing</code></td>
+</tr>
+<tr>
+<td><code>GetCostingByBomId</code></td>
+<td>Query</td>
+<td>1590</td>
+<td>-</td>
+<td><code>costing</code></td>
+</tr>
+<tr>
+<td><code>GetActiveLaborRate</code></td>
+<td>Query</td>
+<td>1596</td>
+<td>-</td>
+<td><code>costing</code></td>
+</tr>
+<tr>
+<td><code>GetActiveOverheadRates</code></td>
+<td>Query</td>
+<td>1603</td>
+<td>-</td>
+<td><code>costing</code></td>
+</tr>
+<tr>
+<td><code>GetCostBreakdown</code></td>
+<td>Query</td>
+<td>1608</td>
+<td>-</td>
+<td><code>costing</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="bileşen-tahsisi">Bileşen tahsisi<a class="headerlink" href="#bileşen-tahsisi">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Sözleşme</th>
+<th>Tür</th>
+<th>Satır</th>
+<th>Üreticiler</th>
+<th>Tüketiciler</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GetComponentAllocations</code></td>
+<td>Query</td>
+<td>1618</td>
+<td><code>bom</code></td>
+<td><code>production</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="satın-alma-alanı">Satın alma alanı<a class="headerlink" href="#satın-alma-alanı">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Sözleşme</th>
+<th>Tür</th>
+<th>Satır</th>
+<th>Üreticiler</th>
+<th>Tüketiciler</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PrCreated</code></td>
+<td>Event</td>
+<td>1629</td>
+<td><code>procurement</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PrApproved</code></td>
+<td>Event</td>
+<td>1636</td>
+<td><code>procurement</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PrCancelled</code></td>
+<td>Event</td>
+<td>1643</td>
+<td><code>procurement</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PoCreated</code></td>
+<td>Event</td>
+<td>1650</td>
+<td><code>procurement</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PoSent</code></td>
+<td>Event</td>
+<td>1658</td>
+<td><code>procurement</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PoAcknowledged</code></td>
+<td>Event</td>
+<td>1665</td>
+<td><code>procurement</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PoReceivedPartial</code></td>
+<td>Event</td>
+<td>1671</td>
+<td><code>procurement</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PoReceivedFull</code></td>
+<td>Event</td>
+<td>1680</td>
+<td><code>procurement</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PoDelayed</code></td>
+<td>Event</td>
+<td>1686</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PoCancelled</code></td>
+<td>Event</td>
+<td>1694</td>
+<td><code>procurement</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>MrpRunCompleted</code></td>
+<td>Event</td>
+<td>1701</td>
+<td><code>procurement</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>MrpRunFailed</code></td>
+<td>Event</td>
+<td>1710</td>
+<td><code>procurement</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>CriticalMaterialAlert</code></td>
+<td>Event</td>
+<td>1717</td>
+<td><code>procurement</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetPurchaseOrderById</code></td>
+<td>Query</td>
+<td>1725</td>
+<td>-</td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>GetPurchaseRequestById</code></td>
+<td>Query</td>
+<td>1730</td>
+<td><code>fleet</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>GetOpenPosForProduct</code></td>
+<td>Query</td>
+<td>1735</td>
+<td><code>procurement</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>ReconcilePoReceiptReversal</code></td>
+<td>Query</td>
+<td>1740</td>
+<td><code>inventory</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>GetOpenPoLinesForReceipt</code></td>
+<td>Query</td>
+<td>1755</td>
+<td><code>procurement</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>GetCriticalMaterials</code></td>
+<td>Query</td>
+<td>1766</td>
+<td><code>procurement</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>GetSubstitutesForProduct</code></td>
+<td>Query</td>
+<td>1771</td>
+<td><code>procurement</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>GetProductVendors</code></td>
+<td>Query</td>
+<td>1776</td>
+<td>-</td>
+<td><code>products_and_services</code></td>
+</tr>
+<tr>
+<td><code>GetProductPlanningData</code></td>
+<td>Query</td>
+<td>1781</td>
+<td><code>bom</code>, <code>procurement</code></td>
+<td><code>products_and_services</code></td>
+</tr>
+<tr>
+<td><code>GetOpenSalesOrderDemand</code></td>
+<td>Query</td>
+<td>1788</td>
+<td><code>procurement</code></td>
+<td><code>sales_orders</code></td>
+</tr>
+<tr>
+<td><code>GetOpenProductionDemand</code></td>
+<td>Query</td>
+<td>1795</td>
+<td><code>procurement</code></td>
+<td><code>production</code></td>
+</tr>
+<tr>
+<td><code>GetProductionSupply</code></td>
+<td>Query</td>
+<td>1802</td>
+<td><code>procurement</code></td>
+<td><code>production</code></td>
+</tr>
+<tr>
+<td><code>GetActiveBomVersionForProduct</code></td>
+<td>Query</td>
+<td>1809</td>
+<td><code>bom</code>, <code>procurement</code>, <code>production</code></td>
+<td><code>bom</code></td>
+</tr>
+<tr>
+<td><code>GetActiveBomItemsForProduct</code></td>
+<td>Query</td>
+<td>1816</td>
+<td><code>procurement</code></td>
+<td><code>bom</code></td>
+</tr>
+<tr>
+<td><code>GetBomScaffoldTree</code></td>
+<td>Query</td>
+<td>1825</td>
+<td><code>production</code></td>
+<td><code>bom</code></td>
+</tr>
+<tr>
+<td><code>GetWarehouseById</code></td>
+<td>Query</td>
+<td>1868</td>
+<td><code>procurement</code></td>
+<td><code>inventory</code></td>
+</tr>
+<tr>
+<td><code>GetBulkStockLevels</code></td>
+<td>Query</td>
+<td>1877</td>
+<td><code>bom</code>, <code>procurement</code></td>
+<td><code>inventory</code></td>
+</tr>
+<tr>
+<td><code>GetConsumptionHistory</code></td>
+<td>Query</td>
+<td>1885</td>
+<td><code>procurement</code></td>
+<td><code>inventory</code></td>
+</tr>
+<tr>
+<td><code>SetProductPlanningClassification</code></td>
+<td>Query</td>
+<td>1898</td>
+<td><code>procurement</code></td>
+<td><code>products_and_services</code></td>
+</tr>
+<tr>
+<td><code>ApplyProductBufferZones</code></td>
+<td>Query</td>
+<td>1907</td>
+<td><code>procurement</code></td>
+<td><code>products_and_services</code></td>
+</tr>
+<tr>
+<td><code>GetBatchExpirySchedule</code></td>
+<td>Query</td>
+<td>1917</td>
+<td><code>procurement</code></td>
+<td><code>inventory</code></td>
+</tr>
+<tr>
+<td><code>GetProductionVersionsBulk</code></td>
+<td>Query</td>
+<td>1927</td>
+<td><code>procurement</code></td>
+<td><code>production</code></td>
+</tr>
+<tr>
+<td><code>CheckProductionCapacity</code></td>
+<td>Query</td>
+<td>1940</td>
+<td><code>procurement</code></td>
+<td><code>production</code></td>
+</tr>
+<tr>
+<td><code>GetPartUsageCounts</code></td>
+<td>Query</td>
+<td>1952</td>
+<td><code>procurement</code>, <code>products_and_services</code></td>
+<td><code>bom</code></td>
+</tr>
+<tr>
+<td><code>GetBulkOpenPos</code></td>
+<td>Query</td>
+<td>1961</td>
+<td><code>bom</code>, <code>procurement</code></td>
+<td><code>procurement</code></td>
+</tr>
+<tr>
+<td><code>GetBulkProductVendors</code></td>
+<td>Query</td>
+<td>1968</td>
+<td><code>procurement</code></td>
+<td><code>products_and_services</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="çalışma-takvimi-alanı">Çalışma takvimi alanı<a class="headerlink" href="#çalışma-takvimi-alanı">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Sözleşme</th>
+<th>Tür</th>
+<th>Satır</th>
+<th>Üreticiler</th>
+<th>Tüketiciler</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GetCalendarWindows</code></td>
+<td>Query</td>
+<td>1980</td>
+<td><code>production</code></td>
+<td><code>calendars</code></td>
+</tr>
+<tr>
+<td><code>GetEffectiveWorkingCalendar</code></td>
+<td>Query</td>
+<td>1991</td>
+<td><code>production</code></td>
+<td><code>calendars</code></td>
+</tr>
+<tr>
+<td><code>GetEffectiveWorkingCalendars</code></td>
+<td>Query</td>
+<td>2002</td>
+<td><code>production</code></td>
+<td><code>calendars</code></td>
+</tr>
+<tr>
+<td><code>WorkingCalendarChanged</code></td>
+<td>Event</td>
+<td>2013</td>
+<td><code>calendars</code></td>
+<td><code>production</code></td>
+</tr>
+<tr>
+<td><code>GetOwnerWorkingDays</code></td>
+<td>Query</td>
+<td>2026</td>
+<td><code>intranet</code>, <code>procurement</code>, <code>projects</code>, <code>sales_orders</code></td>
+<td><code>calendars</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="analitik-alanı">Analitik alanı<a class="headerlink" href="#analitik-alanı">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Sözleşme</th>
+<th>Tür</th>
+<th>Satır</th>
+<th>Üreticiler</th>
+<th>Tüketiciler</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DescribeAnalyticsFacts</code></td>
+<td>Event</td>
+<td>2060</td>
+<td><code>analytics</code></td>
+<td><code>fleet</code>, <code>inventory</code>, <code>parties</code>, <code>procurement</code>, <code>production</code>, <code>products_and_services</code>, <code>purchasing_quotations</code>, <code>quotations</code>, <code>sales_orders</code></td>
+</tr>
+<tr>
+<td><code>AnalyticsDimension</code></td>
+<td>değer türü</td>
+<td>2076</td>
+<td><code>analytics</code>, <code>fleet</code>, <code>inventory</code>, <code>parties</code>, <code>procurement</code>, <code>production</code>, <code>products_and_services</code>, <code>purchasing_quotations</code>, <code>quotations</code>, <code>sales_orders</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>AnalyticsMeasure</code></td>
+<td>değer türü</td>
+<td>2101</td>
+<td><code>fleet</code>, <code>inventory</code>, <code>parties</code>, <code>procurement</code>, <code>production</code>, <code>products_and_services</code>, <code>purchasing_quotations</code>, <code>quotations</code>, <code>sales_orders</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>AnalyticsFactSet</code></td>
+<td>değer türü</td>
+<td>2126</td>
+<td><code>fleet</code>, <code>inventory</code>, <code>parties</code>, <code>procurement</code>, <code>production</code>, <code>products_and_services</code>, <code>purchasing_quotations</code>, <code>quotations</code>, <code>sales_orders</code></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h2 id="i̇ntranet-alanı">İntranet alanı<a class="headerlink" href="#i̇ntranet-alanı">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Sözleşme</th>
+<th>Tür</th>
+<th>Satır</th>
+<th>Üreticiler</th>
+<th>Tüketiciler</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SendTransactionalEmail</code></td>
+<td>Event</td>
+<td>2163</td>
+<td><code>intranet</code></td>
+<td><code>mail</code></td>
+</tr>
+<tr>
+<td><code>RetentionSweep</code></td>
+<td>Event</td>
+<td>2180</td>
+<td><code>server</code></td>
+<td><code>intranet</code></td>
+</tr>
+<tr>
+<td><code>IntranetEventPublished</code></td>
+<td>Event</td>
+<td>2212</td>
+<td><code>intranet</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>IntranetEventUpdated</code></td>
+<td>Event</td>
+<td>2229</td>
+<td><code>intranet</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>IntranetEventCancelled</code></td>
+<td>Event</td>
+<td>2241</td>
+<td><code>intranet</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>IntranetPostPublished</code></td>
+<td>Event</td>
+<td>2250</td>
+<td><code>intranet</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetUpcomingIntranetEvents</code></td>
+<td>Query</td>
+<td>2262</td>
+<td>-</td>
+<td><code>intranet</code></td>
+</tr>
+<tr>
+<td><code>GetPartyForEmployee</code></td>
+<td>Query</td>
+<td>2274</td>
+<td><code>intranet</code>, <code>projects</code></td>
+<td><code>owned_organisations</code></td>
+</tr>
+<tr>
+<td><code>ListDirectoryEmployees</code></td>
+<td>Query</td>
+<td>2284</td>
+<td><code>intranet</code></td>
+<td><code>owned_organisations</code></td>
+</tr>
+<tr>
+<td><code>GetTeamPartyIds</code></td>
+<td>Query</td>
+<td>2296</td>
+<td><code>intranet</code></td>
+<td><code>owned_organisations</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="abonelikler">Abonelikler<a class="headerlink" href="#abonelikler">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Sözleşme</th>
+<th>Tür</th>
+<th>Satır</th>
+<th>Üreticiler</th>
+<th>Tüketiciler</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>_SubscriptionEvent</code></td>
+<td>Event</td>
+<td>2318</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>SubscriptionActivated</code></td>
+<td>Event (<code>_SubscriptionEvent</code>)</td>
+<td>2335</td>
+<td><code>subscriptions</code> (adla)</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>SubscriptionRenewed</code></td>
+<td>Event (<code>_SubscriptionEvent</code>)</td>
+<td>2340</td>
+<td><code>subscriptions</code> (adla)</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>SubscriptionCancelled</code></td>
+<td>Event (<code>_SubscriptionEvent</code>)</td>
+<td>2345</td>
+<td><code>subscriptions</code> (adla)</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>SubscriptionExpired</code></td>
+<td>Event (<code>_SubscriptionEvent</code>)</td>
+<td>2350</td>
+<td><code>subscriptions</code> (adla)</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>GetSubscriptionPlanById</code></td>
+<td>Query</td>
+<td>2355</td>
+<td>-</td>
+<td><code>subscriptions</code></td>
+</tr>
+<tr>
+<td><code>GetCustomerSubscriptionById</code></td>
+<td>Query</td>
+<td>2360</td>
+<td>-</td>
+<td><code>subscriptions</code></td>
+</tr>
+<tr>
+<td><code>GetDocumentsForEntity</code></td>
+<td>Query</td>
+<td>2365</td>
+<td><code>intranet</code></td>
+<td><code>documents</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="veri-sahibi-talepleri">Veri sahibi talepleri<a class="headerlink" href="#veri-sahibi-talepleri">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Sözleşme</th>
+<th>Tür</th>
+<th>Satır</th>
+<th>Üreticiler</th>
+<th>Tüketiciler</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CollectSubjectData</code></td>
+<td>Event</td>
+<td>2385</td>
+<td><code>privacy</code></td>
+<td><code>auth</code>, <code>crm</code>, <code>documents</code>, <code>intranet</code>, <code>logs</code>, <code>mail</code>, <code>owned_organisations</code>, <code>parties</code>, <code>procurement</code></td>
+</tr>
+<tr>
+<td><code>GetPartyContactValues</code></td>
+<td>Query</td>
+<td>2402</td>
+<td><code>privacy</code></td>
+<td><code>parties</code></td>
+</tr>
+<tr>
+<td><code>AnonymiseSubject</code></td>
+<td>Event</td>
+<td>2411</td>
+<td><code>privacy</code></td>
+<td><code>auth</code>, <code>crm</code>, <code>documents</code>, <code>intranet</code>, <code>logs</code>, <code>mail</code>, <code>owned_organisations</code>, <code>parties</code>, <code>procurement</code>, <code>server</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="son-bölüm-yorumundan-sonraki-sözleşmeler">Son bölüm yorumundan sonraki sözleşmeler<a class="headerlink" href="#son-bölüm-yorumundan-sonraki-sözleşmeler">¶</a></h2>
+<p>Aşağıdaki sözleşmeler dosyada veri sahibi bölümünün ardından gelir ve kendi bölüm yorumlarını taşımaz.</p>
+<table>
+<thead>
+<tr>
+<th>Sözleşme</th>
+<th>Tür</th>
+<th>Satır</th>
+<th>Üreticiler</th>
+<th>Tüketiciler</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DescribeDisplaySwitches</code></td>
+<td>Event</td>
+<td>2441</td>
+<td><code>server</code></td>
+<td><code>sales_orders</code></td>
+</tr>
+<tr>
+<td><code>TenantFieldValuesChanged</code></td>
+<td>Event</td>
+<td>2452</td>
+<td><code>core</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>DescribeFieldConsumers</code></td>
+<td>Event</td>
+<td>2470</td>
+<td><code>server</code></td>
+<td><code>bom</code>, <code>intranet</code>, <code>inventory</code>, <code>procurement</code>, <code>production</code>, <code>quotations</code>, <code>sales_orders</code></td>
+</tr>
+<tr>
+<td><code>ConvertQuantity</code></td>
+<td>Query</td>
+<td>2484</td>
+<td><code>sales_orders</code></td>
+<td><code>products_and_services</code></td>
+</tr>
+<tr>
+<td><code>GetUnitOfMeasure</code></td>
+<td>Query</td>
+<td>2496</td>
+<td><code>sales_orders</code></td>
+<td><code>products_and_services</code></td>
+</tr>
+<tr>
+<td><code>GetPartyPrimaryAddress</code></td>
+<td>Query</td>
+<td>2503</td>
+<td><code>sales_orders</code></td>
+<td><code>parties</code></td>
+</tr>
+<tr>
+<td><code>GetHeadquartersOrganisation</code></td>
+<td>Query</td>
+<td>2513</td>
+<td><code>sales_orders</code></td>
+<td><code>owned_organisations</code></td>
+</tr>
+<tr>
+<td><code>FindUnitOfMeasure</code></td>
+<td>Query</td>
+<td>2520</td>
+<td><code>sales_orders</code></td>
+<td><code>products_and_services</code></td>
+</tr>
+<tr>
+<td><code>GetCountryByCode</code></td>
+<td>Query</td>
+<td>2529</td>
+<td><code>sales_orders</code></td>
+<td><code>parties</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="kısıtlar-ve-doğrulama">Kısıtlar ve doğrulama<a class="headerlink" href="#kısıtlar-ve-doğrulama">¶</a></h2>
+<ul>
+<li>Her sözleşme dondurulmuş bir dataclass'tır. <code>Event</code> ve <code>Query</code> <code>frozen=True, kw_only=True</code> ile bildirilir; bu yüzden her alan anahtar sözcükle verilir (<code>src/cluster_erp/core/event_bus.py:24-32</code>).</li>
+<li>Her sözleşme <code>Event</code>'ten gelen <code>source_module</code> ve <code>timestamp</code> alanlarını taşır (<code>src/cluster_erp/core/event_bus.py:25-27</code>).</li>
+<li>Bir sorgu türünün yalnızca bir işleyicisi olabilir; ikincisini kaydetmek <code>DuplicateQueryHandlerError</code> yükseltir (<code>src/cluster_erp/core/event_bus.py:73-79</code>).</li>
+<li><code>GetInfoRecordPrice</code>, üreticisi ve işleyicisi bulunamayan bir sorgudur (<code>src/cluster_erp/core/contracts.py:619</code>). Onunla <code>bus.query</code> çağrısı <code>QueryHandlerNotFoundError</code> yükseltir (<code>src/cluster_erp/core/event_bus.py:98-101</code>).</li>
+<li>İşleyicisi olmayan sözleşmeler yayınlandığında kimseye iletilmez (<code>src/cluster_erp/core/event_bus.py:85-87</code>). 117 sözleşmenin her birinin ileride kullanım için ayrılıp ayrılmadığı koddan belirlenemedi.</li>
+</ul>
+<h2 id="tanıtılan-terimler">Tanıtılan terimler<a class="headerlink" href="#tanıtılan-terimler">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Terim</th>
+<th>Kod tanımlayıcısı</th>
+<th>Tanım</th>
+<th>Türkçe terim</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>contract</td>
+<td><code>core/contracts.py</code> dataclass</td>
+<td>Modüller arasında değiş tokuş edilen bir olayın veya sorgunun yükünü tanımlayan dondurulmuş dataclass.</td>
+<td>sözleşme</td>
+<td><code>src/cluster_erp/core/contracts.py:1-6</code></td>
+</tr>
+<tr>
+<td>producer</td>
+<td>yok</td>
+<td>Bir sözleşmeyi oluşturup <code>emit</code> veya <code>query</code> çağrısına veren modül.</td>
+<td>üretici</td>
+<td><code>src/cluster_erp/core/event_bus.py:83</code></td>
+</tr>
+<tr>
+<td>consumer</td>
+<td>yok</td>
+<td>Bir sözleşme için işleyici kaydeden modül.</td>
+<td>tüketici</td>
+<td><code>src/cluster_erp/core/event_bus.py:55</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="i̇lgili-sayfalar">İlgili sayfalar<a class="headerlink" href="#i̇lgili-sayfalar">¶</a></h2>
+<ul>
+<li><a href="index.tr.html">Platform çekirdeği</a></li>
+<li><a href="event-bus.tr.html">Olay veri yolu</a></li>
+<li><a href="module-lifecycle.tr.html">Modül yaşam döngüsü</a></li>
+<li><a href="../modules/analytics/analytics-facts.tr.html">Analitik olguları</a></li>
+</ul>
+<hr>
+<p>7793ff4 numaralı commit ile 2026-11-09 tarihinde doğrulandı.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Doğrulanan commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../platform/change-history.tr.html"><span class="eyebrow">Önceki</span><span>Değişiklik geçmişi</span></a><a class="next" href="../platform/database-and-sessions.tr.html"><span class="eyebrow">Sonraki</span><span>Veritabanı ve oturumlar</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">Bu sayfada</p><ul class="outline">
+<li class="lvl2"><a href="#kapsam-ve-kaynak">Kapsam ve kaynak</a></li>
+<li class="lvl2"><a href="#taraf-alanı">Taraf alanı</a></li>
+<li class="lvl2"><a href="#kuruluş-alanı">Kuruluş alanı</a></li>
+<li class="lvl2"><a href="#ürün-ve-hizmet-alanı">Ürün ve hizmet alanı</a></li>
+<li class="lvl2"><a href="#kimlik-doğrulama-alanı">Kimlik doğrulama alanı</a></li>
+<li class="lvl2"><a href="#belge-alanı">Belge alanı</a></li>
+<li class="lvl2"><a href="#e-posta-alanı">E-posta alanı</a></li>
+<li class="lvl2"><a href="#crm-alanı">CRM alanı</a></li>
+<li class="lvl2"><a href="#teklif-alanı">Teklif alanı</a></li>
+<li class="lvl2"><a href="#satış-siparişi-alanı">Satış siparişi alanı</a></li>
+<li class="lvl2"><a href="#proje-alanı">Proje alanı</a></li>
+<li class="lvl2"><a href="#tasarım-ve-mühendislik-alanı">Tasarım ve mühendislik alanı</a></li>
+<li class="lvl2"><a href="#ürün-ağacı-alanı">Ürün ağacı alanı</a></li>
+<li class="lvl2"><a href="#envanter-alanı">Envanter alanı</a></li>
+<li class="lvl2"><a href="#üretim-alanı">Üretim alanı</a></li>
+<li class="lvl2"><a href="#yerleşim-alanı">Yerleşim alanı</a></li>
+<li class="lvl2"><a href="#maliyetlendirme-alanı">Maliyetlendirme alanı</a></li>
+<li class="lvl2"><a href="#bileşen-tahsisi">Bileşen tahsisi</a></li>
+<li class="lvl2"><a href="#satın-alma-alanı">Satın alma alanı</a></li>
+<li class="lvl2"><a href="#çalışma-takvimi-alanı">Çalışma takvimi alanı</a></li>
+<li class="lvl2"><a href="#analitik-alanı">Analitik alanı</a></li>
+<li class="lvl2"><a href="#i̇ntranet-alanı">İntranet alanı</a></li>
+<li class="lvl2"><a href="#abonelikler">Abonelikler</a></li>
+<li class="lvl2"><a href="#veri-sahibi-talepleri">Veri sahibi talepleri</a></li>
+<li class="lvl2"><a href="#son-bölüm-yorumundan-sonraki-sözleşmeler">Son bölüm yorumundan sonraki sözleşmeler</a></li>
+<li class="lvl2"><a href="#kısıtlar-ve-doğrulama">Kısıtlar ve doğrulama</a></li>
+<li class="lvl2"><a href="#tanıtılan-terimler">Tanıtılan terimler</a></li>
+<li class="lvl2"><a href="#i̇lgili-sayfalar">İlgili sayfalar</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>docs/wiki altındaki Markdown kaynaklarından derlendi</span></footer>
+</body>
+</html>

@@ -1,0 +1,1608 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hatalar · Cluster ERP Wiki</title>
+<meta name="description" content="JSON hata gövdesi, istisnadan koda eşleme ve HTTP durumu, atma konumları ve ilk iletisiyle her hata kodu.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="tr"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menü</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.tr.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Wiki&#x27;de ara" aria-label="Wiki&#x27;de ara" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="Eşleşen sayfa yok."></div>
+  </div>
+  <a class="lang-switch" href="../api/errors.html" lang="en" hreflang="en">English</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Ana sayfa</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.tr.html">Cluster ERP wiki&#x27;si</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Genel bakış</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.tr.html">Genel bakış</a></li>
+<li class=""><a href="../overview/architecture-overview.tr.html">Mimariye genel bakış</a></li>
+<li class=""><a href="../overview/repository-map.tr.html">Depo haritası</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.tr.html">Cluster ERP nedir</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.tr.html">Platform çekirdeği</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.tr.html">Ekler, notlar ve depolama</a></li>
+<li class=""><a href="../platform/base-model-and-ids.tr.html">Temel model ve kimlikler</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.tr.html">Önbellek ve varlık damgası</a></li>
+<li class=""><a href="../platform/change-history.tr.html">Değişiklik geçmişi</a></li>
+<li class=""><a href="../platform/contracts-reference.tr.html">Sözleşmeler başvurusu</a></li>
+<li class=""><a href="../platform/database-and-sessions.tr.html">Veritabanı ve oturumlar</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.tr.html">Hatalar ve istisnalar</a></li>
+<li class=""><a href="../platform/event-bus.tr.html">Olay veri yolu</a></li>
+<li class=""><a href="../platform/metadata-model.tr.html">Metadata modeli</a></li>
+<li class=""><a href="../platform/module-lifecycle.tr.html">Modül yaşam döngüsü</a></li>
+<li class=""><a href="../platform/money-and-decimal.tr.html">Para ve Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.tr.html">PDF ve sistem postası</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.tr.html">Ürün kırılımı ve stok dönüşümü</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.tr.html">Referans veriler ve çekirdek i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.tr.html">İstek hattı ve ara katmanlar</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.tr.html">Arama, sayfalama ve toplu işlemler</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.tr.html">Sunucu açılışı ve uygulama fabrikası</a></li>
+<li class=""><a href="../platform/settings-reference.tr.html">Ayarlar başvurusu</a></li>
+<li class=""><a href="../platform/shared-server-routes.tr.html">Ortak sunucu rotaları</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.tr.html">Yumuşak silme ve kullanımdan kaldırma</a></li>
+<li class=""><a href="../platform/tenant-fields.tr.html">Kiracı alanları</a></li>
+<li class=""><a href="../platform/working-time.tr.html">Çalışma zamanı</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Kimlik ve erişim</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.tr.html">Kimlik, erişim, kiracılık, gizlilik ve lisans</a></li>
+<li class=""><a href="../identity-access/abac-policies.tr.html">ABAC politikaları</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.tr.html">Uygulama mağazası lisansları ve hakları</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.tr.html">Onaylar ve onay zincirleri</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.tr.html">Kimlik doğrulama ve oturumlar</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.tr.html">Alan ve satır erişimi</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.tr.html">Çok kiracılılık</a></li>
+<li class=""><a href="../identity-access/notification-rules.tr.html">Bildirim kuralları</a></li>
+<li class=""><a href="../identity-access/operator-console.tr.html">Operatör konsolu</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.tr.html">Gizlilik ve ilgili kişi başvuruları</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.tr.html">Roller ve izinler</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.tr.html">İkinci doğrulama adımı ve gizli değer saklama</a></li>
+<li class=""><a href="../identity-access/signup.tr.html">Kayıt</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web uygulaması</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.tr.html">Web uygulaması platformu</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.tr.html">Aksiyonlar ve aksiyon kartı</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.tr.html">Asistan ve sohbet ekranları</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.tr.html">Açılış, oturum ve API çağrıları</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.tr.html">Veri tazeleme ve değişiklik sinyalleri</a></li>
+<li class=""><a href="../web-app/device-classes.tr.html">Cihaz sınıfları</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.tr.html">Kapılı uygulama paketleri</a></li>
+<li class=""><a href="../web-app/generic-detail.tr.html">Genel ayrıntı</a></li>
+<li class=""><a href="../web-app/generic-form.tr.html">Genel form</a></li>
+<li class=""><a href="../web-app/generic-list.tr.html">Genel liste</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.tr.html">Genel ağaç ve ayar ekranları</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.tr.html">Ana ekran, dock ve başlatıcı</a></li>
+<li class=""><a href="../web-app/home-widgets.tr.html">Ana ekran bileşenleri</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.tr.html">Web uygulamasına dil ekleyin</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.tr.html">Metadata ile ekran ekleyin</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.tr.html">Uluslararasılaştırma ve diller</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.tr.html">Mail ve profil ekranları</a></li>
+<li class=""><a href="../web-app/metadata-rendering.tr.html">Metadata çizimi</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.tr.html">Modül uygulamaları ve uygulama kapsamı</a></li>
+<li class=""><a href="../web-app/overview.tr.html">Web uygulamasına genel bakış</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.tr.html">Kayıt belgeleri, görüntüleyici ve paylaşım</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.tr.html">Arama ve komut paleti</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.tr.html">Temalar, belirteçler ve erişilebilirlik</a></li>
+<li class=""><a href="../web-app/user-ui-state.tr.html">Kullanıcı arayüz durumu</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Masaüstü istemci</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.tr.html">Masaüstü istemci</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.tr.html">API istemcisi ve çalışanlar</a></li>
+<li class=""><a href="../desktop/chat-widget.tr.html">Sohbet bileşeni</a></li>
+<li class=""><a href="../desktop/generic-widgets.tr.html">Genel bileşenler</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.tr.html">Diller, temalar ve erişilebilirlik</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.tr.html">Metadata deposu ve yabancı anahtar önbelleği</a></li>
+<li class=""><a href="../desktop/module-screens.tr.html">Modül ekranları</a></li>
+<li class=""><a href="../desktop/overview.tr.html">Masaüstü istemciye genel bakış</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.tr.html">Masaüstü istemciyi çalıştırın</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.tr.html">Sinyal veri yolu ve watch_entity</a></li>
+<li class=""><a href="../desktop/tabs-panes-and-layout.tr.html">Sekmeler, bölmeler ve yerleşim</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">İş modülleri</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.tr.html">İş modülleri</a></li>
+<li class=""><a href="../modules/analytics/index.tr.html">Analytics modülü (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.tr.html">Analitik olgular</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.tr.html">Analitik tahmin ve sınıflandırma</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.tr.html">Analitik tarifleri ve sorgu kurucu</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.tr.html">Analitik raporları, özetleri ve çapraz</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.tr.html">Analitik istatistik ve çıkarım</a></li>
+<li class=""><a href="../modules/app_store.tr.html">App store modülü (app_store)</a></li>
+<li class=""><a href="../modules/auth.tr.html">Auth modülü (auth)</a></li>
+<li class=""><a href="../modules/bom.tr.html">BOM modülü (bom)</a></li>
+<li class=""><a href="../modules/calendars.tr.html">Calendars modülü (calendars)</a></li>
+<li class=""><a href="../modules/costing.tr.html">Costing modülü (costing)</a></li>
+<li class=""><a href="../modules/crm/index.tr.html">CRM modülü (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.tr.html">Müşteriler ve müşteri parçaları</a></li>
+<li class="sub"><a href="../modules/crm/inbox.tr.html">Teklif talebi gelen kutusu</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.tr.html">Müşteri teklif talepleri</a></li>
+<li class=""><a href="../modules/currencies.tr.html">Currencies modülü (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.tr.html">Design engineering modülü (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.tr.html">Documents modülü (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.tr.html">Fleet modülü (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.tr.html">Filo araçları</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.tr.html">Filo bakımı ve iş emirleri</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.tr.html">Filo sayaçları ve yakıt</a></li>
+<li class="sub"><a href="../modules/fleet/operations.tr.html">Filo operasyonları</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.tr.html">Filo TCO, telematik ve analitik</a></li>
+<li class=""><a href="../modules/intranet/index.tr.html">Intranet modülü (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.tr.html">İntranet erişimi, hedef kitlesi ve saklama</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.tr.html">İntranet içeriği ve akışı</a></li>
+<li class="sub"><a href="../modules/intranet/directory.tr.html">İntranet rehberi</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.tr.html">İntranet katılımı</a></li>
+<li class="sub"><a href="../modules/intranet/events.tr.html">İntranet etkinlikleri</a></li>
+<li class="sub"><a href="../modules/intranet/leave.tr.html">İntranet izinleri</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.tr.html">İntranet belgelerim</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.tr.html">İntranet bildirimleri ve tebligat</a></li>
+<li class="sub"><a href="../modules/intranet/requests.tr.html">İntranet talepleri</a></li>
+<li class=""><a href="../modules/inventory.tr.html">Inventory modülü (inventory)</a></li>
+<li class=""><a href="../modules/logs.tr.html">Logs modülü (logs)</a></li>
+<li class=""><a href="../modules/mail.tr.html">Mail modülü (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.tr.html">Nesting modülü (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.tr.html">Yerleşim motoru</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.tr.html">Yerleşim entegrasyonu ve KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.tr.html">Yerleşim işleri, parçalar ve artıklar</a></li>
+<li class=""><a href="../modules/owned_organisations.tr.html">Owned organisations modülü (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.tr.html">Parties modülü (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.tr.html">Adresler başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.tr.html">İletişim kanalları başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/parties.tr.html">Parties alt modülü başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.tr.html">Taraf birleştirme</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.tr.html">Kişi dilleri başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.tr.html">Parties ayarları ve başvuru verileri</a></li>
+<li class=""><a href="../modules/privacy.tr.html">Privacy modülü (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.tr.html">Procurement modülü (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.tr.html">Kritik malzemeler ve ikame</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.tr.html">Malzeme ihtiyaç planlaması</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.tr.html">Satın alma sözleşmeleri ve info kayıtları</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.tr.html">Satın alma siparişleri</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.tr.html">Satın alma talepleri</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.tr.html">Satın alma teklif talepleri</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.tr.html">Tedarikçiler</a></li>
+<li class=""><a href="../modules/production/index.tr.html">Production modülü (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.tr.html">Üretim emirleri ve versiyonları</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.tr.html">Rotalar ve operasyon tipleri</a></li>
+<li class="sub"><a href="../modules/production/scheduling.tr.html">Üretim çizelgeleme</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.tr.html">İş merkezleri ve kapasite</a></li>
+<li class="sub"><a href="../modules/production/work-orders.tr.html">İş emirleri</a></li>
+<li class=""><a href="../modules/products_and_services.tr.html">Products and services modülü (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.tr.html">Projects modülü (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.tr.html">Proje aksiyonları, aktiviteleri ve toplantıları</a></li>
+<li class="sub"><a href="../modules/projects/board.tr.html">Proje panosu</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.tr.html">Projeler, kalemler ve fikstürler</a></li>
+<li class="sub"><a href="../modules/projects/schedules.tr.html">Proje çizelgeleri</a></li>
+<li class=""><a href="../modules/purchasing_quotations.tr.html">Purchasing quotations modülü (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.tr.html">Quotations modülü (quotations)</a></li>
+<li class=""><a href="../modules/records.tr.html">Records modülü (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.tr.html">Sales orders modülü (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.tr.html">Satış siparişleri ve sipariş kalemleri</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.tr.html">Sevkiyatlar</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.tr.html">İhracat belgeleri</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.tr.html">Satış siparişi birimleri ve ayarları</a></li>
+<li class=""><a href="../modules/subscriptions.tr.html">Subscriptions modülü (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Asistan</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.tr.html">Niyet asistanı</a></li>
+<li class=""><a href="../ai/intent-assistant.tr.html">Niyet asistanı nasıl çalışır</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">API referansı</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.tr.html">API başvurusu</a></li>
+<li class=""><a href="../api/analytics.tr.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.tr.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.tr.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.tr.html">Kimlik doğrulama ve başlıklar</a></li>
+<li class=""><a href="../api/bom.tr.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.tr.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.tr.html">API kuralları</a></li>
+<li class=""><a href="../api/costing.tr.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.tr.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.tr.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.tr.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.tr.html">Documents API (documents)</a></li>
+<li class="current"><a href="../api/errors.tr.html">Hatalar</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.tr.html">İş hata kodları</a></li>
+<li class=""><a href="../api/fleet.tr.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.tr.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.tr.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.tr.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.tr.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.tr.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.tr.html">API&#x27;ye genel bakış</a></li>
+<li class=""><a href="../api/owned_organisations.tr.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.tr.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.tr.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.tr.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.tr.html">Procurement API: Kritik malzemeler uç noktaları (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.tr.html">Procurement API: Satın alma bilgi kayıtları uç noktaları (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.tr.html">Procurement API: MRP uç noktaları (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.tr.html">Procurement API: Satın alma sözleşmeleri uç noktaları (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.tr.html">Procurement API: Satın alma siparişleri uç noktaları (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.tr.html">Procurement API: Satın alma talepleri uç noktaları (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.tr.html">Procurement API: Satın alma teklif talepleri uç noktaları (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.tr.html">Procurement API: İkame grupları uç noktaları (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.tr.html">Procurement API: Tedarikçiler uç noktaları (suppliers)</a></li>
+<li class=""><a href="../api/production.tr.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.tr.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.tr.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.tr.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.tr.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.tr.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.tr.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.tr.html">Paylaşılan sunucu yolları API</a></li>
+<li class=""><a href="../api/subscriptions.tr.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.tr.html">Sistem uç noktaları API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">İşletme</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.tr.html">İşletim</a></li>
+<li class=""><a href="../operations/backups-and-restore.tr.html">Yedekler ve geri yükleme</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.tr.html">CI hattı ve sürüm</a></li>
+<li class=""><a href="../operations/configuration-reference.tr.html">Yapılandırma başvurusu</a></li>
+<li class=""><a href="../operations/container-measurement.tr.html">Konteyner ölçümü</a></li>
+<li class=""><a href="../operations/data-residency-check.tr.html">Veri ikameti denetimi</a></li>
+<li class=""><a href="../operations/database-migrations.tr.html">Veritabanı göçleri</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.tr.html">Demo ve staging verisi</a></li>
+<li class=""><a href="../operations/environments-and-promotion.tr.html">Ortamlar ve terfi</a></li>
+<li class=""><a href="../operations/install-a-linux-node.tr.html">Bir Linux düğümü kurun</a></li>
+<li class=""><a href="../operations/local-development-setup.tr.html">Yerel geliştirme kurulumu</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.tr.html">PostgreSQL rolleri ve ayarı</a></li>
+<li class=""><a href="../operations/reverse-proxy.tr.html">Ters vekil sunucu</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.tr.html">Zamanlanmış işler ve saklama</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.tr.html">Security.txt ve hazırlık</a></li>
+<li class=""><a href="../operations/service-and-process-manager.tr.html">Servis ve süreç yöneticisi</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.tr.html">Kiracı yaşam döngüsü</a></li>
+<li class=""><a href="../operations/windows-installer.tr.html">Windows kurucusu</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Katkı</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.tr.html">Katkı</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.tr.html">Mimari sınırlar</a></li>
+<li class=""><a href="../contributing/coding-rules.tr.html">Kodlama kuralları</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.tr.html">Geliştirici araçları ve betikleri</a></li>
+<li class=""><a href="../contributing/e2e-battery.tr.html">E2e bataryası</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.tr.html">E2e süit kataloğu</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.tr.html">Lint ve tip denetimi</a></li>
+<li class=""><a href="../contributing/python-tests.tr.html">Python testleri</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.tr.html">Bir arka uç modülü yazın</a></li>
+<li class=""><a href="../contributing/writing-documentation.tr.html">Bir wiki sayfası yazın</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Karar kayıtları</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.tr.html">Karar kayıtları</a></li>
+<li class=""><a href="../decisions/data-driven-languages.tr.html">Veri güdümlü diller</a></li>
+<li class=""><a href="../decisions/decimal-money.tr.html">Decimal para</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.tr.html">Yalnız EventBus ile modüller arası iletişim</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.tr.html">Metadata güdümlü arayüz</a></li>
+<li class=""><a href="../decisions/no-hard-delete.tr.html">Fiziksel silme yok</a></li>
+<li class=""><a href="../decisions/party-unification.tr.html">Taraf birleşimi</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.tr.html">Ürün, model ve versiyon kırılımı</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.tr.html">Sunucu tarafı arayüz durumu</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.tr.html">ULID birincil anahtarlar</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Başvuru</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.tr.html">Başvuru</a></li>
+<li class=""><a href="../reference/glossary.tr.html">Sözlük</a></li>
+<li class=""><a href="../reference/related-material.tr.html">İlgili belgeler</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.tr.html">Ana sayfa</a> / API referansı</div>
+    <header class="page-head">
+      <p class="eyebrow">Referans</p>
+      <h1>Hatalar</h1>
+      <p class="lede">JSON hata gövdesi, istisnadan koda eşleme ve HTTP durumu, atma konumları ve ilk iletisiyle her hata kodu.</p>
+    </header>
+    <nav class="toc" aria-label="İçindekiler"><p class="eyebrow">İçindekiler</p><ul class="outline">
+<li class="lvl2"><a href="#hata-gövdesi">Hata gövdesi</a></li>
+<li class="lvl2"><a href="#i̇stisna-işleyicileri">İstisna işleyicileri</a></li>
+<li class="lvl2"><a href="#her-yola-ortak-kodlar">Her yola ortak kodlar</a></li>
+<li class="lvl2"><a href="#çekirdek-hata-modülünde-tanımlı-kodlar">Çekirdek hata modülünde tanımlı kodlar</a></li>
+<li class="lvl3"><a href="#kimlik-doğrulama">Kimlik doğrulama</a></li>
+<li class="lvl3"><a href="#kaynak-crud">Kaynak CRUD</a></li>
+<li class="lvl3"><a href="#doğrulama">Doğrulama</a></li>
+<li class="lvl3"><a href="#i̇ş-mantığı">İş mantığı</a></li>
+<li class="lvl3"><a href="#para-birimi">Para birimi</a></li>
+<li class="lvl3"><a href="#eşzamanlılık">Eşzamanlılık</a></li>
+<li class="lvl3"><a href="#dış-hizmetler">Dış hizmetler</a></li>
+<li class="lvl3"><a href="#veritabanı">Veritabanı</a></li>
+<li class="lvl3"><a href="#serileştirme">Serileştirme</a></li>
+<li class="lvl3"><a href="#çalışma-zamanı">Çalışma zamanı</a></li>
+<li class="lvl3"><a href="#sunucu">Sunucu</a></li>
+<li class="lvl2"><a href="#çekirdek-hata-modülü-dışında-tanımlı-kodlar">Çekirdek hata modülü dışında tanımlı kodlar</a></li>
+<li class="lvl2"><a href="#genel-http-kodları">Genel HTTP kodları</a></li>
+<li class="lvl2"><a href="#i̇lgili-sayfalar">İlgili sayfalar</a></li>
+</ul></nav>
+    <article class="prose">
+<p>Bu sayfa her başarısız API isteğinin döndürdüğü hata gövdesini anlatır ve kodda bulunan her hata kodunu listeler. <code>src/cluster_erp/core/errors.py</code> içindeki 213 kod sabitini, modüllerin ve sunucu dosyalarının yerel olarak tanımladığı kodları ve <code>src/cluster_erp/server/error_handler.py</code> içindeki istisna işleyicilerinin atadığı kodları kapsar. Hata modelinin tasarımı <a href="../platform/errors-and-exceptions.tr.html">Hatalar ve istisnalar</a> sayfasında anlatılır.</p>
+<h2 id="hata-gövdesi">Hata gövdesi<a class="headerlink" href="#hata-gövdesi">¶</a></h2>
+<p>Her işleyici gövdeyi <code>_build_body</code> ile kurar. <code>src/cluster_erp/server/error_handler.py:33-46</code> içinden:</p>
+<div class="hl"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">_build_body</span><span class="p">(</span>
+    <span class="n">code</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">trace_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">details</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="n">body</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;code&quot;</span><span class="p">:</span> <span class="n">code</span><span class="p">,</span>
+        <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">message</span><span class="p">,</span>
+        <span class="s2">&quot;trace_id&quot;</span><span class="p">:</span> <span class="n">trace_id</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="n">details</span><span class="p">:</span>
+        <span class="n">body</span><span class="p">[</span><span class="s2">&quot;details&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">details</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="n">body</span><span class="p">}</span>
+</code></pre></div>
+
+<p><code>_build_body</code> ve <code>RESOURCE_NOT_FOUND</code> fabrikası <code>not_found</code> (<code>src/cluster_erp/core/errors.py:357-367</code>) üzerine kurulan örnekleyici yanıt:</p>
+<div class="hl"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;RESOURCE_NOT_FOUND&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Warehouse (&lt;warehouse_id&gt;) not found&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;trace_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;yymmdd&gt;-&lt;seq&gt;&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;details&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Warehouse&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;warehouse_id&gt;&quot;</span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Alan</th>
+<th>Anlam</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>code</code></td>
+<td>Makinece okunur kod. İstemciler onu yerelleştirilmiş bir iletiye eşler (<code>src/cluster_erp/core/errors.py:6-16</code>).</td>
+</tr>
+<tr>
+<td><code>message</code></td>
+<td>Geliştiriciye yönelik İngilizce metin (<code>src/cluster_erp/core/errors.py:10-11</code>).</td>
+</tr>
+<tr>
+<td><code>trace_id</code></td>
+<td><code>yymmdd</code> tarih öneki ve <code>trace_sequence</code> tablosundan günlük sıra; tablo yazımı başarısız olursa zamana dayalı yedek (<code>src/cluster_erp/server/error_handler.py:49-70</code>).</td>
+</tr>
+<tr>
+<td><code>details</code></td>
+<td>Yalnız boş değilse bulunur (<code>src/cluster_erp/server/error_handler.py:45-46</code>).</td>
+</tr>
+<tr>
+<td><code>debug_message</code>, <code>exception_type</code></td>
+<td>İşlenmeyen ve eşlenen istisnalarda yalnız <code>debug</code> açıkken eklenir (<code>src/cluster_erp/server/error_handler.py:306-308</code>, <code>src/cluster_erp/server/error_handler.py:346-347</code>).</td>
+</tr>
+</tbody>
+</table>
+<aside class="adm adm-note" role="note"><p class="adm-title">Not</p><p><code>Content-Length</code> değeri <code>max_request_body_bytes</code> sınırını aşan bir istek, gövde okunmadan <code>413</code> ve <code>REQUEST_TOO_LARGE</code> koduyla reddedilir. Bu gövde <code>code</code> ve <code>message</code> taşır, <code>trace_id</code> taşımaz (<code>src/cluster_erp/server/app.py:1396-1411</code>).</p>
+</aside>
+<h2 id="i̇stisna-işleyicileri">İstisna işleyicileri<a class="headerlink" href="#i̇stisna-işleyicileri">¶</a></h2>
+<p><code>install_error_handlers</code> istisna sınıfı başına bir işleyici kaydeder (<code>src/cluster_erp/server/error_handler.py:200-398</code>). Tablo her birinin ne ürettiğini listeler.</p>
+<table>
+<thead>
+<tr>
+<th>İstisna</th>
+<th>Kod</th>
+<th>Durum</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AppError</code></td>
+<td>hatanın <code>code</code> değeri</td>
+<td>hatanın <code>status_code</code> değeri</td>
+<td><code>src/cluster_erp/server/error_handler.py:203-224</code></td>
+</tr>
+<tr>
+<td><code>RequestValidationError</code></td>
+<td><code>VALIDATION_ERROR</code>, <code>details.fields</code> <code>field</code> ve <code>reason</code> listeler</td>
+<td><code>422</code></td>
+<td><code>src/cluster_erp/server/error_handler.py:226-246</code></td>
+</tr>
+<tr>
+<td><code>HTTPException</code></td>
+<td><code>HTTP_&lt;status&gt;</code> veya sözlük <code>detail</code> içindeki <code>code</code></td>
+<td>istisnanın durumu</td>
+<td><code>src/cluster_erp/server/error_handler.py:248-270</code></td>
+</tr>
+<tr>
+<td>SQLAlchemy <code>DisconnectionError</code></td>
+<td><code>DB_CONNECTION_ERROR</code></td>
+<td><code>503</code></td>
+<td><code>src/cluster_erp/server/error_handler.py:128</code></td>
+</tr>
+<tr>
+<td>SQLAlchemy <code>TimeoutError</code></td>
+<td><code>DB_TIMEOUT</code></td>
+<td><code>503</code></td>
+<td><code>src/cluster_erp/server/error_handler.py:131</code></td>
+</tr>
+<tr>
+<td>SQLAlchemy <code>IntegrityError</code></td>
+<td>benzersizlik ihlalinde <code>details.constraint</code> ile <code>DB_UNIQUE_VIOLATION</code>, aksi halde <code>DB_INTEGRITY_ERROR</code></td>
+<td><code>409</code></td>
+<td><code>src/cluster_erp/server/error_handler.py:132</code>, <code>src/cluster_erp/server/error_handler.py:355-392</code></td>
+</tr>
+<tr>
+<td>SQLAlchemy <code>DataError</code></td>
+<td><code>VALIDATION_ERROR</code></td>
+<td><code>422</code></td>
+<td><code>src/cluster_erp/server/error_handler.py:136</code></td>
+</tr>
+<tr>
+<td>SQLAlchemy <code>OperationalError</code></td>
+<td><code>DB_OPERATIONAL_ERROR</code></td>
+<td><code>500</code></td>
+<td><code>src/cluster_erp/server/error_handler.py:136</code></td>
+</tr>
+<tr>
+<td><code>decimal.InvalidOperation</code></td>
+<td><code>VALIDATION_ERROR</code></td>
+<td><code>422</code></td>
+<td><code>src/cluster_erp/server/error_handler.py:146-148</code></td>
+</tr>
+<tr>
+<td>Pydantic <code>ValidationError</code></td>
+<td><code>SERIALIZATION_ERROR</code></td>
+<td><code>500</code></td>
+<td><code>src/cluster_erp/server/error_handler.py:150-155</code></td>
+</tr>
+<tr>
+<td><code>TimeoutError</code>, <code>TypeError</code>, <code>ValueError</code></td>
+<td><code>TIMEOUT_ERROR</code>, <code>TYPE_ERROR</code>, <code>VALUE_ERROR</code></td>
+<td><code>504</code>, <code>500</code>, <code>500</code></td>
+<td><code>src/cluster_erp/server/error_handler.py:157-163</code></td>
+</tr>
+<tr>
+<td>diğer her <code>Exception</code></td>
+<td><code>INTERNAL_ERROR</code> veya sınıf <code>_EXCEPTION_MAP</code> içindeyse eşlenen kod; durum <code>503</code> ise <code>Retry-After: 2</code></td>
+<td><code>500</code></td>
+<td><code>src/cluster_erp/server/error_handler.py:272-310</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="her-yola-ortak-kodlar">Her yola ortak kodlar<a class="headerlink" href="#her-yola-ortak-kodlar">¶</a></h2>
+<p>Kimlik doğrulama, yetki ve yetkilendirme denetimleri işleyiciden önce çalışır ve her yolu yanıtlayabilir. Yetkilendirme kapısı sözlük <code>detail</code> ile <code>HTTPException</code> atar; kod gövdeye <code>code</code> olarak ulaşır (<code>src/cluster_erp/server/entitlements.py:233-257</code>, <code>src/cluster_erp/server/error_handler.py:252-262</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Kod</th>
+<th>Durum</th>
+<th>Neden</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AUTH_MISSING_HEADER</code></td>
+<td><code>401</code></td>
+<td>Bearer başlığı ve erişim çerezi yok.</td>
+<td><code>src/cluster_erp/modules/auth/guards.py:101-105</code></td>
+</tr>
+<tr>
+<td><code>AUTH_CSRF_HEADER_MISSING</code></td>
+<td><code>403</code></td>
+<td>CSRF başlığı olmadan çerezle kimliği doğrulanan bir yazma isteği.</td>
+<td><code>src/cluster_erp/modules/auth/session_cookies.py:112-121</code></td>
+</tr>
+<tr>
+<td><code>AUTH_TOKEN_EXPIRED</code></td>
+<td><code>401</code></td>
+<td>Erişim belirtecinin süresi dolmuş.</td>
+<td><code>src/cluster_erp/modules/auth/guards.py:112-113</code></td>
+</tr>
+<tr>
+<td><code>AUTH_TOKEN_INVALID</code></td>
+<td><code>401</code></td>
+<td>Belirteç doğrulanmıyor, <code>jti</code> taşımıyor veya kullanıcının son oturum kapatmasından önce verilmiş.</td>
+<td><code>src/cluster_erp/modules/auth/guards.py:114-115</code>, <code>src/cluster_erp/modules/auth/guards.py:127</code>, <code>src/cluster_erp/modules/auth/guards.py:163-165</code></td>
+</tr>
+<tr>
+<td><code>AUTH_TOKEN_PAYLOAD_INVALID</code></td>
+<td><code>401</code></td>
+<td><code>sub</code> talebi yok veya UUID değil.</td>
+<td><code>src/cluster_erp/modules/auth/guards.py:117-122</code></td>
+</tr>
+<tr>
+<td><code>AUTH_TOKEN_BLACKLISTED</code></td>
+<td><code>401</code></td>
+<td>Belirtecin <code>jti</code> değeri kara listede.</td>
+<td><code>src/cluster_erp/modules/auth/guards.py:130-131</code></td>
+</tr>
+<tr>
+<td><code>AUTH_USER_INACTIVE</code></td>
+<td><code>401</code></td>
+<td>Kullanıcı yok, kullanımdan kaldırılmış veya etkin değil.</td>
+<td><code>src/cluster_erp/modules/auth/guards.py:150-151</code></td>
+</tr>
+<tr>
+<td><code>AUTH_TENANT_UNRESOLVED</code></td>
+<td><code>401</code></td>
+<td>Çoklu kiracı kipi: istek için etkin bir kiracı çözülemedi.</td>
+<td><code>src/cluster_erp/server/dependencies.py:143-148</code></td>
+</tr>
+<tr>
+<td><code>AUTH_PERMISSION_DENIED</code></td>
+<td><code>403</code></td>
+<td>Çağıranda gerekli bir yetki kodu yok veya bir ABAC ilkesi reddediyor; <code>details.required_permission</code> kodu adlandırır.</td>
+<td><code>src/cluster_erp/core/errors.py:388-394</code></td>
+</tr>
+<tr>
+<td><code>entitlement.no_seat</code></td>
+<td><code>403</code></td>
+<td>Kullanıcının modülü kapsayan bir uygulamada koltuğu yok.</td>
+<td><code>src/cluster_erp/server/entitlements.py:236-240</code></td>
+</tr>
+<tr>
+<td><code>entitlement.module_not_installed</code></td>
+<td><code>403</code></td>
+<td>Modülü kapsayan kurulu bir uygulama yok.</td>
+<td><code>src/cluster_erp/server/entitlements.py:241-245</code></td>
+</tr>
+<tr>
+<td><code>entitlement.app_not_licensed</code></td>
+<td><code>403</code></td>
+<td>Kapsayan uygulama lisanslı değil.</td>
+<td><code>src/cluster_erp/server/entitlements.py:246-250</code></td>
+</tr>
+<tr>
+<td><code>entitlement.license_read_only</code></td>
+<td><code>403</code></td>
+<td>Lisans salt okunur durumda ve yöntem <code>GET</code>, <code>HEAD</code> veya <code>OPTIONS</code> değil.</td>
+<td><code>src/cluster_erp/server/entitlements.py:253-257</code></td>
+</tr>
+<tr>
+<td><code>VALIDATION_ERROR</code></td>
+<td><code>422</code></td>
+<td>İstek yolun parametrelerine veya şemasına uymuyor.</td>
+<td><code>src/cluster_erp/server/error_handler.py:226-246</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="çekirdek-hata-modülünde-tanımlı-kodlar">Çekirdek hata modülünde tanımlı kodlar<a class="headerlink" href="#çekirdek-hata-modülünde-tanımlı-kodlar">¶</a></h2>
+<p><code>src/cluster_erp/core/errors.py</code> içindeki her yorum bölümü için bir tablo. Durum, atma konumu sayısı ve ilk konum; <code>src/cluster_erp/</code> üzerinde <code>AppError(...)</code>, <code>core/errors.py</code> fabrikaları ve <code>HTTPException(...)</code> için yapılan sözdizimi ağacı taramasından gelir. İleti sütunu ilk konumdaki İngilizce iletiyi alıntılar; kodun belirttiği nedendir. Atma konumu olmayan kod tanımlıdır ama taranan hiçbir çağrı onu atmaz. İstisna işleyicilerinin atadığı kodlar bunun yerine işleyiciyi gösterir.</p>
+<p>Aynı dosyanın iş bölümlerindeki kodlar (CRM'den satın almaya) <a href="errors/business-error-codes.tr.html">İş hata kodları</a> sayfasında listelenir.</p>
+<h3 id="kimlik-doğrulama">Kimlik doğrulama<a class="headerlink" href="#kimlik-doğrulama">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Kod</th>
+<th>Tanım yeri</th>
+<th>HTTP durumu</th>
+<th>Atma konumu</th>
+<th>İlk konum</th>
+<th>İlk konumdaki ileti</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AUTH_MISSING_HEADER</code></td>
+<td><code>src/cluster_erp/core/errors.py:34</code></td>
+<td><code>401</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/auth/guards.py:103</code></td>
+<td><code>Missing or invalid authorization header</code></td>
+</tr>
+<tr>
+<td><code>AUTH_TOKEN_EXPIRED</code></td>
+<td><code>src/cluster_erp/core/errors.py:35</code></td>
+<td><code>401</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/auth/guards.py:113</code></td>
+<td><code>Token expired</code></td>
+</tr>
+<tr>
+<td><code>AUTH_TOKEN_INVALID</code></td>
+<td><code>src/cluster_erp/core/errors.py:36</code></td>
+<td><code>401</code></td>
+<td>3</td>
+<td><code>src/cluster_erp/modules/auth/guards.py:115</code></td>
+<td><code>Invalid token</code></td>
+</tr>
+<tr>
+<td><code>AUTH_TOKEN_PAYLOAD_INVALID</code></td>
+<td><code>src/cluster_erp/core/errors.py:37</code></td>
+<td><code>401</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/auth/guards.py:120</code></td>
+<td><code>Invalid token payload</code></td>
+</tr>
+<tr>
+<td><code>AUTH_INVALID_CREDENTIALS</code></td>
+<td><code>src/cluster_erp/core/errors.py:38</code></td>
+<td><code>401</code></td>
+<td>3</td>
+<td><code>src/cluster_erp/modules/auth/login/routes.py:143</code></td>
+<td><code>Account locked. Try again in {remaining // 60 + 1} minutes.</code></td>
+</tr>
+<tr>
+<td><code>AUTH_REFRESH_FAILED</code></td>
+<td><code>src/cluster_erp/core/errors.py:39</code></td>
+<td><code>401</code></td>
+<td>4</td>
+<td><code>src/cluster_erp/modules/auth/login/routes.py:269</code></td>
+<td><code>Missing refresh token</code></td>
+</tr>
+<tr>
+<td><code>AUTH_CSRF_HEADER_MISSING</code></td>
+<td><code>src/cluster_erp/core/errors.py:40</code></td>
+<td><code>403</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/auth/login/routes.py:271</code></td>
+<td><code>cookie-authenticated requests must carry X-Requested-With</code></td>
+</tr>
+<tr>
+<td><code>AUTH_USER_INACTIVE</code></td>
+<td><code>src/cluster_erp/core/errors.py:41</code></td>
+<td><code>401</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/auth/guards.py:151</code></td>
+<td><code>User not found or inactive</code></td>
+</tr>
+<tr>
+<td><code>AUTH_PERMISSION_DENIED</code></td>
+<td><code>src/cluster_erp/core/errors.py:42</code></td>
+<td><code>403</code></td>
+<td>16</td>
+<td><code>src/cluster_erp/modules/auth/approvals/services.py:364</code></td>
+<td><code>This approval step requires the '{step.role_code}' role.</code></td>
+</tr>
+<tr>
+<td><code>AUTH_TOKEN_BLACKLISTED</code></td>
+<td><code>src/cluster_erp/core/errors.py:43</code></td>
+<td><code>401</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/auth/guards.py:131</code></td>
+<td><code>Token has been revoked</code></td>
+</tr>
+<tr>
+<td><code>AUTH_TENANT_UNRESOLVED</code></td>
+<td><code>src/cluster_erp/core/errors.py:47</code></td>
+<td><code>401</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/server/dependencies.py:144</code></td>
+<td><code>Unable to resolve an active tenant for this request</code></td>
+</tr>
+<tr>
+<td><code>AUTH_PRIVILEGE_ESCALATION</code></td>
+<td><code>src/cluster_erp/core/errors.py:48</code></td>
+<td><code>403</code></td>
+<td>3</td>
+<td><code>src/cluster_erp/modules/auth/roles/services.py:163</code></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="kaynak-crud">Kaynak CRUD<a class="headerlink" href="#kaynak-crud">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Kod</th>
+<th>Tanım yeri</th>
+<th>HTTP durumu</th>
+<th>Atma konumu</th>
+<th>İlk konum</th>
+<th>İlk konumdaki ileti</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RESOURCE_NOT_FOUND</code></td>
+<td><code>src/cluster_erp/core/errors.py:51</code></td>
+<td><code>404</code>, <code>422</code></td>
+<td>695</td>
+<td><code>src/cluster_erp/core/tenant_fields.py:1214</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>RESOURCE_CONFLICT</code></td>
+<td><code>src/cluster_erp/core/errors.py:52</code></td>
+<td><code>400</code>, <code>409</code></td>
+<td>28</td>
+<td><code>src/cluster_erp/modules/auth/roles/routes.py:63</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>RESOURCE_PROTECTED</code></td>
+<td><code>src/cluster_erp/core/errors.py:53</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/auth/roles/routes.py:106</code></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="doğrulama">Doğrulama<a class="headerlink" href="#doğrulama">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Kod</th>
+<th>Tanım yeri</th>
+<th>HTTP durumu</th>
+<th>Atma konumu</th>
+<th>İlk konum</th>
+<th>İlk konumdaki ileti</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>VALIDATION_ERROR</code></td>
+<td><code>src/cluster_erp/core/errors.py:56</code></td>
+<td><code>400</code>, <code>404</code>, <code>409</code>, <code>422</code>, <code>500</code>, <code>502</code></td>
+<td>79</td>
+<td><code>src/cluster_erp/core/product_breakdown.py:105</code></td>
+<td><code>A model/version cannot be set without a product</code></td>
+</tr>
+<tr>
+<td><code>PARTY_ASSIGNMENT_INCOMPLETE</code></td>
+<td><code>src/cluster_erp/core/errors.py:60</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/server/routes/party_composite.py:134</code></td>
+<td><code>assignment needs organisation, position, employment type and start date</code></td>
+</tr>
+<tr>
+<td><code>FIELD_DEFINITION_INVALID</code></td>
+<td><code>src/cluster_erp/core/errors.py:65</code></td>
+<td><code>409</code>, <code>422</code></td>
+<td>27</td>
+<td><code>src/cluster_erp/core/tenant_fields.py:974</code></td>
+<td><code>unknown bucket {bucket} for {spec.entity_type}</code></td>
+</tr>
+<tr>
+<td><code>FIELD_VALUE_INVALID</code></td>
+<td><code>src/cluster_erp/core/errors.py:66</code></td>
+<td><code>422</code></td>
+<td>4</td>
+<td><code>src/cluster_erp/core/tenant_fields.py:846</code></td>
+<td><code>{defn.key}: {message}</code></td>
+</tr>
+<tr>
+<td><code>FIELD_DEFINITION_DUPLICATE</code></td>
+<td><code>src/cluster_erp/core/errors.py:70</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/core/tenant_fields.py:1140</code></td>
+<td><code>{why}: {existing.code} ({label})</code></td>
+</tr>
+<tr>
+<td><code>MRP_ITEM_OUTSIDE_OPENING_PERIOD</code></td>
+<td><code>src/cluster_erp/core/errors.py:71</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/procurement/mrp/routes.py:399</code></td>
+<td><code>Planned order lies outside the opening period</code></td>
+</tr>
+<tr>
+<td><code>DELIVERY_ADDRESS_INVALID</code></td>
+<td><code>src/cluster_erp/core/errors.py:75</code></td>
+<td><code>422</code></td>
+<td>5</td>
+<td><code>src/cluster_erp/modules/procurement/delivery_address.py:97</code></td>
+<td><code>A delivery organisation is required when a delivery address is set</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="i̇ş-mantığı">İş mantığı<a class="headerlink" href="#i̇ş-mantığı">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Kod</th>
+<th>Tanım yeri</th>
+<th>HTTP durumu</th>
+<th>Atma konumu</th>
+<th>İlk konum</th>
+<th>İlk konumdaki ileti</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>UNIT_CONVERSION_FAILED</code></td>
+<td><code>src/cluster_erp/core/errors.py:78</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/products_and_services/settings/routes.py:214</code></td>
+<td><code>Cannot convert between these units</code></td>
+</tr>
+<tr>
+<td><code>APPROVAL_INVALID_STATE</code></td>
+<td><code>src/cluster_erp/core/errors.py:79</code></td>
+<td><code>400</code>, <code>409</code>, <code>422</code></td>
+<td>8</td>
+<td><code>src/cluster_erp/modules/auth/approval_chains/services.py:132</code></td>
+<td><code>This approval chain has in-flight requests; finish or cancel them before changing its step...</code></td>
+</tr>
+<tr>
+<td><code>DOCUMENT_VERSION_INVALID_STATUS</code></td>
+<td><code>src/cluster_erp/core/errors.py:80</code></td>
+<td><code>400</code>, <code>404</code></td>
+<td>6</td>
+<td><code>src/cluster_erp/modules/documents/documents/services.py:230</code></td>
+<td><code>Only draft versions can be edited</code></td>
+</tr>
+<tr>
+<td><code>DOCUMENT_VERSION_ALREADY_ACTIVE</code></td>
+<td><code>src/cluster_erp/core/errors.py:81</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>DOCUMENT_NO_ATTACHMENT</code></td>
+<td><code>src/cluster_erp/core/errors.py:82</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/documents/documents/services.py:270</code></td>
+<td><code>Version must have an attachment before activation</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="para-birimi">Para birimi<a class="headerlink" href="#para-birimi">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Kod</th>
+<th>Tanım yeri</th>
+<th>HTTP durumu</th>
+<th>Atma konumu</th>
+<th>İlk konum</th>
+<th>İlk konumdaki ileti</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TCMB_SYNC_FAILED</code></td>
+<td><code>src/cluster_erp/core/errors.py:85</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="eşzamanlılık">Eşzamanlılık<a class="headerlink" href="#eşzamanlılık">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Kod</th>
+<th>Tanım yeri</th>
+<th>HTTP durumu</th>
+<th>Atma konumu</th>
+<th>İlk konum</th>
+<th>İlk konumdaki ileti</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CONCURRENCY_VERSION_CONFLICT</code></td>
+<td><code>src/cluster_erp/core/errors.py:324</code></td>
+<td><code>409</code></td>
+<td>60</td>
+<td><code>src/cluster_erp/core/tenant_fields.py:1216</code></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="dış-hizmetler">Dış hizmetler<a class="headerlink" href="#dış-hizmetler">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Kod</th>
+<th>Tanım yeri</th>
+<th>HTTP durumu</th>
+<th>Atma konumu</th>
+<th>İlk konum</th>
+<th>İlk konumdaki ileti</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SMTP_NOT_CONFIGURED</code></td>
+<td><code>src/cluster_erp/core/errors.py:327</code></td>
+<td><code>503</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/server/routes/email.py:134</code></td>
+<td><code>SMTP is not configured. Set CLUSTER_ERP_SMTP_* in .env</code></td>
+</tr>
+<tr>
+<td><code>SMTP_ERROR</code></td>
+<td><code>src/cluster_erp/core/errors.py:328</code></td>
+<td><code>502</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/server/routes/email.py:184</code></td>
+<td><code>SMTP error: {exc}</code></td>
+</tr>
+<tr>
+<td><code>FILE_NOT_FOUND_ON_DISK</code></td>
+<td><code>src/cluster_erp/core/errors.py:329</code></td>
+<td><code>404</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/server/routes/attachments.py:115</code></td>
+<td><code>File not found on disk</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="veritabanı">Veritabanı<a class="headerlink" href="#veritabanı">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Kod</th>
+<th>Tanım yeri</th>
+<th>HTTP durumu</th>
+<th>Atma konumu</th>
+<th>İlk konum</th>
+<th>İlk konumdaki ileti</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DB_CONNECTION_ERROR</code></td>
+<td><code>src/cluster_erp/core/errors.py:332</code></td>
+<td>bkz. İstisna işleyicileri</td>
+<td>0</td>
+<td><code>src/cluster_erp/server/error_handler.py</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>DB_TIMEOUT</code></td>
+<td><code>src/cluster_erp/core/errors.py:333</code></td>
+<td>bkz. İstisna işleyicileri</td>
+<td>0</td>
+<td><code>src/cluster_erp/server/error_handler.py</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>DB_INTEGRITY_ERROR</code></td>
+<td><code>src/cluster_erp/core/errors.py:334</code></td>
+<td>bkz. İstisna işleyicileri</td>
+<td>0</td>
+<td><code>src/cluster_erp/server/error_handler.py</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>DB_UNIQUE_VIOLATION</code></td>
+<td><code>src/cluster_erp/core/errors.py:339</code></td>
+<td>bkz. İstisna işleyicileri</td>
+<td>0</td>
+<td><code>src/cluster_erp/server/error_handler.py</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>DB_OPERATIONAL_ERROR</code></td>
+<td><code>src/cluster_erp/core/errors.py:340</code></td>
+<td>bkz. İstisna işleyicileri</td>
+<td>0</td>
+<td><code>src/cluster_erp/server/error_handler.py</code></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="serileştirme">Serileştirme<a class="headerlink" href="#serileştirme">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Kod</th>
+<th>Tanım yeri</th>
+<th>HTTP durumu</th>
+<th>Atma konumu</th>
+<th>İlk konum</th>
+<th>İlk konumdaki ileti</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SERIALIZATION_ERROR</code></td>
+<td><code>src/cluster_erp/core/errors.py:343</code></td>
+<td>bkz. İstisna işleyicileri</td>
+<td>0</td>
+<td><code>src/cluster_erp/server/error_handler.py</code></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="çalışma-zamanı">Çalışma zamanı<a class="headerlink" href="#çalışma-zamanı">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Kod</th>
+<th>Tanım yeri</th>
+<th>HTTP durumu</th>
+<th>Atma konumu</th>
+<th>İlk konum</th>
+<th>İlk konumdaki ileti</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TYPE_ERROR</code></td>
+<td><code>src/cluster_erp/core/errors.py:346</code></td>
+<td>bkz. İstisna işleyicileri</td>
+<td>0</td>
+<td><code>src/cluster_erp/server/error_handler.py</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>VALUE_ERROR</code></td>
+<td><code>src/cluster_erp/core/errors.py:347</code></td>
+<td>bkz. İstisna işleyicileri</td>
+<td>0</td>
+<td><code>src/cluster_erp/server/error_handler.py</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>TIMEOUT_ERROR</code></td>
+<td><code>src/cluster_erp/core/errors.py:348</code></td>
+<td>bkz. İstisna işleyicileri</td>
+<td>0</td>
+<td><code>src/cluster_erp/server/error_handler.py</code></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sunucu">Sunucu<a class="headerlink" href="#sunucu">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Kod</th>
+<th>Tanım yeri</th>
+<th>HTTP durumu</th>
+<th>Atma konumu</th>
+<th>İlk konum</th>
+<th>İlk konumdaki ileti</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>INTERNAL_ERROR</code></td>
+<td><code>src/cluster_erp/core/errors.py:351</code></td>
+<td>bkz. İstisna işleyicileri</td>
+<td>0</td>
+<td><code>src/cluster_erp/server/error_handler.py</code></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h2 id="çekirdek-hata-modülü-dışında-tanımlı-kodlar">Çekirdek hata modülü dışında tanımlı kodlar<a class="headerlink" href="#çekirdek-hata-modülü-dışında-tanımlı-kodlar">¶</a></h2>
+<p>Bu kodlar bir modül veya sunucu dosyasındaki dizge sabitleri ya da değişmezleridir. Satırlar ilk atma konumunun klasörüne göre gruplanır.</p>
+<table>
+<thead>
+<tr>
+<th>Alan</th>
+<th>Kod</th>
+<th>HTTP durumu</th>
+<th>Atma konumu</th>
+<th>İlk konum</th>
+<th>İlk konumdaki ileti</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>auth</code></td>
+<td><code>ABAC_RESOURCE_RULES_UNSUPPORTED</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/auth/policies/services.py:81</code></td>
+<td><code>Permission '{permission_code}' does not enforce resource.* rules at the object level yet —...</code></td>
+</tr>
+<tr>
+<td><code>auth</code></td>
+<td><code>AUTH_TOO_MANY_ATTEMPTS</code></td>
+<td><code>429</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/auth/login/routes.py:93</code></td>
+<td><code>Too many sign-in attempts; try again shortly</code></td>
+</tr>
+<tr>
+<td><code>calendars</code></td>
+<td><code>CALENDAR_BASE_CYCLE</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/calendars/services.py:373</code></td>
+<td><code>Base calendar would create an inheritance cycle.</code></td>
+</tr>
+<tr>
+<td><code>calendars</code></td>
+<td><code>CALENDAR_INVALID_EXCEPTION</code></td>
+<td><code>400</code></td>
+<td>4</td>
+<td><code>src/cluster_erp/modules/calendars/services.py:447</code></td>
+<td><code>date_to must be on or after date_from.</code></td>
+</tr>
+<tr>
+<td><code>core</code></td>
+<td><code>CURRENCY_UNKNOWN</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/core/currencies.py:44</code></td>
+<td><code>Currency {code} is not an active currency in the reference data</code></td>
+</tr>
+<tr>
+<td><code>core</code></td>
+<td><code>UPLOAD_TYPE_REFUSED</code></td>
+<td><code>415</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/core/upload_policy.py:70</code></td>
+<td><code>file type '.{ext or '?'}' is not accepted</code></td>
+</tr>
+<tr>
+<td><code>fleet</code></td>
+<td><code>FLEET_ASSET_NOT_OPERABLE</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/fleet/meters/services.py:260</code></td>
+<td><code>readings cannot be recorded for a deactivated or disposed asset</code></td>
+</tr>
+<tr>
+<td><code>fleet</code></td>
+<td><code>FLEET_INVALID_CAMPAIGN</code></td>
+<td><code>400</code></td>
+<td>10</td>
+<td><code>src/cluster_erp/modules/fleet/tco/services.py:606</code></td>
+<td><code>a closed campaign is a sealed record</code></td>
+</tr>
+<tr>
+<td><code>fleet</code></td>
+<td><code>FLEET_INVALID_COMPLIANCE</code></td>
+<td><code>400</code></td>
+<td>8</td>
+<td><code>src/cluster_erp/modules/fleet/fuel/services.py:466</code></td>
+<td><code>a completed obligation is a sealed record</code></td>
+</tr>
+<tr>
+<td><code>fleet</code></td>
+<td><code>FLEET_INVALID_FUEL</code></td>
+<td><code>400</code></td>
+<td>5</td>
+<td><code>src/cluster_erp/modules/fleet/fuel/services.py:130</code></td>
+<td><code>fuel quantity must be positive</code></td>
+</tr>
+<tr>
+<td><code>fleet</code></td>
+<td><code>FLEET_INVALID_METER</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/fleet/meters/services.py:125</code></td>
+<td><code>meter kind already exists on this asset</code></td>
+</tr>
+<tr>
+<td><code>fleet</code></td>
+<td><code>FLEET_INVALID_OPERATION</code></td>
+<td><code>400</code></td>
+<td>36</td>
+<td><code>src/cluster_erp/modules/fleet/operations/services.py:74</code></td>
+<td><code>the referenced party does not exist</code></td>
+</tr>
+<tr>
+<td><code>fleet</code></td>
+<td><code>FLEET_INVALID_PLAN</code></td>
+<td><code>400</code></td>
+<td>7</td>
+<td><code>src/cluster_erp/modules/fleet/maintenance/services.py:102</code></td>
+<td><code>a plan targets exactly one of: a single asset OR a class</code></td>
+</tr>
+<tr>
+<td><code>fleet</code></td>
+<td><code>FLEET_INVALID_REMINDER</code></td>
+<td><code>400</code></td>
+<td>4</td>
+<td><code>src/cluster_erp/modules/fleet/maintenance/services.py:343</code></td>
+<td><code>snooze needs a future date</code></td>
+</tr>
+<tr>
+<td><code>fleet</code></td>
+<td><code>FLEET_INVALID_STATUS</code></td>
+<td><code>400</code></td>
+<td>3</td>
+<td><code>src/cluster_erp/modules/fleet/assets/services.py:283</code></td>
+<td><code>unknown action {action}</code></td>
+</tr>
+<tr>
+<td><code>fleet</code></td>
+<td><code>FLEET_INVALID_TIRE</code></td>
+<td><code>400</code></td>
+<td>8</td>
+<td><code>src/cluster_erp/modules/fleet/tco/services.py:428</code></td>
+<td><code>a scrapped tire is a sealed record</code></td>
+</tr>
+<tr>
+<td><code>fleet</code></td>
+<td><code>FLEET_INVALID_WO</code></td>
+<td><code>400</code></td>
+<td>19</td>
+<td><code>src/cluster_erp/modules/fleet/workorders/services.py:125</code></td>
+<td><code>a {row.status} work order is closed to editing</code></td>
+</tr>
+<tr>
+<td><code>fleet</code></td>
+<td><code>FLEET_READING_CHAIN_BLOCKED</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/fleet/meters/services.py:524</code></td>
+<td><code>a later reading depends on this document — mark the dependent reading incorrect first, the...</code></td>
+</tr>
+<tr>
+<td><code>fleet</code></td>
+<td><code>FLEET_READING_INVALID</code></td>
+<td><code>400</code></td>
+<td>9</td>
+<td><code>src/cluster_erp/modules/fleet/meters/services.py:266</code></td>
+<td><code>reading date is in the future</code></td>
+</tr>
+<tr>
+<td><code>fleet</code></td>
+<td><code>FLEET_READING_OUT_OF_ORDER</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/fleet/meters/services.py:280</code></td>
+<td><code>reading date must be after the meter's latest reading</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_ERROR</code></td>
+<td><code>400</code></td>
+<td>5</td>
+<td><code>src/cluster_erp/modules/intranet/content/services.py:1098</code></td>
+<td><code>content has not been published — nothing to acknowledge</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_EVENT_ENDS_BEFORE_START</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/events/services.py:377</code></td>
+<td><code>ends_at must not be before starts_at</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_EVENT_FULL</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/events/lifecycle.py:255</code></td>
+<td><code>the event is full and has no waiting list</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_EVENT_INVALID_STATUS</code></td>
+<td><code>422</code></td>
+<td>5</td>
+<td><code>src/cluster_erp/modules/intranet/events/lifecycle.py:108</code></td>
+<td><code>unknown event action {action}</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_EVENT_NOT_EDITABLE</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/events/lifecycle.py:139</code></td>
+<td><code>an event in status {current} cannot be edited; restore or uncancel it first</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_EVENT_REASON_REQUIRED</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/events/lifecycle.py:306</code></td>
+<td><code>a cancellation needs a reason the invitees can read</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_EVENT_RSVP_CLOSED</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/events/services.py:609</code></td>
+<td><code>this event does not take answers (not published or RSVP is off)</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_EVENT_UNCANCEL_EXPIRED</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/events/lifecycle.py:156</code></td>
+<td><code>the cancellation can be taken back within 24 hours only</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_INVALID_STATUS</code></td>
+<td><code>400</code></td>
+<td>9</td>
+<td><code>src/cluster_erp/modules/intranet/content/services.py:821</code></td>
+<td><code>unknown action {action}</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_LEAVE_DOCUMENT_REQUIRED</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/leave/services.py:515</code></td>
+<td><code>leave type {lt.code} requires a supporting document before submission</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_LEAVE_GENDER_RESTRICTED</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/leave/services.py:459</code></td>
+<td><code>leave type {lt.code} is restricted to gender {restriction}; the party's recorded gender is...</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_LEAVE_INSUFFICIENT_BALANCE</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/leave/services.py:539</code></td>
+<td><code>requested {days} day(s) in {year} but only {available} available (granted + carried over −...</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_LEAVE_NOTICE_TOO_SHORT</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/leave/services.py:490</code></td>
+<td><code>leave type {lt.code} requires {lt.min_notice_days} days notice; the start date is {notice}...</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_LEAVE_OVERLAP</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/leave/services.py:432</code></td>
+<td><code>the range overlaps open leave request {clash}</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_MEDIA_ENTITY</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/events/routes.py:317</code></td>
+<td><code>media can hang on {', '.join(_MEDIA_ENTITY_TYPES)} only</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_NO_PARTY</code></td>
+<td><code>400</code></td>
+<td>5</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:384</code></td>
+<td><code>no party to acknowledge as — pass party_id or sign in as an employee</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_PARTY_NOT_EMPLOYEE</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/access.py:139</code></td>
+<td><code>the named party does not exist or is not an active employee</code></td>
+</tr>
+<tr>
+<td><code>privacy</code></td>
+<td><code>PRIVACY_CONFIRMATION_MISMATCH</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/privacy/requests/services.py:308</code></td>
+<td><code>the typed confirmation does not match the request code</code></td>
+</tr>
+<tr>
+<td><code>privacy</code></td>
+<td><code>PRIVACY_EXPORT_MISSING</code></td>
+<td><code>404</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/privacy/requests/services.py:279</code></td>
+<td><code>subject request {row.code} has no prepared data file</code></td>
+</tr>
+<tr>
+<td><code>privacy</code></td>
+<td><code>PRIVACY_INVALID_STATE</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/privacy/requests/services.py:86</code></td>
+<td><code>subject request {request.code} cannot '{step}' while {request.status} (type {request.reque...</code></td>
+</tr>
+<tr>
+<td><code>procurement</code></td>
+<td><code>INFO_RECORD_EXISTS</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/procurement/info_records/services.py:169</code></td>
+<td><code>An info record already exists for this vendor and product</code></td>
+</tr>
+<tr>
+<td><code>sales_orders</code></td>
+<td><code>SALES_DELIVERY_NON_WORKING</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/services.py:108</code></td>
+<td><code>Delivery date is a non-working day on the customer's calendar.</code></td>
+</tr>
+<tr>
+<td><code>server</code></td>
+<td><code>SIGNUP_CLOSED</code></td>
+<td><code>403</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/server/signup.py:230</code></td>
+<td><code>this node does not accept new memberships</code></td>
+</tr>
+<tr>
+<td><code>server</code></td>
+<td><code>SIGNUP_DOMAIN_TAKEN</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/server/signup.py:303</code></td>
+<td><code>this mail domain already has a membership</code></td>
+</tr>
+<tr>
+<td><code>server</code></td>
+<td><code>SIGNUP_INVALID</code></td>
+<td><code>402</code>, <code>422</code>, <code>500</code></td>
+<td>6</td>
+<td><code>src/cluster_erp/server/signup.py:166</code></td>
+<td><code>signup mail transport is not configured</code></td>
+</tr>
+<tr>
+<td><code>server</code></td>
+<td><code>SIGNUP_NOTICE_MISSING</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/server/signup.py:242</code></td>
+<td><code>this node has no privacy notice configured; signups are closed</code></td>
+</tr>
+<tr>
+<td><code>server</code></td>
+<td><code>SIGNUP_NOTICE_REQUIRED</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/server/signup.py:248</code></td>
+<td><code>the current privacy notice must be accepted</code></td>
+</tr>
+<tr>
+<td><code>server/routes</code></td>
+<td><code>CONSOLE_BACKUP_DISABLED</code></td>
+<td><code>403</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/server/routes/vendor.py:697</code></td>
+<td><code>on-demand backups from the console are disabled on this node</code></td>
+</tr>
+<tr>
+<td><code>server/routes</code></td>
+<td><code>SIGNUP_ALREADY_PROVISIONED</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/server/routes/signup.py:215</code></td>
+<td><code>this membership is already provisioned; contact the vendor</code></td>
+</tr>
+<tr>
+<td><code>server/routes</code></td>
+<td><code>SIGNUP_RATE_LIMITED</code></td>
+<td><code>429</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/server/routes/signup.py:81</code></td>
+<td><code>too many signup attempts; try again later</code></td>
+</tr>
+<tr>
+<td><code>server/routes</code></td>
+<td><code>SIGNUP_VERIFY_EXPIRED</code></td>
+<td><code>410</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/server/routes/signup.py:184</code></td>
+<td><code>this verification link has expired; request a fresh one from the signup page</code></td>
+</tr>
+<tr>
+<td><code>server/routes</code></td>
+<td><code>VENDOR_ACCOUNT_LOCKED</code></td>
+<td><code>401</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/server/routes/vendor.py:124</code></td>
+<td><code>Too many attempts; try later</code></td>
+</tr>
+<tr>
+<td><code>server/routes</code></td>
+<td><code>VENDOR_AUTH_REQUIRED</code></td>
+<td><code>401</code>, <code>403</code></td>
+<td>5</td>
+<td><code>src/cluster_erp/server/routes/vendor.py:53</code></td>
+<td><code>Operator console unavailable</code></td>
+</tr>
+<tr>
+<td><code>server/routes</code></td>
+<td><code>VENDOR_INVALID_CREDENTIALS</code></td>
+<td><code>401</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/server/routes/vendor.py:134</code></td>
+<td><code>Invalid credentials</code></td>
+</tr>
+<tr>
+<td><code>server/routes</code></td>
+<td><code>VENDOR_TOTP_NOT_ENROLLED</code></td>
+<td><code>403</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/server/routes/vendor.py:128</code></td>
+<td><code>Operator has no authenticator enrolled (operators totp-enroll)</code></td>
+</tr>
+<tr>
+<td><code>server/routes</code></td>
+<td><code>VENDOR_TOTP_REQUIRED</code></td>
+<td><code>401</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/server/routes/vendor.py:126</code></td>
+<td><code>Authenticator code required</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="genel-http-kodları">Genel HTTP kodları<a class="headerlink" href="#genel-http-kodları">¶</a></h2>
+<p>Düz <code>detail</code> taşıyan bir <code>HTTPException</code> <code>HTTP_&lt;status&gt;</code> olur (<code>src/cluster_erp/server/error_handler.py:251</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Kod</th>
+<th>Atma konumu</th>
+<th>İlk konum</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>HTTP_404</code></td>
+<td>7</td>
+<td><code>src/cluster_erp/modules/app_store/routes.py:136</code></td>
+</tr>
+<tr>
+<td><code>HTTP_409</code></td>
+<td>3</td>
+<td><code>src/cluster_erp/modules/app_store/services.py:179</code></td>
+</tr>
+<tr>
+<td><code>HTTP_422</code></td>
+<td>4</td>
+<td><code>src/cluster_erp/modules/app_store/services.py:243</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="i̇lgili-sayfalar">İlgili sayfalar<a class="headerlink" href="#i̇lgili-sayfalar">¶</a></h2>
+<ul>
+<li><a href="index.tr.html">API başvurusu</a></li>
+<li><a href="errors/business-error-codes.tr.html">İş hata kodları</a></li>
+<li><a href="../platform/errors-and-exceptions.tr.html">Hatalar ve istisnalar</a></li>
+<li><a href="authentication-and-headers.tr.html">Kimlik doğrulama ve başlıklar</a></li>
+<li><a href="conventions.tr.html">API kuralları</a></li>
+</ul>
+<hr>
+<p>7793ff4 numaralı commit ile 2026-11-09 tarihinde doğrulandı.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Doğrulanan commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../api/documents.tr.html"><span class="eyebrow">Önceki</span><span>Documents API (documents)</span></a><a class="next" href="../api/errors/business-error-codes.tr.html"><span class="eyebrow">Sonraki</span><span>İş hata kodları</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">Bu sayfada</p><ul class="outline">
+<li class="lvl2"><a href="#hata-gövdesi">Hata gövdesi</a></li>
+<li class="lvl2"><a href="#i̇stisna-işleyicileri">İstisna işleyicileri</a></li>
+<li class="lvl2"><a href="#her-yola-ortak-kodlar">Her yola ortak kodlar</a></li>
+<li class="lvl2"><a href="#çekirdek-hata-modülünde-tanımlı-kodlar">Çekirdek hata modülünde tanımlı kodlar</a></li>
+<li class="lvl3"><a href="#kimlik-doğrulama">Kimlik doğrulama</a></li>
+<li class="lvl3"><a href="#kaynak-crud">Kaynak CRUD</a></li>
+<li class="lvl3"><a href="#doğrulama">Doğrulama</a></li>
+<li class="lvl3"><a href="#i̇ş-mantığı">İş mantığı</a></li>
+<li class="lvl3"><a href="#para-birimi">Para birimi</a></li>
+<li class="lvl3"><a href="#eşzamanlılık">Eşzamanlılık</a></li>
+<li class="lvl3"><a href="#dış-hizmetler">Dış hizmetler</a></li>
+<li class="lvl3"><a href="#veritabanı">Veritabanı</a></li>
+<li class="lvl3"><a href="#serileştirme">Serileştirme</a></li>
+<li class="lvl3"><a href="#çalışma-zamanı">Çalışma zamanı</a></li>
+<li class="lvl3"><a href="#sunucu">Sunucu</a></li>
+<li class="lvl2"><a href="#çekirdek-hata-modülü-dışında-tanımlı-kodlar">Çekirdek hata modülü dışında tanımlı kodlar</a></li>
+<li class="lvl2"><a href="#genel-http-kodları">Genel HTTP kodları</a></li>
+<li class="lvl2"><a href="#i̇lgili-sayfalar">İlgili sayfalar</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>docs/wiki altındaki Markdown kaynaklarından derlendi</span></footer>
+</body>
+</html>

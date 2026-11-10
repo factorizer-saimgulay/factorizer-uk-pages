@@ -1,0 +1,2131 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Intranet API (intranet) · Cluster ERP Wiki</title>
+<meta name="description" content="/api/v1/intranet altındaki intranet modülünün HTTP uç noktaları: yetkiler, şemalar, durum kodları ve hata kodlarıyla 117 yol.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="tr"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menü</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.tr.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Wiki&#x27;de ara" aria-label="Wiki&#x27;de ara" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="Eşleşen sayfa yok."></div>
+  </div>
+  <a class="lang-switch" href="../api/intranet.html" lang="en" hreflang="en">English</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Ana sayfa</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.tr.html">Cluster ERP wiki&#x27;si</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Genel bakış</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.tr.html">Genel bakış</a></li>
+<li class=""><a href="../overview/architecture-overview.tr.html">Mimariye genel bakış</a></li>
+<li class=""><a href="../overview/repository-map.tr.html">Depo haritası</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.tr.html">Cluster ERP nedir</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.tr.html">Platform çekirdeği</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.tr.html">Ekler, notlar ve depolama</a></li>
+<li class=""><a href="../platform/base-model-and-ids.tr.html">Temel model ve kimlikler</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.tr.html">Önbellek ve varlık damgası</a></li>
+<li class=""><a href="../platform/change-history.tr.html">Değişiklik geçmişi</a></li>
+<li class=""><a href="../platform/contracts-reference.tr.html">Sözleşmeler başvurusu</a></li>
+<li class=""><a href="../platform/database-and-sessions.tr.html">Veritabanı ve oturumlar</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.tr.html">Hatalar ve istisnalar</a></li>
+<li class=""><a href="../platform/event-bus.tr.html">Olay veri yolu</a></li>
+<li class=""><a href="../platform/metadata-model.tr.html">Metadata modeli</a></li>
+<li class=""><a href="../platform/module-lifecycle.tr.html">Modül yaşam döngüsü</a></li>
+<li class=""><a href="../platform/money-and-decimal.tr.html">Para ve Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.tr.html">PDF ve sistem postası</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.tr.html">Ürün kırılımı ve stok dönüşümü</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.tr.html">Referans veriler ve çekirdek i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.tr.html">İstek hattı ve ara katmanlar</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.tr.html">Arama, sayfalama ve toplu işlemler</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.tr.html">Sunucu açılışı ve uygulama fabrikası</a></li>
+<li class=""><a href="../platform/settings-reference.tr.html">Ayarlar başvurusu</a></li>
+<li class=""><a href="../platform/shared-server-routes.tr.html">Ortak sunucu rotaları</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.tr.html">Yumuşak silme ve kullanımdan kaldırma</a></li>
+<li class=""><a href="../platform/tenant-fields.tr.html">Kiracı alanları</a></li>
+<li class=""><a href="../platform/working-time.tr.html">Çalışma zamanı</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Kimlik ve erişim</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.tr.html">Kimlik, erişim, kiracılık, gizlilik ve lisans</a></li>
+<li class=""><a href="../identity-access/abac-policies.tr.html">ABAC politikaları</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.tr.html">Uygulama mağazası lisansları ve hakları</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.tr.html">Onaylar ve onay zincirleri</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.tr.html">Kimlik doğrulama ve oturumlar</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.tr.html">Alan ve satır erişimi</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.tr.html">Çok kiracılılık</a></li>
+<li class=""><a href="../identity-access/notification-rules.tr.html">Bildirim kuralları</a></li>
+<li class=""><a href="../identity-access/operator-console.tr.html">Operatör konsolu</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.tr.html">Gizlilik ve ilgili kişi başvuruları</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.tr.html">Roller ve izinler</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.tr.html">İkinci doğrulama adımı ve gizli değer saklama</a></li>
+<li class=""><a href="../identity-access/signup.tr.html">Kayıt</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web uygulaması</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.tr.html">Web uygulaması platformu</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.tr.html">Aksiyonlar ve aksiyon kartı</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.tr.html">Asistan ve sohbet ekranları</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.tr.html">Açılış, oturum ve API çağrıları</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.tr.html">Veri tazeleme ve değişiklik sinyalleri</a></li>
+<li class=""><a href="../web-app/device-classes.tr.html">Cihaz sınıfları</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.tr.html">Kapılı uygulama paketleri</a></li>
+<li class=""><a href="../web-app/generic-detail.tr.html">Genel ayrıntı</a></li>
+<li class=""><a href="../web-app/generic-form.tr.html">Genel form</a></li>
+<li class=""><a href="../web-app/generic-list.tr.html">Genel liste</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.tr.html">Genel ağaç ve ayar ekranları</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.tr.html">Ana ekran, dock ve başlatıcı</a></li>
+<li class=""><a href="../web-app/home-widgets.tr.html">Ana ekran bileşenleri</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.tr.html">Web uygulamasına dil ekleyin</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.tr.html">Metadata ile ekran ekleyin</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.tr.html">Uluslararasılaştırma ve diller</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.tr.html">Mail ve profil ekranları</a></li>
+<li class=""><a href="../web-app/metadata-rendering.tr.html">Metadata çizimi</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.tr.html">Modül uygulamaları ve uygulama kapsamı</a></li>
+<li class=""><a href="../web-app/overview.tr.html">Web uygulamasına genel bakış</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.tr.html">Kayıt belgeleri, görüntüleyici ve paylaşım</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.tr.html">Arama ve komut paleti</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.tr.html">Temalar, belirteçler ve erişilebilirlik</a></li>
+<li class=""><a href="../web-app/user-ui-state.tr.html">Kullanıcı arayüz durumu</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Masaüstü istemci</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.tr.html">Masaüstü istemci</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.tr.html">API istemcisi ve çalışanlar</a></li>
+<li class=""><a href="../desktop/chat-widget.tr.html">Sohbet bileşeni</a></li>
+<li class=""><a href="../desktop/generic-widgets.tr.html">Genel bileşenler</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.tr.html">Diller, temalar ve erişilebilirlik</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.tr.html">Metadata deposu ve yabancı anahtar önbelleği</a></li>
+<li class=""><a href="../desktop/module-screens.tr.html">Modül ekranları</a></li>
+<li class=""><a href="../desktop/overview.tr.html">Masaüstü istemciye genel bakış</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.tr.html">Masaüstü istemciyi çalıştırın</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.tr.html">Sinyal veri yolu ve watch_entity</a></li>
+<li class=""><a href="../desktop/tabs-panes-and-layout.tr.html">Sekmeler, bölmeler ve yerleşim</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">İş modülleri</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.tr.html">İş modülleri</a></li>
+<li class=""><a href="../modules/analytics/index.tr.html">Analytics modülü (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.tr.html">Analitik olgular</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.tr.html">Analitik tahmin ve sınıflandırma</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.tr.html">Analitik tarifleri ve sorgu kurucu</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.tr.html">Analitik raporları, özetleri ve çapraz</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.tr.html">Analitik istatistik ve çıkarım</a></li>
+<li class=""><a href="../modules/app_store.tr.html">App store modülü (app_store)</a></li>
+<li class=""><a href="../modules/auth.tr.html">Auth modülü (auth)</a></li>
+<li class=""><a href="../modules/bom.tr.html">BOM modülü (bom)</a></li>
+<li class=""><a href="../modules/calendars.tr.html">Calendars modülü (calendars)</a></li>
+<li class=""><a href="../modules/costing.tr.html">Costing modülü (costing)</a></li>
+<li class=""><a href="../modules/crm/index.tr.html">CRM modülü (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.tr.html">Müşteriler ve müşteri parçaları</a></li>
+<li class="sub"><a href="../modules/crm/inbox.tr.html">Teklif talebi gelen kutusu</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.tr.html">Müşteri teklif talepleri</a></li>
+<li class=""><a href="../modules/currencies.tr.html">Currencies modülü (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.tr.html">Design engineering modülü (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.tr.html">Documents modülü (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.tr.html">Fleet modülü (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.tr.html">Filo araçları</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.tr.html">Filo bakımı ve iş emirleri</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.tr.html">Filo sayaçları ve yakıt</a></li>
+<li class="sub"><a href="../modules/fleet/operations.tr.html">Filo operasyonları</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.tr.html">Filo TCO, telematik ve analitik</a></li>
+<li class=""><a href="../modules/intranet/index.tr.html">Intranet modülü (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.tr.html">İntranet erişimi, hedef kitlesi ve saklama</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.tr.html">İntranet içeriği ve akışı</a></li>
+<li class="sub"><a href="../modules/intranet/directory.tr.html">İntranet rehberi</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.tr.html">İntranet katılımı</a></li>
+<li class="sub"><a href="../modules/intranet/events.tr.html">İntranet etkinlikleri</a></li>
+<li class="sub"><a href="../modules/intranet/leave.tr.html">İntranet izinleri</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.tr.html">İntranet belgelerim</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.tr.html">İntranet bildirimleri ve tebligat</a></li>
+<li class="sub"><a href="../modules/intranet/requests.tr.html">İntranet talepleri</a></li>
+<li class=""><a href="../modules/inventory.tr.html">Inventory modülü (inventory)</a></li>
+<li class=""><a href="../modules/logs.tr.html">Logs modülü (logs)</a></li>
+<li class=""><a href="../modules/mail.tr.html">Mail modülü (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.tr.html">Nesting modülü (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.tr.html">Yerleşim motoru</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.tr.html">Yerleşim entegrasyonu ve KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.tr.html">Yerleşim işleri, parçalar ve artıklar</a></li>
+<li class=""><a href="../modules/owned_organisations.tr.html">Owned organisations modülü (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.tr.html">Parties modülü (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.tr.html">Adresler başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.tr.html">İletişim kanalları başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/parties.tr.html">Parties alt modülü başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.tr.html">Taraf birleştirme</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.tr.html">Kişi dilleri başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.tr.html">Parties ayarları ve başvuru verileri</a></li>
+<li class=""><a href="../modules/privacy.tr.html">Privacy modülü (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.tr.html">Procurement modülü (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.tr.html">Kritik malzemeler ve ikame</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.tr.html">Malzeme ihtiyaç planlaması</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.tr.html">Satın alma sözleşmeleri ve info kayıtları</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.tr.html">Satın alma siparişleri</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.tr.html">Satın alma talepleri</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.tr.html">Satın alma teklif talepleri</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.tr.html">Tedarikçiler</a></li>
+<li class=""><a href="../modules/production/index.tr.html">Production modülü (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.tr.html">Üretim emirleri ve versiyonları</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.tr.html">Rotalar ve operasyon tipleri</a></li>
+<li class="sub"><a href="../modules/production/scheduling.tr.html">Üretim çizelgeleme</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.tr.html">İş merkezleri ve kapasite</a></li>
+<li class="sub"><a href="../modules/production/work-orders.tr.html">İş emirleri</a></li>
+<li class=""><a href="../modules/products_and_services.tr.html">Products and services modülü (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.tr.html">Projects modülü (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.tr.html">Proje aksiyonları, aktiviteleri ve toplantıları</a></li>
+<li class="sub"><a href="../modules/projects/board.tr.html">Proje panosu</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.tr.html">Projeler, kalemler ve fikstürler</a></li>
+<li class="sub"><a href="../modules/projects/schedules.tr.html">Proje çizelgeleri</a></li>
+<li class=""><a href="../modules/purchasing_quotations.tr.html">Purchasing quotations modülü (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.tr.html">Quotations modülü (quotations)</a></li>
+<li class=""><a href="../modules/records.tr.html">Records modülü (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.tr.html">Sales orders modülü (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.tr.html">Satış siparişleri ve sipariş kalemleri</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.tr.html">Sevkiyatlar</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.tr.html">İhracat belgeleri</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.tr.html">Satış siparişi birimleri ve ayarları</a></li>
+<li class=""><a href="../modules/subscriptions.tr.html">Subscriptions modülü (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Asistan</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.tr.html">Niyet asistanı</a></li>
+<li class=""><a href="../ai/intent-assistant.tr.html">Niyet asistanı nasıl çalışır</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">API referansı</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.tr.html">API başvurusu</a></li>
+<li class=""><a href="../api/analytics.tr.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.tr.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.tr.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.tr.html">Kimlik doğrulama ve başlıklar</a></li>
+<li class=""><a href="../api/bom.tr.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.tr.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.tr.html">API kuralları</a></li>
+<li class=""><a href="../api/costing.tr.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.tr.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.tr.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.tr.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.tr.html">Documents API (documents)</a></li>
+<li class=""><a href="../api/errors.tr.html">Hatalar</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.tr.html">İş hata kodları</a></li>
+<li class=""><a href="../api/fleet.tr.html">Fleet API (fleet)</a></li>
+<li class="current"><a href="../api/intranet.tr.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.tr.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.tr.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.tr.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.tr.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.tr.html">API&#x27;ye genel bakış</a></li>
+<li class=""><a href="../api/owned_organisations.tr.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.tr.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.tr.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.tr.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.tr.html">Procurement API: Kritik malzemeler uç noktaları (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.tr.html">Procurement API: Satın alma bilgi kayıtları uç noktaları (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.tr.html">Procurement API: MRP uç noktaları (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.tr.html">Procurement API: Satın alma sözleşmeleri uç noktaları (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.tr.html">Procurement API: Satın alma siparişleri uç noktaları (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.tr.html">Procurement API: Satın alma talepleri uç noktaları (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.tr.html">Procurement API: Satın alma teklif talepleri uç noktaları (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.tr.html">Procurement API: İkame grupları uç noktaları (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.tr.html">Procurement API: Tedarikçiler uç noktaları (suppliers)</a></li>
+<li class=""><a href="../api/production.tr.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.tr.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.tr.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.tr.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.tr.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.tr.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.tr.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.tr.html">Paylaşılan sunucu yolları API</a></li>
+<li class=""><a href="../api/subscriptions.tr.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.tr.html">Sistem uç noktaları API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">İşletme</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.tr.html">İşletim</a></li>
+<li class=""><a href="../operations/backups-and-restore.tr.html">Yedekler ve geri yükleme</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.tr.html">CI hattı ve sürüm</a></li>
+<li class=""><a href="../operations/configuration-reference.tr.html">Yapılandırma başvurusu</a></li>
+<li class=""><a href="../operations/container-measurement.tr.html">Konteyner ölçümü</a></li>
+<li class=""><a href="../operations/data-residency-check.tr.html">Veri ikameti denetimi</a></li>
+<li class=""><a href="../operations/database-migrations.tr.html">Veritabanı göçleri</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.tr.html">Demo ve staging verisi</a></li>
+<li class=""><a href="../operations/environments-and-promotion.tr.html">Ortamlar ve terfi</a></li>
+<li class=""><a href="../operations/install-a-linux-node.tr.html">Bir Linux düğümü kurun</a></li>
+<li class=""><a href="../operations/local-development-setup.tr.html">Yerel geliştirme kurulumu</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.tr.html">PostgreSQL rolleri ve ayarı</a></li>
+<li class=""><a href="../operations/reverse-proxy.tr.html">Ters vekil sunucu</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.tr.html">Zamanlanmış işler ve saklama</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.tr.html">Security.txt ve hazırlık</a></li>
+<li class=""><a href="../operations/service-and-process-manager.tr.html">Servis ve süreç yöneticisi</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.tr.html">Kiracı yaşam döngüsü</a></li>
+<li class=""><a href="../operations/windows-installer.tr.html">Windows kurucusu</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Katkı</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.tr.html">Katkı</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.tr.html">Mimari sınırlar</a></li>
+<li class=""><a href="../contributing/coding-rules.tr.html">Kodlama kuralları</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.tr.html">Geliştirici araçları ve betikleri</a></li>
+<li class=""><a href="../contributing/e2e-battery.tr.html">E2e bataryası</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.tr.html">E2e süit kataloğu</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.tr.html">Lint ve tip denetimi</a></li>
+<li class=""><a href="../contributing/python-tests.tr.html">Python testleri</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.tr.html">Bir arka uç modülü yazın</a></li>
+<li class=""><a href="../contributing/writing-documentation.tr.html">Bir wiki sayfası yazın</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Karar kayıtları</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.tr.html">Karar kayıtları</a></li>
+<li class=""><a href="../decisions/data-driven-languages.tr.html">Veri güdümlü diller</a></li>
+<li class=""><a href="../decisions/decimal-money.tr.html">Decimal para</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.tr.html">Yalnız EventBus ile modüller arası iletişim</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.tr.html">Metadata güdümlü arayüz</a></li>
+<li class=""><a href="../decisions/no-hard-delete.tr.html">Fiziksel silme yok</a></li>
+<li class=""><a href="../decisions/party-unification.tr.html">Taraf birleşimi</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.tr.html">Ürün, model ve versiyon kırılımı</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.tr.html">Sunucu tarafı arayüz durumu</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.tr.html">ULID birincil anahtarlar</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Başvuru</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.tr.html">Başvuru</a></li>
+<li class=""><a href="../reference/glossary.tr.html">Sözlük</a></li>
+<li class=""><a href="../reference/related-material.tr.html">İlgili belgeler</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.tr.html">Ana sayfa</a> / API referansı</div>
+    <header class="page-head">
+      <p class="eyebrow">API</p>
+      <h1>Intranet API (intranet)</h1>
+      <p class="lede">/api/v1/intranet altındaki intranet modülünün HTTP uç noktaları: yetkiler, şemalar, durum kodları ve hata kodlarıyla 117 yol.</p>
+    </header>
+    <nav class="toc" aria-label="İçindekiler"><p class="eyebrow">İçindekiler</p><ul class="outline">
+<li class="lvl2"><a href="#grup-olguları">Grup olguları</a></li>
+<li class="lvl2"><a href="#uç-nokta-özeti">Uç nokta özeti</a></li>
+<li class="lvl2"><a href="#i̇çerik-alanlar-ve-erişim-uç-noktaları">İçerik, alanlar ve erişim uç noktaları</a></li>
+<li class="lvl2"><a href="#bildirimler-uç-noktaları">Bildirimler uç noktaları</a></li>
+<li class="lvl2"><a href="#i̇zin-uç-noktaları">İzin uç noktaları</a></li>
+<li class="lvl2"><a href="#talepler-uç-noktaları">Talepler uç noktaları</a></li>
+<li class="lvl2"><a href="#resmi-teslimler-uç-noktaları">Resmi teslimler uç noktaları</a></li>
+<li class="lvl2"><a href="#rehber-uç-noktaları">Rehber uç noktaları</a></li>
+<li class="lvl2"><a href="#belgelerim-uç-noktaları">Belgelerim uç noktaları</a></li>
+<li class="lvl2"><a href="#etkileşim-uç-noktaları">Etkileşim uç noktaları</a></li>
+<li class="lvl2"><a href="#etkinlikler-ve-medya-uç-noktaları">Etkinlikler ve medya uç noktaları</a></li>
+<li class="lvl2"><a href="#akış-uç-noktaları">Akış uç noktaları</a></li>
+<li class="lvl2"><a href="#hata-kodları">Hata kodları</a></li>
+<li class="lvl2"><a href="#yayımlanan-olaylar">Yayımlanan olaylar</a></li>
+<li class="lvl2"><a href="#i̇lgili-sayfalar">İlgili sayfalar</a></li>
+</ul></nav>
+    <article class="prose">
+<p><code>intranet</code> modülü içerik ve alanları, hedef kitle segmentlerini, erişim izinlerini, ayarları, yorumları, bildirimleri, izin türlerini, bakiyelerini ve taleplerini, talep türlerini ve talepleri, resmi teslimleri, rehberi, çağıranın belgelerini, takdirleri, hızlı bağlantıları, uyarıları, medyalı etkinlikleri ve akışı sunar. 117 uç noktanın tamamı <code>/api/v1/intranet</code> altındadır. İş anlamı için <a href="../modules/intranet/index.tr.html">Intranet modülü</a> sayfasına bakın.</p>
+<h2 id="grup-olguları">Grup olguları<a class="headerlink" href="#grup-olguları">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Öğe</th>
+<th>Değer</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Temel yol</td>
+<td><code>/api/v1/intranet</code></td>
+<td><code>src/cluster_erp/core/module_base.py:37-38</code>, <code>src/cluster_erp/modules/intranet/module.py:172</code></td>
+</tr>
+<tr>
+<td>Yönlendiriciler</td>
+<td>10 dosyada 21 yönlendirici nesnesi; Uç nokta özeti bölümünde listelenir</td>
+<td><code>src/cluster_erp/modules/intranet/module.py:133</code></td>
+</tr>
+<tr>
+<td>Uç noktalar</td>
+<td>117; <code>register_routes</code> ile bağlanan yönlendiricilerin yol dekoratörleri ve <code>add_api_route</code> çağrılarından sayıldı</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py</code>, <code>src/cluster_erp/modules/intranet/delivery/routes.py</code>, <code>src/cluster_erp/modules/intranet/directory/routes.py</code> ...</td>
+</tr>
+<tr>
+<td>Kimlik doğrulama</td>
+<td>Bearer başlığı veya oturum çerezi, <code>get_current_user</code> ile çözülür; bkz. <a href="authentication-and-headers.tr.html">Kimlik doğrulama ve başlıklar</a></td>
+<td><code>src/cluster_erp/modules/auth/guards.py:85-167</code></td>
+</tr>
+<tr>
+<td>Yetki koruması</td>
+<td>117 yolun 116 tanesi <code>require_permission</code> bildirir; diğer yollar korumalarını tablolarda gösterir</td>
+<td><code>src/cluster_erp/modules/auth/guards.py:205-240</code></td>
+</tr>
+<tr>
+<td>Hata biçimi</td>
+<td>JSON gövdesi <code>{"error": {...}}</code>; bkz. <a href="errors.tr.html">Hatalar</a></td>
+<td><code>src/cluster_erp/server/error_handler.py:33-46</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="uç-nokta-özeti">Uç nokta özeti<a class="headerlink" href="#uç-nokta-özeti">¶</a></h2>
+<p>Alt modül klasörü başına bir satır. Yönlendirici öneki temel yola eklenir.</p>
+<table>
+<thead>
+<tr>
+<th>Alt modül</th>
+<th>Yönlendiriciler</th>
+<th>Uç noktalar</th>
+<th>Yönlendirici kaynağı</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>content</code></td>
+<td><code>content_router</code> (<code>/content</code>), <code>space_router</code> (<code>/spaces</code>), <code>segment_router</code> (<code>/segments</code>), <code>acl_router</code> (<code>/acl</code>), <code>settings_router</code> (<code>/settings</code>), <code>comment_router</code> (<code>/comments</code>)</td>
+<td>38</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:37</code>, <code>src/cluster_erp/modules/intranet/content/routes.py:36</code>, <code>src/cluster_erp/modules/intranet/content/routes.py:39</code>, <code>src/cluster_erp/modules/intranet/content/routes.py:38</code>, <code>src/cluster_erp/modules/intranet/content/routes.py:40</code>, <code>src/cluster_erp/modules/intranet/content/routes.py:41</code></td>
+</tr>
+<tr>
+<td><code>notifications</code></td>
+<td><code>notification_router</code> (<code>/notifications</code>)</td>
+<td>8</td>
+<td><code>src/cluster_erp/modules/intranet/notifications/routes.py:28</code></td>
+</tr>
+<tr>
+<td><code>leave</code></td>
+<td><code>leave_type_router</code> (<code>/leave-types</code>), <code>leave_balance_router</code> (<code>/leave-balances</code>), <code>leave_request_router</code> (<code>/leave-requests</code>)</td>
+<td>15</td>
+<td><code>src/cluster_erp/modules/intranet/leave/routes.py:28</code>, <code>src/cluster_erp/modules/intranet/leave/routes.py:29</code>, <code>src/cluster_erp/modules/intranet/leave/routes.py:32</code></td>
+</tr>
+<tr>
+<td><code>requests</code></td>
+<td><code>request_type_router</code> (<code>/request-types</code>), <code>request_router</code> (<code>/requests</code>)</td>
+<td>11</td>
+<td><code>src/cluster_erp/modules/intranet/requests/routes.py:27</code>, <code>src/cluster_erp/modules/intranet/requests/routes.py:28</code></td>
+</tr>
+<tr>
+<td><code>delivery</code></td>
+<td><code>delivery_router</code> (<code>/deliveries</code>)</td>
+<td>9</td>
+<td><code>src/cluster_erp/modules/intranet/delivery/routes.py:30</code></td>
+</tr>
+<tr>
+<td><code>directory</code></td>
+<td><code>directory_router</code> (<code>/directory</code>)</td>
+<td>4</td>
+<td><code>src/cluster_erp/modules/intranet/directory/routes.py:19</code></td>
+</tr>
+<tr>
+<td><code>my_documents</code></td>
+<td><code>my_documents_router</code> (<code>/my-documents</code>)</td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/my_documents/routes.py:12</code></td>
+</tr>
+<tr>
+<td><code>engagement</code></td>
+<td><code>kudos_router</code> (<code>/kudos</code>), <code>quicklink_router</code> (<code>/quick-links</code>), <code>alert_router</code> (<code>/alerts</code>)</td>
+<td>15</td>
+<td><code>src/cluster_erp/modules/intranet/engagement/routes.py:27</code>, <code>src/cluster_erp/modules/intranet/engagement/routes.py:28</code>, <code>src/cluster_erp/modules/intranet/engagement/routes.py:29</code></td>
+</tr>
+<tr>
+<td><code>events</code></td>
+<td><code>event_router</code> (<code>/events</code>), <code>media_router</code> (<code>/media</code>)</td>
+<td>15</td>
+<td><code>src/cluster_erp/modules/intranet/events/routes.py:41</code>, <code>src/cluster_erp/modules/intranet/events/routes.py:42</code></td>
+</tr>
+<tr>
+<td><code>feed</code></td>
+<td><code>feed_router</code> (<code>/feed</code>)</td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/feed/routes.py:23</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="i̇çerik-alanlar-ve-erişim-uç-noktaları">İçerik, alanlar ve erişim uç noktaları<a class="headerlink" href="#i̇çerik-alanlar-ve-erişim-uç-noktaları">¶</a></h2>
+<p>Altı yönlendirici: içerik (varyantlar, görüntülemeler, analitik, uygunluk, onaylı okumalar, tepkiler, yorumlar), alanlar, yeniden kurma ve üyelerle segmentler, ACL izinleri, ayar satırı ve yorum denetimi.</p>
+<table>
+<thead>
+<tr>
+<th>Yöntem</th>
+<th>Yol</th>
+<th>İşleyici</th>
+<th>Yetki</th>
+<th>İstek</th>
+<th>Sorgu</th>
+<th>Yanıt</th>
+<th>Durum</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/content/</code></td>
+<td><code>list_content</code></td>
+<td><code>intranet_content.read</code></td>
+<td>yok</td>
+<td><code>search</code>, <code>space_id</code>, <code>kind</code>, <code>status</code>, <code>mine</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:116</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/intranet/content/</code></td>
+<td><code>create_content</code></td>
+<td><code>intranet_content.create</code></td>
+<td><code>sc.ContentCreate</code></td>
+<td>yok</td>
+<td><code>sc.ContentRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:171</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/content/pending-acks</code></td>
+<td><code>my_pending_acks</code></td>
+<td><code>intranet_content.read</code></td>
+<td>yok</td>
+<td><code>party_id</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:181</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/content/{content_id}</code></td>
+<td><code>get_content</code></td>
+<td><code>intranet_content.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>sc.ContentRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:205</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/intranet/content/{content_id}</code></td>
+<td><code>update_content</code></td>
+<td><code>intranet_content.update</code></td>
+<td><code>sc.ContentUpdate</code></td>
+<td>yok</td>
+<td><code>sc.ContentRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:230</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/intranet/content/{content_id}/actions/{action}</code></td>
+<td><code>run_content_action</code></td>
+<td><code>intranet_content.update</code></td>
+<td><code>dict[str, Any] \| None</code></td>
+<td>yok</td>
+<td><code>sc.ContentRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:243</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/intranet/content/{content_id}</code></td>
+<td><code>deactivate_content</code></td>
+<td><code>intranet_content.delete</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:287</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/content/{content_id}/variants</code></td>
+<td><code>list_variants</code></td>
+<td><code>intranet_content.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>list[sc.VariantRead]</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:307</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/intranet/content/{content_id}/variants</code></td>
+<td><code>set_variant</code></td>
+<td><code>intranet_content.update</code></td>
+<td><code>sc.VariantWrite</code></td>
+<td>yok</td>
+<td><code>sc.VariantRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:317</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/intranet/content/{content_id}/view</code></td>
+<td><code>record_view</code></td>
+<td><code>intranet_content.read</code></td>
+<td>yok</td>
+<td><code>party_id</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:333</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/content/{content_id}/analytics</code></td>
+<td><code>content_analytics</code></td>
+<td><code>intranet_content.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:349</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/content/{content_id}/compliance</code></td>
+<td><code>content_compliance</code></td>
+<td><code>intranet_content.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:358</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/intranet/content/{content_id}/acknowledge</code></td>
+<td><code>acknowledge_content</code></td>
+<td><code>intranet_content.read</code></td>
+<td><code>sc.AckWrite \| None</code></td>
+<td><code>party_id</code></td>
+<td><code>sc.AckRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:370</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/content/{content_id}/acks</code></td>
+<td><code>list_acks</code></td>
+<td><code>intranet_content.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:402</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/content/{content_id}/reactions</code></td>
+<td><code>reaction_counts</code></td>
+<td><code>intranet_content.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:421</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/intranet/content/{content_id}/reactions</code></td>
+<td><code>set_reaction</code></td>
+<td><code>intranet_content.read</code></td>
+<td><code>sc.ReactionWrite</code></td>
+<td><code>party_id</code></td>
+<td><code>sc.ReactionRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:430</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/intranet/content/{content_id}/reactions</code></td>
+<td><code>remove_reaction</code></td>
+<td><code>intranet_content.read</code></td>
+<td>yok</td>
+<td><code>party_id</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:448</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/content/{content_id}/comments</code></td>
+<td><code>list_comments</code></td>
+<td><code>intranet_content.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:467</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/intranet/content/{content_id}/comments</code></td>
+<td><code>create_comment</code></td>
+<td><code>intranet_content.read</code></td>
+<td><code>sc.CommentCreate</code></td>
+<td><code>party_id</code></td>
+<td><code>sc.CommentRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:480</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/spaces/</code></td>
+<td><code>list_spaces</code></td>
+<td><code>intranet_space.read</code></td>
+<td>yok</td>
+<td><code>search</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:47</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/intranet/spaces/</code></td>
+<td><code>create_space</code></td>
+<td><code>intranet_space.create</code></td>
+<td><code>sc.SpaceCreate</code></td>
+<td>yok</td>
+<td><code>sc.SpaceRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:68</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/spaces/{space_id}</code></td>
+<td><code>get_space</code></td>
+<td><code>intranet_space.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>sc.SpaceRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:78</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/intranet/spaces/{space_id}</code></td>
+<td><code>update_space</code></td>
+<td><code>intranet_space.update</code></td>
+<td><code>sc.SpaceUpdate</code></td>
+<td>yok</td>
+<td><code>sc.SpaceRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:90</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/intranet/spaces/{space_id}</code></td>
+<td><code>deactivate_space</code></td>
+<td><code>intranet_space.delete</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>sc.SpaceRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:103</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/segments/</code></td>
+<td><code>list_segments</code></td>
+<td><code>intranet_segment.read</code></td>
+<td>yok</td>
+<td><code>include_inactive</code>, <code>search</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:551</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/intranet/segments/</code></td>
+<td><code>create_segment</code></td>
+<td><code>intranet_segment.create</code></td>
+<td><code>sc.SegmentCreate</code></td>
+<td>yok</td>
+<td><code>sc.SegmentRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:565</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/segments/{segment_id}</code></td>
+<td><code>get_segment</code></td>
+<td><code>intranet_segment.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>sc.SegmentRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:578</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/intranet/segments/{segment_id}</code></td>
+<td><code>update_segment</code></td>
+<td><code>intranet_segment.update</code></td>
+<td><code>sc.SegmentUpdate</code></td>
+<td>yok</td>
+<td><code>sc.SegmentRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:590</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/intranet/segments/{segment_id}/rebuild</code></td>
+<td><code>rebuild_segment</code></td>
+<td><code>intranet_segment.update</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:604</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/intranet/segments/rebuild-all</code></td>
+<td><code>rebuild_all_segments</code></td>
+<td><code>intranet_segment.update</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:619</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/segments/{segment_id}/members</code></td>
+<td><code>segment_members</code></td>
+<td><code>intranet_segment.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:636</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/intranet/segments/{segment_id}</code></td>
+<td><code>deactivate_segment</code></td>
+<td><code>intranet_segment.delete</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>sc.SegmentRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:646</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/acl/</code></td>
+<td><code>list_grants</code></td>
+<td><code>intranet_content.read</code></td>
+<td>yok</td>
+<td><code>subject_kind</code>, <code>subject_id</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:515</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/intranet/acl/</code></td>
+<td><code>set_grant</code></td>
+<td><code>intranet_content.update</code></td>
+<td><code>sc.AclGrantWrite</code></td>
+<td>yok</td>
+<td><code>sc.AclGrantRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:529</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/intranet/acl/{grant_id}</code></td>
+<td><code>remove_grant</code></td>
+<td><code>intranet_content.update</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:539</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/settings/</code></td>
+<td><code>get_settings_row</code></td>
+<td><code>intranet_settings.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:659</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/intranet/settings/</code></td>
+<td><code>update_settings_row</code></td>
+<td><code>intranet_settings.update</code></td>
+<td><code>dict[str, Any]</code></td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:676</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/intranet/comments/{comment_id}/moderate</code></td>
+<td><code>moderate_comment</code></td>
+<td><code>intranet_content.publish</code></td>
+<td><code>dict[str, Any] \| None</code></td>
+<td>yok</td>
+<td><code>sc.CommentRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:500</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="bildirimler-uç-noktaları">Bildirimler uç noktaları<a class="headerlink" href="#bildirimler-uç-noktaları">¶</a></h2>
+<p>Bildirimler, çağıranın kendi listesi, okunmamış sayısı, okundu ve görüldü işaretleme ve gönderim satırları.</p>
+<table>
+<thead>
+<tr>
+<th>Yöntem</th>
+<th>Yol</th>
+<th>İşleyici</th>
+<th>Yetki</th>
+<th>İstek</th>
+<th>Sorgu</th>
+<th>Yanıt</th>
+<th>Durum</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/notifications/</code></td>
+<td><code>list_notifications</code></td>
+<td><code>intranet_notification.read</code></td>
+<td>yok</td>
+<td><code>party_id</code>, <code>unread_only</code>, <code>search</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/notifications/routes.py:31</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/notifications/mine</code></td>
+<td><code>list_my_notifications</code></td>
+<td><code>intranet_notification.read</code></td>
+<td>yok</td>
+<td><code>unread_only</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/notifications/routes.py:67</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/notifications/unread-count</code></td>
+<td><code>unread_count</code></td>
+<td><code>intranet_notification.read</code></td>
+<td>yok</td>
+<td><code>party_id</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/notifications/routes.py:92</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/intranet/notifications/read-all</code></td>
+<td><code>mark_all_read</code></td>
+<td><code>intranet_notification.update</code></td>
+<td>yok</td>
+<td><code>party_id</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/notifications/routes.py:113</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/notifications/{notification_id}/dispatches</code></td>
+<td><code>list_dispatches</code></td>
+<td><code>intranet_notification.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>list[sc.DispatchRead]</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/notifications/routes.py:153</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/notifications/{notification_id}</code></td>
+<td><code>get_notification</code></td>
+<td><code>intranet_notification.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>sc.NotificationRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/notifications/routes.py:167</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/intranet/notifications/{notification_id}/read</code></td>
+<td><code>mark_read</code></td>
+<td><code>intranet_notification.update</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>sc.NotificationRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/notifications/routes.py:178</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/intranet/notifications/{notification_id}/seen</code></td>
+<td><code>mark_seen</code></td>
+<td><code>intranet_notification.update</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>sc.NotificationRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/notifications/routes.py:190</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="i̇zin-uç-noktaları">İzin uç noktaları<a class="headerlink" href="#i̇zin-uç-noktaları">¶</a></h2>
+<p>Üç yönlendirici: izin türleri, izin bakiyeleri ve eylemli izin talepleri.</p>
+<table>
+<thead>
+<tr>
+<th>Yöntem</th>
+<th>Yol</th>
+<th>İşleyici</th>
+<th>Yetki</th>
+<th>İstek</th>
+<th>Sorgu</th>
+<th>Yanıt</th>
+<th>Durum</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/leave-types/</code></td>
+<td><code>list_leave_types</code></td>
+<td><code>intranet_leave_type.read</code></td>
+<td>yok</td>
+<td><code>include_inactive</code>, <code>search</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/leave/routes.py:40</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/intranet/leave-types/</code></td>
+<td><code>create_leave_type</code></td>
+<td><code>intranet_leave_type.create</code></td>
+<td><code>sc.LeaveTypeCreate</code></td>
+<td>yok</td>
+<td><code>sc.LeaveTypeRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/intranet/leave/routes.py:56</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/leave-types/{type_id}</code></td>
+<td><code>get_leave_type</code></td>
+<td><code>intranet_leave_type.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>sc.LeaveTypeRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/leave/routes.py:66</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/intranet/leave-types/{type_id}</code></td>
+<td><code>update_leave_type</code></td>
+<td><code>intranet_leave_type.update</code></td>
+<td><code>sc.LeaveTypeUpdate</code></td>
+<td>yok</td>
+<td><code>sc.LeaveTypeRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/leave/routes.py:78</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/intranet/leave-types/{type_id}</code></td>
+<td><code>deactivate_leave_type</code></td>
+<td><code>intranet_leave_type.delete</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>sc.LeaveTypeRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/leave/routes.py:91</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/leave-balances/</code></td>
+<td><code>list_balances</code></td>
+<td><code>intranet_leave_balance.read</code></td>
+<td>yok</td>
+<td><code>party_id</code>, <code>period_year</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/leave/routes.py:104</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/leave-balances/{balance_id}</code></td>
+<td><code>get_balance</code></td>
+<td><code>intranet_leave_balance.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>sc.LeaveBalanceRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/leave/routes.py:126</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/intranet/leave-balances/</code></td>
+<td><code>create_balance</code></td>
+<td><code>intranet_leave_balance.create</code></td>
+<td><code>sc.LeaveBalanceWrite</code></td>
+<td>yok</td>
+<td><code>sc.LeaveBalanceRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/intranet/leave/routes.py:142</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/intranet/leave-balances/{balance_id}</code></td>
+<td><code>update_balance</code></td>
+<td><code>intranet_leave_balance.update</code></td>
+<td><code>sc.LeaveBalanceUpdate</code></td>
+<td>yok</td>
+<td><code>sc.LeaveBalanceRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/leave/routes.py:154</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/leave-requests/</code></td>
+<td><code>list_requests</code></td>
+<td><code>intranet_leave_request.read</code></td>
+<td>yok</td>
+<td><code>party_id</code>, <code>status</code>, <code>leave_type_id</code>, <code>search</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/leave/routes.py:170</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/intranet/leave-requests/</code></td>
+<td><code>create_request</code></td>
+<td><code>intranet_leave_request.create</code></td>
+<td><code>sc.LeaveRequestCreate</code></td>
+<td>yok</td>
+<td><code>sc.LeaveRequestRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/intranet/leave/routes.py:204</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/leave-requests/{request_id}</code></td>
+<td><code>get_request</code></td>
+<td><code>intranet_leave_request.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>sc.LeaveRequestRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/leave/routes.py:225</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/intranet/leave-requests/{request_id}</code></td>
+<td><code>update_request</code></td>
+<td><code>intranet_leave_request.update</code></td>
+<td><code>sc.LeaveRequestUpdate</code></td>
+<td>yok</td>
+<td><code>sc.LeaveRequestRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/leave/routes.py:241</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/intranet/leave-requests/{request_id}/actions/{action}</code></td>
+<td><code>run_request_action</code></td>
+<td><code>intranet_leave_request.update</code></td>
+<td><code>dict[str, Any] \| None</code></td>
+<td>yok</td>
+<td><code>sc.LeaveRequestRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/leave/routes.py:255</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/intranet/leave-requests/{request_id}</code></td>
+<td><code>deactivate_request</code></td>
+<td><code>intranet_leave_request.delete</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>sc.LeaveRequestRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/leave/routes.py:283</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="talepler-uç-noktaları">Talepler uç noktaları<a class="headerlink" href="#talepler-uç-noktaları">¶</a></h2>
+<p>İki yönlendirici: talep türleri ve eylemli talepler.</p>
+<table>
+<thead>
+<tr>
+<th>Yöntem</th>
+<th>Yol</th>
+<th>İşleyici</th>
+<th>Yetki</th>
+<th>İstek</th>
+<th>Sorgu</th>
+<th>Yanıt</th>
+<th>Durum</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/request-types/</code></td>
+<td><code>list_request_types</code></td>
+<td><code>intranet_request_type.read</code></td>
+<td>yok</td>
+<td><code>include_inactive</code>, <code>search</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/requests/routes.py:34</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/intranet/request-types/</code></td>
+<td><code>create_request_type</code></td>
+<td><code>intranet_request_type.create</code></td>
+<td><code>sc.RequestTypeCreate</code></td>
+<td>yok</td>
+<td><code>sc.RequestTypeRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/intranet/requests/routes.py:50</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/request-types/{type_id}</code></td>
+<td><code>get_request_type</code></td>
+<td><code>intranet_request_type.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>sc.RequestTypeRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/requests/routes.py:60</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/intranet/request-types/{type_id}</code></td>
+<td><code>update_request_type</code></td>
+<td><code>intranet_request_type.update</code></td>
+<td><code>sc.RequestTypeUpdate</code></td>
+<td>yok</td>
+<td><code>sc.RequestTypeRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/requests/routes.py:72</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/intranet/request-types/{type_id}</code></td>
+<td><code>deactivate_request_type</code></td>
+<td><code>intranet_request_type.delete</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>sc.RequestTypeRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/requests/routes.py:85</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/requests/</code></td>
+<td><code>list_requests</code></td>
+<td><code>intranet_request.read</code></td>
+<td>yok</td>
+<td><code>party_id</code>, <code>status</code>, <code>request_type_id</code>, <code>search</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/requests/routes.py:98</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/intranet/requests/</code></td>
+<td><code>create_request</code></td>
+<td><code>intranet_request.create</code></td>
+<td><code>sc.RequestCreate</code></td>
+<td>yok</td>
+<td><code>sc.RequestRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/intranet/requests/routes.py:132</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/requests/{request_id}</code></td>
+<td><code>get_request</code></td>
+<td><code>intranet_request.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>sc.RequestRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/requests/routes.py:152</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/intranet/requests/{request_id}</code></td>
+<td><code>update_request</code></td>
+<td><code>intranet_request.update</code></td>
+<td><code>sc.RequestUpdate</code></td>
+<td>yok</td>
+<td><code>sc.RequestRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/requests/routes.py:168</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/intranet/requests/{request_id}/actions/{action}</code></td>
+<td><code>run_request_action</code></td>
+<td><code>intranet_request.update</code></td>
+<td><code>dict[str, Any] \| None</code></td>
+<td>yok</td>
+<td><code>sc.RequestRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/requests/routes.py:181</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/intranet/requests/{request_id}</code></td>
+<td><code>deactivate_request</code></td>
+<td><code>intranet_request.delete</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>sc.RequestRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/requests/routes.py:206</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="resmi-teslimler-uç-noktaları">Resmi teslimler uç noktaları<a class="headerlink" href="#resmi-teslimler-uç-noktaları">¶</a></h2>
+<p>Belge indirmeli teslimler ve teslim etme, onaylama ve reddetme eylemleri.</p>
+<table>
+<thead>
+<tr>
+<th>Yöntem</th>
+<th>Yol</th>
+<th>İşleyici</th>
+<th>Yetki</th>
+<th>İstek</th>
+<th>Sorgu</th>
+<th>Yanıt</th>
+<th>Durum</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/deliveries/</code></td>
+<td><code>list_deliveries</code></td>
+<td><code>intranet_official_delivery.read</code></td>
+<td>yok</td>
+<td><code>party_id</code>, <code>status</code>, <code>category</code>, <code>search</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/delivery/routes.py:50</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/intranet/deliveries/</code></td>
+<td><code>create_delivery</code></td>
+<td><code>intranet_official_delivery.create</code></td>
+<td><code>sc.DeliveryCreate</code></td>
+<td>yok</td>
+<td><code>sc.DeliveryRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/intranet/delivery/routes.py:84</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/deliveries/{delivery_id}</code></td>
+<td><code>get_delivery</code></td>
+<td><code>intranet_official_delivery.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>sc.DeliveryRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/delivery/routes.py:101</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/deliveries/{delivery_id}/document</code></td>
+<td><code>download_delivery_document</code></td>
+<td><code>intranet_official_delivery.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>Response</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/delivery/routes.py:120</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/intranet/deliveries/{delivery_id}</code></td>
+<td><code>update_delivery</code></td>
+<td><code>intranet_official_delivery.update</code></td>
+<td><code>sc.DeliveryUpdate</code></td>
+<td>yok</td>
+<td><code>sc.DeliveryRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/delivery/routes.py:166</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/intranet/deliveries/{delivery_id}/actions/deliver</code></td>
+<td><code>deliver</code></td>
+<td><code>intranet_official_delivery.update</code></td>
+<td><code>dict[str, Any] \| None</code></td>
+<td>yok</td>
+<td><code>sc.DeliveryRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/delivery/routes.py:182</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/intranet/deliveries/{delivery_id}/actions/acknowledge</code></td>
+<td><code>acknowledge_delivery</code></td>
+<td><code>intranet_official_delivery.read</code></td>
+<td><code>dict[str, Any] \| None</code></td>
+<td><code>party_id</code></td>
+<td><code>sc.DeliveryRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/delivery/routes.py:197</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/intranet/deliveries/{delivery_id}/actions/refuse</code></td>
+<td><code>refuse</code></td>
+<td><code>intranet_official_delivery.update</code></td>
+<td><code>dict[str, Any] \| None</code></td>
+<td>yok</td>
+<td><code>sc.DeliveryRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/delivery/routes.py:230</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/intranet/deliveries/{delivery_id}</code></td>
+<td><code>deactivate_delivery</code></td>
+<td><code>intranet_official_delivery.delete</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>sc.DeliveryRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/delivery/routes.py:242</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="rehber-uç-noktaları">Rehber uç noktaları<a class="headerlink" href="#rehber-uç-noktaları">¶</a></h2>
+<p>Çalışan rehberi, organizasyon şeması, tek bir çalışan ve doğrudan bağlılar.</p>
+<table>
+<thead>
+<tr>
+<th>Yöntem</th>
+<th>Yol</th>
+<th>İşleyici</th>
+<th>Yetki</th>
+<th>İstek</th>
+<th>Sorgu</th>
+<th>Yanıt</th>
+<th>Durum</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/directory/</code></td>
+<td><code>list_directory</code></td>
+<td><code>intranet_employee_projection.read</code></td>
+<td>yok</td>
+<td><code>search</code>, <code>dept_id</code>, <code>manager_party_id</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/directory/routes.py:22</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/directory/org-chart</code></td>
+<td><code>org_chart</code></td>
+<td><code>intranet_employee_projection.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/directory/routes.py:48</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/directory/{party_id}</code></td>
+<td><code>get_colleague</code></td>
+<td><code>intranet_employee_projection.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>sc.EmployeeProjectionRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/directory/routes.py:60</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/directory/{party_id}/reports</code></td>
+<td><code>direct_reports</code></td>
+<td><code>intranet_employee_projection.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/directory/routes.py:72</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="belgelerim-uç-noktaları">Belgelerim uç noktaları<a class="headerlink" href="#belgelerim-uç-noktaları">¶</a></h2>
+<p>Çağıranın kendi belgeleri. İşleyici kullanıcıyı kimlik bilgisinden çözer (<code>src/cluster_erp/modules/intranet/my_documents/routes.py:25</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Yöntem</th>
+<th>Yol</th>
+<th>İşleyici</th>
+<th>Yetki</th>
+<th>İstek</th>
+<th>Sorgu</th>
+<th>Yanıt</th>
+<th>Durum</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/my-documents/</code></td>
+<td><code>list_my_documents</code></td>
+<td>oturum açmış kullanıcı (<code>get_current_user</code>)</td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/my_documents/routes.py:15</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="etkileşim-uç-noktaları">Etkileşim uç noktaları<a class="headerlink" href="#etkileşim-uç-noktaları">¶</a></h2>
+<p>Üç yönlendirici: takdirler, hızlı bağlantılar ve etkin uyarılar okumasıyla uyarılar.</p>
+<table>
+<thead>
+<tr>
+<th>Yöntem</th>
+<th>Yol</th>
+<th>İşleyici</th>
+<th>Yetki</th>
+<th>İstek</th>
+<th>Sorgu</th>
+<th>Yanıt</th>
+<th>Durum</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/kudos/</code></td>
+<td><code>list_kudos</code></td>
+<td><code>intranet_kudos.read</code></td>
+<td>yok</td>
+<td><code>to_party_id</code>, <code>search</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/engagement/routes.py:35</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/intranet/kudos/</code></td>
+<td><code>create_kudos</code></td>
+<td><code>intranet_kudos.create</code></td>
+<td><code>sc.KudosCreate</code></td>
+<td>yok</td>
+<td><code>sc.KudosRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/intranet/engagement/routes.py:57</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/kudos/{kudos_id}</code></td>
+<td><code>get_kudos</code></td>
+<td><code>intranet_kudos.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>sc.KudosRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/engagement/routes.py:85</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/intranet/kudos/{kudos_id}</code></td>
+<td><code>deactivate_kudos</code></td>
+<td><code>intranet_kudos.delete</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/engagement/routes.py:97</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/quick-links/</code></td>
+<td><code>list_quicklinks</code></td>
+<td><code>intranet_quick_link.read</code></td>
+<td>yok</td>
+<td><code>include_inactive</code>, <code>search</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/engagement/routes.py:110</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/intranet/quick-links/</code></td>
+<td><code>create_quicklink</code></td>
+<td><code>intranet_quick_link.create</code></td>
+<td><code>sc.QuickLinkCreate</code></td>
+<td>yok</td>
+<td><code>sc.QuickLinkRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/intranet/engagement/routes.py:126</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/quick-links/{link_id}</code></td>
+<td><code>get_quicklink</code></td>
+<td><code>intranet_quick_link.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>sc.QuickLinkRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/engagement/routes.py:136</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/intranet/quick-links/{link_id}</code></td>
+<td><code>update_quicklink</code></td>
+<td><code>intranet_quick_link.update</code></td>
+<td><code>sc.QuickLinkUpdate</code></td>
+<td>yok</td>
+<td><code>sc.QuickLinkRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/engagement/routes.py:148</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/intranet/quick-links/{link_id}</code></td>
+<td><code>deactivate_quicklink</code></td>
+<td><code>intranet_quick_link.delete</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/engagement/routes.py:161</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/alerts/active</code></td>
+<td><code>active_alerts</code></td>
+<td><code>intranet_alert.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/engagement/routes.py:174</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/alerts/</code></td>
+<td><code>list_alerts</code></td>
+<td><code>intranet_alert.read</code></td>
+<td>yok</td>
+<td><code>include_inactive</code>, <code>search</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/engagement/routes.py:186</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/intranet/alerts/</code></td>
+<td><code>create_alert</code></td>
+<td><code>intranet_alert.create</code></td>
+<td><code>sc.AlertCreate</code></td>
+<td>yok</td>
+<td><code>sc.AlertRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/intranet/engagement/routes.py:202</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/alerts/{alert_id}</code></td>
+<td><code>get_alert</code></td>
+<td><code>intranet_alert.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>sc.AlertRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/engagement/routes.py:214</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/intranet/alerts/{alert_id}</code></td>
+<td><code>update_alert</code></td>
+<td><code>intranet_alert.update</code></td>
+<td><code>sc.AlertUpdate</code></td>
+<td>yok</td>
+<td><code>sc.AlertRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/engagement/routes.py:226</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/intranet/alerts/{alert_id}</code></td>
+<td><code>deactivate_alert</code></td>
+<td><code>intranet_alert.delete</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/engagement/routes.py:239</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="etkinlikler-ve-medya-uç-noktaları">Etkinlikler ve medya uç noktaları<a class="headerlink" href="#etkinlikler-ve-medya-uç-noktaları">¶</a></h2>
+<p>İki yönlendirici: etkinlikler (eylemler, katılım yanıtı, yanıt listesi, davetler, değişiklikler, iCalendar dışa aktarımı) ve bir varlığa bağlı medya.</p>
+<table>
+<thead>
+<tr>
+<th>Yöntem</th>
+<th>Yol</th>
+<th>İşleyici</th>
+<th>Yetki</th>
+<th>İstek</th>
+<th>Sorgu</th>
+<th>Yanıt</th>
+<th>Durum</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/events/</code></td>
+<td><code>list_events</code></td>
+<td><code>intranet_event.read</code></td>
+<td>yok</td>
+<td><code>status</code>, <code>upcoming</code>, <code>from_dt</code>, <code>to_dt</code>, <code>space_id</code>, <code>search</code>, <code>mine</code>, <code>include_archived</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/events/routes.py:57</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/intranet/events/</code></td>
+<td><code>create_event</code></td>
+<td><code>intranet_event.create</code></td>
+<td><code>sc.EventCreate</code></td>
+<td>yok</td>
+<td><code>sc.EventRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/intranet/events/routes.py:97</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/events/{event_id}</code></td>
+<td><code>get_event</code></td>
+<td><code>intranet_event.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>sc.EventRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/events/routes.py:116</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/intranet/events/{event_id}</code></td>
+<td><code>update_event</code></td>
+<td><code>intranet_event.update</code></td>
+<td><code>sc.EventUpdate</code></td>
+<td>yok</td>
+<td><code>sc.EventRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/events/routes.py:129</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/intranet/events/{event_id}</code></td>
+<td><code>archive_event</code></td>
+<td><code>intranet_event.update</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>sc.EventRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/events/routes.py:145</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/intranet/events/{event_id}/actions/{action}</code></td>
+<td><code>run_event_action</code></td>
+<td><code>intranet_event.update</code></td>
+<td><code>sc.EventActionIn \| None</code></td>
+<td>yok</td>
+<td><code>sc.EventRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/events/routes.py:162</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/intranet/events/{event_id}/rsvp</code></td>
+<td><code>rsvp_event</code></td>
+<td><code>intranet_event.read</code></td>
+<td><code>sc.RsvpWrite</code></td>
+<td>yok</td>
+<td><code>sc.RsvpRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/events/routes.py:207</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/events/{event_id}/rsvps</code></td>
+<td><code>list_event_rsvps</code></td>
+<td><code>intranet_event.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/events/routes.py:229</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/events/{event_id}/invitations</code></td>
+<td><code>list_event_invitations</code></td>
+<td><code>intranet_event.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/events/routes.py:263</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/events/{event_id}/changes</code></td>
+<td><code>list_event_changes</code></td>
+<td><code>intranet_event.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/events/routes.py:281</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/events/{event_id}/ics</code></td>
+<td><code>event_ics</code></td>
+<td><code>intranet_event.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>Response</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/events/routes.py:295</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/media/{entity_type}/{entity_id}</code></td>
+<td><code>list_media</code></td>
+<td><code>intranet_content.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/events/routes.py:325</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/intranet/media/{entity_type}/{entity_id}</code></td>
+<td><code>add_media</code></td>
+<td><code>intranet_content.update</code></td>
+<td><code>sc.MediaAdd</code></td>
+<td>yok</td>
+<td><code>sc.MediaRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/intranet/events/routes.py:337</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/intranet/media/{media_id}</code></td>
+<td><code>update_media</code></td>
+<td><code>intranet_content.update</code></td>
+<td><code>sc.MediaUpdate</code></td>
+<td>yok</td>
+<td><code>sc.MediaRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/events/routes.py:352</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/intranet/media/{media_id}</code></td>
+<td><code>remove_media</code></td>
+<td><code>intranet_content.update</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/events/routes.py:363</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="akış-uç-noktaları">Akış uç noktaları<a class="headerlink" href="#akış-uç-noktaları">¶</a></h2>
+<p>Çağıranın akışı.</p>
+<table>
+<thead>
+<tr>
+<th>Yöntem</th>
+<th>Yol</th>
+<th>İşleyici</th>
+<th>Yetki</th>
+<th>İstek</th>
+<th>Sorgu</th>
+<th>Yanıt</th>
+<th>Durum</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/intranet/feed/</code></td>
+<td><code>get_feed</code></td>
+<td><code>intranet_content.read</code></td>
+<td>yok</td>
+<td><code>types</code>, <code>kind</code>, <code>space_id</code>, <code>mine</code>, <code>before</code>, <code>limit</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/intranet/feed/routes.py:26</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="hata-kodları">Hata kodları<a class="headerlink" href="#hata-kodları">¶</a></h2>
+<p>Tablo, <code>src/cluster_erp/modules/intranet/</code> altındaki kodun attığı hata kodlarını listeler. Kodlar, <code>AppError(...)</code> çağrıları, <code>src/cluster_erp/core/errors.py</code> içindeki fabrikalar (<code>not_found</code>, <code>conflict</code>, <code>protected</code>, <code>permission_denied</code>, <code>privilege_escalation</code>, <code>check_version</code>) ve <code>HTTPException(...)</code> için yapılan bir sözdizimi ağacı taramasıyla bulundu. <code>400</code> durumu <code>AppError</code> varsayılanıdır (<code>src/cluster_erp/core/errors.py:23</code>). Koruma hataları (<code>401</code>, <code>403</code>), yetkilendirme kodları ve doğrulama hataları (<code>422</code>) her yol için geçerlidir ve <a href="errors.tr.html">Hatalar</a> sayfasında listelenir.</p>
+<table>
+<thead>
+<tr>
+<th>Kod</th>
+<th>HTTP durumu</th>
+<th>Atıldığı yer</th>
+<th>İlk konum</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AUTH_PERMISSION_DENIED</code></td>
+<td><code>403</code></td>
+<td><code>access</code>, <code>content</code>, <code>delivery</code>, <code>events</code></td>
+<td><code>src/cluster_erp/modules/intranet/access.py:75</code></td>
+</tr>
+<tr>
+<td><code>INTRANET_ERROR</code></td>
+<td><code>400</code></td>
+<td><code>content</code>, <code>leave</code>, <code>requests</code></td>
+<td><code>src/cluster_erp/modules/intranet/content/services.py:1098</code></td>
+</tr>
+<tr>
+<td><code>INTRANET_EVENT_ENDS_BEFORE_START</code></td>
+<td><code>422</code></td>
+<td><code>events</code></td>
+<td><code>src/cluster_erp/modules/intranet/events/services.py:377</code></td>
+</tr>
+<tr>
+<td><code>INTRANET_EVENT_FULL</code></td>
+<td><code>422</code></td>
+<td><code>events</code></td>
+<td><code>src/cluster_erp/modules/intranet/events/lifecycle.py:255</code></td>
+</tr>
+<tr>
+<td><code>INTRANET_EVENT_INVALID_STATUS</code></td>
+<td><code>422</code></td>
+<td><code>events</code></td>
+<td><code>src/cluster_erp/modules/intranet/events/lifecycle.py:108</code></td>
+</tr>
+<tr>
+<td><code>INTRANET_EVENT_NOT_EDITABLE</code></td>
+<td><code>422</code></td>
+<td><code>events</code></td>
+<td><code>src/cluster_erp/modules/intranet/events/lifecycle.py:139</code></td>
+</tr>
+<tr>
+<td><code>INTRANET_EVENT_REASON_REQUIRED</code></td>
+<td><code>422</code></td>
+<td><code>events</code></td>
+<td><code>src/cluster_erp/modules/intranet/events/lifecycle.py:306</code></td>
+</tr>
+<tr>
+<td><code>INTRANET_EVENT_RSVP_CLOSED</code></td>
+<td><code>422</code></td>
+<td><code>events</code></td>
+<td><code>src/cluster_erp/modules/intranet/events/services.py:609</code></td>
+</tr>
+<tr>
+<td><code>INTRANET_EVENT_UNCANCEL_EXPIRED</code></td>
+<td><code>422</code></td>
+<td><code>events</code></td>
+<td><code>src/cluster_erp/modules/intranet/events/lifecycle.py:156</code></td>
+</tr>
+<tr>
+<td><code>INTRANET_INVALID_STATUS</code></td>
+<td><code>400</code></td>
+<td><code>content</code>, <code>delivery</code>, <code>leave</code>, <code>requests</code></td>
+<td><code>src/cluster_erp/modules/intranet/content/services.py:821</code></td>
+</tr>
+<tr>
+<td><code>INTRANET_LEAVE_DOCUMENT_REQUIRED</code></td>
+<td><code>409</code></td>
+<td><code>leave</code></td>
+<td><code>src/cluster_erp/modules/intranet/leave/services.py:515</code></td>
+</tr>
+<tr>
+<td><code>INTRANET_LEAVE_GENDER_RESTRICTED</code></td>
+<td><code>409</code></td>
+<td><code>leave</code></td>
+<td><code>src/cluster_erp/modules/intranet/leave/services.py:459</code></td>
+</tr>
+<tr>
+<td><code>INTRANET_LEAVE_INSUFFICIENT_BALANCE</code></td>
+<td><code>409</code></td>
+<td><code>leave</code></td>
+<td><code>src/cluster_erp/modules/intranet/leave/services.py:539</code></td>
+</tr>
+<tr>
+<td><code>INTRANET_LEAVE_NOTICE_TOO_SHORT</code></td>
+<td><code>409</code></td>
+<td><code>leave</code></td>
+<td><code>src/cluster_erp/modules/intranet/leave/services.py:490</code></td>
+</tr>
+<tr>
+<td><code>INTRANET_LEAVE_OVERLAP</code></td>
+<td><code>409</code></td>
+<td><code>leave</code></td>
+<td><code>src/cluster_erp/modules/intranet/leave/services.py:432</code></td>
+</tr>
+<tr>
+<td><code>INTRANET_MEDIA_ENTITY</code></td>
+<td><code>422</code></td>
+<td><code>events</code></td>
+<td><code>src/cluster_erp/modules/intranet/events/routes.py:317</code></td>
+</tr>
+<tr>
+<td><code>INTRANET_NO_PARTY</code></td>
+<td><code>400</code></td>
+<td><code>content</code>, <code>engagement</code>, <code>events</code></td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:384</code></td>
+</tr>
+<tr>
+<td><code>INTRANET_PARTY_NOT_EMPLOYEE</code></td>
+<td><code>422</code></td>
+<td><code>access</code></td>
+<td><code>src/cluster_erp/modules/intranet/access.py:139</code></td>
+</tr>
+<tr>
+<td><code>RESOURCE_CONFLICT</code></td>
+<td><code>409</code></td>
+<td><code>content</code>, <code>leave</code>, <code>requests</code></td>
+<td><code>src/cluster_erp/modules/intranet/content/services.py:310</code></td>
+</tr>
+<tr>
+<td><code>RESOURCE_NOT_FOUND</code></td>
+<td><code>404</code></td>
+<td><code>content</code>, <code>delivery</code>, <code>directory</code>, <code>engagement</code>, <code>events</code>, <code>leave</code>, <code>notifications</code>, <code>requests</code></td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:86</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="yayımlanan-olaylar">Yayımlanan olaylar<a class="headerlink" href="#yayımlanan-olaylar">¶</a></h2>
+<p>Tablo, <code>src/cluster_erp/modules/intranet/</code> altındaki kodun <code>EventBus.emit</code> çağrısına doğrudan verdiği sözleşme sınıflarını listeler; sözdizimi ağacı taramasıyla bulundu. Önce bir değişkene kurulan olaylar sayılmaz. Sözleşmeler <a href="../platform/contracts-reference.tr.html">Sözleşmeler başvurusu</a> sayfasında anlatılır.</p>
+<table>
+<thead>
+<tr>
+<th>Sözleşme</th>
+<th>Konum sayısı</th>
+<th>İlk konum</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>IntranetEventCancelled</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/events/services.py:497</code></td>
+</tr>
+<tr>
+<td><code>IntranetEventPublished</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/events/services.py:590</code></td>
+</tr>
+<tr>
+<td><code>IntranetEventUpdated</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/events/services.py:431</code></td>
+</tr>
+<tr>
+<td><code>IntranetPostPublished</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:273</code></td>
+</tr>
+<tr>
+<td><code>ResolveEntityEmails</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/intranet/directory/services.py:91</code></td>
+</tr>
+<tr>
+<td><code>SendTransactionalEmail</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/notify.py:51</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="i̇lgili-sayfalar">İlgili sayfalar<a class="headerlink" href="#i̇lgili-sayfalar">¶</a></h2>
+<ul>
+<li><a href="index.tr.html">API başvurusu</a></li>
+<li><a href="../modules/intranet/index.tr.html">Intranet modülü</a></li>
+<li><a href="conventions.tr.html">API kuralları</a></li>
+<li><a href="errors.tr.html">Hatalar</a></li>
+<li><a href="authentication-and-headers.tr.html">Kimlik doğrulama ve başlıklar</a></li>
+</ul>
+<hr>
+<p>7793ff4 numaralı commit ile 2026-11-09 tarihinde doğrulandı.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Doğrulanan commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../api/fleet.tr.html"><span class="eyebrow">Önceki</span><span>Fleet API (fleet)</span></a><a class="next" href="../api/inventory.tr.html"><span class="eyebrow">Sonraki</span><span>Inventory API (inventory)</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">Bu sayfada</p><ul class="outline">
+<li class="lvl2"><a href="#grup-olguları">Grup olguları</a></li>
+<li class="lvl2"><a href="#uç-nokta-özeti">Uç nokta özeti</a></li>
+<li class="lvl2"><a href="#i̇çerik-alanlar-ve-erişim-uç-noktaları">İçerik, alanlar ve erişim uç noktaları</a></li>
+<li class="lvl2"><a href="#bildirimler-uç-noktaları">Bildirimler uç noktaları</a></li>
+<li class="lvl2"><a href="#i̇zin-uç-noktaları">İzin uç noktaları</a></li>
+<li class="lvl2"><a href="#talepler-uç-noktaları">Talepler uç noktaları</a></li>
+<li class="lvl2"><a href="#resmi-teslimler-uç-noktaları">Resmi teslimler uç noktaları</a></li>
+<li class="lvl2"><a href="#rehber-uç-noktaları">Rehber uç noktaları</a></li>
+<li class="lvl2"><a href="#belgelerim-uç-noktaları">Belgelerim uç noktaları</a></li>
+<li class="lvl2"><a href="#etkileşim-uç-noktaları">Etkileşim uç noktaları</a></li>
+<li class="lvl2"><a href="#etkinlikler-ve-medya-uç-noktaları">Etkinlikler ve medya uç noktaları</a></li>
+<li class="lvl2"><a href="#akış-uç-noktaları">Akış uç noktaları</a></li>
+<li class="lvl2"><a href="#hata-kodları">Hata kodları</a></li>
+<li class="lvl2"><a href="#yayımlanan-olaylar">Yayımlanan olaylar</a></li>
+<li class="lvl2"><a href="#i̇lgili-sayfalar">İlgili sayfalar</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>docs/wiki altındaki Markdown kaynaklarından derlendi</span></footer>
+</body>
+</html>

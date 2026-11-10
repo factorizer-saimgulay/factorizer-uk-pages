@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Generic list · Cluster ERP Wiki</title>
+<meta name="description" content="Reference for gen-list.js and table-align.js, the metadata-driven list engine with search, filters, press-and-hold selection, passive records, and cell formatting.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../web-app/generic-list.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.html">Overview</a></li>
+<li class=""><a href="../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.html">Platform core</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../platform/change-history.html">Change history</a></li>
+<li class=""><a href="../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../platform/event-bus.html">Event bus</a></li>
+<li class=""><a href="../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class=""><a href="../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../web-app/generic-form.html">Generic form</a></li>
+<li class="current"><a href="../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class=""><a href="../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.html">Desktop client</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class=""><a href="../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.html">Business modules</a></li>
+<li class=""><a href="../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class=""><a href="../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../modules/auth.html">Auth module (auth)</a></li>
+<li class=""><a href="../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class=""><a href="../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class=""><a href="../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../modules/intranet/requests.html">Intranet requests</a></li>
+<li class=""><a href="../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../modules/mail.html">Mail module (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class=""><a href="../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../modules/production/work-orders.html">Work orders</a></li>
+<li class=""><a href="../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.html">API reference</a></li>
+<li class=""><a href="../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.html">Documents API (documents)</a></li>
+<li class=""><a href="../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.html">API overview</a></li>
+<li class=""><a href="../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class=""><a href="../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.html">Operations</a></li>
+<li class=""><a href="../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class=""><a href="../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class=""><a href="../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.html">Reference</a></li>
+<li class=""><a href="../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.html">Home</a> / Web app</div>
+    <header class="page-head">
+      <p class="eyebrow">Reference</p>
+      <h1>Generic list</h1>
+      <p class="lede">Reference for gen-list.js and table-align.js, the metadata-driven list engine with search, filters, press-and-hold selection, passive records, and cell formatting.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#scope-and-source">Scope and source</a></li>
+<li class="lvl2"><a href="#options-and-presentation">Options and presentation</a></li>
+<li class="lvl2"><a href="#screen-parts">Screen parts</a></li>
+<li class="lvl2"><a href="#cell-formatters">Cell formatters</a></li>
+<li class="lvl2"><a href="#selection-and-bulk-operations">Selection and bulk operations</a></li>
+<li class="lvl2"><a href="#opening-a-row">Opening a row</a></li>
+<li class="lvl2"><a href="#refresh">Refresh</a></li>
+<li class="lvl2"><a href="#header-alignment">Header alignment</a></li>
+<li class="lvl2"><a href="#constraints-and-validation">Constraints and validation</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p><code>makeGenList</code> in <code>webapp/js/gen-list.js</code> renders every entity list of the web app from <code>EntityMeta.list_view</code>. This page lists its options, the parts of the screen, the cell formatters, and the selection and deactivation behaviour. <code>webapp/js/table-align.js</code> keeps table headers aligned with their columns. The metadata classes are on <a href="../platform/metadata-model.html">metadata model</a>.</p>
+<h2 id="scope-and-source">Scope and source<a class="headerlink" href="#scope-and-source">¶</a></h2>
+<ul>
+<li>Defined in: <code>webapp/js/gen-list.js</code> (<code>makeGenList</code>, <code>formatCell</code>, <code>buildRowParts</code>, <code>preloadFkColumns</code>), <code>webapp/js/table-align.js</code> (<code>initTableAlign</code>, <code>alignTableHeaders</code>)</li>
+<li>Count: 10 column formatters handled by <code>formatCell</code> (counted from the <code>fmt ===</code> branches in <code>webapp/js/gen-list.js:86-129</code> and the <code>active_flag</code> handling in <code>buildRowParts</code>)</li>
+</ul>
+<h2 id="options-and-presentation">Options and presentation<a class="headerlink" href="#options-and-presentation">¶</a></h2>
+<p><code>makeGenList(moduleName, entityKey, opts)</code> returns a render function (<code>webapp/js/gen-list.js:338-372</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Effect</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>endpointKey</code></td>
+<td>The endpoint key used for the list call; default <code>list</code></td>
+<td><code>webapp/js/gen-list.js:431-437</code></td>
+</tr>
+<tr>
+<td><code>table</code></td>
+<td>Shows every list column as a full table instead of the summary row</td>
+<td><code>webapp/js/gen-list.js:476-541</code></td>
+</tr>
+<tr>
+<td><code>listEndpoint</code></td>
+<td>Selects which sidebar section description is shown above the list</td>
+<td><code>webapp/js/gen-list.js:377-386</code></td>
+</tr>
+</tbody>
+</table>
+<p>Without <code>table</code>, each row shows an avatar, a title, a secondary line, and badges built by <code>buildRowParts</code> (<code>webapp/js/gen-list.js:230-298</code>). With <code>table</code>, all <code>list_view.columns</code> are shown, numbers aligned right, booleans centred, and an avatar column when the entity declares <code>photo</code> (<code>webapp/js/gen-list.js:481-541</code>). Module apps set <code>table</code> from the catalogue flag <code>tableList</code> (<code>webapp/js/home.js:2423-2431</code>).</p>
+<h2 id="screen-parts">Screen parts<a class="headerlink" href="#screen-parts">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>Shown when</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Search field</td>
+<td><code>list_view.search_enabled</code> is true; input is debounced by 200 ms</td>
+<td><code>webapp/js/gen-list.js:582-597</code>, <code>webapp/js/gen-list.js:1010</code></td>
+</tr>
+<tr>
+<td>Density chip</td>
+<td>Always; cycles the three row densities</td>
+<td><code>webapp/js/gen-list.js:582-590</code></td>
+</tr>
+<tr>
+<td>Section description</td>
+<td>The sidebar section that shows this list has a <code>description</code></td>
+<td><code>webapp/js/gen-list.js:377-386</code></td>
+</tr>
+<tr>
+<td><strong>Active</strong> / <strong>Passive</strong> segment (<code>deactivate.segment_active</code>, <code>deactivate.segment_inactive</code>)</td>
+<td>The entity has a <code>delete</code> endpoint and the user holds <code>&lt;entity_type&gt;.read</code></td>
+<td><code>webapp/js/gen-list.js:405</code>, <code>webapp/js/gen-list.js:600-611</code></td>
+</tr>
+<tr>
+<td>Filters</td>
+<td><code>list_view.filters</code> exist; enum filters with three choices or fewer render as a segmented control, others as a select</td>
+<td><code>webapp/js/gen-list.js:654-700</code></td>
+</tr>
+<tr>
+<td><strong>Add New</strong> row (<code>common.add</code>)</td>
+<td>The entity has a <code>create</code> endpoint and the user holds <code>&lt;entity_type&gt;.create</code></td>
+<td><code>webapp/js/gen-list.js:702-711</code></td>
+</tr>
+<tr>
+<td><strong>Actions</strong> chip (<code>toolbar.actions</code>) in the navigation bar</td>
+<td>The entity has actions that are not <code>single_record</code></td>
+<td><code>webapp/js/gen-list.js:544-580</code></td>
+</tr>
+<tr>
+<td>Pager</td>
+<td><code>list_view.paginated</code> is not false</td>
+<td><code>webapp/js/gen-list.js:723</code></td>
+</tr>
+<tr>
+<td>Empty state</td>
+<td>No rows; a filtered empty list offers <strong>Clear filters</strong> (<code>glist.clear_filters</code>)</td>
+<td><code>webapp/js/gen-list.js:725-737</code>, <code>webapp/js/gen-list.js:305-323</code></td>
+</tr>
+</tbody>
+</table>
+<p>Page size is <code>PAGE_LIMIT</code> = 50 (<code>webapp/js/ui.js:7</code>). When the server reports <code>total_capped</code>, the pager marks the total as capped (<code>webapp/js/gen-list.js:446-448</code>).</p>
+<aside class="adm adm-warning" role="note"><p class="adm-title">Warning</p><p>Discrepancy. The project's written engineering rules place the add entry at the top in the navigation bar. <code>webapp/js/gen-list.js:702-711</code> renders <strong>Add New</strong> as the first row of the list and its comment says it is never a navigation bar button. This page documents the code.</p>
+</aside>
+<h2 id="cell-formatters">Cell formatters<a class="headerlink" href="#cell-formatters">¶</a></h2>
+<p><code>formatCell(colMeta, value, ctx)</code> formats a value by <code>ColumnMeta.formatter</code> (<code>webapp/js/gen-list.js:86-129</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Formatter</th>
+<th>Output</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>i18n_message</code></td>
+<td>Translates the row's <code>&lt;key&gt;_key</code> with <code>&lt;key&gt;_params</code> in the reader's language; the stored value is the fallback</td>
+<td><code>webapp/js/gen-list.js:91-97</code></td>
+</tr>
+<tr>
+<td><code>boolean</code></td>
+<td><strong>Yes</strong> or <strong>No</strong> (<code>common.yes</code>, <code>common.no</code>)</td>
+<td><code>webapp/js/gen-list.js:99</code></td>
+</tr>
+<tr>
+<td><code>date</code></td>
+<td><code>YYYY-MM-DD</code> in the user's time zone</td>
+<td><code>webapp/js/gen-list.js:100</code>, <code>webapp/js/prefs.js:150-154</code></td>
+</tr>
+<tr>
+<td><code>datetime</code></td>
+<td><code>YYYY-MM-DD HH:MM:SS</code> in the user's time zone</td>
+<td><code>webapp/js/gen-list.js:101</code>, <code>webapp/js/prefs.js:172-179</code></td>
+</tr>
+<tr>
+<td><code>enum</code></td>
+<td>The choice label from the column, a filter, or the form field</td>
+<td><code>webapp/js/gen-list.js:102-111</code></td>
+</tr>
+<tr>
+<td><code>foreign_key</code></td>
+<td>The display value from the preloaded reference list</td>
+<td><code>webapp/js/gen-list.js:112-116</code></td>
+</tr>
+<tr>
+<td><code>entity_type</code></td>
+<td>The localised label of an entity type</td>
+<td><code>webapp/js/gen-list.js:118</code></td>
+</tr>
+<tr>
+<td><code>entity_record</code></td>
+<td>The owner record's title for polymorphic references</td>
+<td><code>webapp/js/gen-list.js:121-125</code></td>
+</tr>
+<tr>
+<td><code>active_flag</code></td>
+<td>A badge for active or passive rows in the summary row</td>
+<td><code>webapp/js/gen-list.js:255-262</code></td>
+</tr>
+<tr>
+<td><code>decimal</code></td>
+<td>The value as sent; used for right alignment</td>
+<td><code>webapp/js/gen-list.js:69-84</code></td>
+</tr>
+</tbody>
+</table>
+<p>Decimal values arrive as strings and are not converted to numbers for display. <code>isNumericValue</code> only decides alignment (<code>webapp/js/gen-list.js:56-67</code>). This follows the money rule on <a href="../platform/money-and-decimal.html">money and Decimal</a>.</p>
+<p>Foreign-key columns are resolved by <code>preloadFkColumns</code>, which loads each column's <code>display_endpoint</code> list and asks the records labels endpoint for ids that are not in it, such as deactivated records (<code>webapp/js/gen-list.js:149-215</code>). See <a href="boot-session-and-api.html">boot, session, and API calls</a> for the reference list cache.</p>
+<h2 id="selection-and-bulk-operations">Selection and bulk operations<a class="headerlink" href="#selection-and-bulk-operations">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Behaviour</th>
+<th>Rule</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Enter selection</td>
+<td>Press and hold a row for 450 ms without moving more than 8 px; the row starts selected</td>
+<td><code>webapp/js/gen-list.js:1101-1111</code>, <code>webapp/js/ui.js:71-119</code></td>
+</tr>
+<tr>
+<td>Selection is offered</td>
+<td>The user can delete, or the entity has <code>single_record</code> actions</td>
+<td><code>webapp/js/gen-list.js:1103</code></td>
+</tr>
+<tr>
+<td>Selection bar</td>
+<td><strong>Select All</strong>, the count, <strong>Actions</strong> for exactly one row, <strong>Share</strong>, and <strong>Delete</strong></td>
+<td><code>webapp/js/gen-list.js:620-651</code></td>
+</tr>
+<tr>
+<td>Delete</td>
+<td>Asks for a deactivation reason, then calls <code>bulkDelete</code></td>
+<td><code>webapp/js/gen-list.js:846-868</code></td>
+</tr>
+<tr>
+<td>Reactivate</td>
+<td>In the passive view, reactivates each selected row</td>
+<td><code>webapp/js/gen-list.js:868-893</code></td>
+</tr>
+<tr>
+<td>Leave selection</td>
+<td><strong>Cancel</strong> (<code>common.cancel</code>) in the navigation bar</td>
+<td><code>webapp/js/gen-list.js:552-569</code></td>
+</tr>
+</tbody>
+</table>
+<p>The project's written engineering rules state that selection is entered by press and hold, that row actions open from a card at the bottom, and that inline edit and delete are forbidden. The list follows this: a tap opens the record and editing starts from the card.</p>
+<h2 id="opening-a-row">Opening a row<a class="headerlink" href="#opening-a-row">¶</a></h2>
+<p><code>openRow(row)</code> follows this order (<code>webapp/js/gen-list.js:816-844</code>):</p>
+<ol>
+<li>If the entity declares <code>identity</code> and the row carries the link field, the canonical record's card opens (a facet opens the party card).</li>
+<li>Else, if the entity has <code>detail_view</code>, <code>makeGenDetail</code> opens.</li>
+<li>Else, if the entity has form groups, a read-only record card with an edit button opens.</li>
+</ol>
+<p>A passive row opens a read-only card with the deactivation reason and a reactivate button (<code>webapp/js/gen-list.js:895-933</code>). An entity with <code>create_with_file</code> creates its record through the add-document screen (<code>webapp/js/gen-list.js:787-800</code>).</p>
+<h2 id="refresh">Refresh<a class="headerlink" href="#refresh">¶</a></h2>
+<p>The list subscribes to the data-changed signal and reloads when a change in the same module happened after its last load (<code>webapp/js/gen-list.js:368-372</code>). See <a href="data-refresh-and-change-signals.html">data refresh and change signals</a>.</p>
+<h2 id="header-alignment">Header alignment<a class="headerlink" href="#header-alignment">¶</a></h2>
+<p><code>initTableAlign()</code> runs once at boot and watches the document. For every table with one header row and no spanning cells, it sets each header cell's text alignment to the computed alignment of the first data cell in its column (<code>webapp/js/table-align.js:1-78</code>, <code>webapp/js/main.js:230</code>). The comment states that this covers hand-written tables in app bundles as well. <code>web-client/_e2e_table_alignment.mjs</code> measures the result in a browser.</p>
+<h2 id="constraints-and-validation">Constraints and validation<a class="headerlink" href="#constraints-and-validation">¶</a></h2>
+<ul>
+<li>Create, update, delete, and view-passive entries depend on both the declared endpoint and the user's permission code (<code>webapp/js/gen-list.js:396-406</code>).</li>
+<li>Actions with scope <code>parent</code> are never offered in a list (<code>webapp/js/gen-list.js:407</code>).</li>
+<li>Browser tests: <code>web-client/_e2e_action_sheet.mjs</code> (press and hold), <code>web-client/_e2e_density.mjs</code>, <code>web-client/_e2e_tenant_fields_list.mjs</code>.</li>
+</ul>
+<h2 id="terms-introduced">Terms introduced<a class="headerlink" href="#terms-introduced">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Code identifier</th>
+<th>Definition</th>
+<th>Turkish term</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>press and hold</td>
+<td><code>bindLongPress</code></td>
+<td>Holding a pointer on a row for 450 ms to enter selection mode.</td>
+<td>basılı tut</td>
+<td><code>webapp/js/ui.js:71</code></td>
+</tr>
+<tr>
+<td>passive view</td>
+<td><code>listInactive</code></td>
+<td>The list of deactivated records of an entity.</td>
+<td>Pasifler</td>
+<td><code>webapp/js/gen-api.js:151</code></td>
+</tr>
+<tr>
+<td>cell formatter</td>
+<td><code>formatCell</code></td>
+<td>The function that turns a column value into display text by its formatter.</td>
+<td>hücre biçimleyici</td>
+<td><code>webapp/js/gen-list.js:86</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="index.html">Web app platform</a></li>
+<li><a href="metadata-rendering.html">Metadata rendering</a></li>
+<li><a href="generic-detail.html">Generic detail</a></li>
+<li><a href="actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li><a href="../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../web-app/generic-form.html"><span class="eyebrow">Previous</span><span>Generic form</span></a><a class="next" href="../web-app/generic-tree-and-settings.html"><span class="eyebrow">Next</span><span>Generic tree and settings screens</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#scope-and-source">Scope and source</a></li>
+<li class="lvl2"><a href="#options-and-presentation">Options and presentation</a></li>
+<li class="lvl2"><a href="#screen-parts">Screen parts</a></li>
+<li class="lvl2"><a href="#cell-formatters">Cell formatters</a></li>
+<li class="lvl2"><a href="#selection-and-bulk-operations">Selection and bulk operations</a></li>
+<li class="lvl2"><a href="#opening-a-row">Opening a row</a></li>
+<li class="lvl2"><a href="#refresh">Refresh</a></li>
+<li class="lvl2"><a href="#header-alignment">Header alignment</a></li>
+<li class="lvl2"><a href="#constraints-and-validation">Constraints and validation</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

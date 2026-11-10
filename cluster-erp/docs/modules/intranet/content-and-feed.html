@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Intranet content and feed · Cluster ERP Wiki</title>
+<meta name="description" content="Reference for the content and feed sub-modules of intranet, with spaces, posts, publication, acknowledgement, comments, reactions, settings, and the timeline.">
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="icon" href="../../assets/mark.svg" type="image/svg+xml">
+<script defer src="../../assets/mermaid.min.js"></script>
+<script defer src="../../assets/site.js" data-root="../../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../../modules/intranet/content-and-feed.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../../overview/index.html">Overview</a></li>
+<li class=""><a href="../../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../../platform/index.html">Platform core</a></li>
+<li class=""><a href="../../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../../platform/change-history.html">Change history</a></li>
+<li class=""><a href="../../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../../platform/event-bus.html">Event bus</a></li>
+<li class=""><a href="../../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class=""><a href="../../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class=""><a href="../../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class=""><a href="../../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class=""><a href="../../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../../web-app/generic-form.html">Generic form</a></li>
+<li class=""><a href="../../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class=""><a href="../../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../../desktop/index.html">Desktop client</a></li>
+<li class=""><a href="../../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class=""><a href="../../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class=""><a href="../../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../../modules/index.html">Business modules</a></li>
+<li class=""><a href="../../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="sub"><a href="../../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class=""><a href="../../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../../modules/auth.html">Auth module (auth)</a></li>
+<li class=""><a href="../../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class=""><a href="../../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="sub"><a href="../../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="sub"><a href="../../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class=""><a href="../../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="current sub"><a href="../../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../../modules/intranet/requests.html">Intranet requests</a></li>
+<li class=""><a href="../../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../../modules/mail.html">Mail module (mail)</a></li>
+<li class=""><a href="../../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class=""><a href="../../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="sub"><a href="../../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="sub"><a href="../../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../../modules/production/work-orders.html">Work orders</a></li>
+<li class=""><a href="../../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class=""><a href="../../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../../api/index.html">API reference</a></li>
+<li class=""><a href="../../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../../api/documents.html">Documents API (documents)</a></li>
+<li class=""><a href="../../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../../api/overview.html">API overview</a></li>
+<li class=""><a href="../../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class=""><a href="../../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../../api/records.html">Records API (records)</a></li>
+<li class=""><a href="../../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../../operations/index.html">Operations</a></li>
+<li class=""><a href="../../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class=""><a href="../../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class=""><a href="../../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../../reference/index.html">Reference</a></li>
+<li class=""><a href="../../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../../index.html">Home</a> / Business modules</div>
+    <header class="page-head">
+      <p class="eyebrow">Reference</p>
+      <h1>Intranet content and feed</h1>
+      <p class="lede">Reference for the content and feed sub-modules of intranet, with spaces, posts, publication, acknowledgement, comments, reactions, settings, and the timeline.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#scope-and-source">Scope and source</a></li>
+<li class="lvl2"><a href="#content-fields">Content fields</a></li>
+<li class="lvl2"><a href="#statuses-and-actions">Statuses and actions</a></li>
+<li class="lvl2"><a href="#publication-and-acknowledgement">Publication and acknowledgement</a></li>
+<li class="lvl2"><a href="#comments-reactions-views-and-translations">Comments, reactions, views, and translations</a></li>
+<li class="lvl2"><a href="#feed">Feed</a></li>
+<li class="lvl2"><a href="#settings-and-spaces">Settings and spaces</a></li>
+<li class="lvl2"><a href="#constraints-and-validation">Constraints and validation</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p>This page describes the <code>content</code> sub-module in <code>src/cluster_erp/modules/intranet/content/</code> and the <code>feed</code> sub-module in <code>src/cluster_erp/modules/intranet/feed/</code>. Content holds spaces, posts with their publication history and acknowledgements, comments, reactions, translations, and the intranet settings. The feed merges posts, events, and recognition into one timeline. Access grants and audience segments are on <a href="access-audience-and-retention.html">access, audience, and retention</a>.</p>
+<h2 id="scope-and-source">Scope and source<a class="headerlink" href="#scope-and-source">¶</a></h2>
+<ul>
+<li>Defined in: <code>src/cluster_erp/modules/intranet/models.py</code> (<code>IntranetSettings</code>, <code>IntranetSpace</code>, <code>IntranetContent</code>, <code>IntranetContentVariant</code>, <code>IntranetContentRevision</code>, <code>IntranetReaction</code>, <code>IntranetComment</code>, <code>IntranetPublication</code>, <code>IntranetPublicationRecipient</code>, <code>IntranetAcknowledgment</code>, <code>IntranetAnalyticsEvent</code>), <code>content/services.py</code>, <code>content/routes.py</code>, <code>content/metadata.py</code>, <code>feed/services.py</code>, and <code>feed/routes.py</code>.</li>
+<li>Count: 38 routes in <code>content/routes.py</code> and 1 in <code>feed/routes.py</code>; 8 <code>ActionMeta</code> entries in <code>content/metadata.py</code>.</li>
+</ul>
+<h2 id="content-fields">Content fields<a class="headerlink" href="#content-fields">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Meaning</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>code</code>, <code>space_id</code>, <code>kind</code></td>
+<td>Business key, space, and kind: <code>page</code>, <code>news</code>, <code>policy</code>, or <code>alert</code></td>
+<td><code>src/cluster_erp/modules/intranet/models.py:68</code>, <code>src/cluster_erp/modules/intranet/models.py:263-267</code></td>
+</tr>
+<tr>
+<td><code>title</code>, <code>slug</code>, <code>summary</code>, <code>body</code></td>
+<td>Text; <code>body</code> is a list of blocks</td>
+<td><code>src/cluster_erp/modules/intranet/models.py:268-271</code></td>
+</tr>
+<tr>
+<td><code>owner_party_id</code>, <code>deputy_party_id</code></td>
+<td>Owner and deputy</td>
+<td><code>src/cluster_erp/modules/intranet/models.py:273-278</code></td>
+</tr>
+<tr>
+<td><code>status</code>, <code>primary_language</code></td>
+<td>Lifecycle state and language</td>
+<td><code>src/cluster_erp/modules/intranet/models.py:279-284</code></td>
+</tr>
+<tr>
+<td><code>publish_at</code>, <code>feature_from</code>, <code>feature_to</code>, <code>review_at</code>, <code>expire_at</code></td>
+<td>The date pairs of publication, featuring, review, and expiry</td>
+<td><code>src/cluster_erp/modules/intranet/models.py:285-295</code></td>
+</tr>
+<tr>
+<td><code>is_pinned</code>, <code>priority</code></td>
+<td>Pin and order</td>
+<td><code>src/cluster_erp/modules/intranet/models.py:296-297</code></td>
+</tr>
+<tr>
+<td><code>mandatory_read</code>, <code>ack_statement</code></td>
+<td>Whether readers must acknowledge, and the statement they confirm</td>
+<td><code>src/cluster_erp/modules/intranet/models.py:299-303</code></td>
+</tr>
+<tr>
+<td><code>audience_segment_id</code></td>
+<td>Target segment; empty means every active employee</td>
+<td><code>src/cluster_erp/modules/intranet/models.py:304-307</code>, <code>src/cluster_erp/modules/intranet/content/services.py:1022-1042</code></td>
+</tr>
+<tr>
+<td><code>allow_comments</code>, <code>allow_reactions</code>, <code>version_no</code>, <code>view_count</code></td>
+<td>Switches and counters</td>
+<td><code>src/cluster_erp/modules/intranet/models.py:311-318</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="statuses-and-actions">Statuses and actions<a class="headerlink" href="#statuses-and-actions">¶</a></h2>
+<p>A post is <code>draft</code>, <code>in_review</code>, <code>approved</code>, <code>published</code>, or <code>archived</code> (<code>src/cluster_erp/modules/intranet/models.py:69-75</code>). The service allows these transitions (<code>src/cluster_erp/modules/intranet/content/services.py:103-114</code>):</p>
+<figure class="diagram"><pre class="mermaid">stateDiagram-v2
+ [*] --&gt; draft
+ draft --&gt; in_review: submit_review
+ in_review --&gt; approved: approve
+ draft --&gt; approved: approve
+ in_review --&gt; draft: return_to_draft
+ approved --&gt; draft: return_to_draft
+ draft --&gt; published: publish
+ in_review --&gt; published: publish
+ approved --&gt; published: publish
+ published --&gt; published: publish again
+ published --&gt; draft: unpublish
+ published --&gt; archived: archive
+ archived --&gt; draft: restore</pre></figure>
+<p>In prose: a post starts as a draft, can be sent to review, approved, and published. Publishing again from <code>published</code> creates a new version. <strong>Unpublish</strong> returns it to draft and keeps the publication rows as history. <strong>Archive</strong> is possible from every state except <code>archived</code>, and <strong>Restore to Draft</strong> brings it back.</p>
+<table>
+<thead>
+<tr>
+<th>Action key</th>
+<th>Label</th>
+<th>Condition</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>submit_review</code></td>
+<td><strong>Submit for Review</strong></td>
+<td><code>status</code> is <code>draft</code></td>
+<td><code>src/cluster_erp/modules/intranet/content/metadata.py:134-142</code></td>
+</tr>
+<tr>
+<td><code>approve</code></td>
+<td><strong>Approve</strong></td>
+<td><code>status</code> is <code>in_review</code></td>
+<td><code>src/cluster_erp/modules/intranet/content/metadata.py:143-151</code></td>
+</tr>
+<tr>
+<td><code>publish</code></td>
+<td><strong>Publish</strong></td>
+<td><code>status</code> is <code>approved</code></td>
+<td><code>src/cluster_erp/modules/intranet/content/metadata.py:152-160</code></td>
+</tr>
+<tr>
+<td><code>publish_draft</code></td>
+<td><strong>Publish Now</strong></td>
+<td><code>status</code> is <code>draft</code></td>
+<td><code>src/cluster_erp/modules/intranet/content/metadata.py:161-169</code></td>
+</tr>
+<tr>
+<td><code>republish</code></td>
+<td><strong>Re-publish</strong></td>
+<td><code>status</code> is <code>published</code></td>
+<td><code>src/cluster_erp/modules/intranet/content/metadata.py:170-178</code></td>
+</tr>
+<tr>
+<td><code>archive</code></td>
+<td><strong>Archive</strong></td>
+<td><code>status</code> is <code>published</code></td>
+<td><code>src/cluster_erp/modules/intranet/content/metadata.py:179-187</code></td>
+</tr>
+<tr>
+<td><code>restore</code></td>
+<td><strong>Restore to Draft</strong></td>
+<td><code>status</code> is <code>archived</code></td>
+<td><code>src/cluster_erp/modules/intranet/content/metadata.py:188-196</code></td>
+</tr>
+</tbody>
+</table>
+<p>All run on <code>POST /content/{id}/actions/{action}</code>. The editorial actions <code>approve</code>, <code>publish</code>, <code>unpublish</code>, <code>archive</code>, and <code>restore</code> need <code>intranet_content.publish</code> in addition to <code>intranet_content.update</code>. When the space or the post carries publish grants, the actor must match one (<code>src/cluster_erp/modules/intranet/content/routes.py:243-264</code>, <code>src/cluster_erp/modules/intranet/content/services.py:808-855</code>). The eighth <code>ActionMeta</code> is <code>rebuild</code> on segments (<code>src/cluster_erp/modules/intranet/content/metadata.py:416-420</code>).</p>
+<h2 id="publication-and-acknowledgement">Publication and acknowledgement<a class="headerlink" href="#publication-and-acknowledgement">¶</a></h2>
+<p>Publishing does five things (<code>src/cluster_erp/modules/intranet/content/services.py:953-1020</code>):</p>
+<ol>
+<li>It raises <code>version_no</code>, sets <code>published</code> and <code>publish_at</code>, and stores an immutable revision (<code>IntranetContentRevision</code>).</li>
+<li>It writes an <code>IntranetPublication</code> row with the acknowledgement terms and the SHA-256 hash of the acknowledgement statement.</li>
+<li>It freezes the recipient set. A post with a segment rebuilds the segment against the current employees first; a post without a segment targets every active employee (<code>src/cluster_erp/modules/intranet/content/services.py:1022-1042</code>).</li>
+<li>For a mandatory read, it inserts one notification per recipient with kind <code>mandatory_read</code>.</li>
+<li>The route then emits <code>IntranetPostPublished</code> with the recipient count (<code>src/cluster_erp/modules/intranet/content/routes.py:266-283</code>).</li>
+</ol>
+<p>Acknowledging is idempotent: one row per publication, party, and version. The row records the time, the client address, the <code>User-Agent</code> header, the signature kind, and the statement hash (<code>src/cluster_erp/modules/intranet/content/services.py:1087-1131</code>). <code>GET /content/{id}/compliance</code> returns the recipient count, the acknowledgement count, and up to 500 pending party ids (<code>src/cluster_erp/modules/intranet/content/services.py:1044-1081</code>). <code>GET /content/pending-acks</code> lists the caller's open mandatory reads (<code>src/cluster_erp/modules/intranet/content/routes.py:181-202</code>, <code>src/cluster_erp/modules/intranet/content/services.py:1147</code>).</p>
+<h2 id="comments-reactions-views-and-translations">Comments, reactions, views, and translations<a class="headerlink" href="#comments-reactions-views-and-translations">¶</a></h2>
+<ul>
+<li>Comments are created as <code>published</code>. Moderation sets <code>published</code>, <code>hidden</code>, or <code>pending</code>; the code comment states that hidden is a quarantine state, not a deletion (<code>src/cluster_erp/modules/intranet/models.py:141</code>, <code>src/cluster_erp/modules/intranet/content/services.py:1266-1302</code>). Moderation needs <code>intranet_content.publish</code> (<code>src/cluster_erp/modules/intranet/content/routes.py:500-504</code>).</li>
+<li>A reaction is set or removed per party and post (<code>src/cluster_erp/modules/intranet/content/services.py:1195-1245</code>).</li>
+<li><code>POST /content/{id}/view</code> counts a view, marks the first view on the publication recipient, and records an analytics event (<code>src/cluster_erp/modules/intranet/content/services.py:857-887</code>).</li>
+<li>A translation (<code>IntranetContentVariant</code>) is one row per language with the source version it was made from (<code>src/cluster_erp/modules/intranet/content/services.py:903-932</code>).</li>
+<li>Editing never changes the status and does not reset the review date unless a new one is sent (<code>src/cluster_erp/modules/intranet/content/services.py:794-806</code>).</li>
+</ul>
+<h2 id="feed">Feed<a class="headerlink" href="#feed">¶</a></h2>
+<p><code>GET /feed/</code> returns one timeline of the types <code>post</code>, <code>event</code>, and <code>kudos</code>, newest first, with a <code>before</code> cursor and a limit from 1 to 50 (<code>src/cluster_erp/modules/intranet/feed/routes.py:26-37</code>). The route drops <code>event</code> and <code>kudos</code> when the caller lacks <code>intranet_event.read</code> or <code>intranet_kudos.read</code>, and applies the content access filter unless the caller holds <code>intranet_content.read_all</code> (<code>src/cluster_erp/modules/intranet/feed/routes.py:38-55</code>). Pinned posts lead the first page only (<code>src/cluster_erp/modules/intranet/feed/services.py:91-99</code>). Each item carries its media and, for posts, reaction and comment counts (<code>src/cluster_erp/modules/intranet/feed/services.py:1-5</code>).</p>
+<h2 id="settings-and-spaces">Settings and spaces<a class="headerlink" href="#settings-and-spaces">¶</a></h2>
+<ul>
+<li><code>GET</code> and <code>PUT /settings/</code> read and write the single settings row (<code>src/cluster_erp/modules/intranet/content/routes.py:659-685</code>).</li>
+<li>The home layout is a list of sections. The shipped default enables alerts, greeting, for-you, celebrations, feed, events, and quick links, and disables kudos. Unknown keys are dropped and missing sections are appended disabled (<code>src/cluster_erp/modules/intranet/content/services.py:55-100</code>).</li>
+<li>A space (<code>IntranetSpace</code>) has a code, name, slug, parent, owner, icon, colour, and order (<code>src/cluster_erp/modules/intranet/models.py:202-237</code>).</li>
+</ul>
+<h2 id="constraints-and-validation">Constraints and validation<a class="headerlink" href="#constraints-and-validation">¶</a></h2>
+<ul>
+<li>An unknown action or a disallowed source status is refused with <code>INTRANET_INVALID_STATUS</code> (<code>src/cluster_erp/modules/intranet/content/services.py:819-831</code>).</li>
+<li>Acknowledging an unpublished post is refused (<code>src/cluster_erp/modules/intranet/content/services.py:1096-1101</code>).</li>
+<li>Deleting a post sets <code>deleted_at</code> (<code>src/cluster_erp/modules/intranet/content/routes.py:287-301</code>).</li>
+</ul>
+<h2 id="terms-introduced">Terms introduced<a class="headerlink" href="#terms-introduced">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Code identifier</th>
+<th>Definition</th>
+<th>Turkish term</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>publication</td>
+<td><code>IntranetPublication</code></td>
+<td>One published version of a post with its frozen recipient set and acknowledgement terms.</td>
+<td>Yayın</td>
+<td><code>src/cluster_erp/modules/intranet/models.py:511</code></td>
+</tr>
+<tr>
+<td>acknowledgement</td>
+<td><code>IntranetAcknowledgment</code></td>
+<td>The audit record that one person confirmed one version of a mandatory read.</td>
+<td>Okundu onayı</td>
+<td><code>src/cluster_erp/modules/intranet/models.py:570</code></td>
+</tr>
+<tr>
+<td>mandatory read</td>
+<td><code>mandatory_read</code></td>
+<td>A post that recipients must acknowledge.</td>
+<td>Zorunlu okuma</td>
+<td><code>src/cluster_erp/modules/intranet/models.py:299</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="index.html">Intranet module</a></li>
+<li><a href="access-audience-and-retention.html">Access, audience, and retention</a></li>
+<li><a href="events.html">Events</a></li>
+<li><a href="engagement.html">Engagement</a></li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../../modules/intranet/access-audience-and-retention.html"><span class="eyebrow">Previous</span><span>Intranet access, audience, and retention</span></a><a class="next" href="../../modules/intranet/directory.html"><span class="eyebrow">Next</span><span>Intranet directory</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#scope-and-source">Scope and source</a></li>
+<li class="lvl2"><a href="#content-fields">Content fields</a></li>
+<li class="lvl2"><a href="#statuses-and-actions">Statuses and actions</a></li>
+<li class="lvl2"><a href="#publication-and-acknowledgement">Publication and acknowledgement</a></li>
+<li class="lvl2"><a href="#comments-reactions-views-and-translations">Comments, reactions, views, and translations</a></li>
+<li class="lvl2"><a href="#feed">Feed</a></li>
+<li class="lvl2"><a href="#settings-and-spaces">Settings and spaces</a></li>
+<li class="lvl2"><a href="#constraints-and-validation">Constraints and validation</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

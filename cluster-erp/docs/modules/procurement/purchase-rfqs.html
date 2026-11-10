@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Purchasing RFQs · Cluster ERP Wiki</title>
+<meta name="description" content="Reference for purchase_rfqs in procurement, with RFQ, line, vendor, quotation, criterion, and score fields, statuses, scoring, award, and the vendor portal.">
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="icon" href="../../assets/mark.svg" type="image/svg+xml">
+<script defer src="../../assets/mermaid.min.js"></script>
+<script defer src="../../assets/site.js" data-root="../../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../../modules/procurement/purchase-rfqs.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../../overview/index.html">Overview</a></li>
+<li class=""><a href="../../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../../platform/index.html">Platform core</a></li>
+<li class=""><a href="../../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../../platform/change-history.html">Change history</a></li>
+<li class=""><a href="../../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../../platform/event-bus.html">Event bus</a></li>
+<li class=""><a href="../../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class=""><a href="../../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class=""><a href="../../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class=""><a href="../../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class=""><a href="../../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../../web-app/generic-form.html">Generic form</a></li>
+<li class=""><a href="../../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class=""><a href="../../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../../desktop/index.html">Desktop client</a></li>
+<li class=""><a href="../../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class=""><a href="../../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class=""><a href="../../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../../modules/index.html">Business modules</a></li>
+<li class=""><a href="../../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="sub"><a href="../../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class=""><a href="../../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../../modules/auth.html">Auth module (auth)</a></li>
+<li class=""><a href="../../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class=""><a href="../../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="sub"><a href="../../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="sub"><a href="../../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class=""><a href="../../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="sub"><a href="../../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../../modules/intranet/requests.html">Intranet requests</a></li>
+<li class=""><a href="../../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../../modules/mail.html">Mail module (mail)</a></li>
+<li class=""><a href="../../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class=""><a href="../../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="sub"><a href="../../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="current sub"><a href="../../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="sub"><a href="../../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../../modules/production/work-orders.html">Work orders</a></li>
+<li class=""><a href="../../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class=""><a href="../../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../../api/index.html">API reference</a></li>
+<li class=""><a href="../../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../../api/documents.html">Documents API (documents)</a></li>
+<li class=""><a href="../../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../../api/overview.html">API overview</a></li>
+<li class=""><a href="../../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class=""><a href="../../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../../api/records.html">Records API (records)</a></li>
+<li class=""><a href="../../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../../operations/index.html">Operations</a></li>
+<li class=""><a href="../../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class=""><a href="../../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class=""><a href="../../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../../reference/index.html">Reference</a></li>
+<li class=""><a href="../../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../../index.html">Home</a> / Business modules</div>
+    <header class="page-head">
+      <p class="eyebrow">Reference</p>
+      <h1>Purchasing RFQs</h1>
+      <p class="lede">Reference for purchase_rfqs in procurement, with RFQ, line, vendor, quotation, criterion, and score fields, statuses, scoring, award, and the vendor portal.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#scope-and-source">Scope and source</a></li>
+<li class="lvl2"><a href="#rfq-fields">RFQ fields</a></li>
+<li class="lvl2"><a href="#child-records">Child records</a></li>
+<li class="lvl2"><a href="#statuses-and-actions">Statuses and actions</a></li>
+<li class="lvl2"><a href="#rfq-routes">RFQ routes</a></li>
+<li class="lvl2"><a href="#scoring-and-award">Scoring and award</a></li>
+<li class="lvl2"><a href="#vendor-portal">Vendor portal</a></li>
+<li class="lvl2"><a href="#constraints-and-validation">Constraints and validation</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p>This page describes the <code>purchase_rfqs</code> sub-module in <code>src/cluster_erp/modules/procurement/purchase_rfqs/</code>. A purchasing RFQ (<code>PurchaseRfq</code>) asks several vendors to quote for the same lines. The buyer records or receives their quotations, compares and scores them, and awards lines; the award creates purchase orders. The customer-side RFQ of the <code>crm</code> module is a different record; see <a href="../crm/rfqs.html">CRM RFQs</a>.</p>
+<h2 id="scope-and-source">Scope and source<a class="headerlink" href="#scope-and-source">¶</a></h2>
+<ul>
+<li>Defined in: <code>models.py</code> (seven classes), <code>services.py</code> (<code>PurchaseRfqService</code>), <code>routes.py</code>, <code>portal_routes.py</code>, and <code>metadata.py</code> of the sub-module.</li>
+<li>Count: 7 tables, 34 routes (32 in <code>routes.py</code> and 2 in <code>portal_routes.py</code>, counted with <code>grep</code> for <code>@router.</code>), 6 <code>ActionMeta</code> entries.</li>
+</ul>
+<h2 id="rfq-fields">RFQ fields<a class="headerlink" href="#rfq-fields">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Group</th>
+<th>Fields</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Identity</td>
+<td><code>code</code>, <code>title</code>, <code>rfq_type</code> (<code>rfi</code>, <code>rfq</code>, or <code>rfp</code>, default <code>rfq</code>), <code>status</code> (default <code>draft</code>)</td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/models.py:36-48</code>, <code>src/cluster_erp/modules/procurement/purchase_rfqs/schemas.py:10</code></td>
+</tr>
+<tr>
+<td>Origin</td>
+<td><code>purchase_request_id</code>, <code>project_id</code>, <code>buyer_id</code></td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/models.py:49-53</code></td>
+</tr>
+<tr>
+<td>Terms</td>
+<td><code>quotation_deadline</code>, <code>validity_date</code>, <code>currency</code>, <code>target_incoterm</code>, <code>target_payment_terms</code></td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/models.py:55-61</code></td>
+</tr>
+<tr>
+<td>Delivery</td>
+<td><code>delivery_party_id</code>, <code>delivery_address_id</code>, <code>delivery_address</code> (text snapshot)</td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/models.py:66-70</code></td>
+</tr>
+<tr>
+<td>Evaluation</td>
+<td><code>award_policy</code> (<code>lowest_price</code>, <code>weighted_score</code>, or <code>manual</code>), <code>sealed_bid</code>, <code>round_no</code></td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/models.py:72-83</code>, <code>src/cluster_erp/modules/procurement/purchase_rfqs/schemas.py:11</code></td>
+</tr>
+<tr>
+<td>Lifecycle record</td>
+<td><code>sent_at</code>, <code>sent_by</code>, <code>evaluation_started_at</code>, <code>awarded_at</code>, <code>awarded_by</code>, <code>closed_at</code>, <code>cancelled_at</code>, <code>cancelled_by</code>, <code>cancel_reason</code></td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/models.py:87-97</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="child-records">Child records<a class="headerlink" href="#child-records">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Entity</th>
+<th>Table</th>
+<th>Key fields</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PurchaseRfqLine</code></td>
+<td><code>procurement_purchase_rfq_lines</code></td>
+<td><code>line_no</code>, product breakdown, <code>description</code>, <code>qty</code>, <code>unit_id</code>, <code>required_by_date</code>, <code>target_unit_price</code>, <code>material_spec</code>, <code>source_pr_item_id</code></td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/models.py:110-134</code></td>
+</tr>
+<tr>
+<td><code>PurchaseRfqVendor</code></td>
+<td><code>procurement_purchase_rfq_vendors</code></td>
+<td><code>vendor_party_id</code>, <code>status</code> (default <code>invited</code>), <code>contact_email</code>, <code>invited_at</code>, <code>responded_at</code>, <code>decline_reason</code>, <code>rejection_reason</code>, portal access fields</td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/models.py:137-188</code></td>
+</tr>
+<tr>
+<td><code>PurchaseRfqQuotation</code></td>
+<td><code>procurement_purchase_rfq_quotations</code></td>
+<td><code>quotation_no</code>, <code>round_no</code>, <code>valid_until</code>, <code>currency</code>, <code>lead_time_days</code>, <code>total_amount</code>, <code>compliance_status</code>, <code>submitted_via</code></td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/models.py:193-236</code></td>
+</tr>
+<tr>
+<td><code>PurchaseRfqQuotationLine</code></td>
+<td><code>procurement_purchase_rfq_quotation_lines</code></td>
+<td><code>purchase_rfq_line_id</code>, <code>unit_price</code>, <code>qty</code>, <code>lead_time_days</code>, <code>delivery_date</code>, <code>moq</code>, <code>line_total</code>, <code>is_awarded</code></td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/models.py:241-272</code></td>
+</tr>
+<tr>
+<td><code>PurchaseRfqCriterion</code></td>
+<td><code>procurement_purchase_rfq_criteria</code></td>
+<td><code>key</code>, <code>label</code>, <code>weight</code>, <code>sort_order</code></td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/models.py:316-335</code></td>
+</tr>
+<tr>
+<td><code>PurchaseRfqQuotationScore</code></td>
+<td><code>procurement_purchase_rfq_scores</code></td>
+<td><code>quotation_id</code>, <code>criterion_id</code>, <code>score</code></td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/models.py:279-313</code></td>
+</tr>
+</tbody>
+</table>
+<p>Vendor statuses are <code>invited</code>, <code>viewed</code>, <code>responded</code>, <code>declined</code>, <code>no_bid</code>, <code>awarded</code>, and <code>rejected</code> (<code>src/cluster_erp/modules/procurement/purchase_rfqs/models.py:163-167</code>). Quotation compliance is <code>compliant</code>, <code>non_compliant</code>, or <code>pending</code> (<code>src/cluster_erp/modules/procurement/purchase_rfqs/models.py:221-224</code>).</p>
+<h2 id="statuses-and-actions">Statuses and actions<a class="headerlink" href="#statuses-and-actions">¶</a></h2>
+<p>The service maps each action to a target status and the allowed source statuses (<code>src/cluster_erp/modules/procurement/purchase_rfqs/services.py:61-69</code>).</p>
+<figure class="diagram"><pre class="mermaid">stateDiagram-v2
+ [*] --&gt; draft
+ draft --&gt; sent: send
+ sent --&gt; under_evaluation: start_evaluation
+ under_evaluation --&gt; sent: reopen_bidding
+ under_evaluation --&gt; awarded: award
+ awarded --&gt; closed: close
+ draft --&gt; cancelled: cancel
+ sent --&gt; cancelled: cancel
+ under_evaluation --&gt; cancelled: cancel
+ cancelled --&gt; draft: reopen</pre></figure>
+<p>In prose: <code>send</code> needs a complete draft; the completeness check asks for at least one line, at least two vendors, a quotation deadline, and, for <code>weighted_score</code>, criteria weights that total 100 (<code>src/cluster_erp/modules/procurement/purchase_rfqs/services.py:287-313</code>, <code>src/cluster_erp/modules/procurement/purchase_rfqs/services.py:386-450</code>). <code>reopen_bidding</code> increases <code>round_no</code> and sets vendors that had responded or viewed back to <code>invited</code> (<code>src/cluster_erp/modules/procurement/purchase_rfqs/services.py:326-344</code>). <code>award</code> has a route but no <code>ActionMeta</code>; the web app awards from the custom widget <code>purchase_rfq_comparison</code> (<code>src/cluster_erp/modules/procurement/purchase_rfqs/routes.py:221</code>, <code>gated_apps/procurement/app.js:1655</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Label</th>
+<th>Condition</th>
+<th>Endpoint</th>
+<th>Permission</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>send</code></td>
+<td><strong>Send to Vendors</strong></td>
+<td><code>status</code> is <code>draft</code></td>
+<td><code>POST /purchase-rfqs/{id}/send</code></td>
+<td><code>purchase_rfq.send</code></td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/metadata.py:524-537</code>, <code>src/cluster_erp/modules/procurement/purchase_rfqs/routes.py:181</code></td>
+</tr>
+<tr>
+<td><code>start-evaluation</code></td>
+<td><strong>Start Evaluation</strong></td>
+<td><code>status</code> is <code>sent</code></td>
+<td><code>POST /purchase-rfqs/{id}/start-evaluation</code></td>
+<td><code>purchase_rfq.evaluate</code></td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/metadata.py:538-551</code>, <code>src/cluster_erp/modules/procurement/purchase_rfqs/routes.py:193</code></td>
+</tr>
+<tr>
+<td><code>reopen-bidding</code></td>
+<td><strong>Reopen Bidding</strong></td>
+<td><code>status</code> is <code>under_evaluation</code></td>
+<td><code>POST /purchase-rfqs/{id}/reopen-bidding</code></td>
+<td><code>purchase_rfq.evaluate</code></td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/metadata.py:552-565</code>, <code>src/cluster_erp/modules/procurement/purchase_rfqs/routes.py:207</code></td>
+</tr>
+<tr>
+<td><code>close</code></td>
+<td><strong>Close</strong></td>
+<td><code>status</code> is <code>awarded</code></td>
+<td><code>POST /purchase-rfqs/{id}/close</code></td>
+<td><code>purchase_rfq.evaluate</code></td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/metadata.py:566-577</code>, <code>src/cluster_erp/modules/procurement/purchase_rfqs/routes.py:240</code></td>
+</tr>
+<tr>
+<td><code>cancel</code></td>
+<td><strong>Cancel</strong></td>
+<td><code>status</code> is <code>draft</code>, <code>sent</code>, or <code>under_evaluation</code></td>
+<td><code>POST /purchase-rfqs/{id}/cancel</code></td>
+<td><code>purchase_rfq.cancel</code></td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/metadata.py:578-604</code>, <code>src/cluster_erp/modules/procurement/purchase_rfqs/routes.py:252</code></td>
+</tr>
+<tr>
+<td><code>reopen</code></td>
+<td><strong>Reopen</strong></td>
+<td><code>status</code> is <code>cancelled</code></td>
+<td><code>POST /purchase-rfqs/{id}/reopen</code></td>
+<td><code>purchase_rfq.update</code></td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/metadata.py:605-616</code>, <code>src/cluster_erp/modules/procurement/purchase_rfqs/routes.py:266</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="rfq-routes">RFQ routes<a class="headerlink" href="#rfq-routes">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Method and path</th>
+<th>Permission</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code>, <code>POST /purchase-rfqs/</code>; <code>GET</code>, <code>PUT</code>, <code>DELETE /purchase-rfqs/{rfq_id}</code>; <code>POST /purchase-rfqs/bulk-delete</code></td>
+<td><code>purchase_rfq.read</code>, <code>.create</code>, <code>.update</code>, <code>.delete</code></td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/routes.py:66-151</code></td>
+</tr>
+<tr>
+<td><code>GET /purchase-rfqs/{rfq_id}/completeness</code></td>
+<td><code>purchase_rfq.read</code></td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/routes.py:166</code></td>
+</tr>
+<tr>
+<td><code>POST /purchase-rfqs/{rfq_id}/award</code></td>
+<td><code>purchase_rfq.award</code></td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/routes.py:221</code></td>
+</tr>
+<tr>
+<td>Lines: <code>GET</code>, <code>POST /purchase-rfqs/{rfq_id}/lines</code>; <code>PUT</code>, <code>DELETE /purchase-rfq-lines/{line_id}</code></td>
+<td><code>purchase_rfq.read</code>, <code>purchase_rfq.update</code></td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/routes.py:279-317</code></td>
+</tr>
+<tr>
+<td>Vendors: <code>GET</code>, <code>POST /purchase-rfqs/{rfq_id}/vendors</code>; <code>DELETE /purchase-rfq-vendors/{vendor_id}</code>; <code>GET /purchase-rfq-vendors/{vendor_id}/portal-token</code></td>
+<td><code>purchase_rfq.read</code>, <code>purchase_rfq.update</code></td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/routes.py:329-368</code></td>
+</tr>
+<tr>
+<td>Quotations: <code>GET</code>, <code>POST /purchase-rfqs/{rfq_id}/quotations</code>; <code>DELETE /purchase-rfq-quotations/{quotation_id}</code></td>
+<td><code>purchase_rfq.read</code>, <code>purchase_rfq.update</code></td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/routes.py:398-428</code></td>
+</tr>
+<tr>
+<td>Criteria: <code>GET</code>, <code>POST /purchase-rfqs/{rfq_id}/criteria</code>; <code>PUT</code>, <code>DELETE /purchase-rfq-criteria/{criterion_id}</code></td>
+<td><code>purchase_rfq.read</code>, <code>purchase_rfq.update</code></td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/routes.py:440-485</code></td>
+</tr>
+<tr>
+<td><code>PUT /purchase-rfqs/{rfq_id}/quotations/{quotation_id}/score</code>, <code>GET .../scoring</code>, <code>GET .../comparison</code></td>
+<td><code>purchase_rfq.evaluate</code>, <code>purchase_rfq.read</code></td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/routes.py:496-519</code></td>
+</tr>
+<tr>
+<td><code>GET /portal/rfqs/{token}</code>, <code>POST /portal/rfqs/{token}/quotation</code></td>
+<td>vendor portal access token</td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/portal_routes.py:27-53</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="scoring-and-award">Scoring and award<a class="headerlink" href="#scoring-and-award">¶</a></h2>
+<ul>
+<li>Criteria can change only while the RFQ is <code>draft</code> (<code>src/cluster_erp/modules/procurement/purchase_rfqs/services.py:1010-1021</code>).</li>
+<li>The criteria <code>price</code> and <code>delivery</code> are scored automatically; others take the manual score (<code>src/cluster_erp/modules/procurement/purchase_rfqs/models.py:276</code>, <code>src/cluster_erp/modules/procurement/purchase_rfqs/services.py:1152-1157</code>).</li>
+<li>The automatic price score is the lowest compliant total divided by the quotation total, times 100. The delivery score uses lead times the same way. A non-compliant quotation scores 0 (<code>src/cluster_erp/modules/procurement/purchase_rfqs/services.py:1125-1149</code>).</li>
+<li>The weighted score sums weight divided by 100 times score. Compliant quotations always rank above non-compliant ones (<code>src/cluster_erp/modules/procurement/purchase_rfqs/services.py:1150-1214</code>).</li>
+<li>For a sealed bid, comparison returns only a summary while the RFQ is <code>sent</code> (<code>src/cluster_erp/modules/procurement/purchase_rfqs/services.py:255-258</code>, <code>src/cluster_erp/modules/procurement/purchase_rfqs/services.py:840-848</code>).</li>
+<li><code>award</code> takes pairs of RFQ line and quotation line, marks them <code>is_awarded</code>, sets winning vendors to <code>awarded</code> and the others that took part to <code>rejected</code>, and creates one purchase order per winning vendor through <code>PurchaseOrderService</code> (<code>src/cluster_erp/modules/procurement/purchase_rfqs/services.py:1215-1292</code>, <code>src/cluster_erp/modules/procurement/purchase_rfqs/services.py:1293-1338</code>).</li>
+</ul>
+<h2 id="vendor-portal">Vendor portal<a class="headerlink" href="#vendor-portal">¶</a></h2>
+<p>An invited vendor can view the RFQ and submit a quotation through <code>/portal/rfqs/{token}</code> without a user session. The token is minted per vendor when it is invited, is stored as a digest, and expires after <code>PORTAL_TOKEN_TTL_DAYS</code> (30) days (<code>src/cluster_erp/modules/procurement/purchase_rfqs/portal_routes.py:1-10</code>, <code>src/cluster_erp/modules/procurement/purchase_rfqs/services.py:605-618</code>). A submission is accepted only while the RFQ is <code>sent</code> and before the deadline (<code>src/cluster_erp/modules/procurement/purchase_rfqs/services.py:1505-1530</code>).</p>
+<h2 id="constraints-and-validation">Constraints and validation<a class="headerlink" href="#constraints-and-validation">¶</a></h2>
+<ul>
+<li>Lines and vendors can change only while the RFQ is <code>draft</code> or <code>sent</code> (<code>src/cluster_erp/modules/procurement/purchase_rfqs/services.py:452-458</code>).</li>
+<li>A buyer-entered quotation is accepted only while the RFQ is <code>sent</code> or <code>under_evaluation</code>; it records the current round and sets the vendor to <code>responded</code> (<code>src/cluster_erp/modules/procurement/purchase_rfqs/services.py:705-748</code>).</li>
+<li>Money and scores are <code>Numeric</code>: unit price <code>Numeric(18, 4)</code>, weight and score <code>Numeric(6, 2)</code> (<code>src/cluster_erp/modules/procurement/purchase_rfqs/models.py:260</code>, <code>src/cluster_erp/modules/procurement/purchase_rfqs/models.py:313</code>, <code>src/cluster_erp/modules/procurement/purchase_rfqs/models.py:332</code>).</li>
+</ul>
+<h2 id="terms-introduced">Terms introduced<a class="headerlink" href="#terms-introduced">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Code identifier</th>
+<th>Definition</th>
+<th>Turkish term</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>purchasing RFQ</td>
+<td><code>PurchaseRfq</code></td>
+<td>A request to several vendors to quote for the same lines.</td>
+<td>Satın alma teklif talebi</td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/models.py:26</code></td>
+</tr>
+<tr>
+<td>sealed bid</td>
+<td><code>sealed_bid</code></td>
+<td>An RFQ whose quotations stay hidden from the buyer while it is out for bid.</td>
+<td>Kapalı teklif</td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/models.py:78-80</code></td>
+</tr>
+<tr>
+<td>bidding round</td>
+<td><code>round_no</code></td>
+<td>The negotiation round of an RFQ; reopening bidding increases it.</td>
+<td>Teklif turu</td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/models.py:83</code></td>
+</tr>
+<tr>
+<td>award policy</td>
+<td><code>award_policy</code></td>
+<td>How the RFQ winner is chosen: lowest price, weighted score, or manual.</td>
+<td>İhale politikası</td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/models.py:72-77</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="index.html">Procurement module</a></li>
+<li><a href="purchase-requests.html">Purchase requests</a></li>
+<li><a href="purchase-orders.html">Purchase orders</a></li>
+<li><a href="../purchasing_quotations.html">Purchasing quotations module</a></li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../../modules/procurement/purchase-requests.html"><span class="eyebrow">Previous</span><span>Purchase requests</span></a><a class="next" href="../../modules/procurement/suppliers.html"><span class="eyebrow">Next</span><span>Suppliers</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#scope-and-source">Scope and source</a></li>
+<li class="lvl2"><a href="#rfq-fields">RFQ fields</a></li>
+<li class="lvl2"><a href="#child-records">Child records</a></li>
+<li class="lvl2"><a href="#statuses-and-actions">Statuses and actions</a></li>
+<li class="lvl2"><a href="#rfq-routes">RFQ routes</a></li>
+<li class="lvl2"><a href="#scoring-and-award">Scoring and award</a></li>
+<li class="lvl2"><a href="#vendor-portal">Vendor portal</a></li>
+<li class="lvl2"><a href="#constraints-and-validation">Constraints and validation</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

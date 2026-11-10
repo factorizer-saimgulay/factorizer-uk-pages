@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Material requirements planning · Cluster ERP Wiki</title>
+<meta name="description" content="How the MRP run in procurement collects demand and supply, explodes BOMs, nets, sizes lots, raises exceptions, and turns proposals into requests or orders.">
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="icon" href="../../assets/mark.svg" type="image/svg+xml">
+<script defer src="../../assets/mermaid.min.js"></script>
+<script defer src="../../assets/site.js" data-root="../../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../../modules/procurement/mrp.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../../overview/index.html">Overview</a></li>
+<li class=""><a href="../../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../../platform/index.html">Platform core</a></li>
+<li class=""><a href="../../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../../platform/change-history.html">Change history</a></li>
+<li class=""><a href="../../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../../platform/event-bus.html">Event bus</a></li>
+<li class=""><a href="../../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class=""><a href="../../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class=""><a href="../../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class=""><a href="../../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class=""><a href="../../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../../web-app/generic-form.html">Generic form</a></li>
+<li class=""><a href="../../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class=""><a href="../../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../../desktop/index.html">Desktop client</a></li>
+<li class=""><a href="../../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class=""><a href="../../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class=""><a href="../../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../../modules/index.html">Business modules</a></li>
+<li class=""><a href="../../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="sub"><a href="../../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class=""><a href="../../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../../modules/auth.html">Auth module (auth)</a></li>
+<li class=""><a href="../../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class=""><a href="../../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="sub"><a href="../../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="sub"><a href="../../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class=""><a href="../../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="sub"><a href="../../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../../modules/intranet/requests.html">Intranet requests</a></li>
+<li class=""><a href="../../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../../modules/mail.html">Mail module (mail)</a></li>
+<li class=""><a href="../../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class=""><a href="../../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="current sub"><a href="../../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="sub"><a href="../../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../../modules/production/work-orders.html">Work orders</a></li>
+<li class=""><a href="../../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class=""><a href="../../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../../api/index.html">API reference</a></li>
+<li class=""><a href="../../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../../api/documents.html">Documents API (documents)</a></li>
+<li class=""><a href="../../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../../api/overview.html">API overview</a></li>
+<li class=""><a href="../../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class=""><a href="../../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../../api/records.html">Records API (records)</a></li>
+<li class=""><a href="../../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../../operations/index.html">Operations</a></li>
+<li class=""><a href="../../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class=""><a href="../../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class=""><a href="../../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../../reference/index.html">Reference</a></li>
+<li class=""><a href="../../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../../index.html">Home</a> / Business modules</div>
+    <header class="page-head">
+      <p class="eyebrow">Explanation</p>
+      <h1>Material requirements planning</h1>
+      <p class="lede">How the MRP run in procurement collects demand and supply, explodes BOMs, nets, sizes lots, raises exceptions, and turns proposals into requests or orders.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#in-short">In short</a></li>
+<li class="lvl2"><a href="#how-it-works">How it works</a></li>
+<li class="lvl2"><a href="#why-it-is-built-this-way">Why it is built this way</a></li>
+<li class="lvl2"><a href="#rules-and-boundaries">Rules and boundaries</a></li>
+<li class="lvl2"><a href="#interaction-with-other-parts">Interaction with other parts</a></li>
+<li class="lvl2"><a href="#limits-and-open-points">Limits and open points</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p>Material requirements planning (MRP) lives in <code>src/cluster_erp/modules/procurement/mrp/</code>. A planning run (<code>MrpRun</code>) compares demand with stock and open supply for each product, explodes bills of materials, and stores one result row (<code>MrpRunItem</code>) per product with a proposal and an exception message. This page explains how a run works and how its results are used. Field lists are on the <a href="index.html">procurement module</a> page and in the source; the BOM explosion is described on the <a href="../bom.html">BOM module</a>.</p>
+<h2 id="in-short">In short<a class="headerlink" href="#in-short">¶</a></h2>
+<ul>
+<li>A run has seven phases: init, demand, supply, low-level coding, netting, exceptions, and result assembly (<code>src/cluster_erp/modules/procurement/mrp/engine.py:1-19</code>).</li>
+<li>Only one run can be <code>running</code> at a time; a database advisory lock guards the check (<code>src/cluster_erp/modules/procurement/mrp/services.py:157-176</code>).</li>
+<li>All data from other modules arrives through EventBus queries such as <code>GetOpenSalesOrderDemand</code>, <code>GetBulkStockLevels</code>, and <code>GetBomExplosion</code> (<code>src/cluster_erp/modules/procurement/mrp/engine.py:871</code>, <code>src/cluster_erp/modules/procurement/mrp/engine.py:1325</code>, <code>src/cluster_erp/modules/procurement/mrp/engine.py:1720</code>).</li>
+<li>Stock and production events mark the run stale and flag products in a planning file for the next net-change run (<code>src/cluster_erp/modules/procurement/module.py:863-1003</code>).</li>
+<li>Run items become purchase requests or production orders by explicit actions (<code>src/cluster_erp/modules/procurement/mrp/services.py:331</code>, <code>src/cluster_erp/modules/procurement/mrp/routes.py:359-375</code>).</li>
+</ul>
+<h2 id="how-it-works">How it works<a class="headerlink" href="#how-it-works">¶</a></h2>
+<p>A run starts with <code>POST /mrp/runs</code> (synchronous) or <code>POST /mrp/runs/background</code> (returns at once with status <code>running</code>) and the parameters of <code>MrpRunCreate</code> (<code>src/cluster_erp/modules/procurement/mrp/routes.py:105-121</code>, <code>src/cluster_erp/modules/procurement/mrp/schemas.py:28-70</code>). The diagram shows the phases.</p>
+<figure class="diagram"><pre class="mermaid">flowchart TD
+ P0[&quot;_phase0_init: MrpRun status running&quot;] --&gt; PM[&quot;planning_mode: delete_and_recreate or normal&quot;]
+ PM --&gt; P1[&quot;_phase1_demand: sales, production, PIR, safety stock&quot;]
+ P1 --&gt; P2[&quot;_phase2_supply: stock, open POs, production supply, vendors&quot;]
+ P2 --&gt; P3[&quot;_phase3_llc: low-level codes from active BOMs&quot;]
+ P3 --&gt; P4[&quot;_phase4_net_requirements: netting, lot sizing, dates&quot;]
+ P4 --&gt; P5[&quot;_phase5_exceptions: action messages&quot;]
+ P5 --&gt; P7[&quot;_phase7_assemble: MrpRunItem rows, totals&quot;]
+ P7 --&gt; E[&quot;MrpRunCompleted and CriticalMaterialAlert&quot;]
+ P7 --&gt; PR[&quot;purchase requests when output_type is purchase_requisition&quot;]</pre></figure>
+<p>In prose:</p>
+<ol>
+<li><strong>Init.</strong> The engine creates the run with status <code>running</code> and snapshots the parameters (<code>src/cluster_erp/modules/procurement/mrp/engine.py:769-823</code>). With <code>delete_and_recreate</code>, the items of the previous completed run are bulk-deleted and one summary change-history row is written; with <code>normal</code>, the BOM cache of the previous run is preloaded (<code>src/cluster_erp/modules/procurement/mrp/engine.py:555-562</code>, <code>src/cluster_erp/modules/procurement/mrp/engine.py:697-767</code>).</li>
+<li><strong>Demand.</strong> Demand comes from open sales orders, open production order components, planned independent requirements (PIRs), safety stock deficits, and reorder points. A run with scope <code>project</code> first derives its product list from the project's demand (<code>src/cluster_erp/modules/procurement/mrp/engine.py:824-977</code>, <code>src/cluster_erp/modules/procurement/mrp/engine.py:1059</code>).</li>
+<li><strong>Supply.</strong> Stock levels, open purchase orders, production supply, production versions, vendors, and substitutes are read in bulk (<code>src/cluster_erp/modules/procurement/mrp/engine.py:1311-1626</code>).</li>
+<li><strong>Low-level coding.</strong> Each manufactured product gets the active BOM version, and the BOM is exploded to assign low-level codes; the scope grows with BOM children (<code>src/cluster_erp/modules/procurement/mrp/engine.py:1627-1920</code>).</li>
+<li><strong>Netting.</strong> Requirements are netted per time bucket with dependent demand from BOMs, phantoms, substitution, lot sizing, scrap, lead-time offset, and vendor selection (<code>src/cluster_erp/modules/procurement/mrp/engine.py:1921-2599</code>). Lot sizing uses the run's rule, or the setting for the product's ABC class (<code>src/cluster_erp/modules/procurement/mrp/engine.py:3037-3093</code>). Lead-time dates use the vendor's working calendar first, then the company group calendar, through <code>GetOwnerWorkingDays</code> (<code>src/cluster_erp/modules/procurement/mrp/engine.py:3247-3287</code>).</li>
+<li><strong>Exceptions.</strong> Each product gets at most one main exception: <code>new_order</code>, <code>reschedule_in</code>, <code>reschedule_out</code>, <code>cancel</code>, <code>decrease_qty</code>, <code>increase_qty</code>, or <code>expedite</code>. Damping margins come from settings (<code>src/cluster_erp/modules/procurement/mrp/engine.py:3405-3600</code>, <code>src/cluster_erp/modules/procurement/mrp/engine.py:2817</code>).</li>
+<li><strong>Assembly.</strong> Items are stored in chunks, run totals are updated, the status becomes <code>completed</code> or <code>simulation</code>, and <code>MrpRunCompleted</code> and <code>CriticalMaterialAlert</code> are emitted (<code>src/cluster_erp/modules/procurement/mrp/engine.py:3880-4118</code>).</li>
+</ol>
+<p>If a phase fails, the run gets status <code>failed</code> with the error message and duration (<code>src/cluster_erp/modules/procurement/mrp/engine.py:594-607</code>). When <code>output_type</code> is <code>purchase_requisition</code>, a completed run creates purchase requests at once (<code>src/cluster_erp/modules/procurement/mrp/services.py:188-189</code>).</p>
+<h2 id="why-it-is-built-this-way">Why it is built this way<a class="headerlink" href="#why-it-is-built-this-way">¶</a></h2>
+<p>The module docstring of the engine names the seven-phase algorithm and the netting method (<code>src/cluster_erp/modules/procurement/mrp/engine.py:1-19</code>). Code comments give two reasons: bulk deletion of previous run items avoids per-row history for regenerable rows (<code>src/cluster_erp/modules/procurement/mrp/engine.py:718-721</code>), and a net-change baseline is taken only from a run that carries a plan (<code>src/cluster_erp/modules/procurement/mrp/engine.py:2835-2842</code>). Other rationale is not stated in code or in the project's written engineering rules.</p>
+<h2 id="rules-and-boundaries">Rules and boundaries<a class="headerlink" href="#rules-and-boundaries">¶</a></h2>
+<ul>
+<li><code>run_type</code> is <code>regenerative</code> or <code>net_change</code>; <code>planning_mode</code> is <code>normal</code>, <code>re_explode_bom</code>, or <code>delete_and_recreate</code>; <code>scheduling_method</code> is <code>backward</code>, <code>forward</code>, <code>lead_time</code>, or <code>basic_date</code>; <code>lot_size_rule</code> is <code>default</code>, <code>lot_for_lot</code>, <code>fixed_order</code>, <code>period_order</code>, or <code>eoq</code>; <code>scope</code> is <code>all</code>, <code>abc_class</code>, <code>product</code>, <code>product_group</code>, <code>warehouse</code>, <code>project</code>, or <code>mps_items</code> (<code>src/cluster_erp/modules/procurement/mrp/schemas.py:28-67</code>).</li>
+<li>A simulation run does not touch previous items (<code>src/cluster_erp/modules/procurement/mrp/engine.py:556</code>).</li>
+<li>A purchase request can be made only from a <code>completed</code> run (<code>src/cluster_erp/modules/procurement/mrp/services.py:331-345</code>).</li>
+<li>Converting a planned order to a production order outside the opening period needs <code>force</code>; the conversion is the query <code>CreateProductionOrderFromPlanned</code> (<code>src/cluster_erp/modules/procurement/mrp/routes.py:359-447</code>).</li>
+<li><code>POST /mrp/runs/{run_id}/materialize</code> reruns a simulation as a real run with the same parameters (<code>src/cluster_erp/modules/procurement/mrp/routes.py:545-560</code>).</li>
+<li>Deleting a run sets <code>deleted_at</code> on the run and its items; a running run cannot be deleted (<code>src/cluster_erp/modules/procurement/mrp/services.py:1217-1246</code>).</li>
+<li>Run items can be firmed and unfirmed; firmed items are loaded by later runs (<code>src/cluster_erp/modules/procurement/mrp/services.py:1284-1368</code>, <code>src/cluster_erp/modules/procurement/mrp/engine.py:2966</code>).</li>
+<li>The run stores quantities and costs as <code>Numeric</code>, and durations are rounded with <code>ROUND_HALF_EVEN</code> (<code>src/cluster_erp/modules/procurement/mrp/engine.py:599-602</code>).</li>
+</ul>
+<h2 id="interaction-with-other-parts">Interaction with other parts<a class="headerlink" href="#interaction-with-other-parts">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Direction</th>
+<th>Purpose</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GetOpenSalesOrderDemand</code>, <code>GetOpenProductionDemand</code></td>
+<td>query</td>
+<td>demand</td>
+<td><code>src/cluster_erp/modules/procurement/mrp/engine.py:871</code>, <code>src/cluster_erp/modules/procurement/mrp/engine.py:911</code></td>
+</tr>
+<tr>
+<td><code>GetBulkStockLevels</code>, <code>GetBatchExpirySchedule</code></td>
+<td>query to <code>inventory</code></td>
+<td>stock</td>
+<td><code>src/cluster_erp/modules/procurement/mrp/engine.py:1325</code></td>
+</tr>
+<tr>
+<td><code>GetBulkOpenPos</code>, <code>GetProductionSupply</code>, <code>GetProductionVersionsBulk</code></td>
+<td>query</td>
+<td>open supply</td>
+<td><code>src/cluster_erp/modules/procurement/mrp/engine.py:1526</code>, <code>src/cluster_erp/modules/procurement/mrp/engine.py:1542</code>, <code>src/cluster_erp/modules/procurement/mrp/engine.py:1421</code></td>
+</tr>
+<tr>
+<td><code>GetActiveBomVersionForProduct</code>, <code>GetBomExplosion</code></td>
+<td>query to <code>bom</code></td>
+<td>structure</td>
+<td><code>src/cluster_erp/modules/procurement/mrp/engine.py:1649</code>, <code>src/cluster_erp/modules/procurement/mrp/engine.py:1720</code></td>
+</tr>
+<tr>
+<td><code>GetBulkProductVendors</code>, <code>GetProductPlanningData</code></td>
+<td>query to <code>products_and_services</code></td>
+<td>vendors and planning data</td>
+<td><code>src/cluster_erp/modules/procurement/mrp/engine.py:1561</code></td>
+</tr>
+<tr>
+<td><code>GetOwnerWorkingDays</code></td>
+<td>query to <code>calendars</code></td>
+<td>lead-time calendar</td>
+<td><code>src/cluster_erp/modules/procurement/mrp/engine.py:3271</code></td>
+</tr>
+<tr>
+<td><code>MrpRunCompleted</code>, <code>CriticalMaterialAlert</code></td>
+<td>emit</td>
+<td>results</td>
+<td><code>src/cluster_erp/modules/procurement/mrp/engine.py:4073</code>, <code>src/cluster_erp/modules/procurement/mrp/engine.py:4106</code></td>
+</tr>
+</tbody>
+</table>
+<p>The run reads the working-time rules described on <a href="../../platform/working-time.html">working time</a>. The web app shows results in seven custom widgets; see the <a href="index.html">procurement module</a> page.</p>
+<h2 id="limits-and-open-points">Limits and open points<a class="headerlink" href="#limits-and-open-points">¶</a></h2>
+<aside class="adm adm-warning" role="note"><p class="adm-title">Warning</p><p>Discrepancy. The project's written engineering rules make the product, model, and version breakdown mandatory for stock and movement keys and forbid a silent fallback. The MRP run plans per <code>product_id</code>; when it stores a run item it takes the product's default model and version from <code>GetBulkProductDefaultBreakdowns</code>, and fails the run if a product has none (<code>src/cluster_erp/modules/procurement/mrp/engine.py:3893-3940</code>). Creating a PIR without model and version also takes the default breakdown (<code>src/cluster_erp/modules/procurement/mrp/routes.py:782-793</code>). This page documents the code.</p>
+</aside>
+<h2 id="terms-introduced">Terms introduced<a class="headerlink" href="#terms-introduced">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Code identifier</th>
+<th>Definition</th>
+<th>Turkish term</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MRP run</td>
+<td><code>MrpRun</code></td>
+<td>One execution of the planning algorithm with its parameters and totals.</td>
+<td>MRP çalıştırması</td>
+<td><code>src/cluster_erp/modules/procurement/mrp/models.py:26</code></td>
+</tr>
+<tr>
+<td>run item</td>
+<td><code>MrpRunItem</code></td>
+<td>The planning result of one product in one run, with proposal and exception.</td>
+<td>Çalıştırma kalemi</td>
+<td><code>src/cluster_erp/modules/procurement/mrp/models.py:201</code></td>
+</tr>
+<tr>
+<td>planned independent requirement</td>
+<td><code>PlannedIndependentRequirement</code></td>
+<td>A forecast demand quantity for a product and period.</td>
+<td>Tahmin (PIR)</td>
+<td><code>src/cluster_erp/modules/procurement/mrp/models.py:535</code></td>
+</tr>
+<tr>
+<td>low-level code</td>
+<td><code>bom_level</code></td>
+<td>The deepest BOM level at which a product appears, which orders the netting.</td>
+<td>Düşük seviye kodu</td>
+<td><code>src/cluster_erp/modules/procurement/mrp/models.py:235</code></td>
+</tr>
+<tr>
+<td>planning file</td>
+<td><code>MrpPlanningFileEntry</code></td>
+<td>A flag that a product changed and must be replanned by a net-change run.</td>
+<td>Planlama dosyası</td>
+<td><code>src/cluster_erp/modules/procurement/mrp/models.py:584</code></td>
+</tr>
+<tr>
+<td>exception message</td>
+<td><code>exception_type</code></td>
+<td>The action MRP proposes for a product, such as <code>expedite</code> or <code>new_order</code>.</td>
+<td>İstisna mesajı</td>
+<td><code>src/cluster_erp/modules/procurement/mrp/models.py:349</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="index.html">Procurement module</a></li>
+<li><a href="critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li><a href="purchase-requests.html">Purchase requests</a></li>
+<li><a href="../bom.html">BOM module</a></li>
+<li><a href="../production/index.html">Production module</a></li>
+<li><a href="../../platform/working-time.html">Working time</a></li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../../modules/procurement/critical-materials-and-substitution.html"><span class="eyebrow">Previous</span><span>Critical materials and substitution</span></a><a class="next" href="../../modules/procurement/purchase-contracts-and-info-records.html"><span class="eyebrow">Next</span><span>Purchase contracts and info records</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#in-short">In short</a></li>
+<li class="lvl2"><a href="#how-it-works">How it works</a></li>
+<li class="lvl2"><a href="#why-it-is-built-this-way">Why it is built this way</a></li>
+<li class="lvl2"><a href="#rules-and-boundaries">Rules and boundaries</a></li>
+<li class="lvl2"><a href="#interaction-with-other-parts">Interaction with other parts</a></li>
+<li class="lvl2"><a href="#limits-and-open-points">Limits and open points</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

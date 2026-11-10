@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sales orders API (sales_orders) · Cluster ERP Wiki</title>
+<meta name="description" content="HTTP endpoints of the sales_orders module under /api/v1/sales_orders: 68 routes with permissions, schemas, status codes, and error codes.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../api/sales_orders.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.html">Overview</a></li>
+<li class=""><a href="../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.html">Platform core</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../platform/change-history.html">Change history</a></li>
+<li class=""><a href="../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../platform/event-bus.html">Event bus</a></li>
+<li class=""><a href="../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class=""><a href="../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../web-app/generic-form.html">Generic form</a></li>
+<li class=""><a href="../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class=""><a href="../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.html">Desktop client</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class=""><a href="../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.html">Business modules</a></li>
+<li class=""><a href="../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class=""><a href="../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../modules/auth.html">Auth module (auth)</a></li>
+<li class=""><a href="../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class=""><a href="../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class=""><a href="../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../modules/intranet/requests.html">Intranet requests</a></li>
+<li class=""><a href="../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../modules/mail.html">Mail module (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class=""><a href="../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../modules/production/work-orders.html">Work orders</a></li>
+<li class=""><a href="../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.html">API reference</a></li>
+<li class=""><a href="../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.html">Documents API (documents)</a></li>
+<li class=""><a href="../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.html">API overview</a></li>
+<li class=""><a href="../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class=""><a href="../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.html">Records API (records)</a></li>
+<li class="current"><a href="../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.html">Operations</a></li>
+<li class=""><a href="../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class=""><a href="../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class=""><a href="../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.html">Reference</a></li>
+<li class=""><a href="../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.html">Home</a> / API reference</div>
+    <header class="page-head">
+      <p class="eyebrow">API</p>
+      <h1>Sales orders API (sales_orders)</h1>
+      <p class="lede">HTTP endpoints of the sales_orders module under /api/v1/sales_orders: 68 routes with permissions, schemas, status codes, and error codes.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#group-facts">Group facts</a></li>
+<li class="lvl2"><a href="#endpoint-summary">Endpoint summary</a></li>
+<li class="lvl2"><a href="#shipments-endpoints">Shipments endpoints</a></li>
+<li class="lvl2"><a href="#units-endpoints">Units endpoints</a></li>
+<li class="lvl2"><a href="#trade-documents-endpoints">Trade documents endpoints</a></li>
+<li class="lvl2"><a href="#chain-settings-endpoints">Chain settings endpoints</a></li>
+<li class="lvl2"><a href="#sales-orders-endpoints">Sales orders endpoints</a></li>
+<li class="lvl2"><a href="#order-lines-endpoints">Order lines endpoints</a></li>
+<li class="lvl2"><a href="#error-codes">Error codes</a></li>
+<li class="lvl2"><a href="#events-emitted">Events emitted</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p>The <code>sales_orders</code> module serves sales orders with PO checks, revisions, milestones, and status steps, order lines with BOM creation, units, shipments with lines, units, packages, and events, trade documents, and chain settings. All 68 endpoints sit under <code>/api/v1/sales_orders</code>. For business meaning see the <a href="../modules/sales_orders/index.html">Sales orders module</a> page.</p>
+<h2 id="group-facts">Group facts<a class="headerlink" href="#group-facts">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Value</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Base path</td>
+<td><code>/api/v1/sales_orders</code></td>
+<td><code>src/cluster_erp/core/module_base.py:37-38</code>, <code>src/cluster_erp/modules/sales_orders/module.py:61</code></td>
+</tr>
+<tr>
+<td>Routers</td>
+<td>6 router objects in 6 files; listed in the section Endpoint summary</td>
+<td><code>src/cluster_erp/modules/sales_orders/module.py:38</code></td>
+</tr>
+<tr>
+<td>Endpoints</td>
+<td>68, counted from the route decorators and <code>add_api_route</code> calls of the routers that <code>register_routes</code> mounts</td>
+<td><code>src/cluster_erp/modules/sales_orders/order_lines/routes.py</code>, <code>src/cluster_erp/modules/sales_orders/orders/routes.py</code>, <code>src/cluster_erp/modules/sales_orders/settings/routes.py</code> ...</td>
+</tr>
+<tr>
+<td>Authentication</td>
+<td>Bearer header or session cookie, resolved by <code>get_current_user</code>; see <a href="authentication-and-headers.html">Authentication and headers</a></td>
+<td><code>src/cluster_erp/modules/auth/guards.py:85-167</code></td>
+</tr>
+<tr>
+<td>Permission guard</td>
+<td>68 of 68 routes declare <code>require_permission</code></td>
+<td><code>src/cluster_erp/modules/auth/guards.py:205-240</code></td>
+</tr>
+<tr>
+<td>App entitlement gate</td>
+<td><code>require_app("sales_orders")</code> on every mounted router</td>
+<td><code>src/cluster_erp/modules/sales_orders/module.py:71</code></td>
+</tr>
+<tr>
+<td>Error format</td>
+<td>JSON body <code>{"error": {...}}</code>; see <a href="errors.html">Errors</a></td>
+<td><code>src/cluster_erp/server/error_handler.py:33-46</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="endpoint-summary">Endpoint summary<a class="headerlink" href="#endpoint-summary">¶</a></h2>
+<p>One row per sub-module folder. The router prefix is added to the base path.</p>
+<table>
+<thead>
+<tr>
+<th>Sub-module</th>
+<th>Routers</th>
+<th>Endpoints</th>
+<th>Router source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>shipments</code></td>
+<td><code>router</code></td>
+<td>32</td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:40</code></td>
+</tr>
+<tr>
+<td><code>units</code></td>
+<td><code>router</code></td>
+<td>5</td>
+<td><code>src/cluster_erp/modules/sales_orders/units/routes.py:21</code></td>
+</tr>
+<tr>
+<td><code>trade_documents</code></td>
+<td><code>router</code></td>
+<td>4</td>
+<td><code>src/cluster_erp/modules/sales_orders/trade_documents/routes.py:24</code></td>
+</tr>
+<tr>
+<td><code>settings</code></td>
+<td><code>router</code></td>
+<td>3</td>
+<td><code>src/cluster_erp/modules/sales_orders/settings/routes.py:16</code></td>
+</tr>
+<tr>
+<td><code>orders</code></td>
+<td><code>router</code></td>
+<td>17</td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/routes.py:33</code></td>
+</tr>
+<tr>
+<td><code>order_lines</code></td>
+<td><code>router</code></td>
+<td>7</td>
+<td><code>src/cluster_erp/modules/sales_orders/order_lines/routes.py:24</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="shipments-endpoints">Shipments endpoints<a class="headerlink" href="#shipments-endpoints">¶</a></h2>
+<p>Shipments of an order and of all orders, status steps (ready, ship, in transit, deliver, hold, resume, cancel), shipment lines, shipment units, packages, and shipment events.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Handler</th>
+<th>Permission</th>
+<th>Request</th>
+<th>Query</th>
+<th>Response</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/shipments/</code></td>
+<td><code>list_shipments</code></td>
+<td><code>shipment.read</code></td>
+<td>none</td>
+<td><code>sales_order_id</code>, <code>project_id</code>, <code>status</code>, <code>search</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:85</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/{order_id}/shipments</code></td>
+<td><code>list_order_shipments</code></td>
+<td><code>shipment.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>list[ShipmentRead]</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:121</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/{order_id}/shipments</code></td>
+<td><code>create_shipment</code></td>
+<td><code>shipment.create</code></td>
+<td><code>ShipmentCreate</code></td>
+<td>none</td>
+<td><code>ShipmentRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:135</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/shipments/{shipment_id}</code></td>
+<td><code>get_shipment</code></td>
+<td><code>shipment.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>ShipmentDetailRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:151</code></td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/shipments/{shipment_id}</code></td>
+<td><code>update_shipment</code></td>
+<td><code>shipment.update</code></td>
+<td><code>ShipmentUpdate</code></td>
+<td>none</td>
+<td><code>ShipmentRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:164</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/shipments/{shipment_id}/order-lines</code></td>
+<td><code>shipment_order_lines</code></td>
+<td><code>shipment.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>list[dict[str, Any]]</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:179</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/shipments/{shipment_id}/available-units</code></td>
+<td><code>shipment_available_units</code></td>
+<td><code>shipment.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>list[dict[str, Any]]</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:192</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/shipments/{shipment_id}/ready</code></td>
+<td><code>ready_shipment</code></td>
+<td><code>shipment.update</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>ShipmentRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:208</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/shipments/{shipment_id}/ship</code></td>
+<td><code>ship_shipment</code></td>
+<td><code>shipment.dispatch</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>ShipmentRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:219</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/shipments/{shipment_id}/in-transit</code></td>
+<td><code>in_transit_shipment</code></td>
+<td><code>shipment.update</code></td>
+<td><code>InTransitBody</code></td>
+<td>none</td>
+<td><code>ShipmentRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:230</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/shipments/{shipment_id}/deliver</code></td>
+<td><code>deliver_shipment</code></td>
+<td><code>shipment.deliver</code></td>
+<td><code>DeliverBody \| None</code></td>
+<td>none</td>
+<td><code>ShipmentRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:242</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/shipments/{shipment_id}/hold</code></td>
+<td><code>hold_shipment</code></td>
+<td><code>shipment.update</code></td>
+<td><code>ReasonBody</code></td>
+<td>none</td>
+<td><code>ShipmentRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:254</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/shipments/{shipment_id}/resume</code></td>
+<td><code>resume_shipment</code></td>
+<td><code>shipment.update</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>ShipmentRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:266</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/shipments/{shipment_id}/cancel</code></td>
+<td><code>cancel_shipment</code></td>
+<td><code>shipment.cancel</code></td>
+<td><code>ReasonBody</code></td>
+<td>none</td>
+<td><code>ShipmentRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:277</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/shipment-lines/</code></td>
+<td><code>list_shipment_lines</code></td>
+<td><code>shipment_line.read</code></td>
+<td>none</td>
+<td><code>shipment_id</code></td>
+<td><code>list[ShipmentLineRead]</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:292</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/shipment-lines/{line_id}</code></td>
+<td><code>get_shipment_line</code></td>
+<td><code>shipment_line.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>ShipmentLineRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:303</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/shipments/{shipment_id}/lines</code></td>
+<td><code>add_shipment_line</code></td>
+<td><code>shipment_line.create</code></td>
+<td><code>ShipmentLineInput</code></td>
+<td>none</td>
+<td><code>ShipmentLineRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:316</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/shipment-lines/{line_id}</code></td>
+<td><code>update_shipment_line</code></td>
+<td><code>shipment_line.update</code></td>
+<td><code>ShipmentLineUpdate</code></td>
+<td>none</td>
+<td><code>ShipmentLineRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:332</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/shipment-lines/{line_id}</code></td>
+<td><code>remove_shipment_line</code></td>
+<td><code>shipment_line.delete</code></td>
+<td>none</td>
+<td>none</td>
+<td>none</td>
+<td><code>204</code></td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:344</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/shipment-units/</code></td>
+<td><code>list_shipment_units</code></td>
+<td><code>shipment_unit.read</code></td>
+<td>none</td>
+<td><code>shipment_id</code></td>
+<td><code>list[ShipmentUnitRead]</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:357</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/shipment-units/{row_id}</code></td>
+<td><code>get_shipment_unit</code></td>
+<td><code>shipment_unit.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>ShipmentUnitRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:368</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/shipments/{shipment_id}/units</code></td>
+<td><code>add_shipment_unit</code></td>
+<td><code>shipment_unit.create</code></td>
+<td><code>ShipmentUnitCreate</code></td>
+<td>none</td>
+<td><code>ShipmentUnitRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:381</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/shipment-units/{row_id}</code></td>
+<td><code>update_shipment_unit</code></td>
+<td><code>shipment_unit.update</code></td>
+<td><code>ShipmentUnitUpdate</code></td>
+<td>none</td>
+<td><code>ShipmentUnitRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:397</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/shipment-units/{row_id}</code></td>
+<td><code>remove_shipment_unit</code></td>
+<td><code>shipment_unit.delete</code></td>
+<td>none</td>
+<td>none</td>
+<td>none</td>
+<td><code>204</code></td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:409</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/packages/</code></td>
+<td><code>list_packages</code></td>
+<td><code>shipment_package.read</code></td>
+<td>none</td>
+<td><code>shipment_id</code></td>
+<td><code>list[PackageRead]</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:422</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/packages/{package_id}</code></td>
+<td><code>get_package</code></td>
+<td><code>shipment_package.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>PackageRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:433</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/shipments/{shipment_id}/packages</code></td>
+<td><code>add_package</code></td>
+<td><code>shipment_package.create</code></td>
+<td><code>PackageCreate</code></td>
+<td>none</td>
+<td><code>PackageRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:443</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/packages/{package_id}</code></td>
+<td><code>update_package</code></td>
+<td><code>shipment_package.update</code></td>
+<td><code>PackageUpdate</code></td>
+<td>none</td>
+<td><code>PackageRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:459</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/packages/{package_id}</code></td>
+<td><code>remove_package</code></td>
+<td><code>shipment_package.delete</code></td>
+<td>none</td>
+<td>none</td>
+<td>none</td>
+<td><code>204</code></td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:471</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/shipment-events/</code></td>
+<td><code>list_shipment_events</code></td>
+<td><code>shipment_event.read</code></td>
+<td>none</td>
+<td><code>shipment_id</code></td>
+<td><code>list[ShipmentEventRead]</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:484</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/shipment-events/{event_id}</code></td>
+<td><code>get_shipment_event</code></td>
+<td><code>shipment_event.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>ShipmentEventRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:495</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/shipments/{shipment_id}/events</code></td>
+<td><code>add_shipment_event</code></td>
+<td><code>shipment_event.create</code></td>
+<td><code>ShipmentEventCreate</code></td>
+<td>none</td>
+<td><code>ShipmentEventRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/routes.py:508</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="units-endpoints">Units endpoints<a class="headerlink" href="#units-endpoints">¶</a></h2>
+<p>Units of an order line and unit generation.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Handler</th>
+<th>Permission</th>
+<th>Request</th>
+<th>Query</th>
+<th>Response</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/units/</code></td>
+<td><code>list_units</code></td>
+<td><code>sales_order_unit.read</code></td>
+<td>none</td>
+<td><code>sales_order_id</code>, <code>sales_order_line_id</code>, <code>project_id</code>, <code>status</code>, <code>unshipped</code>, <code>search</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/units/routes.py:24</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/lines/{line_id}/units</code></td>
+<td><code>create_unit</code></td>
+<td><code>sales_order_unit.create</code></td>
+<td><code>UnitCreate</code></td>
+<td>none</td>
+<td><code>UnitRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/sales_orders/units/routes.py:56</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/lines/{line_id}/generate-units</code></td>
+<td><code>generate_units</code></td>
+<td><code>sales_order_unit.create</code></td>
+<td><code>GenerateUnitsBody</code></td>
+<td>none</td>
+<td><code>list[UnitRead]</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/sales_orders/units/routes.py:70</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/units/{unit_id}</code></td>
+<td><code>get_unit</code></td>
+<td><code>sales_order_unit.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>UnitRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/units/routes.py:86</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/units/{unit_id}</code></td>
+<td><code>update_unit</code></td>
+<td><code>sales_order_unit.update</code></td>
+<td><code>UnitUpdate</code></td>
+<td>none</td>
+<td><code>UnitRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/units/routes.py:99</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="trade-documents-endpoints">Trade documents endpoints<a class="headerlink" href="#trade-documents-endpoints">¶</a></h2>
+<p>Trade documents, download, and generation for a shipment.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Handler</th>
+<th>Permission</th>
+<th>Request</th>
+<th>Query</th>
+<th>Response</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/trade-documents/</code></td>
+<td><code>list_trade_documents</code></td>
+<td><code>trade_document.read</code></td>
+<td>none</td>
+<td><code>shipment_id</code>, <code>sales_order_id</code>, <code>doc_type</code>, <code>current_only</code>, <code>search</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/trade_documents/routes.py:37</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/trade-documents/{document_id}</code></td>
+<td><code>get_trade_document</code></td>
+<td><code>trade_document.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>TradeDocumentDetailRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/trade_documents/routes.py:68</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/trade-documents/{document_id}/download</code></td>
+<td><code>download_trade_document</code></td>
+<td><code>trade_document.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>Response</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/trade_documents/routes.py:84</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/shipments/{shipment_id}/generate-documents</code></td>
+<td><code>generate_documents</code></td>
+<td><code>trade_document.create</code></td>
+<td><code>GenerateDocumentsBody \| None</code></td>
+<td>none</td>
+<td><code>list[TradeDocumentRead]</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/sales_orders/trade_documents/routes.py:102</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="chain-settings-endpoints">Chain settings endpoints<a class="headerlink" href="#chain-settings-endpoints">¶</a></h2>
+<p>The order-to-shipment chain settings row.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Handler</th>
+<th>Permission</th>
+<th>Request</th>
+<th>Query</th>
+<th>Response</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sales_orders/settings/chain/</code></td>
+<td><code>list_chain_settings</code></td>
+<td><code>sales_order_settings.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>list[SalesOrderSettingsRead]</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/settings/routes.py:19</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sales_orders/settings/chain/{settings_id}</code></td>
+<td><code>get_chain_settings</code></td>
+<td><code>sales_order_settings.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>SalesOrderSettingsRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/settings/routes.py:30</code></td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>/api/v1/sales_orders/settings/chain/{settings_id}</code></td>
+<td><code>update_chain_settings</code></td>
+<td><code>sales_order_settings.update</code></td>
+<td><code>SalesOrderSettingsUpdate</code></td>
+<td>none</td>
+<td><code>SalesOrderSettingsRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/settings/routes.py:44</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="sales-orders-endpoints">Sales orders endpoints<a class="headerlink" href="#sales-orders-endpoints">¶</a></h2>
+<p>Orders created from a customer PO, PO checks, revision request and revised PO receipt, accept, status advance, cancel, hold, resume, milestones, and PO revisions.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Handler</th>
+<th>Permission</th>
+<th>Request</th>
+<th>Query</th>
+<th>Response</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/</code></td>
+<td><code>list_orders</code></td>
+<td><code>sales_order.read</code></td>
+<td>none</td>
+<td><code>search</code>, <code>status</code>, <code>customer_id</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/routes.py:52</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/from-po</code></td>
+<td><code>create_from_po</code></td>
+<td><code>sales_order.create</code></td>
+<td><code>SalesOrderCreate</code></td>
+<td>none</td>
+<td><code>SalesOrderRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/routes.py:86</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/{order_id}</code></td>
+<td><code>get_order</code></td>
+<td><code>sales_order.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>SalesOrderRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/routes.py:98</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/{order_id}/run-po-check</code></td>
+<td><code>run_po_check</code></td>
+<td><code>sales_order.create</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>PoCheckRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/routes.py:115</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/{order_id}/po-checks</code></td>
+<td><code>list_po_checks</code></td>
+<td><code>sales_order.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>list[PoCheckRead]</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/routes.py:130</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/{order_id}/request-revision</code></td>
+<td><code>request_revision</code></td>
+<td><code>sales_order.create</code></td>
+<td><code>RequestRevisionBody</code></td>
+<td>none</td>
+<td><code>SalesOrderRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/routes.py:148</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/{order_id}/receive-revised-po</code></td>
+<td><code>receive_revised_po</code></td>
+<td><code>sales_order.create</code></td>
+<td><code>SalesOrderCreate</code></td>
+<td>none</td>
+<td><code>SalesOrderRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/routes.py:164</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/{order_id}/accept</code></td>
+<td><code>accept_order</code></td>
+<td><code>sales_order.accept</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>SalesOrderRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/routes.py:183</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/{order_id}/advance/{target_status}</code></td>
+<td><code>advance_status</code></td>
+<td><code>sales_order.create</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>SalesOrderRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/routes.py:201</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/{order_id}/cancel</code></td>
+<td><code>cancel_order</code></td>
+<td><code>sales_order.cancel</code></td>
+<td><code>CancelOrderBody</code></td>
+<td>none</td>
+<td><code>SalesOrderRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/routes.py:220</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/{order_id}/hold</code></td>
+<td><code>hold_order</code></td>
+<td><code>sales_order.create</code></td>
+<td><code>HoldOrderBody</code></td>
+<td>none</td>
+<td><code>SalesOrderRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/routes.py:239</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/{order_id}/resume</code></td>
+<td><code>resume_order</code></td>
+<td><code>sales_order.create</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>SalesOrderRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/routes.py:255</code></td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/{order_id}</code></td>
+<td><code>update_order</code></td>
+<td><code>sales_order.create</code></td>
+<td><code>SalesOrderUpdate</code></td>
+<td>none</td>
+<td><code>SalesOrderRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/routes.py:273</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/{order_id}/milestones</code></td>
+<td><code>list_milestones</code></td>
+<td><code>sales_order.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>list[MilestoneRead]</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/routes.py:292</code></td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/{order_id}/milestones/{milestone_type}</code></td>
+<td><code>update_milestone</code></td>
+<td><code>sales_order.create</code></td>
+<td><code>MilestoneUpdate</code></td>
+<td>none</td>
+<td><code>MilestoneRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/routes.py:307</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/{order_id}/po-revisions</code></td>
+<td><code>list_po_revisions</code></td>
+<td><code>po_revision.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>list[PoRevisionRead]</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/routes.py:327</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/po-revisions/{revision_id}</code></td>
+<td><code>get_po_revision</code></td>
+<td><code>po_revision.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>PoRevisionDetailRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/routes.py:338</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="order-lines-endpoints">Order lines endpoints<a class="headerlink" href="#order-lines-endpoints">¶</a></h2>
+<p>Lines of an order and BOM creation for a line.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Handler</th>
+<th>Permission</th>
+<th>Request</th>
+<th>Query</th>
+<th>Response</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/{order_id}/lines</code></td>
+<td><code>list_order_lines</code></td>
+<td><code>sales_order.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>list[SalesOrderLineRead]</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/order_lines/routes.py:27</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/{order_id}/lines</code></td>
+<td><code>create_order_line</code></td>
+<td><code>sales_order.create</code></td>
+<td><code>SalesOrderLineCreate</code></td>
+<td>none</td>
+<td><code>SalesOrderLineRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/sales_orders/order_lines/routes.py:42</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/lines/{line_id}</code></td>
+<td><code>get_order_line</code></td>
+<td><code>sales_order.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>SalesOrderLineRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/order_lines/routes.py:59</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/lines/{line_id}</code></td>
+<td><code>update_order_line</code></td>
+<td><code>sales_order.create</code></td>
+<td><code>SalesOrderLineUpdate</code></td>
+<td>none</td>
+<td><code>SalesOrderLineRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/order_lines/routes.py:75</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/lines/{line_id}</code></td>
+<td><code>delete_order_line</code></td>
+<td><code>sales_order.delete</code></td>
+<td>none</td>
+<td>none</td>
+<td>none</td>
+<td><code>204</code></td>
+<td><code>src/cluster_erp/modules/sales_orders/order_lines/routes.py:91</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/lines/{line_id}/create-bom</code></td>
+<td><code>create_bom_for_order_line</code></td>
+<td><code>CreateBomForProduct.REQUIRED_PERMISSION</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>dict</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/order_lines/routes.py:106</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/sales_orders/sales-orders/lines/bulk-delete</code></td>
+<td><code>bulk_delete_order_lines</code></td>
+<td><code>sales_order.bulk_delete</code></td>
+<td><code>BulkDeleteRequest</code></td>
+<td>none</td>
+<td><code>BulkDeleteResponse</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/sales_orders/order_lines/routes.py:165</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="error-codes">Error codes<a class="headerlink" href="#error-codes">¶</a></h2>
+<p>The table lists the error codes that code under <code>src/cluster_erp/modules/sales_orders/</code> raises, found by a syntax-tree scan for <code>AppError(...)</code>, the factories in <code>src/cluster_erp/core/errors.py</code> (<code>not_found</code>, <code>conflict</code>, <code>protected</code>, <code>permission_denied</code>, <code>privilege_escalation</code>, <code>check_version</code>), and <code>HTTPException(...)</code>. A status of <code>400</code> is the <code>AppError</code> default (<code>src/cluster_erp/core/errors.py:23</code>). Guard errors (<code>401</code>, <code>403</code>), the entitlement codes, and validation errors (<code>422</code>) apply to every route and are listed on <a href="errors.html">Errors</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>HTTP status</th>
+<th>Raised in</th>
+<th>First site</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CONCURRENCY_VERSION_CONFLICT</code></td>
+<td><code>409</code></td>
+<td><code>order_lines</code>, <code>orders</code>, <code>settings</code>, <code>shipments</code>, <code>units</code></td>
+<td><code>src/cluster_erp/modules/sales_orders/order_lines/services.py:103</code></td>
+</tr>
+<tr>
+<td><code>ORDER_INVALID_STATUS</code></td>
+<td><code>400</code>, <code>409</code>, <code>422</code></td>
+<td><code>orders</code>, <code>shipments</code></td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/services.py:194</code></td>
+</tr>
+<tr>
+<td><code>ORDER_PO_CHECK_REQUIRED</code></td>
+<td><code>400</code></td>
+<td><code>orders</code></td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/services.py:603</code></td>
+</tr>
+<tr>
+<td><code>RESOURCE_CONFLICT</code></td>
+<td><code>409</code></td>
+<td><code>units</code></td>
+<td><code>src/cluster_erp/modules/sales_orders/units/services.py:187</code></td>
+</tr>
+<tr>
+<td><code>RESOURCE_NOT_FOUND</code></td>
+<td><code>404</code></td>
+<td><code>order_lines</code>, <code>orders</code>, <code>settings</code>, <code>shipments</code>, <code>trade_documents</code>, <code>units</code></td>
+<td><code>src/cluster_erp/modules/sales_orders/order_lines/routes.py:71</code></td>
+</tr>
+<tr>
+<td><code>SALES_DELIVERY_NON_WORKING</code></td>
+<td><code>422</code></td>
+<td><code>orders</code></td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/services.py:108</code></td>
+</tr>
+<tr>
+<td><code>SALES_ORDER_LINE_NO_PRODUCT</code></td>
+<td><code>422</code></td>
+<td><code>order_lines</code></td>
+<td><code>src/cluster_erp/modules/sales_orders/order_lines/routes.py:143</code></td>
+</tr>
+<tr>
+<td><code>SHIPMENT_CHECK_FAILED</code></td>
+<td><code>409</code>, <code>422</code></td>
+<td><code>shipments</code></td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/services.py:810</code></td>
+</tr>
+<tr>
+<td><code>SHIPMENT_INVALID_STATUS</code></td>
+<td><code>400</code></td>
+<td><code>shipments</code></td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/services.py:1062</code></td>
+</tr>
+<tr>
+<td><code>TRADE_DOCUMENT_BLOCKED</code></td>
+<td><code>404</code>, <code>422</code></td>
+<td><code>trade_documents</code></td>
+<td><code>src/cluster_erp/modules/sales_orders/trade_documents/services.py:66</code></td>
+</tr>
+<tr>
+<td><code>UNIT_FROZEN</code></td>
+<td><code>409</code></td>
+<td><code>units</code></td>
+<td><code>src/cluster_erp/modules/sales_orders/units/services.py:283</code></td>
+</tr>
+<tr>
+<td><code>UNIT_LIMIT_EXCEEDED</code></td>
+<td><code>409</code>, <code>422</code></td>
+<td><code>units</code></td>
+<td><code>src/cluster_erp/modules/sales_orders/units/services.py:201</code></td>
+</tr>
+<tr>
+<td><code>VALIDATION_ERROR</code></td>
+<td><code>404</code>, <code>422</code></td>
+<td><code>settings</code></td>
+<td><code>src/cluster_erp/modules/sales_orders/settings/services.py:28</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="events-emitted">Events emitted<a class="headerlink" href="#events-emitted">¶</a></h2>
+<p>The table lists the contract classes that code under <code>src/cluster_erp/modules/sales_orders/</code> passes directly to <code>EventBus.emit</code>, found by a syntax-tree scan. Events built in a variable first are not counted. The contracts are described in <a href="../platform/contracts-reference.html">Contracts reference</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Sites</th>
+<th>First site</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SalesOrderCancelled</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/services.py:737</code></td>
+</tr>
+<tr>
+<td><code>SalesOrderClosed</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/services.py:684</code></td>
+</tr>
+<tr>
+<td><code>SalesOrderDelivered</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/services.py:674</code></td>
+</tr>
+<tr>
+<td><code>SalesOrderMatched</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/services.py:451</code></td>
+</tr>
+<tr>
+<td><code>SalesOrderMismatchDetected</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/services.py:439</code></td>
+</tr>
+<tr>
+<td><code>SalesOrderOpened</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/services.py:635</code></td>
+</tr>
+<tr>
+<td><code>SalesOrderPartiallyShipped</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/services.py:1371</code></td>
+</tr>
+<tr>
+<td><code>SalesOrderPoReceived</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/services.py:330</code></td>
+</tr>
+<tr>
+<td><code>SalesOrderRevisionRequested</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/services.py:487</code></td>
+</tr>
+<tr>
+<td><code>SalesOrderShipped</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/services.py:664</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="index.html">API reference</a></li>
+<li><a href="../modules/sales_orders/index.html">Sales orders module</a></li>
+<li><a href="conventions.html">API conventions</a></li>
+<li><a href="errors.html">Errors</a></li>
+<li><a href="authentication-and-headers.html">Authentication and headers</a></li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../api/records.html"><span class="eyebrow">Previous</span><span>Records API (records)</span></a><a class="next" href="../api/server-routes.html"><span class="eyebrow">Next</span><span>Shared server routes API</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#group-facts">Group facts</a></li>
+<li class="lvl2"><a href="#endpoint-summary">Endpoint summary</a></li>
+<li class="lvl2"><a href="#shipments-endpoints">Shipments endpoints</a></li>
+<li class="lvl2"><a href="#units-endpoints">Units endpoints</a></li>
+<li class="lvl2"><a href="#trade-documents-endpoints">Trade documents endpoints</a></li>
+<li class="lvl2"><a href="#chain-settings-endpoints">Chain settings endpoints</a></li>
+<li class="lvl2"><a href="#sales-orders-endpoints">Sales orders endpoints</a></li>
+<li class="lvl2"><a href="#order-lines-endpoints">Order lines endpoints</a></li>
+<li class="lvl2"><a href="#error-codes">Error codes</a></li>
+<li class="lvl2"><a href="#events-emitted">Events emitted</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

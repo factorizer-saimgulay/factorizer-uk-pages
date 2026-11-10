@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API client and workers · Cluster ERP Wiki</title>
+<meta name="description" content="How the desktop client calls the server through ApiClient, runs calls in QThread workers with ApiMixin, maps errors, and builds entity calls with GenericApi.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../desktop/api-client-and-workers.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.html">Overview</a></li>
+<li class=""><a href="../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.html">Platform core</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../platform/change-history.html">Change history</a></li>
+<li class=""><a href="../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../platform/event-bus.html">Event bus</a></li>
+<li class=""><a href="../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class=""><a href="../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../web-app/generic-form.html">Generic form</a></li>
+<li class=""><a href="../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class=""><a href="../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.html">Desktop client</a></li>
+<li class="current"><a href="../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class=""><a href="../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.html">Business modules</a></li>
+<li class=""><a href="../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class=""><a href="../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../modules/auth.html">Auth module (auth)</a></li>
+<li class=""><a href="../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class=""><a href="../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class=""><a href="../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../modules/intranet/requests.html">Intranet requests</a></li>
+<li class=""><a href="../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../modules/mail.html">Mail module (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class=""><a href="../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../modules/production/work-orders.html">Work orders</a></li>
+<li class=""><a href="../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.html">API reference</a></li>
+<li class=""><a href="../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.html">Documents API (documents)</a></li>
+<li class=""><a href="../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.html">API overview</a></li>
+<li class=""><a href="../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class=""><a href="../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.html">Operations</a></li>
+<li class=""><a href="../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class=""><a href="../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class=""><a href="../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.html">Reference</a></li>
+<li class=""><a href="../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.html">Home</a> / Desktop client</div>
+    <header class="page-head">
+      <p class="eyebrow">Explanation</p>
+      <h1>API client and workers</h1>
+      <p class="lede">How the desktop client calls the server through ApiClient, runs calls in QThread workers with ApiMixin, maps errors, and builds entity calls with GenericApi.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#in-short">In short</a></li>
+<li class="lvl2"><a href="#how-it-works">How it works</a></li>
+<li class="lvl3"><a href="#the-api-client">The API client</a></li>
+<li class="lvl3"><a href="#error-classes">Error classes</a></li>
+<li class="lvl3"><a href="#worker-thread-model">Worker thread model</a></li>
+<li class="lvl3"><a href="#localised-error-messages">Localised error messages</a></li>
+<li class="lvl3"><a href="#the-genericapi-class">The GenericApi class</a></li>
+<li class="lvl3"><a href="#shared-wrappers">Shared wrappers</a></li>
+<li class="lvl2"><a href="#why-it-is-built-this-way">Why it is built this way</a></li>
+<li class="lvl2"><a href="#rules-and-boundaries">Rules and boundaries</a></li>
+<li class="lvl2"><a href="#interaction-with-other-parts">Interaction with other parts</a></li>
+<li class="lvl2"><a href="#limits-and-open-points">Limits and open points</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p>This page explains how the desktop client reaches the server API. It covers <code>core/api_client.py</code> (<code>ApiClient</code> and its error classes), <code>core/api_worker.py</code> (<code>ApiWorker</code>, <code>ApiMixin</code>, <code>format_api_error</code>), <code>core/generic_api.py</code> (<code>GenericApi</code>), and <code>core/core_api.py</code> (notes, attachments, and e-mail wrappers), all under <code>src/cluster_erp/desktop/</code>. The change signals that mutations emit are described on <a href="signal-bus-and-watch-entity.html">signal bus and watch_entity</a>.</p>
+<h2 id="in-short">In short<a class="headerlink" href="#in-short">¶</a></h2>
+<ul>
+<li>One <code>ApiClient</code> wraps one <code>httpx.Client</code> with a 30-second timeout, a base address, and an <code>Accept-Language</code> header (<code>src/cluster_erp/desktop/core/api_client.py:80-96</code>).</li>
+<li>Screens run calls in <code>ApiWorker</code>, a <code>QThread</code>, through <code>ApiMixin.call_api</code>. Results and errors come back as Qt signals (<code>src/cluster_erp/desktop/core/api_worker.py:28-65</code>, <code>src/cluster_erp/desktop/core/api_worker.py:187-259</code>).</li>
+<li>A mutation called with an <code>entity</code> descriptor emits a change signal after the server answers (<code>src/cluster_erp/desktop/core/api_client.py:223-294</code>).</li>
+<li>HTTP errors become typed exceptions, and <code>format_api_error</code> turns them into a message in the user's language (<code>src/cluster_erp/desktop/core/api_client.py:55-77</code>, <code>src/cluster_erp/desktop/core/api_worker.py:108-176</code>).</li>
+<li><code>GenericApi</code> builds every entity path from the endpoint declarations in the metadata (<code>src/cluster_erp/desktop/core/generic_api.py:24-31</code>).</li>
+</ul>
+<h2 id="how-it-works">How it works<a class="headerlink" href="#how-it-works">¶</a></h2>
+<h3 id="the-api-client">The API client<a class="headerlink" href="#the-api-client">¶</a></h3>
+<p><code>ApiClient.__init__</code> creates the <code>httpx.Client</code> with the base address, a 30-second timeout, redirects followed, and <code>Accept-Language</code> set to <code>en</code> (<code>src/cluster_erp/desktop/core/api_client.py:81-91</code>). <code>main()</code> then sets the language of the translator, and every language change updates the header (<code>src/cluster_erp/desktop/main.py:169-172</code>, <code>src/cluster_erp/desktop/core/api_client.py:110-112</code>). <code>set_base_url</code> replaces the <code>httpx.Client</code> and keeps its headers (<code>src/cluster_erp/desktop/core/api_client.py:98-108</code>).</p>
+<p><code>login</code> posts the user name and the password to <code>/auth/login</code>. On success it keeps the access token, the refresh token, the user, and the permission list in memory and attaches the access token to every later request (<code>src/cluster_erp/desktop/core/api_client.py:134-163</code>). The tokens are not written to the settings store: the only settings keys the client writes are listed on <a href="i18n-themes-and-accessibility.html">languages, themes, and accessibility</a>. <code>logout</code> clears all four in memory (<code>src/cluster_erp/desktop/core/api_client.py:165-171</code>). Token handling on the server is described on <a href="../identity-access/authentication-and-sessions.html">authentication and sessions</a>.</p>
+<p><code>_request</code> sends one request. When the answer is 401, it calls <code>_try_refresh_token</code> once and repeats the request once if the refresh worked (<code>src/cluster_erp/desktop/core/api_client.py:335-349</code>). A failed refresh clears the tokens and emits <code>session_expired</code> on the signal bus (<code>src/cluster_erp/desktop/core/api_client.py:173-211</code>). A 204 answer returns <code>None</code>; any other success returns the parsed JSON (<code>src/cluster_erp/desktop/core/api_client.py:350-353</code>). <code>download</code> follows the same refresh rule and returns the bytes, the content type, and the file name (<code>src/cluster_erp/desktop/core/api_client.py:296-324</code>).</p>
+<p>The lock in <code>ApiClient</code> is held only to read the current <code>httpx.Client</code> and around a token refresh, not for the whole round trip. The comment states that a slow background request would otherwise freeze calls from the GUI thread (<code>src/cluster_erp/desktop/core/api_client.py:336-341</code>).</p>
+<h3 id="error-classes">Error classes<a class="headerlink" href="#error-classes">¶</a></h3>
+<p><code>_parse_error_response</code> maps the status code to an exception class and reads the server's error body. A body with an <code>error</code> object fills <code>message</code>, <code>code</code>, <code>trace_id</code>, and <code>details</code>; another body fills only the message from <code>detail</code> (<code>src/cluster_erp/desktop/core/api_client.py:64-77</code>). A transport failure raises <code>ApiError</code> with status 0 and code <code>CONNECTION_ERROR</code> (<code>src/cluster_erp/desktop/core/api_client.py:359-364</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Exception</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>401</td>
+<td><code>AuthenticationError</code></td>
+<td><code>src/cluster_erp/desktop/core/api_client.py:56</code></td>
+</tr>
+<tr>
+<td>403</td>
+<td><code>ForbiddenError</code></td>
+<td><code>src/cluster_erp/desktop/core/api_client.py:57</code></td>
+</tr>
+<tr>
+<td>404</td>
+<td><code>NotFoundError</code></td>
+<td><code>src/cluster_erp/desktop/core/api_client.py:58</code></td>
+</tr>
+<tr>
+<td>409</td>
+<td><code>ConflictError</code></td>
+<td><code>src/cluster_erp/desktop/core/api_client.py:59</code></td>
+</tr>
+<tr>
+<td>422</td>
+<td><code>ValidationError</code></td>
+<td><code>src/cluster_erp/desktop/core/api_client.py:60</code></td>
+</tr>
+<tr>
+<td>any other error status</td>
+<td><code>ServerError</code></td>
+<td><code>src/cluster_erp/desktop/core/api_client.py:65</code></td>
+</tr>
+<tr>
+<td>no HTTP answer</td>
+<td><code>ApiError</code> with code <code>CONNECTION_ERROR</code></td>
+<td><code>src/cluster_erp/desktop/core/api_client.py:359-364</code></td>
+</tr>
+</tbody>
+</table>
+<p>The server's error codes are listed on <a href="../platform/errors-and-exceptions.html">errors and exceptions</a>.</p>
+<h3 id="worker-thread-model">Worker thread model<a class="headerlink" href="#worker-thread-model">¶</a></h3>
+<p>The diagram shows one call from a screen that mixes in <code>ApiMixin</code>.</p>
+<figure class="diagram"><pre class="mermaid">sequenceDiagram
+  participant V as Screen with ApiMixin
+  participant W as ApiWorker QThread
+  participant A as ApiClient
+  participant S as Server
+  V-&gt;&gt;W: call_api(func, args, on_success, on_error)
+  V-&gt;&gt;W: start
+  W-&gt;&gt;A: func(args)
+  A-&gt;&gt;S: HTTP request
+  S--&gt;&gt;A: response
+  A--&gt;&gt;W: result or ApiError
+  W--&gt;&gt;V: finished(result) or error(msg, status, code, details, trace_id)
+  V-&gt;&gt;V: liveness check, then on_success or on_error or toast
+  V-&gt;&gt;V: remove worker from the list</pre></figure>
+<p>In words:</p>
+<ol>
+<li><code>call_api</code> creates an <code>ApiWorker</code> with the function and its arguments, connects the callbacks, adds the worker to the screen's list, and starts it (<code>src/cluster_erp/desktop/core/api_worker.py:187-259</code>).</li>
+<li><code>ApiWorker.run</code> calls the function on the worker thread. It emits <code>finished</code> with the result, or <code>error</code> with the message, the status, the code, the details, and the trace id (<code>src/cluster_erp/desktop/core/api_worker.py:43-65</code>).</li>
+<li>Every callback first checks that the screen's Qt object still exists. The comment states that a closed tab would otherwise raise an error for a deleted object (<code>src/cluster_erp/desktop/core/api_worker.py:197-209</code>).</li>
+<li>On an error, <code>format_api_error</code> builds a localised message. If the screen gave no <code>on_error</code>, the message appears as an error toast (<code>src/cluster_erp/desktop/core/api_worker.py:219-249</code>).</li>
+<li>When the screen is destroyed, <code>_stop_all_workers</code> waits up to 5,000 ms for each running worker and never terminates one (<code>src/cluster_erp/desktop/core/api_worker.py:25</code>, <code>src/cluster_erp/desktop/core/api_worker.py:265-289</code>).</li>
+</ol>
+<p>Thirty-three classes under <code>src/cluster_erp/desktop/</code> mix in <code>ApiMixin</code>, counted by searching for class definitions that name <code>ApiMixin</code>. Two places create <code>ApiWorker</code> directly: the sign-in dialog and the status bar (<code>src/cluster_erp/desktop/widgets/login_dialog.py:306</code>, <code>src/cluster_erp/desktop/widgets/status_bar.py:57</code>).</p>
+<h3 id="localised-error-messages">Localised error messages<a class="headerlink" href="#localised-error-messages">¶</a></h3>
+<p><code>format_api_error</code> chooses the message in this order (<code>src/cluster_erp/desktop/core/api_worker.py:108-176</code>):</p>
+<ol>
+<li>For <code>VALIDATION_ERROR</code> with a <code>fields</code> list, one line per field, with the field label from <code>field.&lt;name&gt;</code> and the reason mapped through <code>_REASON_KEYS</code> (<code>src/cluster_erp/desktop/core/api_worker.py:85-105</code>, <code>src/cluster_erp/desktop/core/api_worker.py:123-132</code>).</li>
+<li>For a <code>details.missing</code> list, one line per missing item, with the label in the current language (<code>src/cluster_erp/desktop/core/api_worker.py:134-146</code>).</li>
+<li>The translation of <code>error.&lt;code&gt;</code>, filled with the scalar details. A <code>resource</code> detail is translated through <code>resource.&lt;name&gt;</code> (<code>src/cluster_erp/desktop/core/api_worker.py:148-165</code>).</li>
+<li>The translation of <code>error.unknown</code> (<code>src/cluster_erp/desktop/core/api_worker.py:167-168</code>).</li>
+</ol>
+<p>A trace id, when present, is appended on its own line (<code>src/cluster_erp/desktop/core/api_worker.py:170-174</code>).</p>
+<h3 id="the-genericapi-class">The GenericApi class<a class="headerlink" href="#the-genericapi-class">¶</a></h3>
+<p><code>GenericApi(client, module_name, entity_meta)</code> prefixes every path with <code>/&lt;module&gt;</code> and replaces <code>{id}</code>, <code>{parent_id}</code>, and <code>{scope_id}</code> placeholders. An endpoint key that the metadata does not declare raises <code>ValueError</code> (<code>src/cluster_erp/desktop/core/generic_api.py:10-31</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>HTTP call</th>
+<th>Change signal</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>list</code></td>
+<td><code>GET</code> of the chosen list endpoint with <code>search</code>, <code>limit</code> and <code>offset</code> when the list view is paginated, the parent and scope filters, and extra filters</td>
+<td>none</td>
+<td><code>src/cluster_erp/desktop/core/generic_api.py:33-61</code></td>
+</tr>
+<tr>
+<td><code>get</code></td>
+<td><code>GET</code> of the <code>get</code> endpoint</td>
+<td>none</td>
+<td><code>src/cluster_erp/desktop/core/generic_api.py:63-65</code></td>
+</tr>
+<tr>
+<td><code>create</code></td>
+<td><code>POST</code> of the <code>create</code> endpoint</td>
+<td><code>entity_created</code></td>
+<td><code>src/cluster_erp/desktop/core/generic_api.py:67-73</code></td>
+</tr>
+<tr>
+<td><code>update</code></td>
+<td><code>PATCH</code> when the <code>update</code> endpoint declares it, otherwise <code>PUT</code></td>
+<td><code>entity_updated</code></td>
+<td><code>src/cluster_erp/desktop/core/generic_api.py:75-84</code></td>
+</tr>
+<tr>
+<td><code>delete</code></td>
+<td><code>DELETE</code> of the <code>delete</code> endpoint</td>
+<td><code>entity_deleted</code></td>
+<td><code>src/cluster_erp/desktop/core/generic_api.py:86-88</code></td>
+</tr>
+<tr>
+<td><code>bulk_delete</code></td>
+<td><code>POST</code> of the <code>bulk_delete</code> endpoint with <code>{ids}</code></td>
+<td><code>entity_created</code></td>
+<td><code>src/cluster_erp/desktop/core/generic_api.py:92-99</code></td>
+</tr>
+<tr>
+<td><code>execute_action</code></td>
+<td><code>POST</code> or <code>GET</code> of an action endpoint</td>
+<td><code>entity_created</code> for <code>POST</code></td>
+<td><code>src/cluster_erp/desktop/core/generic_api.py:101-122</code></td>
+</tr>
+</tbody>
+</table>
+<p>A server-side delete is a deactivation; see <a href="../platform/soft-delete-and-deactivation.html">soft delete and deactivation</a>. <code>GenericApi.delete</code> sends no deactivation reason.</p>
+<h3 id="shared-wrappers">Shared wrappers<a class="headerlink" href="#shared-wrappers">¶</a></h3>
+<p><code>core_api.py</code> holds three wrappers that screens use for cross-cutting features.</p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Calls</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>NotesApi</code></td>
+<td><code>/notes/{entity_type}/{entity_id}</code>, <code>/notes/count/...</code>, <code>POST /notes/</code>, <code>PUT</code> and <code>DELETE /notes/{id}</code>, <code>POST /notes/bulk-delete</code></td>
+<td><code>src/cluster_erp/desktop/core/core_api.py:9-42</code></td>
+</tr>
+<tr>
+<td><code>AttachmentsApi</code></td>
+<td>list, count, multipart upload, download, metadata update, file replace, delete, bulk delete under <code>/attachments/</code></td>
+<td><code>src/cluster_erp/desktop/core/core_api.py:45-107</code></td>
+</tr>
+<tr>
+<td><code>EmailApi</code></td>
+<td><code>POST /email/resolve</code>, <code>POST /email/send-records</code>, <code>POST /email/send</code></td>
+<td><code>src/cluster_erp/desktop/core/core_api.py:110-174</code></td>
+</tr>
+</tbody>
+</table>
+<p>The server side of notes and attachments is on <a href="../platform/attachments-notes-and-storage.html">attachments, notes, and storage</a>. The e-mail routes are on <a href="../platform/pdf-and-system-mail.html">PDF and system mail</a>.</p>
+<h2 id="why-it-is-built-this-way">Why it is built this way<a class="headerlink" href="#why-it-is-built-this-way">¶</a></h2>
+<ul>
+<li>Worker threads instead of an event loop: the project's written engineering rules state that the client uses an <code>httpx</code> synchronous client with <code>QThread</code> workers and avoids an async event loop to avoid complexity.</li>
+<li>No forced worker termination: the comment in <code>src/cluster_erp/desktop/core/api_worker.py:277-283</code> states that terminating a blocked worker would leave the client lock held and block every later call.</li>
+<li>The update verb from metadata: the comment in <code>src/cluster_erp/desktop/core/generic_api.py:77-78</code> states that the web client reads the same declaration.</li>
+</ul>
+<h2 id="rules-and-boundaries">Rules and boundaries<a class="headerlink" href="#rules-and-boundaries">¶</a></h2>
+<ul>
+<li>Paths for metadata-driven entities come from the metadata. <code>GenericApi._path</code> refuses an undeclared endpoint key (<code>src/cluster_erp/desktop/core/generic_api.py:24-28</code>).</li>
+<li>Permission checks in the client are display aids. <code>has_permission</code> answers from the list returned at sign-in (<code>src/cluster_erp/desktop/core/api_client.py:131-132</code>); the server enforces every permission, see <a href="../identity-access/roles-and-permissions.html">roles and permissions</a>.</li>
+</ul>
+<aside class="adm adm-warning" role="note"><p class="adm-title">Warning</p><p>Discrepancy. The project's written engineering rules describe the mutation parameter as <code>entity=("module", "entity_type")</code>, a tuple. The code takes an <code>EntityDescriptor</code>, a frozen dataclass with <code>module</code> and <code>entity_type</code> (<code>src/cluster_erp/desktop/core/entity_types.py:6-9</code>, <code>src/cluster_erp/desktop/core/api_client.py:223-229</code>). This page documents the code.</p>
+</aside>
+<h2 id="interaction-with-other-parts">Interaction with other parts<a class="headerlink" href="#interaction-with-other-parts">¶</a></h2>
+<ul>
+<li>Every screen built from metadata uses <code>GenericApi</code>; see <a href="generic-widgets.html">generic widgets</a>.</li>
+<li><code>FkCache</code> calls <code>ApiClient.get</code> directly to load option lists; see <a href="metadata-store-and-fk-cache.html">metadata store and foreign-key cache</a>.</li>
+<li>Hand-written screens call <code>ApiClient</code> directly, most of them through <code>call_api</code>; see <a href="module-screens.html">module screens</a>.</li>
+</ul>
+<h2 id="limits-and-open-points">Limits and open points<a class="headerlink" href="#limits-and-open-points">¶</a></h2>
+<ul>
+<li>Some calls run on the GUI thread without a worker: the metadata load at start-up (<code>src/cluster_erp/desktop/main.py:196-200</code>), foreign-key option loads (<code>src/cluster_erp/desktop/widgets/generic/generic_form.py:328-343</code>), and the chat widget's list and count queries (<code>src/cluster_erp/desktop/widgets/chat/chat_widget.py:1651</code>, <code>src/cluster_erp/desktop/widgets/chat/chat_widget.py:1758</code>).</li>
+<li><code>bulk_delete</code> emits <code>entity_deleted</code> once per id after the call, and <code>execute_action</code> with <code>POST</code> emits <code>entity_updated</code> for a record action or <code>entity_created</code> for an action without a target; both call <code>emit_entity_change</code> themselves (<code>src/cluster_erp/desktop/core/generic_api.py:92-99</code>, <code>src/cluster_erp/desktop/core/generic_api.py:101-121</code>).</li>
+<li><code>execute_action</code> sends <code>GET</code> for every method other than <code>POST</code> (<code>src/cluster_erp/desktop/core/generic_api.py:113-122</code>). List screens use their own action helper that also handles <code>PUT</code> (<code>src/cluster_erp/desktop/widgets/generic/generic_list_view.py:774-787</code>).</li>
+<li>The comment in <code>src/cluster_erp/desktop/core/api_worker.py:277-280</code> says a blocked worker holds the client lock for the whole request. <code>_request</code> holds the lock only around reading the client and around a refresh (<code>src/cluster_erp/desktop/core/api_client.py:336-347</code>).</li>
+</ul>
+<h2 id="terms-introduced">Terms introduced<a class="headerlink" href="#terms-introduced">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Code identifier</th>
+<th>Definition</th>
+<th>Turkish term</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>API client</td>
+<td><code>ApiClient</code></td>
+<td>The desktop object that sends every HTTP request, holds the session in memory, and emits change signals.</td>
+<td>API istemcisi</td>
+<td><code>src/cluster_erp/desktop/core/api_client.py:80</code></td>
+</tr>
+<tr>
+<td>API worker</td>
+<td><code>ApiWorker</code></td>
+<td>A <code>QThread</code> that runs one API call and reports the result or the error as a signal.</td>
+<td>API çalışanı</td>
+<td><code>src/cluster_erp/desktop/core/api_worker.py:28</code></td>
+</tr>
+<tr>
+<td>API mixin</td>
+<td><code>ApiMixin</code></td>
+<td>The mixin that gives a widget <code>call_api</code> and stops its workers when the widget is destroyed.</td>
+<td>API karışımı</td>
+<td><code>src/cluster_erp/desktop/core/api_worker.py:179</code></td>
+</tr>
+<tr>
+<td>entity descriptor</td>
+<td><code>EntityDescriptor</code></td>
+<td>A frozen pair of module name and entity type that names the subject of a change signal.</td>
+<td>varlık tanımlayıcı</td>
+<td><code>src/cluster_erp/desktop/core/entity_types.py:7</code></td>
+</tr>
+<tr>
+<td>generic API (desktop)</td>
+<td><code>GenericApi</code></td>
+<td>The desktop class that builds entity calls from metadata endpoint declarations.</td>
+<td>genel API</td>
+<td><code>src/cluster_erp/desktop/core/generic_api.py:10</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="index.html">Desktop client</a></li>
+<li><a href="signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li><a href="generic-widgets.html">Generic widgets</a></li>
+<li><a href="../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li><a href="../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../desktop/index.html"><span class="eyebrow">Previous</span><span>Desktop client</span></a><a class="next" href="../desktop/chat-widget.html"><span class="eyebrow">Next</span><span>Chat widget</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#in-short">In short</a></li>
+<li class="lvl2"><a href="#how-it-works">How it works</a></li>
+<li class="lvl3"><a href="#the-api-client">The API client</a></li>
+<li class="lvl3"><a href="#error-classes">Error classes</a></li>
+<li class="lvl3"><a href="#worker-thread-model">Worker thread model</a></li>
+<li class="lvl3"><a href="#localised-error-messages">Localised error messages</a></li>
+<li class="lvl3"><a href="#the-genericapi-class">The GenericApi class</a></li>
+<li class="lvl3"><a href="#shared-wrappers">Shared wrappers</a></li>
+<li class="lvl2"><a href="#why-it-is-built-this-way">Why it is built this way</a></li>
+<li class="lvl2"><a href="#rules-and-boundaries">Rules and boundaries</a></li>
+<li class="lvl2"><a href="#interaction-with-other-parts">Interaction with other parts</a></li>
+<li class="lvl2"><a href="#limits-and-open-points">Limits and open points</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fleet meters and fuel · Cluster ERP Wiki</title>
+<meta name="description" content="Reference for the meters and fuel sub-modules of fleet, with the reading ledger, fuel entries, compliance obligations, penalties, and inspection periods.">
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="icon" href="../../assets/mark.svg" type="image/svg+xml">
+<script defer src="../../assets/mermaid.min.js"></script>
+<script defer src="../../assets/site.js" data-root="../../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../../modules/fleet/meters-and-fuel.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../../overview/index.html">Overview</a></li>
+<li class=""><a href="../../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../../platform/index.html">Platform core</a></li>
+<li class=""><a href="../../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../../platform/change-history.html">Change history</a></li>
+<li class=""><a href="../../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../../platform/event-bus.html">Event bus</a></li>
+<li class=""><a href="../../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class=""><a href="../../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class=""><a href="../../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class=""><a href="../../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class=""><a href="../../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../../web-app/generic-form.html">Generic form</a></li>
+<li class=""><a href="../../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class=""><a href="../../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../../desktop/index.html">Desktop client</a></li>
+<li class=""><a href="../../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class=""><a href="../../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class=""><a href="../../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../../modules/index.html">Business modules</a></li>
+<li class=""><a href="../../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="sub"><a href="../../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class=""><a href="../../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../../modules/auth.html">Auth module (auth)</a></li>
+<li class=""><a href="../../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class=""><a href="../../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="sub"><a href="../../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="current sub"><a href="../../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class=""><a href="../../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="sub"><a href="../../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../../modules/intranet/requests.html">Intranet requests</a></li>
+<li class=""><a href="../../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../../modules/mail.html">Mail module (mail)</a></li>
+<li class=""><a href="../../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class=""><a href="../../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="sub"><a href="../../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="sub"><a href="../../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../../modules/production/work-orders.html">Work orders</a></li>
+<li class=""><a href="../../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class=""><a href="../../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../../api/index.html">API reference</a></li>
+<li class=""><a href="../../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../../api/documents.html">Documents API (documents)</a></li>
+<li class=""><a href="../../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../../api/overview.html">API overview</a></li>
+<li class=""><a href="../../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class=""><a href="../../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../../api/records.html">Records API (records)</a></li>
+<li class=""><a href="../../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../../operations/index.html">Operations</a></li>
+<li class=""><a href="../../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class=""><a href="../../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class=""><a href="../../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../../reference/index.html">Reference</a></li>
+<li class=""><a href="../../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../../index.html">Home</a> / Business modules</div>
+    <header class="page-head">
+      <p class="eyebrow">Reference</p>
+      <h1>Fleet meters and fuel</h1>
+      <p class="lede">Reference for the meters and fuel sub-modules of fleet, with the reading ledger, fuel entries, compliance obligations, penalties, and inspection periods.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#scope-and-source">Scope and source</a></li>
+<li class="lvl2"><a href="#meter-and-reading-fields">Meter and reading fields</a></li>
+<li class="lvl2"><a href="#reading-ledger-rules">Reading ledger rules</a></li>
+<li class="lvl2"><a href="#fuel-entry-fields">Fuel entry fields</a></li>
+<li class="lvl2"><a href="#fuel-rules">Fuel rules</a></li>
+<li class="lvl2"><a href="#compliance-items-penalties-and-inspection-periods">Compliance items, penalties, and inspection periods</a></li>
+<li class="lvl2"><a href="#routes">Routes</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p>This page describes two sub-modules of <code>fleet</code>. The <code>meters</code> sub-module in <code>src/cluster_erp/modules/fleet/meters/</code> keeps counters and an immutable reading ledger. The <code>fuel</code> sub-module in <code>src/cluster_erp/modules/fleet/fuel/</code> keeps fuel entries, compliance obligations, penalties, and the inspection period table. The module overview is on <a href="index.html">fleet module</a>.</p>
+<h2 id="scope-and-source">Scope and source<a class="headerlink" href="#scope-and-source">¶</a></h2>
+<ul>
+<li>Defined in: <code>src/cluster_erp/modules/fleet/models.py</code> (<code>FleetMeter</code>, <code>FleetMeterReading</code>, <code>FleetFuelEntry</code>, <code>FleetComplianceItem</code>, <code>FleetInspectionPeriod</code>, <code>FleetPenalty</code>), <code>meters/services.py</code>, <code>meters/routes.py</code>, <code>meters/metadata.py</code>, <code>fuel/services.py</code>, <code>fuel/routes.py</code>, and <code>fuel/metadata.py</code>.</li>
+<li>Count: 6 tables, 32 routes (9 in <code>meters/routes.py</code>, 23 in <code>fuel/routes.py</code>), 8 <code>ActionMeta</code> entries (3 in <code>meters/metadata.py</code>, 5 in <code>fuel/metadata.py</code>).</li>
+</ul>
+<h2 id="meter-and-reading-fields">Meter and reading fields<a class="headerlink" href="#meter-and-reading-fields">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Meaning</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FleetMeter.asset_id</code>, <code>kind</code>, <code>label</code>, <code>unit</code></td>
+<td>One counter on one asset; one live meter per kind and asset</td>
+<td><code>src/cluster_erp/modules/fleet/models.py:240-263</code>, <code>src/cluster_erp/modules/fleet/meters/services.py:118-129</code></td>
+</tr>
+<tr>
+<td><code>FleetMeter.rollover_max</code>, <code>initial_value</code></td>
+<td>Wrap point of the display and the value at birth</td>
+<td><code>src/cluster_erp/modules/fleet/models.py:264-267</code></td>
+</tr>
+<tr>
+<td><code>FleetMeterReading.reading_at</code>, <code>entry_mode</code>, <code>value_entered</code></td>
+<td>When, how (<code>absolute</code> or <code>delta</code>), and the entered value</td>
+<td><code>src/cluster_erp/modules/fleet/models.py:271-298</code>, <code>src/cluster_erp/modules/fleet/models.py:63</code></td>
+</tr>
+<tr>
+<td><code>value_absolute</code>, <code>delta</code>, <code>ltd_value</code></td>
+<td>Computed display value, usage since the previous reading, and life-to-date usage</td>
+<td><code>src/cluster_erp/modules/fleet/models.py:299-301</code></td>
+</tr>
+<tr>
+<td><code>source</code></td>
+<td>Where the reading came from, default <code>manual</code></td>
+<td><code>src/cluster_erp/modules/fleet/models.py:302</code>, <code>src/cluster_erp/modules/fleet/models.py:62</code></td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td><code>valid</code>, <code>preliminary</code>, or <code>incorrect</code></td>
+<td><code>src/cluster_erp/modules/fleet/models.py:303</code>, <code>src/cluster_erp/modules/fleet/models.py:60</code></td>
+</tr>
+<tr>
+<td><code>is_initial</code>, <code>meter_changed</code>, <code>rollover</code></td>
+<td>Baseline flag, counter replaced, display wrapped</td>
+<td><code>src/cluster_erp/modules/fleet/models.py:306-310</code></td>
+</tr>
+</tbody>
+</table>
+<p>Two meter templates exist in code: <code>odometer_km</code> (unit <code>km</code>, wraps at <code>999999.9</code>) and <code>engine_hours</code> (unit <code>h</code>). A meter of any other kind can be created directly (<code>src/cluster_erp/modules/fleet/meters/services.py:46-60</code>).</p>
+<h2 id="reading-ledger-rules">Reading ledger rules<a class="headerlink" href="#reading-ledger-rules">¶</a></h2>
+<ul>
+<li>A reading is created and never edited. A wrong reading is marked <code>incorrect</code> and the chain after it is recomputed (<code>src/cluster_erp/modules/fleet/meters/services.py:9-12</code>).</li>
+<li>The meter row is locked for the duration of the post, so two posts cannot read the same predecessor (<code>src/cluster_erp/modules/fleet/meters/services.py:244-254</code>).</li>
+<li>A reading is refused for a deactivated or disposed asset, for a date more than five minutes in the future, for a negative value, and for a date not after the latest counted reading (<code>src/cluster_erp/modules/fleet/meters/services.py:255-286</code>).</li>
+<li>The first reading is the baseline. With an <code>initial_value</code> above zero, the first reading already counts usage from that value (<code>src/cluster_erp/modules/fleet/meters/services.py:407-433</code>).</li>
+<li>A meter change re-baselines the display and keeps life-to-date unchanged (<code>src/cluster_erp/modules/fleet/meters/services.py:434-442</code>).</li>
+<li>A lower absolute value is refused unless the reading is flagged as a rollover (<code>src/cluster_erp/modules/fleet/meters/services.py:455-474</code>).</li>
+<li>A reading whose daily usage exceeds five times the recent daily rate, with a jump above 1000, is set to <code>preliminary</code> (<code>src/cluster_erp/modules/fleet/meters/services.py:62-68</code>, <code>src/cluster_erp/modules/fleet/meters/services.py:476-497</code>).</li>
+<li>After a post, the asset's <code>last_odometer_km</code> is synchronised by reading date and the maintenance reminders are recomputed (<code>src/cluster_erp/modules/fleet/meters/services.py:308-311</code>).</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Label</th>
+<th>Condition</th>
+<th>Endpoint</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>confirm</code></td>
+<td><strong>Confirm</strong></td>
+<td><code>status</code> is <code>preliminary</code></td>
+<td><code>POST /readings/{id}/actions/confirm</code></td>
+<td><code>src/cluster_erp/modules/fleet/meters/metadata.py:161-169</code></td>
+</tr>
+<tr>
+<td><code>mark_incorrect</code></td>
+<td><strong>Mark Incorrect</strong></td>
+<td><code>status</code> is <code>valid</code></td>
+<td><code>POST /readings/{id}/actions/mark_incorrect</code></td>
+<td><code>src/cluster_erp/modules/fleet/meters/metadata.py:170-178</code></td>
+</tr>
+<tr>
+<td><code>mark_incorrect_preliminary</code></td>
+<td><strong>Mark Incorrect</strong></td>
+<td><code>status</code> is <code>preliminary</code></td>
+<td><code>POST /readings/{id}/actions/mark_incorrect</code></td>
+<td><code>src/cluster_erp/modules/fleet/meters/metadata.py:179-187</code></td>
+</tr>
+</tbody>
+</table>
+<p>The baseline reading cannot be marked incorrect while later readings exist (<code>src/cluster_erp/modules/fleet/meters/services.py:332-345</code>).</p>
+<h2 id="fuel-entry-fields">Fuel entry fields<a class="headerlink" href="#fuel-entry-fields">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Meaning</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>asset_id</code>, <code>plate</code></td>
+<td>The matched asset, and the plate given by an import</td>
+<td><code>src/cluster_erp/modules/fleet/models.py:596-628</code></td>
+</tr>
+<tr>
+<td><code>filled_at</code>, <code>station</code>, <code>fuel_type</code></td>
+<td>When, where, and which of seven fuel types</td>
+<td><code>src/cluster_erp/modules/fleet/models.py:98-106</code>, <code>src/cluster_erp/modules/fleet/models.py:615-618</code></td>
+</tr>
+<tr>
+<td><code>quantity</code>, <code>unit_price</code>, <code>total_cost</code>, <code>currency</code></td>
+<td>Litres <code>Numeric(10, 2)</code>, price <code>Numeric(18, 4)</code>, total <code>Numeric(18, 2)</code></td>
+<td><code>src/cluster_erp/modules/fleet/models.py:619-622</code></td>
+</tr>
+<tr>
+<td><code>odometer_km</code>, <code>is_full_tank</code></td>
+<td>Odometer at the fill and whether the tank was filled</td>
+<td><code>src/cluster_erp/modules/fleet/models.py:623-624</code></td>
+</tr>
+<tr>
+<td><code>source</code>, <code>card_no</code>, <code>driver_party_id</code></td>
+<td><code>manual</code>, <code>tts_import</code>, or <code>card</code>; fuel card; driver</td>
+<td><code>src/cluster_erp/modules/fleet/models.py:107</code>, <code>src/cluster_erp/modules/fleet/models.py:625-628</code></td>
+</tr>
+<tr>
+<td><code>match_status</code>, <code>mismatch_reason</code></td>
+<td><code>verified</code> or <code>unverified</code>, with the reason</td>
+<td><code>src/cluster_erp/modules/fleet/models.py:629-630</code></td>
+</tr>
+<tr>
+<td><code>consumption_l_100km</code>, <code>consumption_alert</code>, <code>non_utts_risk</code></td>
+<td>Computed consumption and two flags</td>
+<td><code>src/cluster_erp/modules/fleet/models.py:631-633</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="fuel-rules">Fuel rules<a class="headerlink" href="#fuel-rules">¶</a></h2>
+<ul>
+<li>Quantity must be positive. A missing total is computed as quantity times unit price, quantized to two decimals (<code>src/cluster_erp/modules/fleet/fuel/services.py:124-137</code>).</li>
+<li>An entry without an asset lands <code>unverified</code>. A quantity above the asset's <code>fuel_tank_l</code> tenant field also lands <code>unverified</code> with a reason (<code>src/cluster_erp/modules/fleet/fuel/services.py:143-147</code>, <code>src/cluster_erp/modules/fleet/fuel/services.py:291-313</code>).</li>
+<li>A verified full-tank entry with an odometer computes litres per 100 km since the previous full tank. With at least three earlier values, the alert flag is set when the value exceeds 1.5 times their average (<code>src/cluster_erp/modules/fleet/fuel/services.py:46-49</code>, <code>src/cluster_erp/modules/fleet/fuel/services.py:333-355</code>).</li>
+<li>A late entry, a verification, or a deactivation recomputes every later consumption value of the same asset and fuel type (<code>src/cluster_erp/modules/fleet/fuel/services.py:357-383</code>).</li>
+<li>A verified entry with an odometer becomes a reading with <code>source</code> <code>fuel</code>; a refused reading does not block the fuel entry (<code>src/cluster_erp/modules/fleet/fuel/services.py:385-414</code>).</li>
+<li><code>POST /fuel/import</code> matches rows by plate. An unmatched row lands <code>unverified</code>; a malformed row is returned in <code>rejected</code> with its index and reason, and the rest of the batch is kept (<code>src/cluster_erp/modules/fleet/fuel/services.py:158-224</code>).</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Label</th>
+<th>Condition</th>
+<th>Endpoint</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>assign_asset</code></td>
+<td><strong>Assign Asset</strong></td>
+<td><code>match_status</code> is <code>unverified</code></td>
+<td><code>POST /fuel/{id}/actions/assign_asset</code></td>
+<td><code>src/cluster_erp/modules/fleet/fuel/metadata.py:115-132</code></td>
+</tr>
+<tr>
+<td><code>verify</code></td>
+<td><strong>Verify</strong></td>
+<td><code>match_status</code> is <code>unverified</code></td>
+<td><code>POST /fuel/{id}/actions/verify</code></td>
+<td><code>src/cluster_erp/modules/fleet/fuel/metadata.py:133-139</code>, <code>src/cluster_erp/modules/fleet/fuel/services.py:232-251</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="compliance-items-penalties-and-inspection-periods">Compliance items, penalties, and inspection periods<a class="headerlink" href="#compliance-items-penalties-and-inspection-periods">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Entity</th>
+<th>Key fields</th>
+<th>Statuses</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FleetComplianceItem</code></td>
+<td><code>asset_id</code>, <code>kind</code>, <code>title</code>, <code>due_date</code>, <code>amount</code>, <code>currency</code>, <code>renew_months</code>, <code>vendor_party_id</code>, <code>reference_no</code>, <code>completed_at</code></td>
+<td><code>pending</code>, <code>overdue</code>, <code>completed</code></td>
+<td><code>src/cluster_erp/modules/fleet/models.py:109-120</code>, <code>src/cluster_erp/modules/fleet/models.py:636-671</code></td>
+</tr>
+<tr>
+<td><code>FleetPenalty</code></td>
+<td><code>asset_id</code>, <code>kind</code>, <code>occurred_at</code>, <code>amount</code>, <code>currency</code>, <code>due_date</code>, <code>driver_party_id</code>, <code>reference_no</code></td>
+<td><code>pending</code>, <code>paid</code>, <code>objected</code></td>
+<td><code>src/cluster_erp/modules/fleet/models.py:121-122</code>, <code>src/cluster_erp/modules/fleet/models.py:687-703</code></td>
+</tr>
+<tr>
+<td><code>FleetInspectionPeriod</code></td>
+<td><code>class_id</code>, <code>age_from_years</code>, <code>age_to_years</code>, <code>period_months</code></td>
+<td>none</td>
+<td><code>src/cluster_erp/modules/fleet/models.py:673-685</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Listing compliance items first sets every <code>pending</code> item with a past due date to <code>overdue</code> (<code>src/cluster_erp/modules/fleet/fuel/services.py:427</code>, <code>src/cluster_erp/modules/fleet/fuel/services.py:595-606</code>).</li>
+<li><strong>Mark Completed</strong> locks the row, refuses a future date, and spawns the next item. For an inspection the interval comes from the inspection period that matches the asset class and age; otherwise from <code>renew_months</code>. No interval means no next item (<code>src/cluster_erp/modules/fleet/fuel/metadata.py:381-397</code>, <code>src/cluster_erp/modules/fleet/fuel/services.py:479-593</code>).</li>
+<li>Asset age is read from <code>first_registration_date</code>, or from <code>model_year</code> when that is missing (<code>src/cluster_erp/modules/fleet/fuel/services.py:572-582</code>).</li>
+<li>A new penalty without a driver takes the driver whose assignment covered the moment of the penalty (<code>src/cluster_erp/modules/fleet/fuel/services.py:647-663</code>).</li>
+<li><strong>Mark Paid</strong> moves <code>pending</code> or <code>objected</code> to <code>paid</code>; <strong>Object</strong> moves <code>pending</code> to <code>objected</code> (<code>src/cluster_erp/modules/fleet/fuel/metadata.py:610-625</code>, <code>src/cluster_erp/modules/fleet/fuel/services.py:681-706</code>).</li>
+</ul>
+<h2 id="routes">Routes<a class="headerlink" href="#routes">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Router</th>
+<th>Paths</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>meter_router</code></td>
+<td><code>GET /meters/</code>, <code>POST /meters/</code>, <code>GET /meters/kinds</code>, <code>GET /meters/{meter_id}</code>, <code>DELETE /meters/{meter_id}</code></td>
+<td><code>src/cluster_erp/modules/fleet/meters/routes.py:29-102</code></td>
+</tr>
+<tr>
+<td><code>reading_router</code></td>
+<td><code>GET /readings/</code>, <code>POST /readings/</code>, <code>GET /readings/{reading_id}</code>, <code>POST /readings/{reading_id}/actions/{action}</code></td>
+<td><code>src/cluster_erp/modules/fleet/meters/routes.py:105-169</code></td>
+</tr>
+<tr>
+<td><code>fuel_router</code></td>
+<td>list, create, <code>POST /fuel/import</code>, read, action, delete</td>
+<td><code>src/cluster_erp/modules/fleet/fuel/routes.py:46-126</code></td>
+</tr>
+<tr>
+<td><code>compliance_router</code></td>
+<td>list, create, read, update, action, delete</td>
+<td><code>src/cluster_erp/modules/fleet/fuel/routes.py:129-216</code></td>
+</tr>
+<tr>
+<td><code>penalty_router</code></td>
+<td>list, create, read, update, action, delete</td>
+<td><code>src/cluster_erp/modules/fleet/fuel/routes.py:219-301</code></td>
+</tr>
+<tr>
+<td><code>period_router</code></td>
+<td><code>/inspection-periods</code> list, create, read, update, delete</td>
+<td><code>src/cluster_erp/modules/fleet/fuel/routes.py:38-40</code>, <code>src/cluster_erp/modules/fleet/fuel/routes.py:304-361</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>GET /meters/kinds</code> returns the template kinds and every live meter kind, for the maintenance plan form (<code>src/cluster_erp/modules/fleet/meters/routes.py:61-78</code>).</p>
+<h2 id="terms-introduced">Terms introduced<a class="headerlink" href="#terms-introduced">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Code identifier</th>
+<th>Definition</th>
+<th>Turkish term</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>meter reading</td>
+<td><code>FleetMeterReading</code></td>
+<td>An immutable counter document on one meter.</td>
+<td>Sayaç okuması</td>
+<td><code>src/cluster_erp/modules/fleet/models.py:271</code></td>
+</tr>
+<tr>
+<td>life-to-date value</td>
+<td><code>ltd_value</code></td>
+<td>Accumulated usage of a meter that only grows.</td>
+<td>Ömür boyu değer</td>
+<td><code>src/cluster_erp/modules/fleet/models.py:301</code></td>
+</tr>
+<tr>
+<td>preliminary reading</td>
+<td><code>preliminary</code></td>
+<td>A reading held back because its usage is implausible, until confirmed or marked incorrect.</td>
+<td>Ön okuma</td>
+<td><code>src/cluster_erp/modules/fleet/models.py:60</code></td>
+</tr>
+<tr>
+<td>compliance item</td>
+<td><code>FleetComplianceItem</code></td>
+<td>A dated obligation of one asset that renews on completion.</td>
+<td>Uyum kalemi</td>
+<td><code>src/cluster_erp/modules/fleet/models.py:636</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="index.html">Fleet module</a></li>
+<li><a href="assets.html">Assets</a></li>
+<li><a href="maintenance-and-work-orders.html">Maintenance and work orders</a></li>
+<li><a href="tco-telematics-and-analytics.html">TCO, telematics, and analytics</a></li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../../modules/fleet/maintenance-and-work-orders.html"><span class="eyebrow">Previous</span><span>Fleet maintenance and work orders</span></a><a class="next" href="../../modules/fleet/operations.html"><span class="eyebrow">Next</span><span>Fleet operations</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#scope-and-source">Scope and source</a></li>
+<li class="lvl2"><a href="#meter-and-reading-fields">Meter and reading fields</a></li>
+<li class="lvl2"><a href="#reading-ledger-rules">Reading ledger rules</a></li>
+<li class="lvl2"><a href="#fuel-entry-fields">Fuel entry fields</a></li>
+<li class="lvl2"><a href="#fuel-rules">Fuel rules</a></li>
+<li class="lvl2"><a href="#compliance-items-penalties-and-inspection-periods">Compliance items, penalties, and inspection periods</a></li>
+<li class="lvl2"><a href="#routes">Routes</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

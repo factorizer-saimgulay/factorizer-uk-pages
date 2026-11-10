@@ -1,0 +1,2000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Production API (production) · Cluster ERP Wiki</title>
+<meta name="description" content="HTTP endpoints of the production module under /api/v1/production: 102 routes with permissions, schemas, status codes, and error codes.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../api/production.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.html">Overview</a></li>
+<li class=""><a href="../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.html">Platform core</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../platform/change-history.html">Change history</a></li>
+<li class=""><a href="../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../platform/event-bus.html">Event bus</a></li>
+<li class=""><a href="../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class=""><a href="../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../web-app/generic-form.html">Generic form</a></li>
+<li class=""><a href="../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class=""><a href="../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.html">Desktop client</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class=""><a href="../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.html">Business modules</a></li>
+<li class=""><a href="../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class=""><a href="../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../modules/auth.html">Auth module (auth)</a></li>
+<li class=""><a href="../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class=""><a href="../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class=""><a href="../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../modules/intranet/requests.html">Intranet requests</a></li>
+<li class=""><a href="../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../modules/mail.html">Mail module (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class=""><a href="../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../modules/production/work-orders.html">Work orders</a></li>
+<li class=""><a href="../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.html">API reference</a></li>
+<li class=""><a href="../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.html">Documents API (documents)</a></li>
+<li class=""><a href="../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.html">API overview</a></li>
+<li class=""><a href="../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class="current"><a href="../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.html">Operations</a></li>
+<li class=""><a href="../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class=""><a href="../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class=""><a href="../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.html">Reference</a></li>
+<li class=""><a href="../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.html">Home</a> / API reference</div>
+    <header class="page-head">
+      <p class="eyebrow">API</p>
+      <h1>Production API (production)</h1>
+      <p class="lede">HTTP endpoints of the production module under /api/v1/production: 102 routes with permissions, schemas, status codes, and error codes.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#group-facts">Group facts</a></li>
+<li class="lvl2"><a href="#endpoint-summary">Endpoint summary</a></li>
+<li class="lvl2"><a href="#work-centres-endpoints">Work centres endpoints</a></li>
+<li class="lvl2"><a href="#operation-types-endpoints">Operation types endpoints</a></li>
+<li class="lvl2"><a href="#routings-endpoints">Routings endpoints</a></li>
+<li class="lvl2"><a href="#routing-templates-and-cut-rules-endpoints">Routing templates and cut rules endpoints</a></li>
+<li class="lvl2"><a href="#production-versions-endpoints">Production versions endpoints</a></li>
+<li class="lvl2"><a href="#capacity-endpoints">Capacity endpoints</a></li>
+<li class="lvl2"><a href="#component-allocations-endpoints">Component allocations endpoints</a></li>
+<li class="lvl2"><a href="#production-orders-endpoints">Production orders endpoints</a></li>
+<li class="lvl2"><a href="#work-orders-endpoints">Work orders endpoints</a></li>
+<li class="lvl2"><a href="#scheduling-endpoints">Scheduling endpoints</a></li>
+<li class="lvl2"><a href="#error-codes">Error codes</a></li>
+<li class="lvl2"><a href="#events-emitted">Events emitted</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p>The <code>production</code> module serves work centres, operation types, routings and their operations, routing templates and cut technology rules, production versions, capacity reads, component allocations, production orders, work orders, and scheduling. All 102 endpoints sit under <code>/api/v1/production</code>. For business meaning see the <a href="../modules/production/index.html">Production module</a> page.</p>
+<h2 id="group-facts">Group facts<a class="headerlink" href="#group-facts">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Value</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Base path</td>
+<td><code>/api/v1/production</code></td>
+<td><code>src/cluster_erp/core/module_base.py:37-38</code>, <code>src/cluster_erp/modules/production/module.py:89</code></td>
+</tr>
+<tr>
+<td>Routers</td>
+<td>11 router objects in 10 files; listed in the section Endpoint summary</td>
+<td><code>src/cluster_erp/modules/production/module.py:51</code></td>
+</tr>
+<tr>
+<td>Endpoints</td>
+<td>102, counted from the route decorators and <code>add_api_route</code> calls of the routers that <code>register_routes</code> mounts</td>
+<td><code>src/cluster_erp/modules/production/capacity/routes.py</code>, <code>src/cluster_erp/modules/production/component_allocations/routes.py</code>, <code>src/cluster_erp/modules/production/operation_types/routes.py</code> ...</td>
+</tr>
+<tr>
+<td>Authentication</td>
+<td>Bearer header or session cookie, resolved by <code>get_current_user</code>; see <a href="authentication-and-headers.html">Authentication and headers</a></td>
+<td><code>src/cluster_erp/modules/auth/guards.py:85-167</code></td>
+</tr>
+<tr>
+<td>Permission guard</td>
+<td>102 of 102 routes declare <code>require_permission</code></td>
+<td><code>src/cluster_erp/modules/auth/guards.py:205-240</code></td>
+</tr>
+<tr>
+<td>App entitlement gate</td>
+<td><code>require_app("production")</code> on every mounted router</td>
+<td><code>src/cluster_erp/modules/production/module.py:102</code></td>
+</tr>
+<tr>
+<td>Error format</td>
+<td>JSON body <code>{"error": {...}}</code>; see <a href="errors.html">Errors</a></td>
+<td><code>src/cluster_erp/server/error_handler.py:33-46</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="endpoint-summary">Endpoint summary<a class="headerlink" href="#endpoint-summary">¶</a></h2>
+<p>One row per sub-module folder. The router prefix is added to the base path.</p>
+<table>
+<thead>
+<tr>
+<th>Sub-module</th>
+<th>Routers</th>
+<th>Endpoints</th>
+<th>Router source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>work_centers</code></td>
+<td><code>router</code> (<code>/work-centers</code>)</td>
+<td>8</td>
+<td><code>src/cluster_erp/modules/production/work_centers/routes.py:22</code></td>
+</tr>
+<tr>
+<td><code>operation_types</code></td>
+<td><code>router</code> (<code>/operation-types</code>)</td>
+<td>8</td>
+<td><code>src/cluster_erp/modules/production/operation_types/routes.py:23</code></td>
+</tr>
+<tr>
+<td><code>routings</code></td>
+<td><code>router</code> (<code>/routings</code>)</td>
+<td>28</td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:38</code></td>
+</tr>
+<tr>
+<td><code>routing_templates</code></td>
+<td><code>router</code> (<code>/routing-templates</code>), <code>rules_router</code> (<code>/cut-technology-rules</code>)</td>
+<td>16</td>
+<td><code>src/cluster_erp/modules/production/routing_templates/routes.py:29</code>, <code>src/cluster_erp/modules/production/routing_templates/routes.py:30</code></td>
+</tr>
+<tr>
+<td><code>production_versions</code></td>
+<td><code>router</code> (<code>/production-versions</code>)</td>
+<td>4</td>
+<td><code>src/cluster_erp/modules/production/production_versions/routes.py:34</code></td>
+</tr>
+<tr>
+<td><code>capacity</code></td>
+<td><code>router</code> (<code>/capacity</code>)</td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/production/capacity/routes.py:15</code></td>
+</tr>
+<tr>
+<td><code>component_allocations</code></td>
+<td><code>router</code> (<code>/component-allocations</code>)</td>
+<td>6</td>
+<td><code>src/cluster_erp/modules/production/component_allocations/routes.py:23</code></td>
+</tr>
+<tr>
+<td><code>production_orders</code></td>
+<td><code>router</code> (<code>/production-orders</code>)</td>
+<td>17</td>
+<td><code>src/cluster_erp/modules/production/production_orders/routes.py:34</code></td>
+</tr>
+<tr>
+<td><code>work_orders</code></td>
+<td><code>router</code> (<code>/work-orders</code>)</td>
+<td>8</td>
+<td><code>src/cluster_erp/modules/production/work_orders/routes.py:23</code></td>
+</tr>
+<tr>
+<td><code>scheduling</code></td>
+<td><code>router</code> (<code>/scheduling</code>)</td>
+<td>5</td>
+<td><code>src/cluster_erp/modules/production/scheduling/routes.py:32</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="work-centres-endpoints">Work centres endpoints<a class="headerlink" href="#work-centres-endpoints">¶</a></h2>
+<p>Work centre records and the operation types of a work centre.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Handler</th>
+<th>Permission</th>
+<th>Request</th>
+<th>Query</th>
+<th>Response</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/production/work-centers/</code></td>
+<td><code>list_work_centers</code></td>
+<td><code>work_center.read</code></td>
+<td>none</td>
+<td><code>search</code>, <code>active_only</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/work_centers/routes.py:25</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/work-centers/</code></td>
+<td><code>create_work_center</code></td>
+<td><code>work_center.create</code></td>
+<td><code>WorkCenterCreate</code></td>
+<td>none</td>
+<td><code>WorkCenterRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/production/work_centers/routes.py:50</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/production/work-centers/{work_center_id}</code></td>
+<td><code>get_work_center</code></td>
+<td><code>work_center.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>WorkCenterRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/work_centers/routes.py:61</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/production/work-centers/{work_center_id}</code></td>
+<td><code>update_work_center</code></td>
+<td><code>work_center.update</code></td>
+<td><code>WorkCenterUpdate</code></td>
+<td>none</td>
+<td><code>WorkCenterRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/work_centers/routes.py:74</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/production/work-centers/{work_center_id}/operation-types</code></td>
+<td><code>get_work_center_operation_types</code></td>
+<td><code>work_center.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>list[str]</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/work_centers/routes.py:88</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/production/work-centers/{work_center_id}/operation-types</code></td>
+<td><code>set_work_center_operation_types</code></td>
+<td><code>work_center.update</code></td>
+<td><code>WorkCenterCapabilityUpdate</code></td>
+<td>none</td>
+<td><code>list[str]</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/work_centers/routes.py:101</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/work-centers/bulk-delete</code></td>
+<td><code>bulk_delete_work_centers</code></td>
+<td><code>work_center.bulk_delete</code></td>
+<td><code>BulkDeleteRequest</code></td>
+<td>none</td>
+<td><code>BulkDeleteResponse</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/work_centers/routes.py:121</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/production/work-centers/{work_center_id}</code></td>
+<td><code>delete_work_center</code></td>
+<td><code>work_center.delete</code></td>
+<td>none</td>
+<td>none</td>
+<td>none</td>
+<td><code>204</code></td>
+<td><code>src/cluster_erp/modules/production/work_centers/routes.py:132</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="operation-types-endpoints">Operation types endpoints<a class="headerlink" href="#operation-types-endpoints">¶</a></h2>
+<p>Operation type records, groups, and a seed of defaults.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Handler</th>
+<th>Permission</th>
+<th>Request</th>
+<th>Query</th>
+<th>Response</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/production/operation-types/</code></td>
+<td><code>list_operation_types</code></td>
+<td><code>routing.read</code></td>
+<td>none</td>
+<td><code>active_only</code>, <code>search</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/operation_types/routes.py:26</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/production/operation-types/groups</code></td>
+<td><code>list_operation_type_groups</code></td>
+<td><code>routing.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>list[str]</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/operation_types/routes.py:51</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/operation-types/</code></td>
+<td><code>create_operation_type</code></td>
+<td><code>routing.create</code></td>
+<td><code>OperationTypeCreate</code></td>
+<td>none</td>
+<td><code>OperationTypeRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/production/operation_types/routes.py:61</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/production/operation-types/{type_id}</code></td>
+<td><code>get_operation_type</code></td>
+<td><code>routing.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>OperationTypeRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/operation_types/routes.py:72</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/production/operation-types/{type_id}</code></td>
+<td><code>update_operation_type</code></td>
+<td><code>routing.update</code></td>
+<td><code>OperationTypeUpdate</code></td>
+<td>none</td>
+<td><code>OperationTypeRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/operation_types/routes.py:85</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/production/operation-types/{type_id}</code></td>
+<td><code>delete_operation_type</code></td>
+<td><code>routing.delete</code></td>
+<td>none</td>
+<td>none</td>
+<td>none</td>
+<td><code>204</code></td>
+<td><code>src/cluster_erp/modules/production/operation_types/routes.py:99</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/operation-types/bulk-delete</code></td>
+<td><code>bulk_delete_operation_types</code></td>
+<td><code>routing.bulk_delete</code></td>
+<td><code>BulkDeleteRequest</code></td>
+<td>none</td>
+<td><code>BulkDeleteResponse</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/operation_types/routes.py:110</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/operation-types/seed-defaults</code></td>
+<td><code>seed_defaults</code></td>
+<td><code>routing.create</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>dict</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/operation_types/routes.py:121</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="routings-endpoints">Routings endpoints<a class="headerlink" href="#routings-endpoints">¶</a></h2>
+<p>Routing records, scaffold from a BOM (plan and apply), copy to, readiness, full read, status change, operations, operation inputs, and prep operations.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Handler</th>
+<th>Permission</th>
+<th>Request</th>
+<th>Query</th>
+<th>Response</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/production/routings/</code></td>
+<td><code>list_routings</code></td>
+<td><code>routing.read</code></td>
+<td>none</td>
+<td><code>search</code>, <code>product_id</code>, <code>status</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:46</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/routings/</code></td>
+<td><code>create_routing</code></td>
+<td><code>routing.create</code></td>
+<td><code>RoutingCreate</code></td>
+<td>none</td>
+<td><code>RoutingRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:74</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/routings/scaffold-from-bom</code></td>
+<td><code>scaffold_routing_from_bom</code></td>
+<td><code>routing.create</code></td>
+<td><code>RoutingScaffoldRequest</code></td>
+<td>none</td>
+<td><code>dict</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:86</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/routings/scaffold-tree-from-bom</code></td>
+<td><code>scaffold_routing_tree_from_bom</code></td>
+<td><code>routing.create</code></td>
+<td><code>RoutingScaffoldTreeRequest</code></td>
+<td>none</td>
+<td><code>dict</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:117</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/routings/scaffold-plan</code></td>
+<td><code>scaffold_plan</code></td>
+<td><code>routing.create</code></td>
+<td><code>ScaffoldPlanRequest</code></td>
+<td>none</td>
+<td><code>dict</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:155</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/routings/scaffold-apply</code></td>
+<td><code>scaffold_apply</code></td>
+<td><code>routing.create</code></td>
+<td><code>ScaffoldApplyRequest</code></td>
+<td>none</td>
+<td><code>dict</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:207</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/routings/{routing_id}/copy-to</code></td>
+<td><code>copy_routing_to</code></td>
+<td><code>routing.create</code></td>
+<td><code>RoutingCopyToRequest</code></td>
+<td>none</td>
+<td><code>dict</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:263</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/production/routings/for-product/{product_id}</code></td>
+<td><code>get_routing_for_product</code></td>
+<td><code>routing.read</code></td>
+<td>none</td>
+<td><code>include_draft</code></td>
+<td><code>RoutingRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:298</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/production/routings/{routing_id}/readiness</code></td>
+<td><code>get_routing_readiness</code></td>
+<td><code>routing.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>dict</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:319</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/production/routings/{routing_id}/full</code></td>
+<td><code>get_routing_full</code></td>
+<td><code>routing.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>dict</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:333</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/production/routings/{routing_id}</code></td>
+<td><code>get_routing</code></td>
+<td><code>routing.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>RoutingRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:344</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/production/routings/{routing_id}</code></td>
+<td><code>update_routing</code></td>
+<td><code>routing.update</code></td>
+<td><code>RoutingUpdate</code></td>
+<td>none</td>
+<td><code>RoutingRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:358</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/routings/{routing_id}/status</code></td>
+<td><code>change_routing_status</code></td>
+<td><code>routing.update</code></td>
+<td><code>RoutingStatusUpdate</code></td>
+<td>none</td>
+<td><code>RoutingRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:373</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/routings/bulk-delete</code></td>
+<td><code>bulk_delete_routings</code></td>
+<td><code>routing.bulk_delete</code></td>
+<td><code>BulkDeleteRequest</code></td>
+<td>none</td>
+<td><code>BulkDeleteResponse</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:386</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/production/routings/{routing_id}</code></td>
+<td><code>delete_routing</code></td>
+<td><code>routing.delete</code></td>
+<td>none</td>
+<td>none</td>
+<td>none</td>
+<td><code>204</code></td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:398</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/production/routings/operations/all</code></td>
+<td><code>list_all_operations</code></td>
+<td><code>routing.read</code></td>
+<td>none</td>
+<td><code>routing_id</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:415</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/routings/operations/</code></td>
+<td><code>create_operation_flat</code></td>
+<td><code>routing.update</code></td>
+<td><code>RoutingOperationFlatCreate</code></td>
+<td>none</td>
+<td><code>RoutingOperationRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:463</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/production/routings/operations/{operation_id}</code></td>
+<td><code>update_operation_flat</code></td>
+<td><code>routing.update</code></td>
+<td><code>RoutingOperationUpdate</code></td>
+<td>none</td>
+<td><code>RoutingOperationRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:475</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/production/routings/operations/{operation_id}</code></td>
+<td><code>delete_operation_flat</code></td>
+<td><code>routing.update</code></td>
+<td>none</td>
+<td>none</td>
+<td>none</td>
+<td><code>204</code></td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:490</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/routings/{routing_id}/operations</code></td>
+<td><code>add_operation</code></td>
+<td><code>routing.update</code></td>
+<td><code>RoutingOperationCreate</code></td>
+<td>none</td>
+<td><code>RoutingOperationRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:502</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/production/routings/{routing_id}/operations/{operation_id}</code></td>
+<td><code>update_operation</code></td>
+<td><code>routing.update</code></td>
+<td><code>RoutingOperationUpdate</code></td>
+<td>none</td>
+<td><code>RoutingOperationRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:519</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/production/routings/{routing_id}/operations/{operation_id}</code></td>
+<td><code>delete_operation</code></td>
+<td><code>routing.update</code></td>
+<td>none</td>
+<td>none</td>
+<td>none</td>
+<td><code>204</code></td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:538</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/routings/{routing_id}/operations/{operation_id}/inputs</code></td>
+<td><code>add_operation_input</code></td>
+<td><code>routing.update</code></td>
+<td><code>OperationInputCreate</code></td>
+<td>none</td>
+<td><code>dict</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:559</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/production/routings/{routing_id}/operations/{operation_id}/inputs/{input_id}</code></td>
+<td><code>delete_operation_input</code></td>
+<td><code>routing.update</code></td>
+<td>none</td>
+<td>none</td>
+<td>none</td>
+<td><code>204</code></td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:593</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/production/routings/{routing_id}/prep-operations</code></td>
+<td><code>list_prep_operations</code></td>
+<td><code>routing.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>dict</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:621</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/routings/{routing_id}/prep-operations</code></td>
+<td><code>create_prep_operation</code></td>
+<td><code>routing.update</code></td>
+<td><code>PrepOperationCreate</code></td>
+<td>none</td>
+<td><code>PrepOperationRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:636</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/production/routings/{routing_id}/prep-operations/{prep_id}</code></td>
+<td><code>update_prep_operation</code></td>
+<td><code>routing.update</code></td>
+<td><code>PrepOperationUpdate</code></td>
+<td>none</td>
+<td><code>PrepOperationRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:653</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/production/routings/{routing_id}/prep-operations/{prep_id}</code></td>
+<td><code>delete_prep_operation</code></td>
+<td><code>routing.update</code></td>
+<td>none</td>
+<td>none</td>
+<td>none</td>
+<td><code>204</code></td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:672</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="routing-templates-and-cut-rules-endpoints">Routing templates and cut rules endpoints<a class="headerlink" href="#routing-templates-and-cut-rules-endpoints">¶</a></h2>
+<p>Two routers: routing templates with template operations, and cut technology rules.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Handler</th>
+<th>Permission</th>
+<th>Request</th>
+<th>Query</th>
+<th>Response</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/production/routing-templates/ops/all</code></td>
+<td><code>list_template_ops</code></td>
+<td><code>routing_template_op.read</code></td>
+<td>none</td>
+<td><code>template_id</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/routing_templates/routes.py:42</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/routing-templates/ops/</code></td>
+<td><code>create_template_op</code></td>
+<td><code>routing_template_op.create</code></td>
+<td><code>RoutingTemplateOpCreate</code></td>
+<td>none</td>
+<td><code>RoutingTemplateOpRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/production/routing_templates/routes.py:61</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/production/routing-templates/ops/{op_id}</code></td>
+<td><code>update_template_op</code></td>
+<td><code>routing_template_op.update</code></td>
+<td><code>RoutingTemplateOpUpdate</code></td>
+<td>none</td>
+<td><code>RoutingTemplateOpRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/routing_templates/routes.py:74</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/production/routing-templates/ops/{op_id}</code></td>
+<td><code>delete_template_op</code></td>
+<td><code>routing_template_op.delete</code></td>
+<td>none</td>
+<td>none</td>
+<td>none</td>
+<td><code>204</code></td>
+<td><code>src/cluster_erp/modules/production/routing_templates/routes.py:88</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/production/routing-templates/</code></td>
+<td><code>list_routing_templates</code></td>
+<td><code>routing_template.read</code></td>
+<td>none</td>
+<td><code>active_only</code>, <code>search</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/routing_templates/routes.py:104</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/routing-templates/</code></td>
+<td><code>create_routing_template</code></td>
+<td><code>routing_template.create</code></td>
+<td><code>RoutingTemplateCreate</code></td>
+<td>none</td>
+<td><code>RoutingTemplateRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/production/routing_templates/routes.py:129</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/production/routing-templates/{template_id}</code></td>
+<td><code>get_routing_template</code></td>
+<td><code>routing_template.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>RoutingTemplateRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/routing_templates/routes.py:140</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/production/routing-templates/{template_id}</code></td>
+<td><code>update_routing_template</code></td>
+<td><code>routing_template.update</code></td>
+<td><code>RoutingTemplateUpdate</code></td>
+<td>none</td>
+<td><code>RoutingTemplateRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/routing_templates/routes.py:153</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/production/routing-templates/{template_id}</code></td>
+<td><code>delete_routing_template</code></td>
+<td><code>routing_template.delete</code></td>
+<td>none</td>
+<td>none</td>
+<td>none</td>
+<td><code>204</code></td>
+<td><code>src/cluster_erp/modules/production/routing_templates/routes.py:167</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/routing-templates/bulk-delete</code></td>
+<td><code>bulk_delete_routing_templates</code></td>
+<td><code>routing_template.delete</code></td>
+<td><code>BulkDeleteRequest</code></td>
+<td>none</td>
+<td><code>BulkDeleteResponse</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/routing_templates/routes.py:178</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/production/cut-technology-rules/</code></td>
+<td><code>list_cut_technology_rules</code></td>
+<td><code>cut_technology_rule.read</code></td>
+<td>none</td>
+<td><code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/routing_templates/routes.py:194</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/cut-technology-rules/</code></td>
+<td><code>create_cut_technology_rule</code></td>
+<td><code>cut_technology_rule.create</code></td>
+<td><code>CutTechnologyRuleCreate</code></td>
+<td>none</td>
+<td><code>CutTechnologyRuleRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/production/routing_templates/routes.py:212</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/production/cut-technology-rules/{rule_id}</code></td>
+<td><code>get_cut_technology_rule</code></td>
+<td><code>cut_technology_rule.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>CutTechnologyRuleRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/routing_templates/routes.py:223</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/production/cut-technology-rules/{rule_id}</code></td>
+<td><code>update_cut_technology_rule</code></td>
+<td><code>cut_technology_rule.update</code></td>
+<td><code>CutTechnologyRuleUpdate</code></td>
+<td>none</td>
+<td><code>CutTechnologyRuleRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/routing_templates/routes.py:236</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/production/cut-technology-rules/{rule_id}</code></td>
+<td><code>delete_cut_technology_rule</code></td>
+<td><code>cut_technology_rule.delete</code></td>
+<td>none</td>
+<td>none</td>
+<td>none</td>
+<td><code>204</code></td>
+<td><code>src/cluster_erp/modules/production/routing_templates/routes.py:250</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/cut-technology-rules/bulk-delete</code></td>
+<td><code>bulk_delete_cut_technology_rules</code></td>
+<td><code>cut_technology_rule.delete</code></td>
+<td><code>BulkDeleteRequest</code></td>
+<td>none</td>
+<td><code>BulkDeleteResponse</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/routing_templates/routes.py:261</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="production-versions-endpoints">Production versions endpoints<a class="headerlink" href="#production-versions-endpoints">¶</a></h2>
+<p>Production version records.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Handler</th>
+<th>Permission</th>
+<th>Request</th>
+<th>Query</th>
+<th>Response</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/production/production-versions/</code></td>
+<td><code>list_production_versions</code></td>
+<td><code>routing.read</code></td>
+<td>none</td>
+<td><code>product_id</code>, <code>status</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/production_versions/routes.py:87</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/production-versions/</code></td>
+<td><code>create_production_version</code></td>
+<td><code>routing.create</code></td>
+<td><code>PvCreate</code></td>
+<td>none</td>
+<td><code>PvRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/production/production_versions/routes.py:122</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/production/production-versions/{pv_id}</code></td>
+<td><code>update_production_version</code></td>
+<td><code>routing.update</code></td>
+<td><code>PvUpdate</code></td>
+<td>none</td>
+<td><code>PvRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/production_versions/routes.py:190</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/production/production-versions/{pv_id}</code></td>
+<td><code>delete_production_version</code></td>
+<td><code>routing.update</code></td>
+<td>none</td>
+<td>none</td>
+<td>none</td>
+<td><code>204</code></td>
+<td><code>src/cluster_erp/modules/production/production_versions/routes.py:233</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="capacity-endpoints">Capacity endpoints<a class="headerlink" href="#capacity-endpoints">¶</a></h2>
+<p>Capacity load and input-output reads.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Handler</th>
+<th>Permission</th>
+<th>Request</th>
+<th>Query</th>
+<th>Response</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/production/capacity/load</code></td>
+<td><code>capacity_load</code></td>
+<td><code>production_order.read</code></td>
+<td>none</td>
+<td><code>weeks</code>, <code>mode</code></td>
+<td><code>dict</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/capacity/routes.py:18</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/production/capacity/input-output</code></td>
+<td><code>capacity_input_output</code></td>
+<td><code>production_order.read</code></td>
+<td>none</td>
+<td><code>weeks</code></td>
+<td><code>dict</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/capacity/routes.py:34</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="component-allocations-endpoints">Component allocations endpoints<a class="headerlink" href="#component-allocations-endpoints">¶</a></h2>
+<p>Component allocation records.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Handler</th>
+<th>Permission</th>
+<th>Request</th>
+<th>Query</th>
+<th>Response</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/production/component-allocations/</code></td>
+<td><code>list_allocations</code></td>
+<td><code>routing.read</code></td>
+<td>none</td>
+<td><code>routing_id</code>, <code>routing_operation_id</code>, <code>bom_version_id</code>, <code>input_kind</code>, <code>product_id</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/component_allocations/routes.py:29</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/component-allocations/</code></td>
+<td><code>create_allocation</code></td>
+<td><code>routing.update</code></td>
+<td><code>ComponentAllocationCreate</code></td>
+<td>none</td>
+<td><code>ComponentAllocationRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/production/component_allocations/routes.py:61</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/production/component-allocations/{allocation_id}</code></td>
+<td><code>get_allocation</code></td>
+<td><code>routing.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>ComponentAllocationRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/component_allocations/routes.py:73</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/production/component-allocations/{allocation_id}</code></td>
+<td><code>update_allocation</code></td>
+<td><code>routing.update</code></td>
+<td><code>ComponentAllocationUpdate</code></td>
+<td>none</td>
+<td><code>ComponentAllocationRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/component_allocations/routes.py:87</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/production/component-allocations/{allocation_id}</code></td>
+<td><code>delete_allocation</code></td>
+<td><code>routing.update</code></td>
+<td>none</td>
+<td>none</td>
+<td>none</td>
+<td><code>204</code></td>
+<td><code>src/cluster_erp/modules/production/component_allocations/routes.py:102</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/component-allocations/bulk-delete</code></td>
+<td><code>bulk_delete_allocations</code></td>
+<td><code>routing.bulk_delete</code></td>
+<td><code>BulkDeleteRequest</code></td>
+<td>none</td>
+<td><code>BulkDeleteResponse</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/component_allocations/routes.py:114</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="production-orders-endpoints">Production orders endpoints<a class="headerlink" href="#production-orders-endpoints">¶</a></h2>
+<p>Order records, work order generation, status change, complete, cancel, hold, material consumption, order operations, and order components.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Handler</th>
+<th>Permission</th>
+<th>Request</th>
+<th>Query</th>
+<th>Response</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/production/production-orders/operations/all</code></td>
+<td><code>list_order_operations</code></td>
+<td><code>production_order.read</code></td>
+<td>none</td>
+<td><code>production_order_id</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/production_orders/routes.py:42</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/production-orders/{order_id}/generate-work-orders</code></td>
+<td><code>generate_work_orders</code></td>
+<td><code>work_order.create</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>dict</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/production_orders/routes.py:102</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/production/production-orders/</code></td>
+<td><code>list_production_orders</code></td>
+<td><code>production_order.read</code></td>
+<td>none</td>
+<td><code>search</code>, <code>product_id</code>, <code>project_id</code>, <code>status</code>, <code>planned_start_from</code>, <code>planned_start_to</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/production_orders/routes.py:130</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/production-orders/</code></td>
+<td><code>create_production_order</code></td>
+<td><code>production_order.create</code></td>
+<td><code>ProductionOrderCreate</code></td>
+<td>none</td>
+<td><code>ProductionOrderRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/production/production_orders/routes.py:164</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/production/production-orders/{order_id}</code></td>
+<td><code>get_production_order</code></td>
+<td><code>production_order.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>ProductionOrderRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/production_orders/routes.py:176</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/production/production-orders/{order_id}</code></td>
+<td><code>update_production_order</code></td>
+<td><code>production_order.update</code></td>
+<td><code>ProductionOrderUpdate</code></td>
+<td>none</td>
+<td><code>ProductionOrderRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/production_orders/routes.py:190</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/production-orders/{order_id}/status</code></td>
+<td><code>change_order_status</code></td>
+<td><code>production_order.update</code></td>
+<td><code>ProductionOrderStatusUpdate</code></td>
+<td>none</td>
+<td><code>ProductionOrderRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/production_orders/routes.py:205</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/production-orders/{order_id}/complete</code></td>
+<td><code>complete_production_order</code></td>
+<td><code>production_order.update</code></td>
+<td><code>ProductionOrderCompleteData</code></td>
+<td>none</td>
+<td><code>ProductionOrderRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/production_orders/routes.py:218</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/production-orders/{order_id}/cancel</code></td>
+<td><code>cancel_production_order</code></td>
+<td><code>production_order.update</code></td>
+<td><code>ProductionOrderCancelData</code></td>
+<td>none</td>
+<td><code>ProductionOrderRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/production_orders/routes.py:231</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/production-orders/{order_id}/hold</code></td>
+<td><code>hold_production_order</code></td>
+<td><code>production_order.update</code></td>
+<td><code>ProductionOrderHoldData</code></td>
+<td>none</td>
+<td><code>ProductionOrderRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/production_orders/routes.py:244</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/production-orders/bulk-delete</code></td>
+<td><code>bulk_delete_production_orders</code></td>
+<td><code>production_order.bulk_delete</code></td>
+<td><code>BulkDeleteRequest</code></td>
+<td>none</td>
+<td><code>BulkDeleteResponse</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/production_orders/routes.py:257</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/production/production-orders/{order_id}</code></td>
+<td><code>delete_production_order</code></td>
+<td><code>production_order.delete</code></td>
+<td>none</td>
+<td>none</td>
+<td>none</td>
+<td><code>204</code></td>
+<td><code>src/cluster_erp/modules/production/production_orders/routes.py:269</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/production-orders/{order_id}/consume-material</code></td>
+<td><code>consume_material</code></td>
+<td><code>production_order.update</code></td>
+<td><code>MaterialConsumptionCreate</code></td>
+<td>none</td>
+<td><code>ProductionOrderComponentRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/production_orders/routes.py:286</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/production/production-orders/{order_id}/operations/{operation_id}</code></td>
+<td><code>update_operation</code></td>
+<td><code>production_order.update</code></td>
+<td><code>ProductionOrderOperationUpdate</code></td>
+<td>none</td>
+<td><code>ProductionOrderOperationRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/production_orders/routes.py:307</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/production-orders/{order_id}/components</code></td>
+<td><code>add_component</code></td>
+<td><code>production_order.update</code></td>
+<td><code>ProductionOrderComponentCreate</code></td>
+<td>none</td>
+<td><code>ProductionOrderComponentRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/production/production_orders/routes.py:331</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/production/production-orders/{order_id}/components/{component_id}</code></td>
+<td><code>update_component</code></td>
+<td><code>production_order.update</code></td>
+<td><code>ProductionOrderComponentUpdate</code></td>
+<td>none</td>
+<td><code>ProductionOrderComponentRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/production_orders/routes.py:348</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/production/production-orders/{order_id}/components/{component_id}</code></td>
+<td><code>delete_component</code></td>
+<td><code>production_order.update</code></td>
+<td>none</td>
+<td>none</td>
+<td>none</td>
+<td><code>204</code></td>
+<td><code>src/cluster_erp/modules/production/production_orders/routes.py:367</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="work-orders-endpoints">Work orders endpoints<a class="headerlink" href="#work-orders-endpoints">¶</a></h2>
+<p>Work order records, start, complete, and cancel.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Handler</th>
+<th>Permission</th>
+<th>Request</th>
+<th>Query</th>
+<th>Response</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/production/work-orders/</code></td>
+<td><code>list_work_orders</code></td>
+<td><code>work_order.read</code></td>
+<td>none</td>
+<td><code>production_order_id</code>, <code>work_center_id</code>, <code>status</code>, <code>assigned_employee_id</code>, <code>search</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/work_orders/routes.py:26</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/work-orders/</code></td>
+<td><code>create_work_order</code></td>
+<td><code>work_order.create</code></td>
+<td><code>WorkOrderCreate</code></td>
+<td>none</td>
+<td><code>WorkOrderRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/production/work_orders/routes.py:52</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/production/work-orders/{work_order_id}</code></td>
+<td><code>get_work_order</code></td>
+<td><code>work_order.read</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>WorkOrderRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/work_orders/routes.py:64</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/production/work-orders/{work_order_id}</code></td>
+<td><code>update_work_order</code></td>
+<td><code>work_order.update</code></td>
+<td><code>WorkOrderUpdate</code></td>
+<td>none</td>
+<td><code>WorkOrderRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/work_orders/routes.py:78</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/production/work-orders/{work_order_id}</code></td>
+<td><code>delete_work_order</code></td>
+<td><code>work_order.delete</code></td>
+<td>none</td>
+<td>none</td>
+<td>none</td>
+<td><code>204</code></td>
+<td><code>src/cluster_erp/modules/production/work_orders/routes.py:97</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/work-orders/{work_order_id}/start</code></td>
+<td><code>start_work_order</code></td>
+<td><code>work_order.update</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>WorkOrderRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/work_orders/routes.py:112</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/work-orders/{work_order_id}/complete</code></td>
+<td><code>complete_work_order</code></td>
+<td><code>work_order.update</code></td>
+<td><code>WorkOrderComplete</code></td>
+<td>none</td>
+<td><code>WorkOrderRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/work_orders/routes.py:127</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/work-orders/{work_order_id}/cancel</code></td>
+<td><code>cancel_work_order</code></td>
+<td><code>work_order.update</code></td>
+<td>none</td>
+<td>none</td>
+<td><code>WorkOrderRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/work_orders/routes.py:144</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="scheduling-endpoints">Scheduling endpoints<a class="headerlink" href="#scheduling-endpoints">¶</a></h2>
+<p>The scheduling board, manual and automatic scheduling of work and production orders, and a recompute after a calendar change.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Handler</th>
+<th>Permission</th>
+<th>Request</th>
+<th>Query</th>
+<th>Response</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/production/scheduling/board</code></td>
+<td><code>scheduling_board</code></td>
+<td><code>work_order.read</code></td>
+<td>none</td>
+<td><code>date_from</code>, <code>date_to</code>, <code>work_center_id</code>, <code>production_order_id</code>, <code>project_id</code>, <code>scope</code></td>
+<td><code>BoardResponse</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/scheduling/routes.py:41</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/production/scheduling/work-orders/{work_order_id}/schedule</code></td>
+<td><code>schedule_work_order</code></td>
+<td><code>work_order.update</code></td>
+<td><code>WorkOrderScheduleUpdate</code></td>
+<td>none</td>
+<td><code>WorkOrderRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/scheduling/routes.py:87</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/scheduling/work-orders/{work_order_id}/auto-schedule</code></td>
+<td><code>auto_schedule_work_order</code></td>
+<td><code>work_order.update</code></td>
+<td><code>WorkOrderAutoScheduleRequest</code></td>
+<td>none</td>
+<td><code>WorkOrderRead</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/scheduling/routes.py:110</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/scheduling/production-orders/{order_id}/auto-schedule</code></td>
+<td><code>auto_schedule_production_order</code></td>
+<td><code>work_order.update</code></td>
+<td><code>ProductionOrderAutoScheduleRequest</code></td>
+<td>none</td>
+<td><code>CascadeResult</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/scheduling/routes.py:136</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/production/scheduling/recompute</code></td>
+<td><code>recompute_after_calendar_change</code></td>
+<td><code>work_order.update</code></td>
+<td><code>RecomputeRequest</code></td>
+<td>none</td>
+<td><code>RecomputeResult</code></td>
+<td>200 (default)</td>
+<td><code>src/cluster_erp/modules/production/scheduling/routes.py:175</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="error-codes">Error codes<a class="headerlink" href="#error-codes">¶</a></h2>
+<p>The table lists the error codes that code under <code>src/cluster_erp/modules/production/</code> raises, found by a syntax-tree scan for <code>AppError(...)</code>, the factories in <code>src/cluster_erp/core/errors.py</code> (<code>not_found</code>, <code>conflict</code>, <code>protected</code>, <code>permission_denied</code>, <code>privilege_escalation</code>, <code>check_version</code>), and <code>HTTPException(...)</code>. A status of <code>400</code> is the <code>AppError</code> default (<code>src/cluster_erp/core/errors.py:23</code>). Guard errors (<code>401</code>, <code>403</code>), the entitlement codes, and validation errors (<code>422</code>) apply to every route and are listed on <a href="errors.html">Errors</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>HTTP status</th>
+<th>Raised in</th>
+<th>First site</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CONCURRENCY_VERSION_CONFLICT</code></td>
+<td><code>409</code></td>
+<td><code>component_allocations</code>, <code>operation_types</code>, <code>production_orders</code>, <code>production_versions</code>, <code>routing_templates</code>, <code>scheduling</code>, <code>work_orders</code></td>
+<td><code>src/cluster_erp/modules/production/component_allocations/services.py:174</code></td>
+</tr>
+<tr>
+<td><code>PRODUCTION_BOM_EMPTY</code></td>
+<td><code>422</code></td>
+<td><code>routings</code></td>
+<td><code>src/cluster_erp/modules/production/routings/scaffold.py:207</code></td>
+</tr>
+<tr>
+<td><code>PRODUCTION_BOM_REQUIRED</code></td>
+<td><code>422</code></td>
+<td><code>routings</code></td>
+<td><code>src/cluster_erp/modules/production/routings/scaffold.py:199</code></td>
+</tr>
+<tr>
+<td><code>PRODUCTION_CUT_RULE_EXISTS</code></td>
+<td><code>422</code></td>
+<td><code>routing_templates</code></td>
+<td><code>src/cluster_erp/modules/production/routing_templates/services.py:268</code></td>
+</tr>
+<tr>
+<td><code>PRODUCTION_INSUFFICIENT_MATERIAL</code></td>
+<td><code>400</code></td>
+<td><code>production_orders</code></td>
+<td><code>src/cluster_erp/modules/production/production_orders/services.py:763</code></td>
+</tr>
+<tr>
+<td><code>PRODUCTION_MATERIAL_CONSUMPTION_FAILED</code></td>
+<td><code>400</code></td>
+<td><code>production_orders</code></td>
+<td><code>src/cluster_erp/modules/production/production_orders/services.py:798</code></td>
+</tr>
+<tr>
+<td><code>PRODUCTION_OPERATION_NO_MATERIAL_IO</code></td>
+<td><code>422</code></td>
+<td><code>component_allocations</code></td>
+<td><code>src/cluster_erp/modules/production/component_allocations/services.py:513</code></td>
+</tr>
+<tr>
+<td><code>PRODUCTION_ORDER_EXISTS_FOR_PROJECT_PRODUCT</code></td>
+<td><code>422</code></td>
+<td><code>module</code></td>
+<td><code>src/cluster_erp/modules/production/module.py:675</code></td>
+</tr>
+<tr>
+<td><code>PRODUCTION_ORDER_INVALID_STATUS</code></td>
+<td><code>400</code>, <code>422</code></td>
+<td><code>production_orders</code>, <code>work_orders</code></td>
+<td><code>src/cluster_erp/modules/production/production_orders/services.py:450</code></td>
+</tr>
+<tr>
+<td><code>PRODUCTION_PRODUCT_NOT_MANUFACTURABLE</code></td>
+<td><code>400</code></td>
+<td><code>production_orders</code>, <code>routings</code></td>
+<td><code>src/cluster_erp/modules/production/production_orders/services.py:152</code></td>
+</tr>
+<tr>
+<td><code>PRODUCTION_ROUTING_INCOMPLETE</code></td>
+<td><code>422</code></td>
+<td><code>routings</code></td>
+<td><code>src/cluster_erp/modules/production/routings/scaffold.py:1703</code></td>
+</tr>
+<tr>
+<td><code>PRODUCTION_ROUTING_REQUIRED</code></td>
+<td><code>400</code></td>
+<td><code>routings</code></td>
+<td><code>src/cluster_erp/modules/production/routings/services.py:621</code></td>
+</tr>
+<tr>
+<td><code>PRODUCTION_SCHEDULE_INVALID_RANGE</code></td>
+<td><code>422</code></td>
+<td><code>scheduling</code></td>
+<td><code>src/cluster_erp/modules/production/scheduling/routes.py:58</code></td>
+</tr>
+<tr>
+<td><code>PRODUCTION_SCHEDULE_NO_SLOT</code></td>
+<td><code>422</code></td>
+<td><code>scheduling</code></td>
+<td><code>src/cluster_erp/modules/production/scheduling/services.py:716</code></td>
+</tr>
+<tr>
+<td><code>PRODUCTION_WORK_ORDER_INVALID_STATUS</code></td>
+<td><code>422</code></td>
+<td><code>scheduling</code>, <code>work_orders</code></td>
+<td><code>src/cluster_erp/modules/production/scheduling/services.py:324</code></td>
+</tr>
+<tr>
+<td><code>PRODUCTION_WORK_ORDER_QTY_EXCEEDED</code></td>
+<td><code>422</code></td>
+<td><code>work_orders</code></td>
+<td><code>src/cluster_erp/modules/production/work_orders/services.py:372</code></td>
+</tr>
+<tr>
+<td><code>RESOURCE_NOT_FOUND</code></td>
+<td><code>404</code>, <code>422</code></td>
+<td><code>component_allocations</code>, <code>operation_types</code>, <code>production_orders</code>, <code>production_versions</code>, <code>routing_templates</code>, <code>routings</code>, <code>scheduling</code>, <code>work_centers</code>, <code>work_orders</code></td>
+<td><code>src/cluster_erp/modules/production/component_allocations/routes.py:83</code></td>
+</tr>
+<tr>
+<td><code>SCAFFOLD_ANSWER_REQUIRED</code></td>
+<td><code>422</code></td>
+<td><code>routings</code></td>
+<td><code>src/cluster_erp/modules/production/routings/scaffold.py:1099</code></td>
+</tr>
+<tr>
+<td><code>SCAFFOLD_CHANGE_PROTECTED</code></td>
+<td><code>422</code></td>
+<td><code>routings</code></td>
+<td><code>src/cluster_erp/modules/production/routings/scaffold.py:1806</code></td>
+</tr>
+<tr>
+<td><code>SCAFFOLD_COPY_SAME_TARGET</code></td>
+<td><code>422</code></td>
+<td><code>routings</code></td>
+<td><code>src/cluster_erp/modules/production/routings/scaffold.py:2124</code></td>
+</tr>
+<tr>
+<td><code>SCAFFOLD_PLAN_STALE</code></td>
+<td><code>409</code></td>
+<td><code>routings</code></td>
+<td><code>src/cluster_erp/modules/production/routings/scaffold.py:1065</code></td>
+</tr>
+<tr>
+<td><code>SCAFFOLD_ROUTING_EXISTS</code></td>
+<td><code>409</code></td>
+<td><code>routings</code></td>
+<td><code>src/cluster_erp/modules/production/routings/scaffold.py:1144</code></td>
+</tr>
+<tr>
+<td><code>SCAFFOLD_TEMPLATE_AMBIGUOUS</code></td>
+<td><code>422</code></td>
+<td><code>routings</code></td>
+<td><code>src/cluster_erp/modules/production/routings/scaffold.py:522</code></td>
+</tr>
+<tr>
+<td><code>VALIDATION_ERROR</code></td>
+<td><code>422</code></td>
+<td><code>production_versions</code>, <code>routing_templates</code></td>
+<td><code>src/cluster_erp/modules/production/production_versions/routes.py:56</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="events-emitted">Events emitted<a class="headerlink" href="#events-emitted">¶</a></h2>
+<p>The table lists the contract classes that code under <code>src/cluster_erp/modules/production/</code> passes directly to <code>EventBus.emit</code>, found by a syntax-tree scan. Events built in a variable first are not counted. The contracts are described in <a href="../platform/contracts-reference.html">Contracts reference</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Sites</th>
+<th>First site</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MaterialConsumed</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/production/production_orders/services.py:812</code></td>
+</tr>
+<tr>
+<td><code>ProductionOrderCancelled</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/production/production_orders/services.py:572</code></td>
+</tr>
+<tr>
+<td><code>ProductionOrderCompleted</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/production/production_orders/services.py:716</code></td>
+</tr>
+<tr>
+<td><code>ProductionOrderCreated</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/production/production_orders/services.py:227</code></td>
+</tr>
+<tr>
+<td><code>ProductionOrderOnHold</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/production/production_orders/services.py:616</code></td>
+</tr>
+<tr>
+<td><code>ProductionOrderStatusChanged</code></td>
+<td>4</td>
+<td><code>src/cluster_erp/modules/production/production_orders/services.py:519</code></td>
+</tr>
+<tr>
+<td><code>WorkOrderCompleted</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/production/work_orders/services.py:404</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="index.html">API reference</a></li>
+<li><a href="../modules/production/index.html">Production module</a></li>
+<li><a href="conventions.html">API conventions</a></li>
+<li><a href="errors.html">Errors</a></li>
+<li><a href="authentication-and-headers.html">Authentication and headers</a></li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../api/procurement/suppliers.html"><span class="eyebrow">Previous</span><span>Procurement API: Suppliers endpoints (suppliers)</span></a><a class="next" href="../api/products_and_services.html"><span class="eyebrow">Next</span><span>Products and services API (products_and_services)</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#group-facts">Group facts</a></li>
+<li class="lvl2"><a href="#endpoint-summary">Endpoint summary</a></li>
+<li class="lvl2"><a href="#work-centres-endpoints">Work centres endpoints</a></li>
+<li class="lvl2"><a href="#operation-types-endpoints">Operation types endpoints</a></li>
+<li class="lvl2"><a href="#routings-endpoints">Routings endpoints</a></li>
+<li class="lvl2"><a href="#routing-templates-and-cut-rules-endpoints">Routing templates and cut rules endpoints</a></li>
+<li class="lvl2"><a href="#production-versions-endpoints">Production versions endpoints</a></li>
+<li class="lvl2"><a href="#capacity-endpoints">Capacity endpoints</a></li>
+<li class="lvl2"><a href="#component-allocations-endpoints">Component allocations endpoints</a></li>
+<li class="lvl2"><a href="#production-orders-endpoints">Production orders endpoints</a></li>
+<li class="lvl2"><a href="#work-orders-endpoints">Work orders endpoints</a></li>
+<li class="lvl2"><a href="#scheduling-endpoints">Scheduling endpoints</a></li>
+<li class="lvl2"><a href="#error-codes">Error codes</a></li>
+<li class="lvl2"><a href="#events-emitted">Events emitted</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

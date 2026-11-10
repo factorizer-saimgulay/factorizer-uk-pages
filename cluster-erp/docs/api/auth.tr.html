@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Auth API (auth) · Cluster ERP Wiki</title>
+<meta name="description" content="/api/v1/auth altındaki auth modülünün HTTP uç noktaları: yetkiler, şemalar, durum kodları ve hata kodlarıyla 56 yol.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="tr"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menü</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.tr.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Wiki&#x27;de ara" aria-label="Wiki&#x27;de ara" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="Eşleşen sayfa yok."></div>
+  </div>
+  <a class="lang-switch" href="../api/auth.html" lang="en" hreflang="en">English</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Ana sayfa</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.tr.html">Cluster ERP wiki&#x27;si</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Genel bakış</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.tr.html">Genel bakış</a></li>
+<li class=""><a href="../overview/architecture-overview.tr.html">Mimariye genel bakış</a></li>
+<li class=""><a href="../overview/repository-map.tr.html">Depo haritası</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.tr.html">Cluster ERP nedir</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.tr.html">Platform çekirdeği</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.tr.html">Ekler, notlar ve depolama</a></li>
+<li class=""><a href="../platform/base-model-and-ids.tr.html">Temel model ve kimlikler</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.tr.html">Önbellek ve varlık damgası</a></li>
+<li class=""><a href="../platform/change-history.tr.html">Değişiklik geçmişi</a></li>
+<li class=""><a href="../platform/contracts-reference.tr.html">Sözleşmeler başvurusu</a></li>
+<li class=""><a href="../platform/database-and-sessions.tr.html">Veritabanı ve oturumlar</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.tr.html">Hatalar ve istisnalar</a></li>
+<li class=""><a href="../platform/event-bus.tr.html">Olay veri yolu</a></li>
+<li class=""><a href="../platform/metadata-model.tr.html">Metadata modeli</a></li>
+<li class=""><a href="../platform/module-lifecycle.tr.html">Modül yaşam döngüsü</a></li>
+<li class=""><a href="../platform/money-and-decimal.tr.html">Para ve Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.tr.html">PDF ve sistem postası</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.tr.html">Ürün kırılımı ve stok dönüşümü</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.tr.html">Referans veriler ve çekirdek i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.tr.html">İstek hattı ve ara katmanlar</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.tr.html">Arama, sayfalama ve toplu işlemler</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.tr.html">Sunucu açılışı ve uygulama fabrikası</a></li>
+<li class=""><a href="../platform/settings-reference.tr.html">Ayarlar başvurusu</a></li>
+<li class=""><a href="../platform/shared-server-routes.tr.html">Ortak sunucu rotaları</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.tr.html">Yumuşak silme ve kullanımdan kaldırma</a></li>
+<li class=""><a href="../platform/tenant-fields.tr.html">Kiracı alanları</a></li>
+<li class=""><a href="../platform/working-time.tr.html">Çalışma zamanı</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Kimlik ve erişim</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.tr.html">Kimlik, erişim, kiracılık, gizlilik ve lisans</a></li>
+<li class=""><a href="../identity-access/abac-policies.tr.html">ABAC politikaları</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.tr.html">Uygulama mağazası lisansları ve hakları</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.tr.html">Onaylar ve onay zincirleri</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.tr.html">Kimlik doğrulama ve oturumlar</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.tr.html">Alan ve satır erişimi</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.tr.html">Çok kiracılılık</a></li>
+<li class=""><a href="../identity-access/notification-rules.tr.html">Bildirim kuralları</a></li>
+<li class=""><a href="../identity-access/operator-console.tr.html">Operatör konsolu</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.tr.html">Gizlilik ve ilgili kişi başvuruları</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.tr.html">Roller ve izinler</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.tr.html">İkinci doğrulama adımı ve gizli değer saklama</a></li>
+<li class=""><a href="../identity-access/signup.tr.html">Kayıt</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web uygulaması</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.tr.html">Web uygulaması platformu</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.tr.html">Aksiyonlar ve aksiyon kartı</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.tr.html">Asistan ve sohbet ekranları</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.tr.html">Açılış, oturum ve API çağrıları</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.tr.html">Veri tazeleme ve değişiklik sinyalleri</a></li>
+<li class=""><a href="../web-app/device-classes.tr.html">Cihaz sınıfları</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.tr.html">Kapılı uygulama paketleri</a></li>
+<li class=""><a href="../web-app/generic-detail.tr.html">Genel ayrıntı</a></li>
+<li class=""><a href="../web-app/generic-form.tr.html">Genel form</a></li>
+<li class=""><a href="../web-app/generic-list.tr.html">Genel liste</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.tr.html">Genel ağaç ve ayar ekranları</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.tr.html">Ana ekran, dock ve başlatıcı</a></li>
+<li class=""><a href="../web-app/home-widgets.tr.html">Ana ekran bileşenleri</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.tr.html">Web uygulamasına dil ekleyin</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.tr.html">Metadata ile ekran ekleyin</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.tr.html">Uluslararasılaştırma ve diller</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.tr.html">Mail ve profil ekranları</a></li>
+<li class=""><a href="../web-app/metadata-rendering.tr.html">Metadata çizimi</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.tr.html">Modül uygulamaları ve uygulama kapsamı</a></li>
+<li class=""><a href="../web-app/overview.tr.html">Web uygulamasına genel bakış</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.tr.html">Kayıt belgeleri, görüntüleyici ve paylaşım</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.tr.html">Arama ve komut paleti</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.tr.html">Temalar, belirteçler ve erişilebilirlik</a></li>
+<li class=""><a href="../web-app/user-ui-state.tr.html">Kullanıcı arayüz durumu</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Masaüstü istemci</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.tr.html">Masaüstü istemci</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.tr.html">API istemcisi ve çalışanlar</a></li>
+<li class=""><a href="../desktop/chat-widget.tr.html">Sohbet bileşeni</a></li>
+<li class=""><a href="../desktop/generic-widgets.tr.html">Genel bileşenler</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.tr.html">Diller, temalar ve erişilebilirlik</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.tr.html">Metadata deposu ve yabancı anahtar önbelleği</a></li>
+<li class=""><a href="../desktop/module-screens.tr.html">Modül ekranları</a></li>
+<li class=""><a href="../desktop/overview.tr.html">Masaüstü istemciye genel bakış</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.tr.html">Masaüstü istemciyi çalıştırın</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.tr.html">Sinyal veri yolu ve watch_entity</a></li>
+<li class=""><a href="../desktop/tabs-panes-and-layout.tr.html">Sekmeler, bölmeler ve yerleşim</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">İş modülleri</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.tr.html">İş modülleri</a></li>
+<li class=""><a href="../modules/analytics/index.tr.html">Analytics modülü (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.tr.html">Analitik olgular</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.tr.html">Analitik tahmin ve sınıflandırma</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.tr.html">Analitik tarifleri ve sorgu kurucu</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.tr.html">Analitik raporları, özetleri ve çapraz</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.tr.html">Analitik istatistik ve çıkarım</a></li>
+<li class=""><a href="../modules/app_store.tr.html">App store modülü (app_store)</a></li>
+<li class=""><a href="../modules/auth.tr.html">Auth modülü (auth)</a></li>
+<li class=""><a href="../modules/bom.tr.html">BOM modülü (bom)</a></li>
+<li class=""><a href="../modules/calendars.tr.html">Calendars modülü (calendars)</a></li>
+<li class=""><a href="../modules/costing.tr.html">Costing modülü (costing)</a></li>
+<li class=""><a href="../modules/crm/index.tr.html">CRM modülü (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.tr.html">Müşteriler ve müşteri parçaları</a></li>
+<li class="sub"><a href="../modules/crm/inbox.tr.html">Teklif talebi gelen kutusu</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.tr.html">Müşteri teklif talepleri</a></li>
+<li class=""><a href="../modules/currencies.tr.html">Currencies modülü (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.tr.html">Design engineering modülü (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.tr.html">Documents modülü (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.tr.html">Fleet modülü (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.tr.html">Filo araçları</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.tr.html">Filo bakımı ve iş emirleri</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.tr.html">Filo sayaçları ve yakıt</a></li>
+<li class="sub"><a href="../modules/fleet/operations.tr.html">Filo operasyonları</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.tr.html">Filo TCO, telematik ve analitik</a></li>
+<li class=""><a href="../modules/intranet/index.tr.html">Intranet modülü (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.tr.html">İntranet erişimi, hedef kitlesi ve saklama</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.tr.html">İntranet içeriği ve akışı</a></li>
+<li class="sub"><a href="../modules/intranet/directory.tr.html">İntranet rehberi</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.tr.html">İntranet katılımı</a></li>
+<li class="sub"><a href="../modules/intranet/events.tr.html">İntranet etkinlikleri</a></li>
+<li class="sub"><a href="../modules/intranet/leave.tr.html">İntranet izinleri</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.tr.html">İntranet belgelerim</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.tr.html">İntranet bildirimleri ve tebligat</a></li>
+<li class="sub"><a href="../modules/intranet/requests.tr.html">İntranet talepleri</a></li>
+<li class=""><a href="../modules/inventory.tr.html">Inventory modülü (inventory)</a></li>
+<li class=""><a href="../modules/logs.tr.html">Logs modülü (logs)</a></li>
+<li class=""><a href="../modules/mail.tr.html">Mail modülü (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.tr.html">Nesting modülü (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.tr.html">Yerleşim motoru</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.tr.html">Yerleşim entegrasyonu ve KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.tr.html">Yerleşim işleri, parçalar ve artıklar</a></li>
+<li class=""><a href="../modules/owned_organisations.tr.html">Owned organisations modülü (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.tr.html">Parties modülü (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.tr.html">Adresler başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.tr.html">İletişim kanalları başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/parties.tr.html">Parties alt modülü başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.tr.html">Taraf birleştirme</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.tr.html">Kişi dilleri başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.tr.html">Parties ayarları ve başvuru verileri</a></li>
+<li class=""><a href="../modules/privacy.tr.html">Privacy modülü (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.tr.html">Procurement modülü (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.tr.html">Kritik malzemeler ve ikame</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.tr.html">Malzeme ihtiyaç planlaması</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.tr.html">Satın alma sözleşmeleri ve info kayıtları</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.tr.html">Satın alma siparişleri</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.tr.html">Satın alma talepleri</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.tr.html">Satın alma teklif talepleri</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.tr.html">Tedarikçiler</a></li>
+<li class=""><a href="../modules/production/index.tr.html">Production modülü (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.tr.html">Üretim emirleri ve versiyonları</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.tr.html">Rotalar ve operasyon tipleri</a></li>
+<li class="sub"><a href="../modules/production/scheduling.tr.html">Üretim çizelgeleme</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.tr.html">İş merkezleri ve kapasite</a></li>
+<li class="sub"><a href="../modules/production/work-orders.tr.html">İş emirleri</a></li>
+<li class=""><a href="../modules/products_and_services.tr.html">Products and services modülü (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.tr.html">Projects modülü (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.tr.html">Proje aksiyonları, aktiviteleri ve toplantıları</a></li>
+<li class="sub"><a href="../modules/projects/board.tr.html">Proje panosu</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.tr.html">Projeler, kalemler ve fikstürler</a></li>
+<li class="sub"><a href="../modules/projects/schedules.tr.html">Proje çizelgeleri</a></li>
+<li class=""><a href="../modules/purchasing_quotations.tr.html">Purchasing quotations modülü (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.tr.html">Quotations modülü (quotations)</a></li>
+<li class=""><a href="../modules/records.tr.html">Records modülü (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.tr.html">Sales orders modülü (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.tr.html">Satış siparişleri ve sipariş kalemleri</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.tr.html">Sevkiyatlar</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.tr.html">İhracat belgeleri</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.tr.html">Satış siparişi birimleri ve ayarları</a></li>
+<li class=""><a href="../modules/subscriptions.tr.html">Subscriptions modülü (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Asistan</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.tr.html">Niyet asistanı</a></li>
+<li class=""><a href="../ai/intent-assistant.tr.html">Niyet asistanı nasıl çalışır</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">API referansı</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.tr.html">API başvurusu</a></li>
+<li class=""><a href="../api/analytics.tr.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.tr.html">App store API (app_store)</a></li>
+<li class="current"><a href="../api/auth.tr.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.tr.html">Kimlik doğrulama ve başlıklar</a></li>
+<li class=""><a href="../api/bom.tr.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.tr.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.tr.html">API kuralları</a></li>
+<li class=""><a href="../api/costing.tr.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.tr.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.tr.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.tr.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.tr.html">Documents API (documents)</a></li>
+<li class=""><a href="../api/errors.tr.html">Hatalar</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.tr.html">İş hata kodları</a></li>
+<li class=""><a href="../api/fleet.tr.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.tr.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.tr.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.tr.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.tr.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.tr.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.tr.html">API&#x27;ye genel bakış</a></li>
+<li class=""><a href="../api/owned_organisations.tr.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.tr.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.tr.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.tr.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.tr.html">Procurement API: Kritik malzemeler uç noktaları (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.tr.html">Procurement API: Satın alma bilgi kayıtları uç noktaları (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.tr.html">Procurement API: MRP uç noktaları (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.tr.html">Procurement API: Satın alma sözleşmeleri uç noktaları (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.tr.html">Procurement API: Satın alma siparişleri uç noktaları (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.tr.html">Procurement API: Satın alma talepleri uç noktaları (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.tr.html">Procurement API: Satın alma teklif talepleri uç noktaları (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.tr.html">Procurement API: İkame grupları uç noktaları (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.tr.html">Procurement API: Tedarikçiler uç noktaları (suppliers)</a></li>
+<li class=""><a href="../api/production.tr.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.tr.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.tr.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.tr.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.tr.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.tr.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.tr.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.tr.html">Paylaşılan sunucu yolları API</a></li>
+<li class=""><a href="../api/subscriptions.tr.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.tr.html">Sistem uç noktaları API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">İşletme</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.tr.html">İşletim</a></li>
+<li class=""><a href="../operations/backups-and-restore.tr.html">Yedekler ve geri yükleme</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.tr.html">CI hattı ve sürüm</a></li>
+<li class=""><a href="../operations/configuration-reference.tr.html">Yapılandırma başvurusu</a></li>
+<li class=""><a href="../operations/container-measurement.tr.html">Konteyner ölçümü</a></li>
+<li class=""><a href="../operations/data-residency-check.tr.html">Veri ikameti denetimi</a></li>
+<li class=""><a href="../operations/database-migrations.tr.html">Veritabanı göçleri</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.tr.html">Demo ve staging verisi</a></li>
+<li class=""><a href="../operations/environments-and-promotion.tr.html">Ortamlar ve terfi</a></li>
+<li class=""><a href="../operations/install-a-linux-node.tr.html">Bir Linux düğümü kurun</a></li>
+<li class=""><a href="../operations/local-development-setup.tr.html">Yerel geliştirme kurulumu</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.tr.html">PostgreSQL rolleri ve ayarı</a></li>
+<li class=""><a href="../operations/reverse-proxy.tr.html">Ters vekil sunucu</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.tr.html">Zamanlanmış işler ve saklama</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.tr.html">Security.txt ve hazırlık</a></li>
+<li class=""><a href="../operations/service-and-process-manager.tr.html">Servis ve süreç yöneticisi</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.tr.html">Kiracı yaşam döngüsü</a></li>
+<li class=""><a href="../operations/windows-installer.tr.html">Windows kurucusu</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Katkı</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.tr.html">Katkı</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.tr.html">Mimari sınırlar</a></li>
+<li class=""><a href="../contributing/coding-rules.tr.html">Kodlama kuralları</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.tr.html">Geliştirici araçları ve betikleri</a></li>
+<li class=""><a href="../contributing/e2e-battery.tr.html">E2e bataryası</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.tr.html">E2e süit kataloğu</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.tr.html">Lint ve tip denetimi</a></li>
+<li class=""><a href="../contributing/python-tests.tr.html">Python testleri</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.tr.html">Bir arka uç modülü yazın</a></li>
+<li class=""><a href="../contributing/writing-documentation.tr.html">Bir wiki sayfası yazın</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Karar kayıtları</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.tr.html">Karar kayıtları</a></li>
+<li class=""><a href="../decisions/data-driven-languages.tr.html">Veri güdümlü diller</a></li>
+<li class=""><a href="../decisions/decimal-money.tr.html">Decimal para</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.tr.html">Yalnız EventBus ile modüller arası iletişim</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.tr.html">Metadata güdümlü arayüz</a></li>
+<li class=""><a href="../decisions/no-hard-delete.tr.html">Fiziksel silme yok</a></li>
+<li class=""><a href="../decisions/party-unification.tr.html">Taraf birleşimi</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.tr.html">Ürün, model ve versiyon kırılımı</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.tr.html">Sunucu tarafı arayüz durumu</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.tr.html">ULID birincil anahtarlar</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Başvuru</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.tr.html">Başvuru</a></li>
+<li class=""><a href="../reference/glossary.tr.html">Sözlük</a></li>
+<li class=""><a href="../reference/related-material.tr.html">İlgili belgeler</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.tr.html">Ana sayfa</a> / API referansı</div>
+    <header class="page-head">
+      <p class="eyebrow">API</p>
+      <h1>Auth API (auth)</h1>
+      <p class="lede">/api/v1/auth altındaki auth modülünün HTTP uç noktaları: yetkiler, şemalar, durum kodları ve hata kodlarıyla 56 yol.</p>
+    </header>
+    <nav class="toc" aria-label="İçindekiler"><p class="eyebrow">İçindekiler</p><ul class="outline">
+<li class="lvl2"><a href="#grup-olguları">Grup olguları</a></li>
+<li class="lvl2"><a href="#uç-nokta-özeti">Uç nokta özeti</a></li>
+<li class="lvl2"><a href="#oturum-açma-ve-oturum-uç-noktaları">Oturum açma ve oturum uç noktaları</a></li>
+<li class="lvl2"><a href="#kullanıcılar-uç-noktaları">Kullanıcılar uç noktaları</a></li>
+<li class="lvl2"><a href="#roller-uç-noktaları">Roller uç noktaları</a></li>
+<li class="lvl2"><a href="#yetkiler-uç-noktaları">Yetkiler uç noktaları</a></li>
+<li class="lvl2"><a href="#abac-ilkeleri-uç-noktaları">ABAC ilkeleri uç noktaları</a></li>
+<li class="lvl2"><a href="#onay-zincirleri-uç-noktaları">Onay zincirleri uç noktaları</a></li>
+<li class="lvl2"><a href="#onay-talepleri-uç-noktaları">Onay talepleri uç noktaları</a></li>
+<li class="lvl2"><a href="#bildirim-kuralları-uç-noktaları">Bildirim kuralları uç noktaları</a></li>
+<li class="lvl2"><a href="#arayüz-durumu-uç-noktaları">Arayüz durumu uç noktaları</a></li>
+<li class="lvl2"><a href="#hata-kodları">Hata kodları</a></li>
+<li class="lvl2"><a href="#yayımlanan-olaylar">Yayımlanan olaylar</a></li>
+<li class="lvl2"><a href="#i̇lgili-sayfalar">İlgili sayfalar</a></li>
+</ul></nav>
+    <article class="prose">
+<p><code>auth</code> modülü oturum açmayı ve belirteç yenilemeyi, kullanıcıları, rolleri, yetkileri, ABAC ilkelerini, onay zincirlerini ve adımlarını, onay taleplerini, bildirim kurallarını ve kullanıcı başına arayüz durumunu sunar. 56 uç noktanın tamamı <code>/api/v1/auth</code> altındadır. İş anlamı için <a href="../modules/auth.tr.html">Auth modülü</a> sayfasına bakın.</p>
+<h2 id="grup-olguları">Grup olguları<a class="headerlink" href="#grup-olguları">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Öğe</th>
+<th>Değer</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Temel yol</td>
+<td><code>/api/v1/auth</code></td>
+<td><code>src/cluster_erp/core/module_base.py:37-38</code>, <code>src/cluster_erp/modules/auth/module.py:58</code></td>
+</tr>
+<tr>
+<td>Yönlendiriciler</td>
+<td>9 dosyada 10 yönlendirici nesnesi; Uç nokta özeti bölümünde listelenir</td>
+<td><code>src/cluster_erp/modules/auth/module.py:32</code></td>
+</tr>
+<tr>
+<td>Uç noktalar</td>
+<td>56; <code>register_routes</code> ile bağlanan yönlendiricilerin yol dekoratörleri ve <code>add_api_route</code> çağrılarından sayıldı</td>
+<td><code>src/cluster_erp/modules/auth/approval_chains/routes.py</code>, <code>src/cluster_erp/modules/auth/approvals/routes.py</code>, <code>src/cluster_erp/modules/auth/login/routes.py</code> ...</td>
+</tr>
+<tr>
+<td>Kimlik doğrulama</td>
+<td>Bearer başlığı veya oturum çerezi, <code>get_current_user</code> ile çözülür; bkz. <a href="authentication-and-headers.tr.html">Kimlik doğrulama ve başlıklar</a></td>
+<td><code>src/cluster_erp/modules/auth/guards.py:85-167</code></td>
+</tr>
+<tr>
+<td>Yetki koruması</td>
+<td>56 yolun 44 tanesi <code>require_permission</code> bildirir; diğer yollar korumalarını tablolarda gösterir</td>
+<td><code>src/cluster_erp/modules/auth/guards.py:205-240</code></td>
+</tr>
+<tr>
+<td>Hata biçimi</td>
+<td>JSON gövdesi <code>{"error": {...}}</code>; bkz. <a href="errors.tr.html">Hatalar</a></td>
+<td><code>src/cluster_erp/server/error_handler.py:33-46</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="uç-nokta-özeti">Uç nokta özeti<a class="headerlink" href="#uç-nokta-özeti">¶</a></h2>
+<p>Alt modül klasörü başına bir satır. Yönlendirici öneki temel yola eklenir.</p>
+<table>
+<thead>
+<tr>
+<th>Alt modül</th>
+<th>Yönlendiriciler</th>
+<th>Uç noktalar</th>
+<th>Yönlendirici kaynağı</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>login</code></td>
+<td><code>router</code></td>
+<td>4</td>
+<td><code>src/cluster_erp/modules/auth/login/routes.py:51</code></td>
+</tr>
+<tr>
+<td><code>users</code></td>
+<td><code>router</code> (<code>/users</code>)</td>
+<td>8</td>
+<td><code>src/cluster_erp/modules/auth/users/routes.py:23</code></td>
+</tr>
+<tr>
+<td><code>roles</code></td>
+<td><code>router</code> (<code>/roles</code>)</td>
+<td>8</td>
+<td><code>src/cluster_erp/modules/auth/roles/routes.py:20</code></td>
+</tr>
+<tr>
+<td><code>permissions</code></td>
+<td><code>router</code> (<code>/permissions</code>)</td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/auth/permissions/routes.py:11</code></td>
+</tr>
+<tr>
+<td><code>policies</code></td>
+<td><code>router</code> (<code>/policies</code>)</td>
+<td>6</td>
+<td><code>src/cluster_erp/modules/auth/policies/routes.py:15</code></td>
+</tr>
+<tr>
+<td><code>approval_chains</code></td>
+<td><code>router</code> (<code>/approval-chains</code>), <code>steps_router</code> (<code>/approval-steps</code>)</td>
+<td>12</td>
+<td><code>src/cluster_erp/modules/auth/approval_chains/routes.py:21</code>, <code>src/cluster_erp/modules/auth/approval_chains/routes.py:25</code></td>
+</tr>
+<tr>
+<td><code>approvals</code></td>
+<td><code>router</code> (<code>/approvals</code>)</td>
+<td>9</td>
+<td><code>src/cluster_erp/modules/auth/approvals/routes.py:22</code></td>
+</tr>
+<tr>
+<td><code>notification_rules</code></td>
+<td><code>router</code> (<code>/notification-rules</code>)</td>
+<td>6</td>
+<td><code>src/cluster_erp/modules/auth/notification_rules/routes.py:21</code></td>
+</tr>
+<tr>
+<td><code>ui_state</code></td>
+<td><code>router</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/auth/ui_state/routes.py:13</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="oturum-açma-ve-oturum-uç-noktaları">Oturum açma ve oturum uç noktaları<a class="headerlink" href="#oturum-açma-ve-oturum-uç-noktaları">¶</a></h2>
+<p>Oturum açma, belirteç yenileme, oturum kapatma ve geçerli kullanıcı okuması. Mekanizma <a href="authentication-and-headers.tr.html">Kimlik doğrulama ve başlıklar</a> sayfasında anlatılır.</p>
+<table>
+<thead>
+<tr>
+<th>Yöntem</th>
+<th>Yol</th>
+<th>İşleyici</th>
+<th>Yetki</th>
+<th>İstek</th>
+<th>Sorgu</th>
+<th>Yanıt</th>
+<th>Durum</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/auth/login</code></td>
+<td><code>login</code></td>
+<td>yok (oturum açma)</td>
+<td><code>LoginRequest</code></td>
+<td>yok</td>
+<td><code>LoginResponse</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/login/routes.py:123</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/auth/refresh</code></td>
+<td><code>refresh</code></td>
+<td>yenileme belirteci</td>
+<td><code>RefreshRequest \| None</code></td>
+<td>yok</td>
+<td><code>RefreshResponse</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/login/routes.py:260</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/auth/logout</code></td>
+<td><code>logout</code></td>
+<td>oturum açmış kullanıcı (<code>get_current_user</code>)</td>
+<td>yok</td>
+<td>yok</td>
+<td><code>Response</code></td>
+<td><code>204</code></td>
+<td><code>src/cluster_erp/modules/auth/login/routes.py:373</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/auth/me</code></td>
+<td><code>me</code></td>
+<td>oturum açmış kullanıcı (<code>get_current_user</code>)</td>
+<td>yok</td>
+<td>yok</td>
+<td><code>MeResponse</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/login/routes.py:434</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="kullanıcılar-uç-noktaları">Kullanıcılar uç noktaları<a class="headerlink" href="#kullanıcılar-uç-noktaları">¶</a></h2>
+<p>Kullanıcı listeleme, oluşturma, okuma, güncelleme, kullanımdan kaldırma, toplu kullanımdan kaldırma, kendi parolasını değiştirme ve yönetici parola sıfırlama.</p>
+<table>
+<thead>
+<tr>
+<th>Yöntem</th>
+<th>Yol</th>
+<th>İşleyici</th>
+<th>Yetki</th>
+<th>İstek</th>
+<th>Sorgu</th>
+<th>Yanıt</th>
+<th>Durum</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/auth/users/</code></td>
+<td><code>list_users</code></td>
+<td><code>user.read</code></td>
+<td>yok</td>
+<td><code>search</code>, <code>active_only</code>, <code>limit</code>, <code>offset</code></td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/users/routes.py:59</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/auth/users/</code></td>
+<td><code>create_user</code></td>
+<td><code>user.create</code></td>
+<td><code>UserCreate</code></td>
+<td>yok</td>
+<td><code>UserRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/auth/users/routes.py:111</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/auth/users/{user_id}</code></td>
+<td><code>get_user</code></td>
+<td><code>user.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>UserRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/users/routes.py:111</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/auth/users/{user_id}</code></td>
+<td><code>update_user</code></td>
+<td><code>user.update</code></td>
+<td><code>UserUpdate</code></td>
+<td>yok</td>
+<td><code>UserRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/users/routes.py:124</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/auth/users/{user_id}</code></td>
+<td><code>delete_user</code></td>
+<td><code>user.delete</code></td>
+<td>yok</td>
+<td>yok</td>
+<td>yok</td>
+<td><code>204</code></td>
+<td><code>src/cluster_erp/modules/auth/users/routes.py:140</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/auth/users/bulk-delete</code></td>
+<td><code>bulk_delete_users</code></td>
+<td><code>user.delete</code></td>
+<td><code>BulkDeleteRequest</code></td>
+<td>yok</td>
+<td><code>BulkDeleteResponse</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/users/routes.py:151</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/auth/users/me/change-password</code></td>
+<td><code>change_own_password</code></td>
+<td>oturum açmış kullanıcı (<code>get_current_user</code>)</td>
+<td><code>ChangePasswordRequest</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>204</code></td>
+<td><code>src/cluster_erp/modules/auth/users/routes.py:162</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/auth/users/{user_id}/reset-password</code></td>
+<td><code>reset_password</code></td>
+<td><code>user.reset_password</code></td>
+<td><code>ResetPasswordRequest</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>204</code></td>
+<td><code>src/cluster_erp/modules/auth/users/routes.py:177</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="roller-uç-noktaları">Roller uç noktaları<a class="headerlink" href="#roller-uç-noktaları">¶</a></h2>
+<p>Rol kayıtları ve bir role atanan yetki kümesi.</p>
+<table>
+<thead>
+<tr>
+<th>Yöntem</th>
+<th>Yol</th>
+<th>İşleyici</th>
+<th>Yetki</th>
+<th>İstek</th>
+<th>Sorgu</th>
+<th>Yanıt</th>
+<th>Durum</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/auth/roles/</code></td>
+<td><code>list_roles</code></td>
+<td><code>role.read</code></td>
+<td>yok</td>
+<td><code>active_only</code>, <code>search</code></td>
+<td><code>list[RoleRead]</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/roles/routes.py:42</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/auth/roles/</code></td>
+<td><code>create_role</code></td>
+<td><code>role.create</code></td>
+<td><code>RoleCreate</code></td>
+<td>yok</td>
+<td><code>RoleRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/auth/roles/routes.py:54</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/auth/roles/{role_id}</code></td>
+<td><code>get_role</code></td>
+<td><code>role.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>RoleRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/roles/routes.py:68</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/auth/roles/{role_id}</code></td>
+<td><code>update_role</code></td>
+<td><code>role.update</code></td>
+<td><code>RoleUpdate</code></td>
+<td>yok</td>
+<td><code>RoleRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/roles/routes.py:81</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/auth/roles/{role_id}</code></td>
+<td><code>delete_role</code></td>
+<td><code>role.delete</code></td>
+<td>yok</td>
+<td>yok</td>
+<td>yok</td>
+<td><code>204</code></td>
+<td><code>src/cluster_erp/modules/auth/roles/routes.py:95</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/auth/roles/bulk-delete</code></td>
+<td><code>bulk_delete_roles</code></td>
+<td><code>role.delete</code></td>
+<td><code>BulkDeleteRequest</code></td>
+<td>yok</td>
+<td><code>BulkDeleteResponse</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/roles/routes.py:111</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/auth/roles/{role_id}/permissions</code></td>
+<td><code>get_role_permissions</code></td>
+<td><code>permission.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>list[uuid.UUID]</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/roles/routes.py:122</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/auth/roles/{role_id}/permissions</code></td>
+<td><code>assign_role_permissions</code></td>
+<td><code>permission.assign</code></td>
+<td><code>RolePermissionAssign</code></td>
+<td>yok</td>
+<td><code>RoleRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/roles/routes.py:135</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="yetkiler-uç-noktaları">Yetkiler uç noktaları<a class="headerlink" href="#yetkiler-uç-noktaları">¶</a></h2>
+<p>Yetki kodlarının salt okunur listesi.</p>
+<table>
+<thead>
+<tr>
+<th>Yöntem</th>
+<th>Yol</th>
+<th>İşleyici</th>
+<th>Yetki</th>
+<th>İstek</th>
+<th>Sorgu</th>
+<th>Yanıt</th>
+<th>Durum</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/auth/permissions/</code></td>
+<td><code>list_permissions</code></td>
+<td><code>permission.read</code></td>
+<td>yok</td>
+<td><code>module</code>, <code>resource</code></td>
+<td><code>list[PermissionRead]</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/permissions/routes.py:14</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="abac-ilkeleri-uç-noktaları">ABAC ilkeleri uç noktaları<a class="headerlink" href="#abac-ilkeleri-uç-noktaları">¶</a></h2>
+<p>Yetki kodlarına bağlanan öznitelik tabanlı erişim ilkeleri.</p>
+<table>
+<thead>
+<tr>
+<th>Yöntem</th>
+<th>Yol</th>
+<th>İşleyici</th>
+<th>Yetki</th>
+<th>İstek</th>
+<th>Sorgu</th>
+<th>Yanıt</th>
+<th>Durum</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/auth/policies/</code></td>
+<td><code>list_policies</code></td>
+<td><code>abac_policy.read</code></td>
+<td>yok</td>
+<td><code>active_only</code>, <code>search</code></td>
+<td><code>list[PolicyRead]</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/policies/routes.py:18</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/auth/policies/</code></td>
+<td><code>create_policy</code></td>
+<td><code>abac_policy.create</code></td>
+<td><code>PolicyCreate</code></td>
+<td>yok</td>
+<td><code>PolicyRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/auth/policies/routes.py:30</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/auth/policies/{policy_id}</code></td>
+<td><code>get_policy</code></td>
+<td><code>abac_policy.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>PolicyRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/policies/routes.py:41</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/auth/policies/{policy_id}</code></td>
+<td><code>update_policy</code></td>
+<td><code>abac_policy.update</code></td>
+<td><code>PolicyUpdate</code></td>
+<td>yok</td>
+<td><code>PolicyRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/policies/routes.py:54</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/auth/policies/{policy_id}</code></td>
+<td><code>delete_policy</code></td>
+<td><code>abac_policy.delete</code></td>
+<td>yok</td>
+<td>yok</td>
+<td>yok</td>
+<td><code>204</code></td>
+<td><code>src/cluster_erp/modules/auth/policies/routes.py:68</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/auth/policies/bulk-delete</code></td>
+<td><code>bulk_delete_policies</code></td>
+<td><code>abac_policy.delete</code></td>
+<td><code>BulkDeleteRequest</code></td>
+<td>yok</td>
+<td><code>BulkDeleteResponse</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/policies/routes.py:79</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="onay-zincirleri-uç-noktaları">Onay zincirleri uç noktaları<a class="headerlink" href="#onay-zincirleri-uç-noktaları">¶</a></h2>
+<p>İki yönlendirici: onay zincirleri ve zincir altındaki adımlar için <code>router</code>, tekil adımlar için <code>steps_router</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Yöntem</th>
+<th>Yol</th>
+<th>İşleyici</th>
+<th>Yetki</th>
+<th>İstek</th>
+<th>Sorgu</th>
+<th>Yanıt</th>
+<th>Durum</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/auth/approval-chains/</code></td>
+<td><code>list_chains</code></td>
+<td><code>approval_chain.read</code></td>
+<td>yok</td>
+<td><code>active_only</code>, <code>search</code></td>
+<td><code>list[ChainRead]</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/approval_chains/routes.py:32</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/auth/approval-chains/</code></td>
+<td><code>create_chain</code></td>
+<td><code>approval_chain.create</code></td>
+<td><code>ChainCreate</code></td>
+<td>yok</td>
+<td><code>ChainRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/auth/approval_chains/routes.py:44</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/auth/approval-chains/{chain_id}</code></td>
+<td><code>get_chain</code></td>
+<td><code>approval_chain.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>ChainRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/approval_chains/routes.py:55</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/auth/approval-chains/{chain_id}</code></td>
+<td><code>update_chain</code></td>
+<td><code>approval_chain.update</code></td>
+<td><code>ChainUpdate</code></td>
+<td>yok</td>
+<td><code>ChainRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/approval_chains/routes.py:68</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/auth/approval-chains/{chain_id}</code></td>
+<td><code>delete_chain</code></td>
+<td><code>approval_chain.delete</code></td>
+<td>yok</td>
+<td>yok</td>
+<td>yok</td>
+<td><code>204</code></td>
+<td><code>src/cluster_erp/modules/auth/approval_chains/routes.py:82</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/auth/approval-chains/bulk-delete</code></td>
+<td><code>bulk_delete_chains</code></td>
+<td><code>approval_chain.delete</code></td>
+<td><code>BulkDeleteRequest</code></td>
+<td>yok</td>
+<td><code>BulkDeleteResponse</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/approval_chains/routes.py:93</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/auth/approval-chains/{chain_id}/steps</code></td>
+<td><code>list_chain_steps</code></td>
+<td><code>approval_chain.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>list[ApprovalStepRead]</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/approval_chains/routes.py:110</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/auth/approval-chains/{chain_id}/steps</code></td>
+<td><code>add_chain_step</code></td>
+<td><code>approval_chain.update</code></td>
+<td><code>ApprovalStepCreate</code></td>
+<td>yok</td>
+<td><code>ApprovalStepRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/auth/approval_chains/routes.py:121</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/auth/approval-steps/{step_id}</code></td>
+<td><code>get_step</code></td>
+<td><code>approval_chain.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>ApprovalStepRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/approval_chains/routes.py:135</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/auth/approval-steps/{step_id}</code></td>
+<td><code>update_step</code></td>
+<td><code>approval_chain.update</code></td>
+<td><code>ApprovalStepCreate</code></td>
+<td>yok</td>
+<td><code>ApprovalStepRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/approval_chains/routes.py:148</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/auth/approval-steps/{step_id}</code></td>
+<td><code>delete_step</code></td>
+<td><code>approval_chain.update</code></td>
+<td>yok</td>
+<td>yok</td>
+<td>yok</td>
+<td><code>204</code></td>
+<td><code>src/cluster_erp/modules/auth/approval_chains/routes.py:162</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/auth/approval-steps/bulk-delete</code></td>
+<td><code>bulk_delete_steps</code></td>
+<td><code>approval_chain.update</code></td>
+<td><code>BulkDeleteRequest</code></td>
+<td>yok</td>
+<td><code>BulkDeleteResponse</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/approval_chains/routes.py:173</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="onay-talepleri-uç-noktaları">Onay talepleri uç noktaları<a class="headerlink" href="#onay-talepleri-uç-noktaları">¶</a></h2>
+<p>Onay talepleri: bekleyen liste, çağıranın gelen kutusu, oluşturma, okuma, karar verme, erteleme ve ertelemeyi kaldırma, iptal ve bir varlığın onayları.</p>
+<table>
+<thead>
+<tr>
+<th>Yöntem</th>
+<th>Yol</th>
+<th>İşleyici</th>
+<th>Yetki</th>
+<th>İstek</th>
+<th>Sorgu</th>
+<th>Yanıt</th>
+<th>Durum</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/auth/approvals/pending</code></td>
+<td><code>list_pending</code></td>
+<td><code>permission.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>list[ApprovalRequestRead]</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/approvals/routes.py:25</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/auth/approvals/inbox</code></td>
+<td><code>approval_inbox</code></td>
+<td>oturum açmış kullanıcı (<code>get_current_user</code>)</td>
+<td>yok</td>
+<td>yok</td>
+<td><code>list[dict[str, Any]]</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/approvals/routes.py:35</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/auth/approvals/</code></td>
+<td><code>create_approval_request</code></td>
+<td><code>permission.assign</code></td>
+<td><code>ApprovalRequestCreate</code></td>
+<td>yok</td>
+<td><code>ApprovalRequestRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/auth/approvals/routes.py:56</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/auth/approvals/{request_id}</code></td>
+<td><code>get_approval_request</code></td>
+<td><code>permission.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>ApprovalRequestRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/approvals/routes.py:77</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/auth/approvals/{request_id}/decide</code></td>
+<td><code>decide_approval</code></td>
+<td>oturum açmış kullanıcı (<code>get_current_user</code>)</td>
+<td><code>ApprovalDecisionCreate</code></td>
+<td>yok</td>
+<td><code>ApprovalRequestRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/approvals/routes.py:90</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/auth/approvals/{request_id}/defer</code></td>
+<td><code>defer_approval</code></td>
+<td>oturum açmış kullanıcı (<code>get_current_user</code>)</td>
+<td><code>ApprovalDeferCreate</code></td>
+<td>yok</td>
+<td><code>ApprovalDeferRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/approvals/routes.py:134</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/auth/approvals/{request_id}/defer</code></td>
+<td><code>lift_approval_defer</code></td>
+<td>oturum açmış kullanıcı (<code>get_current_user</code>)</td>
+<td>yok</td>
+<td>yok</td>
+<td>yok</td>
+<td><code>204</code></td>
+<td><code>src/cluster_erp/modules/auth/approvals/routes.py:157</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/auth/approvals/{request_id}/cancel</code></td>
+<td><code>cancel_approval</code></td>
+<td>oturum açmış kullanıcı (<code>get_current_user</code>)</td>
+<td>yok</td>
+<td>yok</td>
+<td>yok</td>
+<td><code>204</code></td>
+<td><code>src/cluster_erp/modules/auth/approvals/routes.py:171</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/auth/approvals/entity/{entity_type}/{entity_id}</code></td>
+<td><code>get_entity_approvals</code></td>
+<td><code>permission.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>list[ApprovalRequestRead]</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/approvals/routes.py:189</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="bildirim-kuralları-uç-noktaları">Bildirim kuralları uç noktaları<a class="headerlink" href="#bildirim-kuralları-uç-noktaları">¶</a></h2>
+<p>Bildirim kuralı kayıtları.</p>
+<table>
+<thead>
+<tr>
+<th>Yöntem</th>
+<th>Yol</th>
+<th>İşleyici</th>
+<th>Yetki</th>
+<th>İstek</th>
+<th>Sorgu</th>
+<th>Yanıt</th>
+<th>Durum</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/auth/notification-rules/</code></td>
+<td><code>list_notification_rules</code></td>
+<td><code>notification_rule.read</code></td>
+<td>yok</td>
+<td><code>active_only</code>, <code>search</code></td>
+<td><code>list[NotificationRuleRead]</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/notification_rules/routes.py:24</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/auth/notification-rules/</code></td>
+<td><code>create_notification_rule</code></td>
+<td><code>notification_rule.create</code></td>
+<td><code>NotificationRuleCreate</code></td>
+<td>yok</td>
+<td><code>NotificationRuleRead</code></td>
+<td><code>201</code></td>
+<td><code>src/cluster_erp/modules/auth/notification_rules/routes.py:36</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/auth/notification-rules/{rule_id}</code></td>
+<td><code>get_notification_rule</code></td>
+<td><code>notification_rule.read</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>NotificationRuleRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/notification_rules/routes.py:47</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/auth/notification-rules/{rule_id}</code></td>
+<td><code>update_notification_rule</code></td>
+<td><code>notification_rule.update</code></td>
+<td><code>NotificationRuleUpdate</code></td>
+<td>yok</td>
+<td><code>NotificationRuleRead</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/notification_rules/routes.py:60</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/auth/notification-rules/{rule_id}</code></td>
+<td><code>delete_notification_rule</code></td>
+<td><code>notification_rule.delete</code></td>
+<td>yok</td>
+<td>yok</td>
+<td>yok</td>
+<td><code>204</code></td>
+<td><code>src/cluster_erp/modules/auth/notification_rules/routes.py:74</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/auth/notification-rules/bulk-delete</code></td>
+<td><code>bulk_delete_notification_rules</code></td>
+<td><code>notification_rule.delete</code></td>
+<td><code>BulkDeleteRequest</code></td>
+<td>yok</td>
+<td><code>BulkDeleteResponse</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/notification_rules/routes.py:85</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="arayüz-durumu-uç-noktaları">Arayüz durumu uç noktaları<a class="headerlink" href="#arayüz-durumu-uç-noktaları">¶</a></h2>
+<p>Oturum açmış kullanıcının kendi yerleşim durumu; bütün olarak okunur, anahtar başına yazılır. İşleyici kullanıcı kimliğini kimlik bilgisinden alır (<code>src/cluster_erp/modules/auth/ui_state/routes.py:15-18</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Yöntem</th>
+<th>Yol</th>
+<th>İşleyici</th>
+<th>Yetki</th>
+<th>İstek</th>
+<th>Sorgu</th>
+<th>Yanıt</th>
+<th>Durum</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/auth/ui-state</code></td>
+<td><code>get_my_ui_state</code></td>
+<td>oturum açmış kullanıcı (<code>get_current_user</code>)</td>
+<td>yok</td>
+<td>yok</td>
+<td><code>dict</code></td>
+<td>200 (varsayılan)</td>
+<td><code>src/cluster_erp/modules/auth/ui_state/routes.py:21</code></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/v1/auth/ui-state/{key}</code></td>
+<td><code>put_my_ui_state</code></td>
+<td>oturum açmış kullanıcı (<code>get_current_user</code>)</td>
+<td><code>UiStateWrite</code></td>
+<td>yok</td>
+<td>yok</td>
+<td><code>204</code></td>
+<td><code>src/cluster_erp/modules/auth/ui_state/routes.py:30</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="hata-kodları">Hata kodları<a class="headerlink" href="#hata-kodları">¶</a></h2>
+<p>Tablo, <code>src/cluster_erp/modules/auth/</code> altındaki kodun attığı hata kodlarını listeler. Kodlar, <code>AppError(...)</code> çağrıları, <code>src/cluster_erp/core/errors.py</code> içindeki fabrikalar (<code>not_found</code>, <code>conflict</code>, <code>protected</code>, <code>permission_denied</code>, <code>privilege_escalation</code>, <code>check_version</code>) ve <code>HTTPException(...)</code> için yapılan bir sözdizimi ağacı taramasıyla bulundu. <code>400</code> durumu <code>AppError</code> varsayılanıdır (<code>src/cluster_erp/core/errors.py:23</code>). Koruma hataları (<code>401</code>, <code>403</code>), yetkilendirme kodları ve doğrulama hataları (<code>422</code>) her yol için geçerlidir ve <a href="errors.tr.html">Hatalar</a> sayfasında listelenir.</p>
+<table>
+<thead>
+<tr>
+<th>Kod</th>
+<th>HTTP durumu</th>
+<th>Atıldığı yer</th>
+<th>İlk konum</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ABAC_RESOURCE_RULES_UNSUPPORTED</code></td>
+<td><code>422</code></td>
+<td><code>policies</code></td>
+<td><code>src/cluster_erp/modules/auth/policies/services.py:81</code></td>
+</tr>
+<tr>
+<td><code>APPROVAL_INVALID_STATE</code></td>
+<td><code>400</code>, <code>409</code>, <code>422</code></td>
+<td><code>approval_chains</code>, <code>approvals</code></td>
+<td><code>src/cluster_erp/modules/auth/approval_chains/services.py:132</code></td>
+</tr>
+<tr>
+<td><code>AUTH_CSRF_HEADER_MISSING</code></td>
+<td><code>403</code></td>
+<td><code>login</code>, <code>session_cookies</code></td>
+<td><code>src/cluster_erp/modules/auth/login/routes.py:271</code></td>
+</tr>
+<tr>
+<td><code>AUTH_INVALID_CREDENTIALS</code></td>
+<td><code>401</code></td>
+<td><code>login</code>, <code>users</code></td>
+<td><code>src/cluster_erp/modules/auth/login/routes.py:143</code></td>
+</tr>
+<tr>
+<td><code>AUTH_MISSING_HEADER</code></td>
+<td><code>401</code></td>
+<td><code>guards</code></td>
+<td><code>src/cluster_erp/modules/auth/guards.py:103</code></td>
+</tr>
+<tr>
+<td><code>AUTH_PERMISSION_DENIED</code></td>
+<td><code>403</code></td>
+<td><code>approvals</code>, <code>guards</code></td>
+<td><code>src/cluster_erp/modules/auth/approvals/services.py:364</code></td>
+</tr>
+<tr>
+<td><code>AUTH_PRIVILEGE_ESCALATION</code></td>
+<td><code>403</code></td>
+<td><code>roles</code>, <code>users</code></td>
+<td><code>src/cluster_erp/modules/auth/roles/services.py:163</code></td>
+</tr>
+<tr>
+<td><code>AUTH_REFRESH_FAILED</code></td>
+<td><code>401</code></td>
+<td><code>login</code></td>
+<td><code>src/cluster_erp/modules/auth/login/routes.py:269</code></td>
+</tr>
+<tr>
+<td><code>AUTH_SELF_APPROVAL_FORBIDDEN</code></td>
+<td><code>403</code></td>
+<td><code>approvals</code></td>
+<td><code>src/cluster_erp/modules/auth/approvals/services.py:314</code></td>
+</tr>
+<tr>
+<td><code>AUTH_TOKEN_BLACKLISTED</code></td>
+<td><code>401</code></td>
+<td><code>guards</code></td>
+<td><code>src/cluster_erp/modules/auth/guards.py:131</code></td>
+</tr>
+<tr>
+<td><code>AUTH_TOKEN_EXPIRED</code></td>
+<td><code>401</code></td>
+<td><code>guards</code></td>
+<td><code>src/cluster_erp/modules/auth/guards.py:113</code></td>
+</tr>
+<tr>
+<td><code>AUTH_TOKEN_INVALID</code></td>
+<td><code>401</code></td>
+<td><code>guards</code></td>
+<td><code>src/cluster_erp/modules/auth/guards.py:115</code></td>
+</tr>
+<tr>
+<td><code>AUTH_TOKEN_PAYLOAD_INVALID</code></td>
+<td><code>401</code></td>
+<td><code>guards</code></td>
+<td><code>src/cluster_erp/modules/auth/guards.py:120</code></td>
+</tr>
+<tr>
+<td><code>AUTH_TOO_MANY_ATTEMPTS</code></td>
+<td><code>429</code></td>
+<td><code>login</code></td>
+<td><code>src/cluster_erp/modules/auth/login/routes.py:93</code></td>
+</tr>
+<tr>
+<td><code>AUTH_USER_INACTIVE</code></td>
+<td><code>401</code></td>
+<td><code>guards</code>, <code>login</code></td>
+<td><code>src/cluster_erp/modules/auth/guards.py:151</code></td>
+</tr>
+<tr>
+<td><code>RESOURCE_CONFLICT</code></td>
+<td><code>409</code></td>
+<td><code>roles</code>, <code>users</code></td>
+<td><code>src/cluster_erp/modules/auth/roles/routes.py:63</code></td>
+</tr>
+<tr>
+<td><code>RESOURCE_NOT_FOUND</code></td>
+<td><code>404</code></td>
+<td><code>approval_chains</code>, <code>approvals</code>, <code>notification_rules</code>, <code>policies</code>, <code>roles</code>, <code>users</code></td>
+<td><code>src/cluster_erp/modules/auth/approval_chains/routes.py:64</code></td>
+</tr>
+<tr>
+<td><code>RESOURCE_PROTECTED</code></td>
+<td><code>400</code></td>
+<td><code>roles</code></td>
+<td><code>src/cluster_erp/modules/auth/roles/routes.py:106</code></td>
+</tr>
+<tr>
+<td><code>VALIDATION_ERROR</code></td>
+<td><code>422</code></td>
+<td><code>users</code></td>
+<td><code>src/cluster_erp/modules/auth/users/routes.py:87</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="yayımlanan-olaylar">Yayımlanan olaylar<a class="headerlink" href="#yayımlanan-olaylar">¶</a></h2>
+<p>Tablo, <code>src/cluster_erp/modules/auth/</code> altındaki kodun <code>EventBus.emit</code> çağrısına doğrudan verdiği sözleşme sınıflarını listeler; sözdizimi ağacı taramasıyla bulundu. Önce bir değişkene kurulan olaylar sayılmaz. Sözleşmeler <a href="../platform/contracts-reference.tr.html">Sözleşmeler başvurusu</a> sayfasında anlatılır.</p>
+<table>
+<thead>
+<tr>
+<th>Sözleşme</th>
+<th>Konum sayısı</th>
+<th>İlk konum</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ApprovalCompleted</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/auth/approvals/routes.py:119</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="i̇lgili-sayfalar">İlgili sayfalar<a class="headerlink" href="#i̇lgili-sayfalar">¶</a></h2>
+<ul>
+<li><a href="index.tr.html">API başvurusu</a></li>
+<li><a href="../modules/auth.tr.html">Auth modülü</a></li>
+<li><a href="conventions.tr.html">API kuralları</a></li>
+<li><a href="errors.tr.html">Hatalar</a></li>
+<li><a href="authentication-and-headers.tr.html">Kimlik doğrulama ve başlıklar</a></li>
+</ul>
+<hr>
+<p>7793ff4 numaralı commit ile 2026-11-09 tarihinde doğrulandı.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Doğrulanan commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../api/app_store.tr.html"><span class="eyebrow">Önceki</span><span>App store API (app_store)</span></a><a class="next" href="../api/authentication-and-headers.tr.html"><span class="eyebrow">Sonraki</span><span>Kimlik doğrulama ve başlıklar</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">Bu sayfada</p><ul class="outline">
+<li class="lvl2"><a href="#grup-olguları">Grup olguları</a></li>
+<li class="lvl2"><a href="#uç-nokta-özeti">Uç nokta özeti</a></li>
+<li class="lvl2"><a href="#oturum-açma-ve-oturum-uç-noktaları">Oturum açma ve oturum uç noktaları</a></li>
+<li class="lvl2"><a href="#kullanıcılar-uç-noktaları">Kullanıcılar uç noktaları</a></li>
+<li class="lvl2"><a href="#roller-uç-noktaları">Roller uç noktaları</a></li>
+<li class="lvl2"><a href="#yetkiler-uç-noktaları">Yetkiler uç noktaları</a></li>
+<li class="lvl2"><a href="#abac-ilkeleri-uç-noktaları">ABAC ilkeleri uç noktaları</a></li>
+<li class="lvl2"><a href="#onay-zincirleri-uç-noktaları">Onay zincirleri uç noktaları</a></li>
+<li class="lvl2"><a href="#onay-talepleri-uç-noktaları">Onay talepleri uç noktaları</a></li>
+<li class="lvl2"><a href="#bildirim-kuralları-uç-noktaları">Bildirim kuralları uç noktaları</a></li>
+<li class="lvl2"><a href="#arayüz-durumu-uç-noktaları">Arayüz durumu uç noktaları</a></li>
+<li class="lvl2"><a href="#hata-kodları">Hata kodları</a></li>
+<li class="lvl2"><a href="#yayımlanan-olaylar">Yayımlanan olaylar</a></li>
+<li class="lvl2"><a href="#i̇lgili-sayfalar">İlgili sayfalar</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>docs/wiki altındaki Markdown kaynaklarından derlendi</span></footer>
+</body>
+</html>

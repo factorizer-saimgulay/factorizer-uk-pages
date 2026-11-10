@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tabs, panes, and layout · Cluster ERP Wiki</title>
+<meta name="description" content="How the desktop main window, sidebar, split panes, tab manager, and pane controller open, track, close, and persist screens.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../desktop/tabs-panes-and-layout.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.html">Overview</a></li>
+<li class=""><a href="../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.html">Platform core</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../platform/change-history.html">Change history</a></li>
+<li class=""><a href="../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../platform/event-bus.html">Event bus</a></li>
+<li class=""><a href="../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class=""><a href="../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../web-app/generic-form.html">Generic form</a></li>
+<li class=""><a href="../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class=""><a href="../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.html">Desktop client</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class="current"><a href="../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.html">Business modules</a></li>
+<li class=""><a href="../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class=""><a href="../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../modules/auth.html">Auth module (auth)</a></li>
+<li class=""><a href="../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class=""><a href="../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class=""><a href="../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../modules/intranet/requests.html">Intranet requests</a></li>
+<li class=""><a href="../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../modules/mail.html">Mail module (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class=""><a href="../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../modules/production/work-orders.html">Work orders</a></li>
+<li class=""><a href="../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.html">API reference</a></li>
+<li class=""><a href="../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.html">Documents API (documents)</a></li>
+<li class=""><a href="../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.html">API overview</a></li>
+<li class=""><a href="../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class=""><a href="../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.html">Operations</a></li>
+<li class=""><a href="../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class=""><a href="../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class=""><a href="../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.html">Reference</a></li>
+<li class=""><a href="../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.html">Home</a> / Desktop client</div>
+    <header class="page-head">
+      <p class="eyebrow">Explanation</p>
+      <h1>Tabs, panes, and layout</h1>
+      <p class="lede">How the desktop main window, sidebar, split panes, tab manager, and pane controller open, track, close, and persist screens.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#in-short">In short</a></li>
+<li class="lvl2"><a href="#how-it-works">How it works</a></li>
+<li class="lvl3"><a href="#main-window">Main window</a></li>
+<li class="lvl3"><a href="#building-a-section-screen">Building a section screen</a></li>
+<li class="lvl3"><a href="#sidebar">Sidebar</a></li>
+<li class="lvl3"><a href="#tab-lifecycle">Tab lifecycle</a></li>
+<li class="lvl3"><a href="#record-tabs">Record tabs</a></li>
+<li class="lvl3"><a href="#panes">Panes</a></li>
+<li class="lvl3"><a href="#layout-persistence">Layout persistence</a></li>
+<li class="lvl3"><a href="#pane-controller">Pane controller</a></li>
+<li class="lvl2"><a href="#why-it-is-built-this-way">Why it is built this way</a></li>
+<li class="lvl2"><a href="#rules-and-boundaries">Rules and boundaries</a></li>
+<li class="lvl2"><a href="#interaction-with-other-parts">Interaction with other parts</a></li>
+<li class="lvl2"><a href="#limits-and-open-points">Limits and open points</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p>The desktop main window is a sidebar, a pane area that can be split, and a chat panel side by side. Each pane holds tabs, and each tab holds one screen. This page explains <code>widgets/main_window.py</code>, <code>widgets/sidebar.py</code>, <code>widgets/pane_container.py</code>, <code>widgets/pane_widget.py</code>, <code>core/tab_manager.py</code>, and <code>core/pane_controller.py</code> under <code>src/cluster_erp/desktop/</code>. The screens inside the tabs are described on <a href="generic-widgets.html">generic widgets</a> and <a href="module-screens.html">module screens</a>.</p>
+<h2 id="in-short">In short<a class="headerlink" href="#in-short">¶</a></h2>
+<ul>
+<li><code>MainWindow</code> puts <code>Sidebar</code>, <code>PaneContainer</code>, and <code>ChatWidget</code> in one horizontal splitter, with <code>StatusBarWidget</code> below (<code>src/cluster_erp/desktop/widgets/main_window.py:69-137</code>).</li>
+<li>A sidebar click opens a section tab. If the same section is already open in any pane, that tab is activated instead (<code>src/cluster_erp/desktop/widgets/main_window.py:314-343</code>).</li>
+<li><code>TabManager</code> keeps one <code>TabDescriptor</code> per tab, refuses duplicates of the same module, section, and record, and asks before closing a tab with unsaved changes (<code>src/cluster_erp/desktop/core/tab_manager.py:17-24</code>, <code>src/cluster_erp/desktop/core/tab_manager.py:87-161</code>).</li>
+<li><code>PaneContainer</code> splits panes in nested <code>QSplitter</code> widgets and saves the layout, with the open section tabs, in the local setting <code>panes/layout</code> (<code>src/cluster_erp/desktop/widgets/pane_container.py:28</code>, <code>src/cluster_erp/desktop/widgets/pane_container.py:261-272</code>).</li>
+<li><code>PaneController</code> offers the same pane and tab operations through string ids and plain dictionaries (<code>src/cluster_erp/desktop/core/pane_controller.py:23-30</code>).</li>
+</ul>
+<h2 id="how-it-works">How it works<a class="headerlink" href="#how-it-works">¶</a></h2>
+<h3 id="main-window">Main window<a class="headerlink" href="#main-window">¶</a></h3>
+<p><code>_setup_ui</code> builds the window from left to right (<code>src/cluster_erp/desktop/widgets/main_window.py:69-137</code>):</p>
+<ol>
+<li><code>Sidebar</code>, created with the set of custom section keys this client can build (<code>src/cluster_erp/desktop/widgets/main_window.py:79-86</code>).</li>
+<li><code>PaneContainer</code> with one pane, which receives a welcome tab under the module name <code>app</code> and section <code>welcome</code> (<code>src/cluster_erp/desktop/widgets/main_window.py:88-101</code>).</li>
+<li><code>ChatWidget</code>, which can be shown and hidden (<code>src/cluster_erp/desktop/widgets/main_window.py:103-112</code>, <code>src/cluster_erp/desktop/widgets/main_window.py:217-229</code>).</li>
+<li><code>StatusBarWidget</code> and <code>PaneController</code> (<code>src/cluster_erp/desktop/widgets/main_window.py:126-137</code>).</li>
+</ol>
+<p><code>_on_navigate</code> handles four reserved sections of the module <code>app</code>: <code>settings</code> opens the preferences dialog, <code>accessibility</code> opens the accessibility dialog, <code>chat</code> toggles the chat panel, and <code>logout</code> signs out after a confirmation. Every other request opens a module tab (<code>src/cluster_erp/desktop/widgets/main_window.py:188-201</code>, <code>src/cluster_erp/desktop/widgets/main_window.py:231-242</code>).</p>
+<h3 id="building-a-section-screen">Building a section screen<a class="headerlink" href="#building-a-section-screen">¶</a></h3>
+<p><code>_create_module_widget</code> finds the section in the module's sidebar metadata and chooses the screen by <code>view_type</code> (<code>src/cluster_erp/desktop/widgets/main_window.py:347-381</code>):</p>
+<table>
+<thead>
+<tr>
+<th><code>view_type</code></th>
+<th>Screen</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>list</code></td>
+<td><code>GenericListView</code> for the section's entity, with an optional <code>list_endpoint</code></td>
+<td><code>src/cluster_erp/desktop/widgets/main_window.py:399-429</code></td>
+</tr>
+<tr>
+<td><code>tree</code></td>
+<td><code>GenericTreeView</code></td>
+<td><code>src/cluster_erp/desktop/widgets/main_window.py:431-454</code></td>
+</tr>
+<tr>
+<td><code>settings</code></td>
+<td><code>GenericSettingsView</code> with one tab per entity key in <code>tabs</code></td>
+<td><code>src/cluster_erp/desktop/widgets/main_window.py:479-499</code></td>
+</tr>
+<tr>
+<td><code>tabbed_list</code></td>
+<td><code>GenericTabbedListView</code> built from <code>entity_tabs</code></td>
+<td><code>src/cluster_erp/desktop/widgets/main_window.py:456-477</code></td>
+</tr>
+<tr>
+<td><code>custom</code></td>
+<td>A class from <code>_CUSTOM_WIDGET_REGISTRY</code>, looked up as <code>&lt;module&gt;.&lt;custom_widget&gt;</code> and imported on first use</td>
+<td><code>src/cluster_erp/desktop/widgets/main_window.py:501-553</code></td>
+</tr>
+</tbody>
+</table>
+<p>A section that the metadata does not declare gives a placeholder with the text of <code>app.section_missing</code>. A declared section without a buildable screen gives the text of <code>app.not_implemented</code> (<code>src/cluster_erp/desktop/widgets/main_window.py:353-357</code>, <code>src/cluster_erp/desktop/widgets/main_window.py:555-576</code>). When the section metadata has a <code>description</code>, one line with it is inserted at the top of the screen (<code>src/cluster_erp/desktop/widgets/main_window.py:383-397</code>). The tab title is the section label in the current language (<code>src/cluster_erp/desktop/widgets/main_window.py:595-604</code>).</p>
+<h3 id="sidebar">Sidebar<a class="headerlink" href="#sidebar">¶</a></h3>
+<p><code>Sidebar</code> is 200 pixels wide (<code>src/cluster_erp/desktop/widgets/sidebar.py:54</code>). It lists one button per accessible section of every visible module, in module <code>order</code>, with a separator between groups (<code>src/cluster_erp/desktop/widgets/sidebar.py:159-215</code>). A section is hidden in three cases (<code>src/cluster_erp/desktop/widgets/sidebar.py:217-240</code>):</p>
+<ul>
+<li>It is a <code>custom</code> section that this client cannot build.</li>
+<li>It names a <code>required_permission</code> that the user does not hold.</li>
+<li>It is a <code>list</code> section and the user lacks <code>&lt;entity&gt;.read</code>, or a <code>settings</code> section and the user lacks <code>&lt;tab&gt;.read</code> for every tab.</li>
+</ul>
+<p>When the permission list is empty, every section is shown (<code>src/cluster_erp/desktop/widgets/sidebar.py:224-227</code>). Modules hidden by the app scope never reach the sidebar; see <a href="metadata-store-and-fk-cache.html">metadata store and foreign-key cache</a>. A fixed bottom area holds the chat, <strong>Accessibility</strong>, <strong>Preferences</strong> (key <code>sidebar.settings</code>), and <strong>Logout</strong> (key <code>auth.logout</code>) buttons (<code>src/cluster_erp/desktop/widgets/sidebar.py:112-151</code>).</p>
+<h3 id="tab-lifecycle">Tab lifecycle<a class="headerlink" href="#tab-lifecycle">¶</a></h3>
+<p>The state diagram shows one tab from opening to closing.</p>
+<figure class="diagram"><pre class="mermaid">stateDiagram-v2
+  [*] --&gt; Built: caller builds widget
+  Built --&gt; Activated: find_existing finds same module, section, entity_id
+  Activated --&gt; [*]: new widget deleted with deleteLater
+  Built --&gt; Open: addTab, TabDescriptor stored
+  Open --&gt; Dirty: mark_dirty(True)
+  Dirty --&gt; Open: mark_dirty(False) after save
+  Open --&gt; Closed: close_tab
+  Dirty --&gt; Closed: close_tab and user confirms
+  Dirty --&gt; Dirty: close_tab and user declines
+  Closed --&gt; [*]: removeTab, deleteLater, descriptor removed</pre></figure>
+<p>In words:</p>
+<ol>
+<li>The caller builds the screen widget and calls <code>open_tab</code> with module, section, title, and an optional record id (<code>src/cluster_erp/desktop/core/tab_manager.py:87-94</code>).</li>
+<li><code>find_existing</code> looks for a tab with the same module, section, and record id. If one exists, it is activated and the new widget is deleted, so its signal subscriptions and workers end (<code>src/cluster_erp/desktop/core/tab_manager.py:95-108</code>, <code>src/cluster_erp/desktop/core/tab_manager.py:173-179</code>).</li>
+<li>Otherwise a <code>TabDescriptor</code> is stored, the tab is added and activated, the widget gets the property <code>tab_id</code>, and a custom close button is placed on the tab (<code>src/cluster_erp/desktop/core/tab_manager.py:110-125</code>).</li>
+<li>A screen with unsaved edits calls <code>mark_dirty</code>, which prefixes the tab text with a bullet (<code>src/cluster_erp/desktop/core/tab_manager.py:181-189</code>). <code>GenericDetailView</code> does this when its form changes and clears it after a save (<code>src/cluster_erp/desktop/widgets/generic/generic_detail_view.py:571-588</code>).</li>
+<li><code>close_tab</code> on a dirty tab asks with <code>common.unsaved_changes</code>. A forced close skips the question (<code>src/cluster_erp/desktop/core/tab_manager.py:139-161</code>). <code>close_all_tabs</code> asks once with <code>tabs.close_all_unsaved</code> (<code>src/cluster_erp/desktop/core/tab_manager.py:195-211</code>).</li>
+</ol>
+<p>The right-click menu of a tab bar offers <strong>Close All Tabs</strong> (key <code>tabs.close_all</code>) (<code>src/cluster_erp/desktop/widgets/pane_widget.py:211-220</code>).</p>
+<h3 id="record-tabs">Record tabs<a class="headerlink" href="#record-tabs">¶</a></h3>
+<p>Record cards open as tabs whose section is the entity type and whose record id is set. A list view opens one on a double-click (<code>src/cluster_erp/desktop/widgets/generic/generic_list_view.py:395-431</code>). <code>MainWindow._on_open_entity</code> opens one in the active pane for the <code>open_entity</code> signal, using the title the sender passes or the entity label (<code>src/cluster_erp/desktop/widgets/main_window.py:270-312</code>). <code>_on_navigate_to</code> opens a section and passes the parameters to the screen's <code>apply_navigation</code> method when it has one (<code>src/cluster_erp/desktop/widgets/main_window.py:203-215</code>).</p>
+<h3 id="panes">Panes<a class="headerlink" href="#panes">¶</a></h3>
+<p>Each <code>PaneWidget</code> has a 2-pixel active indicator, a <code>PaneBar</code> with split, maximise, and close buttons, and a <code>QTabWidget</code> with movable tabs managed by its own <code>TabManager</code> (<code>src/cluster_erp/desktop/widgets/pane_widget.py:105-167</code>). A mouse press in an inactive pane makes it active (<code>src/cluster_erp/desktop/widgets/pane_widget.py:206-225</code>). Focus moving into a pane also makes it active (<code>src/cluster_erp/desktop/widgets/pane_container.py:369-380</code>).</p>
+<p><code>split_pane</code> adds the new pane next to the old one in the same splitter when the orientation matches, wraps the old pane in a new splitter when it does not, and creates a root splitter for the first split. The two panes share the old size equally (<code>src/cluster_erp/desktop/widgets/pane_container.py:88-152</code>). <code>close_pane</code> refuses to close the last pane, asks when the pane has unsaved tabs, and removes splitters left with one child (<code>src/cluster_erp/desktop/widgets/pane_container.py:154-188</code>, <code>src/cluster_erp/desktop/widgets/pane_container.py:323-346</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Alt+[</code></td>
+<td>Split the active pane left and right</td>
+<td><code>src/cluster_erp/desktop/widgets/pane_container.py:387-391</code></td>
+</tr>
+<tr>
+<td><code>Alt+]</code></td>
+<td>Split the active pane top and bottom</td>
+<td><code>src/cluster_erp/desktop/widgets/pane_container.py:393-397</code></td>
+</tr>
+<tr>
+<td><code>Alt+Z</code></td>
+<td>Close the active pane</td>
+<td><code>src/cluster_erp/desktop/widgets/pane_container.py:399-401</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="layout-persistence">Layout persistence<a class="headerlink" href="#layout-persistence">¶</a></h3>
+<p><code>MainWindow.closeEvent</code> asks once when any pane has unsaved tabs. It then saves the pane layout, the window geometry, and the window state, and closes the API client (<code>src/cluster_erp/desktop/widgets/main_window.py:684-701</code>). <code>_serialize</code> writes panes and splitters as nested dictionaries with orientation and sizes. It keeps only section tabs; record tabs are skipped (<code>src/cluster_erp/desktop/widgets/pane_container.py:417-447</code>). At start-up <code>restore_pane_layout</code> rebuilds the tree and reopens each saved section through the same widget factory (<code>src/cluster_erp/desktop/widgets/main_window.py:669-682</code>, <code>src/cluster_erp/desktop/widgets/pane_container.py:449-509</code>). A missing or broken saved layout leaves one empty pane (<code>src/cluster_erp/desktop/widgets/pane_container.py:274-285</code>, <code>src/cluster_erp/desktop/widgets/pane_container.py:466-472</code>).</p>
+<h3 id="pane-controller">Pane controller<a class="headerlink" href="#pane-controller">¶</a></h3>
+<p><code>PaneController</code> wraps the container with string ids. It lists panes and tabs, splits, closes, maximises, restores, and activates panes, opens, closes, and activates tabs, and saves the layout (<code>src/cluster_erp/desktop/core/pane_controller.py:54-230</code>). The docstring states that an assistant or any other automation layer can drive the workspace this way without widget references (<code>src/cluster_erp/desktop/core/pane_controller.py:24-30</code>). <code>MainWindow</code> creates it and exposes it as the property <code>pane_controller</code> (<code>src/cluster_erp/desktop/widgets/main_window.py:134-137</code>, <code>src/cluster_erp/desktop/widgets/main_window.py:182-184</code>). No other code in <code>src/cluster_erp/desktop/</code> calls it.</p>
+<h2 id="why-it-is-built-this-way">Why it is built this way<a class="headerlink" href="#why-it-is-built-this-way">¶</a></h2>
+<ul>
+<li>Duplicate detection deletes the new widget: the comment in <code>src/cluster_erp/desktop/core/tab_manager.py:100-105</code> states that the orphan would otherwise keep its signal registration and workers alive as an invisible view.</li>
+<li>Missing section metadata reads as a fault: the comment in <code>src/cluster_erp/desktop/widgets/main_window.py:355-356</code> states that a section the server did not send is a fault, not an unbuilt feature.</li>
+<li>Custom sections are filtered in the sidebar: the comment in <code>src/cluster_erp/desktop/widgets/sidebar.py:41-43</code> states that the sidebar never leads to a placeholder.</li>
+<li><code>open_entity</code> is handled by the window: the docstring in <code>src/cluster_erp/desktop/widgets/main_window.py:273-280</code> states that a custom widget has no tab manager, and the window owns the panes.</li>
+</ul>
+<h2 id="rules-and-boundaries">Rules and boundaries<a class="headerlink" href="#rules-and-boundaries">¶</a></h2>
+<ul>
+<li>The project's written engineering rules require duplicate detection, dirty-state warnings, and a descriptor with <code>tab_id</code>, <code>module</code>, <code>section</code>, <code>entity_id</code>, <code>title</code>, <code>widget</code>, and <code>is_dirty</code>. <code>TabDescriptor</code> has exactly these fields (<code>src/cluster_erp/desktop/core/tab_manager.py:16-24</code>).</li>
+<li>A pane always exists: <code>active_pane</code> creates one when the list is empty (<code>src/cluster_erp/desktop/widgets/pane_container.py:75-83</code>).</li>
+</ul>
+<aside class="adm adm-warning" role="note"><p class="adm-title">Warning</p><p>Discrepancy. The project's written engineering rules state that a user's UI layout is kept on the server. The desktop client keeps its pane layout in the local setting <code>panes/layout</code> and the window geometry and state in <code>window/geometry</code> and <code>window/state</code> (<code>src/cluster_erp/desktop/widgets/pane_container.py:28</code>, <code>src/cluster_erp/desktop/widgets/pane_container.py:261-272</code>, <code>src/cluster_erp/desktop/widgets/main_window.py:652-658</code>, <code>src/cluster_erp/desktop/widgets/main_window.py:697-699</code>). This page documents the code.</p>
+</aside>
+<h2 id="interaction-with-other-parts">Interaction with other parts<a class="headerlink" href="#interaction-with-other-parts">¶</a></h2>
+<ul>
+<li>Screens reach the tab system only through the <code>TabManager</code> they receive or through the <code>navigate_to</code> and <code>open_entity</code> signals; see <a href="signal-bus-and-watch-entity.html">signal bus and watch_entity</a>.</li>
+<li>The web client's equivalent of section tabs is described on <a href="../web-app/module-apps-and-app-scope.html">module apps and app scope</a>. Its server-side layout store is described on <a href="../web-app/user-ui-state.html">user UI state</a>.</li>
+</ul>
+<h2 id="limits-and-open-points">Limits and open points<a class="headerlink" href="#limits-and-open-points">¶</a></h2>
+<ul>
+<li>Record tabs are not saved, so they do not reopen after a restart (<code>src/cluster_erp/desktop/widgets/pane_container.py:421-422</code>).</li>
+<li><code>_retranslate_ui</code> renames section tabs after a language change and leaves record tabs unchanged (<code>src/cluster_erp/desktop/widgets/main_window.py:636-648</code>).</li>
+<li><code>PaneWidget</code> sets its tab widget closable, and <code>TabManager</code>, created right after, sets it not closable and adds its own button (<code>src/cluster_erp/desktop/widgets/pane_widget.py:154</code>, <code>src/cluster_erp/desktop/core/tab_manager.py:84</code>, <code>src/cluster_erp/desktop/core/tab_manager.py:122-123</code>).</li>
+<li>The header button of the sidebar opens a credits dialog (<code>src/cluster_erp/desktop/widgets/sidebar.py:70-74</code>).</li>
+</ul>
+<h2 id="terms-introduced">Terms introduced<a class="headerlink" href="#terms-introduced">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Code identifier</th>
+<th>Definition</th>
+<th>Turkish term</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tab descriptor</td>
+<td><code>TabDescriptor</code></td>
+<td>The record that the tab manager keeps for one open tab.</td>
+<td>sekme tanımlayıcı</td>
+<td><code>src/cluster_erp/desktop/core/tab_manager.py:17</code></td>
+</tr>
+<tr>
+<td>tab manager</td>
+<td><code>TabManager</code></td>
+<td>The object that opens, deduplicates, marks, and closes the tabs of one pane.</td>
+<td>sekme yöneticisi</td>
+<td><code>src/cluster_erp/desktop/core/tab_manager.py:73</code></td>
+</tr>
+<tr>
+<td>pane</td>
+<td><code>PaneWidget</code></td>
+<td>One area of the workspace with its own tab bar and tab manager.</td>
+<td>bölme</td>
+<td><code>src/cluster_erp/desktop/widgets/pane_widget.py:99</code></td>
+</tr>
+<tr>
+<td>pane controller</td>
+<td><code>PaneController</code></td>
+<td>The string-id interface for pane and tab operations.</td>
+<td>bölme denetleyicisi</td>
+<td><code>src/cluster_erp/desktop/core/pane_controller.py:23</code></td>
+</tr>
+<tr>
+<td>custom widget registry</td>
+<td><code>_CUSTOM_WIDGET_REGISTRY</code></td>
+<td>The map from <code>module.custom_widget</code> keys to hand-written screen classes.</td>
+<td>özel bileşen kaydı</td>
+<td><code>src/cluster_erp/desktop/widgets/main_window.py:501</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="index.html">Desktop client</a></li>
+<li><a href="generic-widgets.html">Generic widgets</a></li>
+<li><a href="module-screens.html">Module screens</a></li>
+<li><a href="signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li><a href="../web-app/user-ui-state.html">User UI state</a></li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../desktop/signal-bus-and-watch-entity.html"><span class="eyebrow">Previous</span><span>Signal bus and watch_entity</span></a><a class="next" href="../modules/index.html"><span class="eyebrow">Next</span><span>Business modules</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#in-short">In short</a></li>
+<li class="lvl2"><a href="#how-it-works">How it works</a></li>
+<li class="lvl3"><a href="#main-window">Main window</a></li>
+<li class="lvl3"><a href="#building-a-section-screen">Building a section screen</a></li>
+<li class="lvl3"><a href="#sidebar">Sidebar</a></li>
+<li class="lvl3"><a href="#tab-lifecycle">Tab lifecycle</a></li>
+<li class="lvl3"><a href="#record-tabs">Record tabs</a></li>
+<li class="lvl3"><a href="#panes">Panes</a></li>
+<li class="lvl3"><a href="#layout-persistence">Layout persistence</a></li>
+<li class="lvl3"><a href="#pane-controller">Pane controller</a></li>
+<li class="lvl2"><a href="#why-it-is-built-this-way">Why it is built this way</a></li>
+<li class="lvl2"><a href="#rules-and-boundaries">Rules and boundaries</a></li>
+<li class="lvl2"><a href="#interaction-with-other-parts">Interaction with other parts</a></li>
+<li class="lvl2"><a href="#limits-and-open-points">Limits and open points</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

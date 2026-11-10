@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Service and process manager · Cluster ERP Wiki</title>
+<meta name="description" content="The systemd unit and the gunicorn configuration of a Linux node, the two server entry points, and the boot sequence of a worker.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../operations/service-and-process-manager.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.html">Overview</a></li>
+<li class=""><a href="../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.html">Platform core</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../platform/change-history.html">Change history</a></li>
+<li class=""><a href="../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../platform/event-bus.html">Event bus</a></li>
+<li class=""><a href="../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class=""><a href="../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../web-app/generic-form.html">Generic form</a></li>
+<li class=""><a href="../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class=""><a href="../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.html">Desktop client</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class=""><a href="../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.html">Business modules</a></li>
+<li class=""><a href="../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class=""><a href="../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../modules/auth.html">Auth module (auth)</a></li>
+<li class=""><a href="../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class=""><a href="../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class=""><a href="../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../modules/intranet/requests.html">Intranet requests</a></li>
+<li class=""><a href="../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../modules/mail.html">Mail module (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class=""><a href="../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../modules/production/work-orders.html">Work orders</a></li>
+<li class=""><a href="../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.html">API reference</a></li>
+<li class=""><a href="../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.html">Documents API (documents)</a></li>
+<li class=""><a href="../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.html">API overview</a></li>
+<li class=""><a href="../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class=""><a href="../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.html">Operations</a></li>
+<li class=""><a href="../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class="current"><a href="../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class=""><a href="../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.html">Reference</a></li>
+<li class=""><a href="../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.html">Home</a> / Operations</div>
+    <header class="page-head">
+      <p class="eyebrow">Reference</p>
+      <h1>Service and process manager</h1>
+      <p class="lede">The systemd unit and the gunicorn configuration of a Linux node, the two server entry points, and the boot sequence of a worker.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#scope-and-source">Scope and source</a></li>
+<li class="lvl2"><a href="#entry-points">Entry points</a></li>
+<li class="lvl2"><a href="#systemd-unit">Systemd unit</a></li>
+<li class="lvl2"><a href="#gunicorn-configuration">Gunicorn configuration</a></li>
+<li class="lvl2"><a href="#boot-sequence">Boot sequence</a></li>
+<li class="lvl2"><a href="#reload-and-restart">Reload and restart</a></li>
+<li class="lvl2"><a href="#constraints-and-validation">Constraints and validation</a></li>
+<li class="lvl2"><a href="#discrepancies">Discrepancies</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p>This page describes how a Linux node runs the Cluster ERP server: the systemd unit <code>deploy/cluster-erp.service</code>, the gunicorn configuration <code>deploy/gunicorn.conf.py</code>, and the two entry points <code>src/cluster_erp/server/asgi.py</code> and <code>src/cluster_erp/server/main.py</code>. It ends with the boot sequence of one worker. What the application does inside its start-up is explained in <a href="../platform/server-startup-and-app-factory.html">server startup and app factory</a>.</p>
+<h2 id="scope-and-source">Scope and source<a class="headerlink" href="#scope-and-source">¶</a></h2>
+<ul>
+<li>Defined in: <code>deploy/cluster-erp.service</code>, <code>deploy/gunicorn.conf.py</code>, <code>src/cluster_erp/server/asgi.py</code> (<code>app</code>), <code>src/cluster_erp/server/main.py</code> (<code>main</code>).</li>
+<li>Count: the unit table lists every directive of the <code>[Unit]</code>, <code>[Service]</code>, and <code>[Install]</code> sections; the gunicorn table lists every module-level setting of the configuration file.</li>
+</ul>
+<p>Paths of a real node are written as the unit's own names (<code>WorkingDirectory</code>, <code>EnvironmentFile</code>, <code>ReadWritePaths</code>) and not as values.</p>
+<h2 id="entry-points">Entry points<a class="headerlink" href="#entry-points">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Entry point</th>
+<th>Used by</th>
+<th>Behaviour</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cluster_erp.server.asgi:app</code></td>
+<td>gunicorn on a Linux node</td>
+<td>A module-level application built by <code>create_app()</code>; each worker imports it, nothing is preloaded.</td>
+<td><code>src/cluster_erp/server/asgi.py:1-19</code></td>
+</tr>
+<tr>
+<td><code>python -m cluster_erp.server.main</code></td>
+<td>a workstation</td>
+<td>Runs uvicorn with the factory <code>create_app</code>; reload in debug mode; worker processes only outside debug mode and never on Windows.</td>
+<td><code>src/cluster_erp/server/main.py:12-58</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>main.py</code> passes the proxy settings to uvicorn: <code>proxy_headers</code> from <code>trust_proxy_headers</code>, <code>forwarded_allow_ips</code> from <code>trusted_proxy_ips</code>, the access log switch, and the keep-alive seconds (<code>src/cluster_erp/server/main.py:39-58</code>).</p>
+<h2 id="systemd-unit">Systemd unit<a class="headerlink" href="#systemd-unit">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Directive</th>
+<th>Value in the unit</th>
+<th>Meaning</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>After</code>, <code>Wants</code></td>
+<td>network online, PostgreSQL</td>
+<td>Starts after the network and the local PostgreSQL service.</td>
+<td><code>deploy/cluster-erp.service:7-8</code></td>
+</tr>
+<tr>
+<td><code>Type</code></td>
+<td><code>simple</code></td>
+<td>The started process is the service.</td>
+<td><code>deploy/cluster-erp.service:11</code></td>
+</tr>
+<tr>
+<td><code>User</code>, <code>Group</code></td>
+<td>the service user</td>
+<td>The process runs without root rights.</td>
+<td><code>deploy/cluster-erp.service:12-13</code></td>
+</tr>
+<tr>
+<td><code>WorkingDirectory</code></td>
+<td>the checkout</td>
+<td>The repository root, where <code>alembic.ini</code> lives.</td>
+<td><code>deploy/cluster-erp.service:14</code></td>
+</tr>
+<tr>
+<td><code>EnvironmentFile</code></td>
+<td>the environment file</td>
+<td>Settings source; read only at start.</td>
+<td><code>deploy/cluster-erp.service:15</code></td>
+</tr>
+<tr>
+<td><code>Environment</code></td>
+<td><code>PYTHONUNBUFFERED=1</code></td>
+<td>Log lines reach the journal at once.</td>
+<td><code>deploy/cluster-erp.service:16-18</code></td>
+</tr>
+<tr>
+<td><code>Environment</code></td>
+<td><code>PLAYWRIGHT_BROWSERS_PATH</code></td>
+<td>Location of the Chromium build of the PDF renderer inside the checkout.</td>
+<td><code>deploy/cluster-erp.service:19-20</code></td>
+</tr>
+<tr>
+<td><code>ExecStart</code></td>
+<td>gunicorn with <code>deploy/gunicorn.conf.py</code> and <code>cluster_erp.server.asgi:app</code></td>
+<td>Starts the master process.</td>
+<td><code>deploy/cluster-erp.service:25</code></td>
+</tr>
+<tr>
+<td><code>ExecReload</code></td>
+<td><code>kill -HUP</code> of the main process</td>
+<td>gunicorn starts new workers on the current code and retires the old ones.</td>
+<td><code>deploy/cluster-erp.service:21-26</code></td>
+</tr>
+<tr>
+<td><code>KillMode</code></td>
+<td><code>mixed</code></td>
+<td>The master gets the stop signal and stops its workers.</td>
+<td><code>deploy/cluster-erp.service:27-29</code></td>
+</tr>
+<tr>
+<td><code>Restart</code>, <code>RestartSec</code></td>
+<td><code>always</code>, <code>3</code></td>
+<td>systemd restarts the service three seconds after it exits.</td>
+<td><code>deploy/cluster-erp.service:30-31</code></td>
+</tr>
+<tr>
+<td><code>LimitNOFILE</code></td>
+<td><code>65535</code></td>
+<td>Open-file limit for pools and sockets of several workers.</td>
+<td><code>deploy/cluster-erp.service:32-34</code></td>
+</tr>
+<tr>
+<td><code>TimeoutStopSec</code></td>
+<td><code>30</code></td>
+<td>Time for in-flight requests before the process is killed.</td>
+<td><code>deploy/cluster-erp.service:35-36</code></td>
+</tr>
+<tr>
+<td><code>ReadWritePaths</code></td>
+<td>the backup folder and the state folder</td>
+<td>The only writable paths: backups, mail spool, attachment storage.</td>
+<td><code>deploy/cluster-erp.service:37-38</code></td>
+</tr>
+<tr>
+<td><code>NoNewPrivileges</code>, <code>PrivateTmp</code>, <code>ProtectSystem</code>, <code>ProtectHome</code></td>
+<td><code>true</code>, <code>true</code>, <code>full</code>, <code>true</code></td>
+<td>Standard systemd hardening.</td>
+<td><code>deploy/cluster-erp.service:39-43</code></td>
+</tr>
+<tr>
+<td><code>WantedBy</code></td>
+<td><code>multi-user.target</code></td>
+<td>Starts at boot once enabled.</td>
+<td><code>deploy/cluster-erp.service:45-46</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="gunicorn-configuration">Gunicorn configuration<a class="headerlink" href="#gunicorn-configuration">¶</a></h2>
+<p>Every value comes from the same environment file the application reads (<code>deploy/gunicorn.conf.py:11-13</code>, <code>deploy/gunicorn.conf.py:22-23</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Value</th>
+<th>Meaning</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bind</code></td>
+<td><code>CLUSTER_ERP_SERVER_HOST</code>:<code>CLUSTER_ERP_SERVER_PORT</code></td>
+<td>Address of the master; the default is the loopback address.</td>
+<td><code>deploy/gunicorn.conf.py:26</code></td>
+</tr>
+<tr>
+<td><code>workers</code></td>
+<td><code>CLUSTER_ERP_SERVER_WORKERS</code>, or one per core up to eight when <code>0</code> or unset</td>
+<td>Number of worker processes.</td>
+<td><code>deploy/gunicorn.conf.py:27-30</code></td>
+</tr>
+<tr>
+<td><code>worker_class</code></td>
+<td><code>uvicorn_worker.UvicornWorker</code></td>
+<td>Each worker runs uvicorn.</td>
+<td><code>deploy/gunicorn.conf.py:31</code></td>
+</tr>
+<tr>
+<td><code>preload_app</code></td>
+<td><code>False</code></td>
+<td>A reload imports the new code in the new workers.</td>
+<td><code>deploy/gunicorn.conf.py:32-34</code></td>
+</tr>
+<tr>
+<td><code>max_requests</code>, <code>max_requests_jitter</code></td>
+<td><code>5000</code>, <code>500</code></td>
+<td>A worker restarts after this many requests plus jitter.</td>
+<td><code>deploy/gunicorn.conf.py:35-38</code></td>
+</tr>
+<tr>
+<td><code>graceful_timeout</code></td>
+<td><code>30</code></td>
+<td>Seconds for in-flight requests on reload or stop; matches <code>TimeoutStopSec</code>.</td>
+<td><code>deploy/gunicorn.conf.py:39-41</code></td>
+</tr>
+<tr>
+<td><code>timeout</code></td>
+<td><code>120</code></td>
+<td>Worker timeout in seconds.</td>
+<td><code>deploy/gunicorn.conf.py:42</code></td>
+</tr>
+<tr>
+<td><code>keepalive</code></td>
+<td><code>CLUSTER_ERP_SERVER_KEEP_ALIVE_SECONDS</code>, default <code>5</code></td>
+<td>Idle keep-alive window behind the proxy.</td>
+<td><code>deploy/gunicorn.conf.py:43-46</code></td>
+</tr>
+<tr>
+<td><code>forwarded_allow_ips</code>, <code>proxy_allow_ips</code></td>
+<td><code>CLUSTER_ERP_TRUSTED_PROXY_IPS</code>, default the loopback address</td>
+<td>Peers whose forwarded headers are trusted.</td>
+<td><code>deploy/gunicorn.conf.py:47-49</code></td>
+</tr>
+<tr>
+<td><code>accesslog</code></td>
+<td><code>None</code></td>
+<td>No gunicorn access log; the application writes its own request log.</td>
+<td><code>deploy/gunicorn.conf.py:50-52</code></td>
+</tr>
+<tr>
+<td><code>errorlog</code>, <code>loglevel</code>, <code>capture_output</code></td>
+<td>standard error, <code>info</code>, <code>True</code></td>
+<td>The journal captures the output.</td>
+<td><code>deploy/gunicorn.conf.py:53-56</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="boot-sequence">Boot sequence<a class="headerlink" href="#boot-sequence">¶</a></h2>
+<p>The diagram shows what happens from <code>systemctl start</code> until a worker is ready. Each worker runs the whole sequence; the migration lock makes the workers take turns on the schema step.</p>
+<figure class="diagram"><pre class="mermaid">flowchart TD
+  systemd[&quot;systemd cluster-erp.service&quot;] --&gt; master[&quot;gunicorn master&quot;]
+  master --&gt; w1[&quot;worker 1 imports asgi:app&quot;]
+  master --&gt; w2[&quot;worker N imports asgi:app&quot;]
+  w1 --&gt; life[&quot;lifespan start&quot;]
+  w2 --&gt; life
+  life --&gt; mt{&quot;multi_tenant&quot;}
+  mt -- &quot;yes&quot; --&gt; lock[&quot;upgrade_database_to_head under migration_lock&quot;]
+  lock --&gt; ctl[&quot;TenantRegistry.ensure_schema and bootstrap operator&quot;]
+  mt -- &quot;no&quot; --&gt; budget[&quot;connection budget check&quot;]
+  ctl --&gt; budget
+  budget --&gt; load[&quot;registry.load_all and seeds&quot;]
+  load --&gt; loops[&quot;background loops started&quot;]
+  loops --&gt; ready[&quot;GET /ready answers 200&quot;]</pre></figure>
+<p>In prose:</p>
+<ol>
+<li>systemd starts the gunicorn master with the configuration file (<code>deploy/cluster-erp.service:25</code>).</li>
+<li>The master starts the workers; each imports <code>cluster_erp.server.asgi:app</code>, which calls <code>create_app()</code> (<code>src/cluster_erp/server/asgi.py:17-19</code>).</li>
+<li>The <code>lifespan</code> context of each worker starts (<code>src/cluster_erp/server/app.py:58-65</code>).</li>
+<li>In multi-tenant mode the worker creates the default database if needed and migrates it to the newest revision inside the advisory migration lock; a second worker waits and then finds nothing to do (<code>src/cluster_erp/server/app.py:99-113</code>, <code>src/cluster_erp/core/tenancy.py:693-720</code>). It then prepares the control plane and the first operator (<code>src/cluster_erp/server/app.py:114-118</code>). A single-tenant worker does not migrate.</li>
+<li>The worker compares the worst-case connection demand with the server's <code>max_connections</code> and logs a <code>POOL BUDGET</code> warning when it does not fit (<code>src/cluster_erp/server/app.py:119-128</code>, <code>src/cluster_erp/server/app.py:610-631</code>).</li>
+<li>The worker loads every enabled module, seeds sequences and permissions, replays the erasure ledger, and starts the background loops (<code>src/cluster_erp/server/app.py:139-194</code>).</li>
+<li>The context yields; <code>/ready</code> probes the database and, in multi-tenant mode, the control plane (<code>src/cluster_erp/server/app.py:196</code>, <code>src/cluster_erp/server/app.py:1476-1504</code>).</li>
+</ol>
+<h2 id="reload-and-restart">Reload and restart<a class="headerlink" href="#reload-and-restart">¶</a></h2>
+<ul>
+<li><code>systemctl reload</code> sends <code>HUP</code>; new workers import the current code because the application is not preloaded (<code>deploy/gunicorn.conf.py:3-10</code>, <code>deploy/gunicorn.conf.py:32-34</code>).</li>
+<li><code>install.sh</code> restarts instead of reloading when the environment file is newer than the running service, when the unit changed, or when <code>requirements.lock</code> changed. A reloaded worker inherits the packages the master already imported (<code>deploy/install.sh:140-144</code>, <code>deploy/install.sh:228-246</code>).</li>
+</ul>
+<h2 id="constraints-and-validation">Constraints and validation<a class="headerlink" href="#constraints-and-validation">¶</a></h2>
+<ul>
+<li>On Windows <code>main.py</code> ignores <code>server_workers</code> above one and logs a warning (<code>src/cluster_erp/server/main.py:27-35</code>).</li>
+<li>Reload and worker processes exclude each other in <code>main.py</code> (<code>src/cluster_erp/server/main.py:36-38</code>).</li>
+</ul>
+<h2 id="discrepancies">Discrepancies<a class="headerlink" href="#discrepancies">¶</a></h2>
+<aside class="adm adm-warning" role="note"><p class="adm-title">Warning</p><p>Discrepancy. When <code>CLUSTER_ERP_SERVER_WORKERS</code> is <code>0</code> or unset, gunicorn starts one worker per processor core, at most eight (<code>deploy/gunicorn.conf.py:29-30</code>). <code>Settings.server_workers</code> defaults to <code>1</code> (<code>src/cluster_erp/config/settings.py:149</code>), and the start-up connection budget multiplies by <code>max(1, server_workers)</code> (<code>src/cluster_erp/server/app.py:616-617</code>). The budget check therefore counts one worker in that case. The template sets the variable explicitly (<code>deploy/env.example:133</code>).</p>
+</aside>
+<h2 id="terms-introduced">Terms introduced<a class="headerlink" href="#terms-introduced">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Code identifier</th>
+<th>Definition</th>
+<th>Turkish term</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>migration lock</td>
+<td><code>migration_lock</code></td>
+<td>A PostgreSQL advisory lock that lets one worker at a time run the boot migration on a database.</td>
+<td>göç kilidi</td>
+<td><code>src/cluster_erp/core/tenancy.py:707-720</code></td>
+</tr>
+<tr>
+<td>connection budget</td>
+<td><code>_single_tenant_connection_budget</code></td>
+<td>The check that workers times pool plus overflow stays within <code>max_connections</code>.</td>
+<td>bağlantı bütçesi</td>
+<td><code>src/cluster_erp/server/app.py:610-631</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="index.html">Operations</a></li>
+<li><a href="../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li><a href="database-migrations.html">Database migrations</a></li>
+<li><a href="reverse-proxy.html">Reverse proxy</a></li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../operations/security-txt-and-readiness.html"><span class="eyebrow">Previous</span><span>Security.txt and readiness</span></a><a class="next" href="../operations/tenant-lifecycle.html"><span class="eyebrow">Next</span><span>Tenant lifecycle</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#scope-and-source">Scope and source</a></li>
+<li class="lvl2"><a href="#entry-points">Entry points</a></li>
+<li class="lvl2"><a href="#systemd-unit">Systemd unit</a></li>
+<li class="lvl2"><a href="#gunicorn-configuration">Gunicorn configuration</a></li>
+<li class="lvl2"><a href="#boot-sequence">Boot sequence</a></li>
+<li class="lvl2"><a href="#reload-and-restart">Reload and restart</a></li>
+<li class="lvl2"><a href="#constraints-and-validation">Constraints and validation</a></li>
+<li class="lvl2"><a href="#discrepancies">Discrepancies</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

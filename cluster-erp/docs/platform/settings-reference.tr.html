@@ -1,0 +1,2284 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ayarlar başvurusu · Cluster ERP Wiki</title>
+<meta name="description" content="config/settings.py içindeki Settings sınıfının her alanı; türü, varsayılanı, CLUSTER_ERP_ ortam değişkeni, onu okuyan kod ve anlamıyla.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="tr"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menü</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.tr.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Wiki&#x27;de ara" aria-label="Wiki&#x27;de ara" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="Eşleşen sayfa yok."></div>
+  </div>
+  <a class="lang-switch" href="../platform/settings-reference.html" lang="en" hreflang="en">English</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Ana sayfa</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.tr.html">Cluster ERP wiki&#x27;si</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Genel bakış</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.tr.html">Genel bakış</a></li>
+<li class=""><a href="../overview/architecture-overview.tr.html">Mimariye genel bakış</a></li>
+<li class=""><a href="../overview/repository-map.tr.html">Depo haritası</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.tr.html">Cluster ERP nedir</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.tr.html">Platform çekirdeği</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.tr.html">Ekler, notlar ve depolama</a></li>
+<li class=""><a href="../platform/base-model-and-ids.tr.html">Temel model ve kimlikler</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.tr.html">Önbellek ve varlık damgası</a></li>
+<li class=""><a href="../platform/change-history.tr.html">Değişiklik geçmişi</a></li>
+<li class=""><a href="../platform/contracts-reference.tr.html">Sözleşmeler başvurusu</a></li>
+<li class=""><a href="../platform/database-and-sessions.tr.html">Veritabanı ve oturumlar</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.tr.html">Hatalar ve istisnalar</a></li>
+<li class=""><a href="../platform/event-bus.tr.html">Olay veri yolu</a></li>
+<li class=""><a href="../platform/metadata-model.tr.html">Metadata modeli</a></li>
+<li class=""><a href="../platform/module-lifecycle.tr.html">Modül yaşam döngüsü</a></li>
+<li class=""><a href="../platform/money-and-decimal.tr.html">Para ve Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.tr.html">PDF ve sistem postası</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.tr.html">Ürün kırılımı ve stok dönüşümü</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.tr.html">Referans veriler ve çekirdek i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.tr.html">İstek hattı ve ara katmanlar</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.tr.html">Arama, sayfalama ve toplu işlemler</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.tr.html">Sunucu açılışı ve uygulama fabrikası</a></li>
+<li class="current"><a href="../platform/settings-reference.tr.html">Ayarlar başvurusu</a></li>
+<li class=""><a href="../platform/shared-server-routes.tr.html">Ortak sunucu rotaları</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.tr.html">Yumuşak silme ve kullanımdan kaldırma</a></li>
+<li class=""><a href="../platform/tenant-fields.tr.html">Kiracı alanları</a></li>
+<li class=""><a href="../platform/working-time.tr.html">Çalışma zamanı</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Kimlik ve erişim</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.tr.html">Kimlik, erişim, kiracılık, gizlilik ve lisans</a></li>
+<li class=""><a href="../identity-access/abac-policies.tr.html">ABAC politikaları</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.tr.html">Uygulama mağazası lisansları ve hakları</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.tr.html">Onaylar ve onay zincirleri</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.tr.html">Kimlik doğrulama ve oturumlar</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.tr.html">Alan ve satır erişimi</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.tr.html">Çok kiracılılık</a></li>
+<li class=""><a href="../identity-access/notification-rules.tr.html">Bildirim kuralları</a></li>
+<li class=""><a href="../identity-access/operator-console.tr.html">Operatör konsolu</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.tr.html">Gizlilik ve ilgili kişi başvuruları</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.tr.html">Roller ve izinler</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.tr.html">İkinci doğrulama adımı ve gizli değer saklama</a></li>
+<li class=""><a href="../identity-access/signup.tr.html">Kayıt</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web uygulaması</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.tr.html">Web uygulaması platformu</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.tr.html">Aksiyonlar ve aksiyon kartı</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.tr.html">Asistan ve sohbet ekranları</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.tr.html">Açılış, oturum ve API çağrıları</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.tr.html">Veri tazeleme ve değişiklik sinyalleri</a></li>
+<li class=""><a href="../web-app/device-classes.tr.html">Cihaz sınıfları</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.tr.html">Kapılı uygulama paketleri</a></li>
+<li class=""><a href="../web-app/generic-detail.tr.html">Genel ayrıntı</a></li>
+<li class=""><a href="../web-app/generic-form.tr.html">Genel form</a></li>
+<li class=""><a href="../web-app/generic-list.tr.html">Genel liste</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.tr.html">Genel ağaç ve ayar ekranları</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.tr.html">Ana ekran, dock ve başlatıcı</a></li>
+<li class=""><a href="../web-app/home-widgets.tr.html">Ana ekran bileşenleri</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.tr.html">Web uygulamasına dil ekleyin</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.tr.html">Metadata ile ekran ekleyin</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.tr.html">Uluslararasılaştırma ve diller</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.tr.html">Mail ve profil ekranları</a></li>
+<li class=""><a href="../web-app/metadata-rendering.tr.html">Metadata çizimi</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.tr.html">Modül uygulamaları ve uygulama kapsamı</a></li>
+<li class=""><a href="../web-app/overview.tr.html">Web uygulamasına genel bakış</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.tr.html">Kayıt belgeleri, görüntüleyici ve paylaşım</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.tr.html">Arama ve komut paleti</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.tr.html">Temalar, belirteçler ve erişilebilirlik</a></li>
+<li class=""><a href="../web-app/user-ui-state.tr.html">Kullanıcı arayüz durumu</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Masaüstü istemci</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.tr.html">Masaüstü istemci</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.tr.html">API istemcisi ve çalışanlar</a></li>
+<li class=""><a href="../desktop/chat-widget.tr.html">Sohbet bileşeni</a></li>
+<li class=""><a href="../desktop/generic-widgets.tr.html">Genel bileşenler</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.tr.html">Diller, temalar ve erişilebilirlik</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.tr.html">Metadata deposu ve yabancı anahtar önbelleği</a></li>
+<li class=""><a href="../desktop/module-screens.tr.html">Modül ekranları</a></li>
+<li class=""><a href="../desktop/overview.tr.html">Masaüstü istemciye genel bakış</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.tr.html">Masaüstü istemciyi çalıştırın</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.tr.html">Sinyal veri yolu ve watch_entity</a></li>
+<li class=""><a href="../desktop/tabs-panes-and-layout.tr.html">Sekmeler, bölmeler ve yerleşim</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">İş modülleri</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.tr.html">İş modülleri</a></li>
+<li class=""><a href="../modules/analytics/index.tr.html">Analytics modülü (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.tr.html">Analitik olgular</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.tr.html">Analitik tahmin ve sınıflandırma</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.tr.html">Analitik tarifleri ve sorgu kurucu</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.tr.html">Analitik raporları, özetleri ve çapraz</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.tr.html">Analitik istatistik ve çıkarım</a></li>
+<li class=""><a href="../modules/app_store.tr.html">App store modülü (app_store)</a></li>
+<li class=""><a href="../modules/auth.tr.html">Auth modülü (auth)</a></li>
+<li class=""><a href="../modules/bom.tr.html">BOM modülü (bom)</a></li>
+<li class=""><a href="../modules/calendars.tr.html">Calendars modülü (calendars)</a></li>
+<li class=""><a href="../modules/costing.tr.html">Costing modülü (costing)</a></li>
+<li class=""><a href="../modules/crm/index.tr.html">CRM modülü (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.tr.html">Müşteriler ve müşteri parçaları</a></li>
+<li class="sub"><a href="../modules/crm/inbox.tr.html">Teklif talebi gelen kutusu</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.tr.html">Müşteri teklif talepleri</a></li>
+<li class=""><a href="../modules/currencies.tr.html">Currencies modülü (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.tr.html">Design engineering modülü (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.tr.html">Documents modülü (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.tr.html">Fleet modülü (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.tr.html">Filo araçları</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.tr.html">Filo bakımı ve iş emirleri</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.tr.html">Filo sayaçları ve yakıt</a></li>
+<li class="sub"><a href="../modules/fleet/operations.tr.html">Filo operasyonları</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.tr.html">Filo TCO, telematik ve analitik</a></li>
+<li class=""><a href="../modules/intranet/index.tr.html">Intranet modülü (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.tr.html">İntranet erişimi, hedef kitlesi ve saklama</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.tr.html">İntranet içeriği ve akışı</a></li>
+<li class="sub"><a href="../modules/intranet/directory.tr.html">İntranet rehberi</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.tr.html">İntranet katılımı</a></li>
+<li class="sub"><a href="../modules/intranet/events.tr.html">İntranet etkinlikleri</a></li>
+<li class="sub"><a href="../modules/intranet/leave.tr.html">İntranet izinleri</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.tr.html">İntranet belgelerim</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.tr.html">İntranet bildirimleri ve tebligat</a></li>
+<li class="sub"><a href="../modules/intranet/requests.tr.html">İntranet talepleri</a></li>
+<li class=""><a href="../modules/inventory.tr.html">Inventory modülü (inventory)</a></li>
+<li class=""><a href="../modules/logs.tr.html">Logs modülü (logs)</a></li>
+<li class=""><a href="../modules/mail.tr.html">Mail modülü (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.tr.html">Nesting modülü (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.tr.html">Yerleşim motoru</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.tr.html">Yerleşim entegrasyonu ve KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.tr.html">Yerleşim işleri, parçalar ve artıklar</a></li>
+<li class=""><a href="../modules/owned_organisations.tr.html">Owned organisations modülü (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.tr.html">Parties modülü (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.tr.html">Adresler başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.tr.html">İletişim kanalları başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/parties.tr.html">Parties alt modülü başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.tr.html">Taraf birleştirme</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.tr.html">Kişi dilleri başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.tr.html">Parties ayarları ve başvuru verileri</a></li>
+<li class=""><a href="../modules/privacy.tr.html">Privacy modülü (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.tr.html">Procurement modülü (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.tr.html">Kritik malzemeler ve ikame</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.tr.html">Malzeme ihtiyaç planlaması</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.tr.html">Satın alma sözleşmeleri ve info kayıtları</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.tr.html">Satın alma siparişleri</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.tr.html">Satın alma talepleri</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.tr.html">Satın alma teklif talepleri</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.tr.html">Tedarikçiler</a></li>
+<li class=""><a href="../modules/production/index.tr.html">Production modülü (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.tr.html">Üretim emirleri ve versiyonları</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.tr.html">Rotalar ve operasyon tipleri</a></li>
+<li class="sub"><a href="../modules/production/scheduling.tr.html">Üretim çizelgeleme</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.tr.html">İş merkezleri ve kapasite</a></li>
+<li class="sub"><a href="../modules/production/work-orders.tr.html">İş emirleri</a></li>
+<li class=""><a href="../modules/products_and_services.tr.html">Products and services modülü (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.tr.html">Projects modülü (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.tr.html">Proje aksiyonları, aktiviteleri ve toplantıları</a></li>
+<li class="sub"><a href="../modules/projects/board.tr.html">Proje panosu</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.tr.html">Projeler, kalemler ve fikstürler</a></li>
+<li class="sub"><a href="../modules/projects/schedules.tr.html">Proje çizelgeleri</a></li>
+<li class=""><a href="../modules/purchasing_quotations.tr.html">Purchasing quotations modülü (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.tr.html">Quotations modülü (quotations)</a></li>
+<li class=""><a href="../modules/records.tr.html">Records modülü (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.tr.html">Sales orders modülü (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.tr.html">Satış siparişleri ve sipariş kalemleri</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.tr.html">Sevkiyatlar</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.tr.html">İhracat belgeleri</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.tr.html">Satış siparişi birimleri ve ayarları</a></li>
+<li class=""><a href="../modules/subscriptions.tr.html">Subscriptions modülü (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Asistan</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.tr.html">Niyet asistanı</a></li>
+<li class=""><a href="../ai/intent-assistant.tr.html">Niyet asistanı nasıl çalışır</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API referansı</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.tr.html">API başvurusu</a></li>
+<li class=""><a href="../api/analytics.tr.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.tr.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.tr.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.tr.html">Kimlik doğrulama ve başlıklar</a></li>
+<li class=""><a href="../api/bom.tr.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.tr.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.tr.html">API kuralları</a></li>
+<li class=""><a href="../api/costing.tr.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.tr.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.tr.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.tr.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.tr.html">Documents API (documents)</a></li>
+<li class=""><a href="../api/errors.tr.html">Hatalar</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.tr.html">İş hata kodları</a></li>
+<li class=""><a href="../api/fleet.tr.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.tr.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.tr.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.tr.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.tr.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.tr.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.tr.html">API&#x27;ye genel bakış</a></li>
+<li class=""><a href="../api/owned_organisations.tr.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.tr.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.tr.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.tr.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.tr.html">Procurement API: Kritik malzemeler uç noktaları (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.tr.html">Procurement API: Satın alma bilgi kayıtları uç noktaları (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.tr.html">Procurement API: MRP uç noktaları (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.tr.html">Procurement API: Satın alma sözleşmeleri uç noktaları (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.tr.html">Procurement API: Satın alma siparişleri uç noktaları (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.tr.html">Procurement API: Satın alma talepleri uç noktaları (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.tr.html">Procurement API: Satın alma teklif talepleri uç noktaları (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.tr.html">Procurement API: İkame grupları uç noktaları (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.tr.html">Procurement API: Tedarikçiler uç noktaları (suppliers)</a></li>
+<li class=""><a href="../api/production.tr.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.tr.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.tr.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.tr.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.tr.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.tr.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.tr.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.tr.html">Paylaşılan sunucu yolları API</a></li>
+<li class=""><a href="../api/subscriptions.tr.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.tr.html">Sistem uç noktaları API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">İşletme</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.tr.html">İşletim</a></li>
+<li class=""><a href="../operations/backups-and-restore.tr.html">Yedekler ve geri yükleme</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.tr.html">CI hattı ve sürüm</a></li>
+<li class=""><a href="../operations/configuration-reference.tr.html">Yapılandırma başvurusu</a></li>
+<li class=""><a href="../operations/container-measurement.tr.html">Konteyner ölçümü</a></li>
+<li class=""><a href="../operations/data-residency-check.tr.html">Veri ikameti denetimi</a></li>
+<li class=""><a href="../operations/database-migrations.tr.html">Veritabanı göçleri</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.tr.html">Demo ve staging verisi</a></li>
+<li class=""><a href="../operations/environments-and-promotion.tr.html">Ortamlar ve terfi</a></li>
+<li class=""><a href="../operations/install-a-linux-node.tr.html">Bir Linux düğümü kurun</a></li>
+<li class=""><a href="../operations/local-development-setup.tr.html">Yerel geliştirme kurulumu</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.tr.html">PostgreSQL rolleri ve ayarı</a></li>
+<li class=""><a href="../operations/reverse-proxy.tr.html">Ters vekil sunucu</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.tr.html">Zamanlanmış işler ve saklama</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.tr.html">Security.txt ve hazırlık</a></li>
+<li class=""><a href="../operations/service-and-process-manager.tr.html">Servis ve süreç yöneticisi</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.tr.html">Kiracı yaşam döngüsü</a></li>
+<li class=""><a href="../operations/windows-installer.tr.html">Windows kurucusu</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Katkı</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.tr.html">Katkı</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.tr.html">Mimari sınırlar</a></li>
+<li class=""><a href="../contributing/coding-rules.tr.html">Kodlama kuralları</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.tr.html">Geliştirici araçları ve betikleri</a></li>
+<li class=""><a href="../contributing/e2e-battery.tr.html">E2e bataryası</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.tr.html">E2e süit kataloğu</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.tr.html">Lint ve tip denetimi</a></li>
+<li class=""><a href="../contributing/python-tests.tr.html">Python testleri</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.tr.html">Bir arka uç modülü yazın</a></li>
+<li class=""><a href="../contributing/writing-documentation.tr.html">Bir wiki sayfası yazın</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Karar kayıtları</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.tr.html">Karar kayıtları</a></li>
+<li class=""><a href="../decisions/data-driven-languages.tr.html">Veri güdümlü diller</a></li>
+<li class=""><a href="../decisions/decimal-money.tr.html">Decimal para</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.tr.html">Yalnız EventBus ile modüller arası iletişim</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.tr.html">Metadata güdümlü arayüz</a></li>
+<li class=""><a href="../decisions/no-hard-delete.tr.html">Fiziksel silme yok</a></li>
+<li class=""><a href="../decisions/party-unification.tr.html">Taraf birleşimi</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.tr.html">Ürün, model ve versiyon kırılımı</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.tr.html">Sunucu tarafı arayüz durumu</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.tr.html">ULID birincil anahtarlar</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Başvuru</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.tr.html">Başvuru</a></li>
+<li class=""><a href="../reference/glossary.tr.html">Sözlük</a></li>
+<li class=""><a href="../reference/related-material.tr.html">İlgili belgeler</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.tr.html">Ana sayfa</a> / Platform</div>
+    <header class="page-head">
+      <p class="eyebrow">Referans</p>
+      <h1>Ayarlar başvurusu</h1>
+      <p class="lede">config/settings.py içindeki Settings sınıfının her alanı; türü, varsayılanı, CLUSTER_ERP_ ortam değişkeni, onu okuyan kod ve anlamıyla.</p>
+    </header>
+    <nav class="toc" aria-label="İçindekiler"><p class="eyebrow">İçindekiler</p><ul class="outline">
+<li class="lvl2"><a href="#kapsam-ve-kaynak">Kapsam ve kaynak</a></li>
+<li class="lvl2"><a href="#veritabanı-bağlantısı">Veritabanı bağlantısı</a></li>
+<li class="lvl2"><a href="#çok-kiracılılık-bölgeler-ve-yerleşim">Çok kiracılılık, bölgeler ve yerleşim</a></li>
+<li class="lvl2"><a href="#sunucu-süreci">Sunucu süreci</a></li>
+<li class="lvl2"><a href="#kimlik-doğrulama-oturumlar-ve-lisanslama">Kimlik doğrulama, oturumlar ve lisanslama</a></li>
+<li class="lvl2"><a href="#kayıt-ve-herkese-açık-uçlar">Kayıt ve herkese açık uçlar</a></li>
+<li class="lvl2"><a href="#dosya-deposu-ve-yedekler">Dosya deposu ve yedekler</a></li>
+<li class="lvl2"><a href="#posta">Posta</a></li>
+<li class="lvl2"><a href="#i̇ş-varsayılanları">İş varsayılanları</a></li>
+<li class="lvl2"><a href="#analitik">Analitik</a></li>
+<li class="lvl2"><a href="#mrp-ve-ddmrp">MRP ve DDMRP</a></li>
+<li class="lvl2"><a href="#günlükler-saklama-ve-gizlilik">Günlükler, saklama ve gizlilik</a></li>
+<li class="lvl2"><a href="#türetilmiş-özellikler-ve-yardımcılar">Türetilmiş özellikler ve yardımcılar</a></li>
+<li class="lvl2"><a href="#kısıtlar-ve-doğrulama">Kısıtlar ve doğrulama</a></li>
+<li class="lvl2"><a href="#tanıtılan-terimler">Tanıtılan terimler</a></li>
+<li class="lvl2"><a href="#i̇lgili-sayfalar">İlgili sayfalar</a></li>
+</ul></nav>
+    <article class="prose">
+<p>Bu sayfa <code>src/cluster_erp/config/settings.py</code> içindeki <code>Settings</code> sınıfının her alanını, ayarlar yüklenirken çalışan doğrulama kurallarını ve türetilmiş özellikleri listeler. Geliştiriciler ve işletmeciler için bir başvuru tablosudur. Bir Linux düğümünün hangi değişkenleri nasıl ayarladığı <a href="../operations/configuration-reference.tr.html">yapılandırma başvurusu</a> sayfasındadır.</p>
+<h2 id="kapsam-ve-kaynak">Kapsam ve kaynak<a class="headerlink" href="#kapsam-ve-kaynak">¶</a></h2>
+<ul>
+<li>Tanımlandığı yer: <code>src/cluster_erp/config/settings.py</code> (<code>Settings</code>)</li>
+<li>Sayı: <code>class Settings</code> satırı ile doğrulayıcı arasındaki tür açıklamalı sınıf öznitelikleri olarak sayılan 183 alan (<code>src/cluster_erp/config/settings.py:64-738</code>). Üstteki <code>RegionAddress</code> dataclass'ının dört açıklamalı satırı ayar değildir.</li>
+</ul>
+<p><code>Settings</code> bir Pydantic <code>BaseSettings</code> sınıfıdır. Ortam değişkenlerini <code>CLUSTER_ERP_</code> önekiyle, büyük/küçük harf duyarsız okur ve çalışma dizinindeki bir <code>.env</code> dosyasını da okur (<code>src/cluster_erp/config/settings.py:64-70</code>). Bir alanın ortam değişkeni, <code>CLUSTER_ERP_</code> ardından büyük harfle alan adıdır.</p>
+<p>Sütunlar şunlardır:</p>
+<ul>
+<li><strong>Varsayılan</strong>: koddaki varsayılan. Gizli olan veya olabilecek değerler, ana makine adları, adresler ve bir düğümdeki yollar, belgeleme standardının güvenlik açıklama politikasına göre <code>&lt;value&gt;</code> olarak gösterilir. Uzun listeler için "kaynağa bakın" yazılır.</li>
+<li><strong>Okuyan</strong>: alanı <code>settings.&lt;name&gt;</code> olarak ya da <code>getattr(settings, "&lt;name&gt;")</code> ile okuyan klasörler veya modüller; <code>src/cluster_erp</code> üzerinde <code>grep</code> ile bulundu. <code>config</code>, alanın yalnızca <code>settings.py</code> içinde türetilmiş bir özellik tarafından okunduğu anlamına gelir. <code>-</code>, bu yöntemle okuyan bulunamadığı anlamına gelir.</li>
+<li><strong>Anlamı</strong>: alanın üstündeki yorumdan alınan bir cümle. "Kodda açıklama yok." yorum olmadığı anlamına gelir.</li>
+</ul>
+<h2 id="veritabanı-bağlantısı">Veritabanı bağlantısı<a class="headerlink" href="#veritabanı-bağlantısı">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Ayar</th>
+<th>Tür</th>
+<th>Varsayılan</th>
+<th>Ortam değişkeni</th>
+<th>Okuyan</th>
+<th>Anlamı</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>db_host</code></td>
+<td><code>str</code></td>
+<td><code>"localhost"</code></td>
+<td><code>CLUSTER_ERP_DB_HOST</code></td>
+<td><code>config</code></td>
+<td>Varsayılan PostgreSQL sunucusunun ana makinesi.</td>
+<td><code>src/cluster_erp/config/settings.py:72</code></td>
+</tr>
+<tr>
+<td><code>db_port</code></td>
+<td><code>int</code></td>
+<td><code>5432</code></td>
+<td><code>CLUSTER_ERP_DB_PORT</code></td>
+<td><code>config</code></td>
+<td>Varsayılan PostgreSQL sunucusunun bağlantı noktası.</td>
+<td><code>src/cluster_erp/config/settings.py:73</code></td>
+</tr>
+<tr>
+<td><code>db_name</code></td>
+<td><code>str</code></td>
+<td><code>"cluster_erp"</code></td>
+<td><code>CLUSTER_ERP_DB_NAME</code></td>
+<td><code>server</code></td>
+<td>Varsayılan veritabanının adı.</td>
+<td><code>src/cluster_erp/config/settings.py:74</code></td>
+</tr>
+<tr>
+<td><code>db_user</code></td>
+<td><code>str</code></td>
+<td><code>"cluster_erp"</code></td>
+<td><code>CLUSTER_ERP_DB_USER</code></td>
+<td><code>config</code></td>
+<td>Uygulamanın veritabanı rolü.</td>
+<td><code>src/cluster_erp/config/settings.py:75</code></td>
+</tr>
+<tr>
+<td><code>db_password</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_DB_PASSWORD</code></td>
+<td><code>config</code></td>
+<td>Veritabanı rolünün parolası.</td>
+<td><code>src/cluster_erp/config/settings.py:76</code></td>
+</tr>
+<tr>
+<td><code>sql_echo</code></td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+<td><code>CLUSTER_ERP_SQL_ECHO</code></td>
+<td><code>core</code></td>
+<td>Açıkken her SQL ifadesini günlüğe yazar.</td>
+<td><code>src/cluster_erp/config/settings.py:181</code></td>
+</tr>
+<tr>
+<td><code>db_pool_size</code></td>
+<td><code>int</code></td>
+<td><code>20</code></td>
+<td><code>CLUSTER_ERP_DB_POOL_SIZE</code></td>
+<td><code>core</code>, <code>server</code></td>
+<td>Varsayılan motorun havuz boyutu.</td>
+<td><code>src/cluster_erp/config/settings.py:243</code></td>
+</tr>
+<tr>
+<td><code>db_pool_max_overflow</code></td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+<td><code>CLUSTER_ERP_DB_POOL_MAX_OVERFLOW</code></td>
+<td><code>core</code>, <code>server</code></td>
+<td>Varsayılan havuzun açabileceği ek bağlantılar.</td>
+<td><code>src/cluster_erp/config/settings.py:244</code></td>
+</tr>
+<tr>
+<td><code>db_pool_timeout_seconds</code></td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+<td><code>CLUSTER_ERP_DB_POOL_TIMEOUT_SECONDS</code></td>
+<td><code>core</code></td>
+<td>Bir isteğin havuzdan bağlantı için beklediği saniye.</td>
+<td><code>src/cluster_erp/config/settings.py:248</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="çok-kiracılılık-bölgeler-ve-yerleşim">Çok kiracılılık, bölgeler ve yerleşim<a class="headerlink" href="#çok-kiracılılık-bölgeler-ve-yerleşim">¶</a></h2>
+<p>Bu alanlar çok kiracılı kipi ve veri yerleşimini yapılandırır; mekanizma düzeyinde <a href="../identity-access/multi-tenancy.tr.html">çok kiracılılık</a> ve <a href="../operations/data-residency-check.tr.html">veri yerleşimi denetimi</a> sayfalarında belgelenir.</p>
+<table>
+<thead>
+<tr>
+<th>Ayar</th>
+<th>Tür</th>
+<th>Varsayılan</th>
+<th>Ortam değişkeni</th>
+<th>Okuyan</th>
+<th>Anlamı</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>multi_tenant</code></td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+<td><code>CLUSTER_ERP_MULTI_TENANT</code></td>
+<td><code>core</code>, <code>server</code></td>
+<td>Kiracı başına bir veritabanını ve bir kontrol düzlemi veritabanını açar.</td>
+<td><code>src/cluster_erp/config/settings.py:82</code></td>
+</tr>
+<tr>
+<td><code>control_db_name</code></td>
+<td><code>str</code></td>
+<td><code>"cluster_control"</code></td>
+<td><code>CLUSTER_ERP_CONTROL_DB_NAME</code></td>
+<td><code>core</code>, <code>server</code></td>
+<td>Kontrol düzlemi veritabanının adı.</td>
+<td><code>src/cluster_erp/config/settings.py:83</code></td>
+</tr>
+<tr>
+<td><code>tenant_db_prefix</code></td>
+<td><code>str</code></td>
+<td><code>"cluster_t_"</code></td>
+<td><code>CLUSTER_ERP_TENANT_DB_PREFIX</code></td>
+<td><code>core</code></td>
+<td>Kiracı veritabanı adlarının öneki.</td>
+<td><code>src/cluster_erp/config/settings.py:84</code></td>
+</tr>
+<tr>
+<td><code>regions</code></td>
+<td><code>str</code></td>
+<td><code>"tr"</code></td>
+<td><code>CLUSTER_ERP_REGIONS</code></td>
+<td><code>server</code></td>
+<td>Bölge kodlarının virgüllü listesi; ilki varsayılandır.</td>
+<td><code>src/cluster_erp/config/settings.py:93</code></td>
+</tr>
+<tr>
+<td><code>region_db_urls</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_REGION_DB_URLS</code></td>
+<td><code>server</code></td>
+<td>Varsayılan olmayan her bölgenin veritabanı sunucusunu adlandıran JSON nesnesi.</td>
+<td><code>src/cluster_erp/config/settings.py:94</code></td>
+</tr>
+<tr>
+<td><code>node_country</code></td>
+<td><code>str</code></td>
+<td><code>""</code></td>
+<td><code>CLUSTER_ERP_NODE_COUNTRY</code></td>
+<td><code>server</code></td>
+<td>Bu düğümün hizmet verdiği ISO 3166-1 alpha-2 ülke; boşsa yerleşim politikası yoktur.</td>
+<td><code>src/cluster_erp/config/settings.py:111</code></td>
+</tr>
+<tr>
+<td><code>country_nodes</code></td>
+<td><code>str</code></td>
+<td><code>""</code></td>
+<td><code>CLUSTER_ERP_COUNTRY_NODES</code></td>
+<td><code>server</code></td>
+<td>Ülkeleri düğüm temel URL'lerine eşleyen JSON nesnesi.</td>
+<td><code>src/cluster_erp/config/settings.py:114</code></td>
+</tr>
+<tr>
+<td><code>console_origins</code></td>
+<td><code>str</code></td>
+<td><code>""</code></td>
+<td><code>CLUSTER_ERP_CONSOLE_ORIGINS</code></td>
+<td><code>server</code></td>
+<td>Filo ucunu bir tarayıcıdan okuyabilen https kökenlerinin virgüllü listesi.</td>
+<td><code>src/cluster_erp/config/settings.py:122</code></td>
+</tr>
+<tr>
+<td><code>vendor_admin_username</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_VENDOR_ADMIN_USERNAME</code></td>
+<td><code>server</code></td>
+<td>Hiç yoksa açılışta oluşturulan ilk operatör hesabı.</td>
+<td><code>src/cluster_erp/config/settings.py:126</code></td>
+</tr>
+<tr>
+<td><code>vendor_admin_password</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_VENDOR_ADMIN_PASSWORD</code></td>
+<td><code>server</code></td>
+<td>Bu ilk operatör hesabının parolası.</td>
+<td><code>src/cluster_erp/config/settings.py:127</code></td>
+</tr>
+<tr>
+<td><code>vendor_require_totp</code></td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+<td><code>CLUSTER_ERP_VENDOR_REQUIRE_TOTP</code></td>
+<td><code>server</code></td>
+<td>Her operatör girişi için ikinci faktör ister.</td>
+<td><code>src/cluster_erp/config/settings.py:131</code></td>
+</tr>
+<tr>
+<td><code>vendor_allowed_ips</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_VENDOR_ALLOWED_IPS</code></td>
+<td><code>server</code></td>
+<td>Operatör konsolu API'sine ulaşabilen adresler.</td>
+<td><code>src/cluster_erp/config/settings.py:134</code></td>
+</tr>
+<tr>
+<td><code>tenant_pool_size</code></td>
+<td><code>int</code></td>
+<td><code>5</code></td>
+<td><code>CLUSTER_ERP_TENANT_POOL_SIZE</code></td>
+<td><code>core</code></td>
+<td>Her kiracı motorunun havuz boyutu.</td>
+<td><code>src/cluster_erp/config/settings.py:249</code></td>
+</tr>
+<tr>
+<td><code>tenant_pool_max_overflow</code></td>
+<td><code>int</code></td>
+<td><code>5</code></td>
+<td><code>CLUSTER_ERP_TENANT_POOL_MAX_OVERFLOW</code></td>
+<td><code>core</code></td>
+<td>Her kiracı havuzunun ek bağlantıları.</td>
+<td><code>src/cluster_erp/config/settings.py:250</code></td>
+</tr>
+<tr>
+<td><code>tenant_max_engines</code></td>
+<td><code>int</code></td>
+<td><code>32</code></td>
+<td><code>CLUSTER_ERP_TENANT_MAX_ENGINES</code></td>
+<td><code>core</code></td>
+<td>Önbellekteki en fazla kiracı motoru sayısı.</td>
+<td><code>src/cluster_erp/config/settings.py:251</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="sunucu-süreci">Sunucu süreci<a class="headerlink" href="#sunucu-süreci">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Ayar</th>
+<th>Tür</th>
+<th>Varsayılan</th>
+<th>Ortam değişkeni</th>
+<th>Okuyan</th>
+<th>Anlamı</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>server_host</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_SERVER_HOST</code></td>
+<td><code>server</code></td>
+<td>Geliştirme sunucusunun bağlanma adresi; varsayılan joker adrestir.</td>
+<td><code>src/cluster_erp/config/settings.py:136</code></td>
+</tr>
+<tr>
+<td><code>server_port</code></td>
+<td><code>int</code></td>
+<td><code>8000</code></td>
+<td><code>CLUSTER_ERP_SERVER_PORT</code></td>
+<td><code>server</code></td>
+<td>Geliştirme sunucusunun bağlantı noktası.</td>
+<td><code>src/cluster_erp/config/settings.py:137</code></td>
+</tr>
+<tr>
+<td><code>server_workers</code></td>
+<td><code>int</code></td>
+<td><code>1</code></td>
+<td><code>CLUSTER_ERP_SERVER_WORKERS</code></td>
+<td><code>core</code>, <code>server</code></td>
+<td>İşçi süreci sayısı; Windows'ta 1'e indirilir.</td>
+<td><code>src/cluster_erp/config/settings.py:149</code></td>
+</tr>
+<tr>
+<td><code>trust_proxy_headers</code></td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+<td><code>CLUSTER_ERP_TRUST_PROXY_HEADERS</code></td>
+<td><code>server</code></td>
+<td>Uvicorn'un güvenilir vekillerden gelen yönlendirme başlıklarını yorumlamasını sağlar.</td>
+<td><code>src/cluster_erp/config/settings.py:158</code></td>
+</tr>
+<tr>
+<td><code>trusted_proxy_ips</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_TRUSTED_PROXY_IPS</code></td>
+<td><code>server</code></td>
+<td>Yönlendirme başlıklarını ayarlayabilen vekiller; varsayılan geri döngü adresidir.</td>
+<td><code>src/cluster_erp/config/settings.py:162</code></td>
+</tr>
+<tr>
+<td><code>server_access_log</code></td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+<td><code>CLUSTER_ERP_SERVER_ACCESS_LOG</code></td>
+<td><code>server</code></td>
+<td>Uvicorn'un kendi erişim günlüğünü açar.</td>
+<td><code>src/cluster_erp/config/settings.py:167</code></td>
+</tr>
+<tr>
+<td><code>server_keep_alive_seconds</code></td>
+<td><code>int</code></td>
+<td><code>5</code></td>
+<td><code>CLUSTER_ERP_SERVER_KEEP_ALIVE_SECONDS</code></td>
+<td><code>server</code></td>
+<td>Boştaki bir keep-alive bağlantısının açık kaldığı saniye.</td>
+<td><code>src/cluster_erp/config/settings.py:175</code></td>
+</tr>
+<tr>
+<td><code>debug</code></td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+<td><code>CLUSTER_ERP_DEBUG</code></td>
+<td><code>server</code></td>
+<td>Hata ayıklama kipi: yeniden yükleme, API belge sayfaları, ayrıntılı günlük.</td>
+<td><code>src/cluster_erp/config/settings.py:176</code></td>
+</tr>
+<tr>
+<td><code>max_request_body_bytes</code></td>
+<td><code>int</code></td>
+<td><code>26_214_400</code></td>
+<td><code>CLUSTER_ERP_MAX_REQUEST_BODY_BYTES</code></td>
+<td><code>server</code></td>
+<td>Kabul edilen en büyük istek gövdesi; daha büyüğü HTTP 413 alır.</td>
+<td><code>src/cluster_erp/config/settings.py:345</code></td>
+</tr>
+<tr>
+<td><code>enabled_modules</code></td>
+<td><code>list[str]</code></td>
+<td>kaynağa bakın</td>
+<td><code>CLUSTER_ERP_ENABLED_MODULES</code></td>
+<td><code>server</code></td>
+<td>Yüklenecek modüller, sırasıyla; varsayılan 28'inin hepsini listeler.</td>
+<td><code>src/cluster_erp/config/settings.py:535</code></td>
+</tr>
+<tr>
+<td><code>readiness_timeout_seconds</code></td>
+<td><code>float</code></td>
+<td><code>2.0</code></td>
+<td><code>CLUSTER_ERP_READINESS_TIMEOUT_SECONDS</code></td>
+<td><code>server</code></td>
+<td>GET /ready denetimlerinin her birinin süre sınırı.</td>
+<td><code>src/cluster_erp/config/settings.py:647</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="kimlik-doğrulama-oturumlar-ve-lisanslama">Kimlik doğrulama, oturumlar ve lisanslama<a class="headerlink" href="#kimlik-doğrulama-oturumlar-ve-lisanslama">¶</a></h2>
+<p>Bu alanları <code>auth</code> ve <code>app_store</code> modülleri okur; <a href="../identity-access/authentication-and-sessions.tr.html">kimlik doğrulama ve oturumlar</a> ve <a href="../identity-access/app-store-licensing-and-entitlements.tr.html">uygulama mağazası, lisanslama ve haklar</a> sayfalarında belgelenir.</p>
+<table>
+<thead>
+<tr>
+<th>Ayar</th>
+<th>Tür</th>
+<th>Varsayılan</th>
+<th>Ortam değişkeni</th>
+<th>Okuyan</th>
+<th>Anlamı</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>secret_key</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_SECRET_KEY</code></td>
+<td><code>auth</code>, <code>core</code>, <code>mail</code>, <code>server</code></td>
+<td>İmzalama gizli anahtarı; ayarlanmalı, en az 32 karakter olmalı ve hata ayıklama kipi dışında zayıf olmamalı.</td>
+<td><code>src/cluster_erp/config/settings.py:186</code></td>
+</tr>
+<tr>
+<td><code>bootstrap_admin_username</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_BOOTSTRAP_ADMIN_USERNAME</code></td>
+<td><code>server</code></td>
+<td>Yeni bir kurulumun ilk yöneticisinin kullanıcı adı.</td>
+<td><code>src/cluster_erp/config/settings.py:195</code></td>
+</tr>
+<tr>
+<td><code>bootstrap_admin_email</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_BOOTSTRAP_ADMIN_EMAIL</code></td>
+<td><code>server</code></td>
+<td>İlk yöneticinin e-postası.</td>
+<td><code>src/cluster_erp/config/settings.py:196</code></td>
+</tr>
+<tr>
+<td><code>bootstrap_admin_password</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_BOOTSTRAP_ADMIN_PASSWORD</code></td>
+<td><code>server</code></td>
+<td>İlk yöneticinin parolası; boşsa üretilir.</td>
+<td><code>src/cluster_erp/config/settings.py:197</code></td>
+</tr>
+<tr>
+<td><code>bootstrap_admin_password_hash</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_BOOTSTRAP_ADMIN_PASSWORD_HASH</code></td>
+<td><code>server</code></td>
+<td>Kiracı hazırlamanın kullandığı önceden özetlenmiş parola.</td>
+<td><code>src/cluster_erp/config/settings.py:201</code></td>
+</tr>
+<tr>
+<td><code>bootstrap_password_file</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_BOOTSTRAP_PASSWORD_FILE</code></td>
+<td><code>server</code></td>
+<td>Üretilen ilk parolanın yazıldığı dosya.</td>
+<td><code>src/cluster_erp/config/settings.py:205</code></td>
+</tr>
+<tr>
+<td><code>bootstrap_admin_exclusive</code></td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+<td><code>CLUSTER_ERP_BOOTSTRAP_ADMIN_EXCLUSIVE</code></td>
+<td><code>server</code></td>
+<td>Self servis hazırlama sırasında tohumlanmış varsayılan hesapları kullanımdan kaldırır.</td>
+<td><code>src/cluster_erp/config/settings.py:258</code></td>
+</tr>
+<tr>
+<td><code>jwt_access_expire_minutes</code></td>
+<td><code>int</code></td>
+<td><code>30</code></td>
+<td><code>CLUSTER_ERP_JWT_ACCESS_EXPIRE_MINUTES</code></td>
+<td><code>auth</code></td>
+<td>Erişim jetonunun ömrü.</td>
+<td><code>src/cluster_erp/config/settings.py:307</code></td>
+</tr>
+<tr>
+<td><code>jwt_refresh_expire_days</code></td>
+<td><code>int</code></td>
+<td><code>7</code></td>
+<td><code>CLUSTER_ERP_JWT_REFRESH_EXPIRE_DAYS</code></td>
+<td><code>auth</code></td>
+<td>"Beni hatırla" ile yenileme jetonunun ömrü.</td>
+<td><code>src/cluster_erp/config/settings.py:308</code></td>
+</tr>
+<tr>
+<td><code>jwt_session_hours</code></td>
+<td><code>int</code></td>
+<td><code>12</code></td>
+<td><code>CLUSTER_ERP_JWT_SESSION_HOURS</code></td>
+<td><code>auth</code></td>
+<td>"Beni hatırla" olmadan yenileme zincirinin ömrü.</td>
+<td><code>src/cluster_erp/config/settings.py:312</code></td>
+</tr>
+<tr>
+<td><code>login_rate_limit_per_minute</code></td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+<td><code>CLUSTER_ERP_LOGIN_RATE_LIMIT_PER_MINUTE</code></td>
+<td><code>auth</code></td>
+<td>HTTP 429'dan önce istemci başına dakikadaki giriş denemesi.</td>
+<td><code>src/cluster_erp/config/settings.py:316</code></td>
+</tr>
+<tr>
+<td><code>auth_cache_seconds</code></td>
+<td><code>float</code></td>
+<td><code>5.0</code></td>
+<td><code>CLUSTER_ERP_AUTH_CACHE_SECONDS</code></td>
+<td><code>auth</code>, <code>server</code></td>
+<td>Bir isteğin önbellekteki izinleri ve politikaları yeniden kullanabileceği saniye.</td>
+<td><code>src/cluster_erp/config/settings.py:320</code></td>
+</tr>
+<tr>
+<td><code>password_min_length</code></td>
+<td><code>int</code></td>
+<td><code>8</code></td>
+<td><code>CLUSTER_ERP_PASSWORD_MIN_LENGTH</code></td>
+<td>Güvenlik açıklama politikası gereği çıkarıldı.</td>
+<td>En kısa parola uzunluğu ayarı.</td>
+<td><code>src/cluster_erp/config/settings.py:327</code></td>
+</tr>
+<tr>
+<td><code>jwt_refresh_reuse_grace_seconds</code></td>
+<td><code>int</code></td>
+<td><code>15</code></td>
+<td><code>CLUSTER_ERP_JWT_REFRESH_REUSE_GRACE_SECONDS</code></td>
+<td><code>auth</code></td>
+<td>Döndürülmüş bir yenileme jetonunun kabul edilmeye devam ettiği saniye.</td>
+<td><code>src/cluster_erp/config/settings.py:332</code></td>
+</tr>
+<tr>
+<td><code>abac_strict_permission_codes</code></td>
+<td><code>str</code></td>
+<td><code>""</code></td>
+<td><code>CLUSTER_ERP_ABAC_STRICT_PERMISSION_CODES</code></td>
+<td><code>auth</code></td>
+<td>Karşılanmış bir öznitelik politikası gerektiren izin kodları.</td>
+<td><code>src/cluster_erp/config/settings.py:339</code></td>
+</tr>
+<tr>
+<td><code>license_public_key</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_LICENSE_PUBLIC_KEY</code></td>
+<td><code>app_store</code>, <code>server</code></td>
+<td>Lisans dosyalarının imzalanması gereken açık anahtar; boşsa lisanslama kapalıdır.</td>
+<td><code>src/cluster_erp/config/settings.py:569</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="kayıt-ve-herkese-açık-uçlar">Kayıt ve herkese açık uçlar<a class="headerlink" href="#kayıt-ve-herkese-açık-uçlar">¶</a></h2>
+<p>Kayıt alanları yalnızca kayıt rotalarının bağlandığı çok kiracılı kipte geçerlidir (<code>src/cluster_erp/server/app.py:1440-1450</code>). Bkz. <a href="../identity-access/signup.tr.html">kayıt</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Ayar</th>
+<th>Tür</th>
+<th>Varsayılan</th>
+<th>Ortam değişkeni</th>
+<th>Okuyan</th>
+<th>Anlamı</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>signup_payment_provider</code></td>
+<td><code>str</code></td>
+<td><code>"offline"</code></td>
+<td><code>CLUSTER_ERP_SIGNUP_PAYMENT_PROVIDER</code></td>
+<td><code>server</code></td>
+<td>Self servis kaydın ödeme bağlantı noktası.</td>
+<td><code>src/cluster_erp/config/settings.py:263</code></td>
+</tr>
+<tr>
+<td><code>signup_trial_days</code></td>
+<td><code>int</code></td>
+<td><code>30</code></td>
+<td><code>CLUSTER_ERP_SIGNUP_TRIAL_DAYS</code></td>
+<td><code>server</code></td>
+<td>Yeni bir kaydın deneme süresi.</td>
+<td><code>src/cluster_erp/config/settings.py:264</code></td>
+</tr>
+<tr>
+<td><code>signup_enabled</code></td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+<td><code>CLUSTER_ERP_SIGNUP_ENABLED</code></td>
+<td><code>server</code></td>
+<td>Çok kiracılı bir düğümde self servis kaydı açar veya kapatır.</td>
+<td><code>src/cluster_erp/config/settings.py:271</code></td>
+</tr>
+<tr>
+<td><code>signup_rate_limit_per_hour</code></td>
+<td><code>int</code></td>
+<td><code>5</code></td>
+<td><code>CLUSTER_ERP_SIGNUP_RATE_LIMIT_PER_HOUR</code></td>
+<td><code>server</code></td>
+<td>İstemci adresi başına saatteki kayıt isteği.</td>
+<td><code>src/cluster_erp/config/settings.py:272</code></td>
+</tr>
+<tr>
+<td><code>signup_verify_email</code></td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+<td><code>CLUSTER_ERP_SIGNUP_VERIFY_EMAIL</code></td>
+<td><code>server</code></td>
+<td>Hazırlamadan önce e-postayla alan adı doğrulaması ister.</td>
+<td><code>src/cluster_erp/config/settings.py:277</code></td>
+</tr>
+<tr>
+<td><code>signup_verify_ttl_hours</code></td>
+<td><code>int</code></td>
+<td><code>48</code></td>
+<td><code>CLUSTER_ERP_SIGNUP_VERIFY_TTL_HOURS</code></td>
+<td><code>server</code></td>
+<td>Doğrulama bağlantısının ömrü.</td>
+<td><code>src/cluster_erp/config/settings.py:279</code></td>
+</tr>
+<tr>
+<td><code>signup_mail_transport</code></td>
+<td><code>str</code></td>
+<td><code>"spool"</code></td>
+<td><code>CLUSTER_ERP_SIGNUP_MAIL_TRANSPORT</code></td>
+<td><code>server</code></td>
+<td>Doğrulama postasının taşıması: smtp veya spool.</td>
+<td><code>src/cluster_erp/config/settings.py:283</code></td>
+</tr>
+<tr>
+<td><code>signup_mail_spool_dir</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_SIGNUP_MAIL_SPOOL_DIR</code></td>
+<td><code>server</code></td>
+<td>Biriktirilen doğrulama postalarının klasörü.</td>
+<td><code>src/cluster_erp/config/settings.py:284</code></td>
+</tr>
+<tr>
+<td><code>signup_smtp_host</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_SIGNUP_SMTP_HOST</code></td>
+<td><code>server</code></td>
+<td>Doğrulama postası için SMTP sunucusu.</td>
+<td><code>src/cluster_erp/config/settings.py:285</code></td>
+</tr>
+<tr>
+<td><code>signup_smtp_port</code></td>
+<td><code>int</code></td>
+<td><code>587</code></td>
+<td><code>CLUSTER_ERP_SIGNUP_SMTP_PORT</code></td>
+<td><code>server</code></td>
+<td>Doğrulama postası için SMTP bağlantı noktası.</td>
+<td><code>src/cluster_erp/config/settings.py:286</code></td>
+</tr>
+<tr>
+<td><code>signup_smtp_user</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_SIGNUP_SMTP_USER</code></td>
+<td><code>server</code></td>
+<td>Doğrulama postası için SMTP kullanıcısı.</td>
+<td><code>src/cluster_erp/config/settings.py:287</code></td>
+</tr>
+<tr>
+<td><code>signup_smtp_password</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_SIGNUP_SMTP_PASSWORD</code></td>
+<td><code>server</code></td>
+<td>Doğrulama postası için SMTP parolası.</td>
+<td><code>src/cluster_erp/config/settings.py:288</code></td>
+</tr>
+<tr>
+<td><code>signup_mail_from</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_SIGNUP_MAIL_FROM</code></td>
+<td><code>server</code></td>
+<td>Doğrulama postasının göndereni.</td>
+<td><code>src/cluster_erp/config/settings.py:289</code></td>
+</tr>
+<tr>
+<td><code>public_base_url</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_PUBLIC_BASE_URL</code></td>
+<td><code>server</code></td>
+<td>Doğrulama bağlantılarında kullanılan mutlak temel URL; boşsa göreli bağlantılar.</td>
+<td><code>src/cluster_erp/config/settings.py:292</code></td>
+</tr>
+<tr>
+<td><code>security_contact</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_SECURITY_CONTACT</code></td>
+<td><code>server</code></td>
+<td>/.well-known/security.txt iletişim adresi; boşsa 404 yanıtı verilir.</td>
+<td><code>src/cluster_erp/config/settings.py:296</code></td>
+</tr>
+<tr>
+<td><code>security_policy_url</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_SECURITY_POLICY_URL</code></td>
+<td><code>server</code></td>
+<td>security.txt içindeki politika URL'si.</td>
+<td><code>src/cluster_erp/config/settings.py:297</code></td>
+</tr>
+<tr>
+<td><code>security_expires_days</code></td>
+<td><code>int</code></td>
+<td><code>180</code></td>
+<td><code>CLUSTER_ERP_SECURITY_EXPIRES_DAYS</code></td>
+<td><code>server</code></td>
+<td>security.txt Expires alanına kadar gün.</td>
+<td><code>src/cluster_erp/config/settings.py:298</code></td>
+</tr>
+<tr>
+<td><code>signup_notice_dir</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_SIGNUP_NOTICE_DIR</code></td>
+<td><code>server</code></td>
+<td>Kayıttan önce gösterilen aydınlatma metninin klasörü.</td>
+<td><code>src/cluster_erp/config/settings.py:305</code></td>
+</tr>
+<tr>
+<td><code>signup_notice_version</code></td>
+<td><code>str</code></td>
+<td><code>""</code></td>
+<td><code>CLUSTER_ERP_SIGNUP_NOTICE_VERSION</code></td>
+<td><code>server</code></td>
+<td>Her metin onayıyla kaydedilen sürüm.</td>
+<td><code>src/cluster_erp/config/settings.py:306</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="dosya-deposu-ve-yedekler">Dosya deposu ve yedekler<a class="headerlink" href="#dosya-deposu-ve-yedekler">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Ayar</th>
+<th>Tür</th>
+<th>Varsayılan</th>
+<th>Ortam değişkeni</th>
+<th>Okuyan</th>
+<th>Anlamı</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>backup_db_user</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_BACKUP_DB_USER</code></td>
+<td><code>server</code></td>
+<td>Yedekleme çalıştırıcısının veritabanı rolü.</td>
+<td><code>src/cluster_erp/config/settings.py:216</code></td>
+</tr>
+<tr>
+<td><code>backup_db_password</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_BACKUP_DB_PASSWORD</code></td>
+<td><code>server</code></td>
+<td>Yedekleme rolünün parolası.</td>
+<td><code>src/cluster_erp/config/settings.py:217</code></td>
+</tr>
+<tr>
+<td><code>backup_db_password_file</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_BACKUP_DB_PASSWORD_FILE</code></td>
+<td><code>server</code></td>
+<td>Yedekleme rolünün parolasını tutan dosya.</td>
+<td><code>src/cluster_erp/config/settings.py:222</code></td>
+</tr>
+<tr>
+<td><code>console_backup_enabled</code></td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+<td><code>CLUSTER_ERP_CONSOLE_BACKUP_ENABLED</code></td>
+<td><code>server</code></td>
+<td>Operatör konsolundan istek üzerine yedeklemeye izin verir.</td>
+<td><code>src/cluster_erp/config/settings.py:225</code></td>
+</tr>
+<tr>
+<td><code>backup_dir</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_BACKUP_DIR</code></td>
+<td><code>core</code>, <code>server</code></td>
+<td>Veritabanı dökümlerinin klasörü.</td>
+<td><code>src/cluster_erp/config/settings.py:226</code></td>
+</tr>
+<tr>
+<td><code>backup_keep</code></td>
+<td><code>int</code></td>
+<td><code>14</code></td>
+<td><code>CLUSTER_ERP_BACKUP_KEEP</code></td>
+<td><code>server</code></td>
+<td>Veritabanı başına tutulan en yeni dökümler.</td>
+<td><code>src/cluster_erp/config/settings.py:227</code></td>
+</tr>
+<tr>
+<td><code>backup_keep_days</code></td>
+<td><code>int</code></td>
+<td><code>0</code></td>
+<td><code>CLUSTER_ERP_BACKUP_KEEP_DAYS</code></td>
+<td><code>server</code></td>
+<td>Dökümleri budamak için yaş koruması; 0 kapalıdır.</td>
+<td><code>src/cluster_erp/config/settings.py:233</code></td>
+</tr>
+<tr>
+<td><code>pg_bin_dir</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_PG_BIN_DIR</code></td>
+<td><code>server</code></td>
+<td>pg_dump ve pg_restore klasörü.</td>
+<td><code>src/cluster_erp/config/settings.py:234</code></td>
+</tr>
+<tr>
+<td><code>storage_backend</code></td>
+<td><code>str</code></td>
+<td><code>"local"</code></td>
+<td><code>CLUSTER_ERP_STORAGE_BACKEND</code></td>
+<td><code>server</code></td>
+<td>Dosya deposu: local veya s3.</td>
+<td><code>src/cluster_erp/config/settings.py:347</code></td>
+</tr>
+<tr>
+<td><code>storage_path</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_STORAGE_PATH</code></td>
+<td><code>server</code></td>
+<td>Yerel depolama arka ucunun klasörü.</td>
+<td><code>src/cluster_erp/config/settings.py:348</code></td>
+</tr>
+<tr>
+<td><code>s3_bucket</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_S3_BUCKET</code></td>
+<td><code>server</code></td>
+<td>S3 kovası; storage_backend s3 ise zorunludur.</td>
+<td><code>src/cluster_erp/config/settings.py:349</code></td>
+</tr>
+<tr>
+<td><code>s3_region</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_S3_REGION</code></td>
+<td><code>server</code></td>
+<td>S3 bölgesi.</td>
+<td><code>src/cluster_erp/config/settings.py:350</code></td>
+</tr>
+<tr>
+<td><code>s3_access_key</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_S3_ACCESS_KEY</code></td>
+<td><code>server</code></td>
+<td>S3 erişim anahtarı.</td>
+<td><code>src/cluster_erp/config/settings.py:351</code></td>
+</tr>
+<tr>
+<td><code>s3_secret_key</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_S3_SECRET_KEY</code></td>
+<td><code>server</code></td>
+<td>S3 gizli anahtarı.</td>
+<td><code>src/cluster_erp/config/settings.py:352</code></td>
+</tr>
+<tr>
+<td><code>s3_endpoint_url</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_S3_ENDPOINT_URL</code></td>
+<td><code>server</code></td>
+<td>S3 uyumlu depolar için S3 ucu.</td>
+<td><code>src/cluster_erp/config/settings.py:353</code></td>
+</tr>
+<tr>
+<td><code>s3_prefix</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_S3_PREFIX</code></td>
+<td><code>server</code></td>
+<td>Kova içindeki anahtar öneki.</td>
+<td><code>src/cluster_erp/config/settings.py:354</code></td>
+</tr>
+<tr>
+<td><code>storage_encryption_key</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_STORAGE_ENCRYPTION_KEY</code></td>
+<td><code>server</code></td>
+<td>Saklanan dosyaların durağan şifrelemesi için anahtar; 64 onaltılık karakter; çok kiracılı kipte zorunlu.</td>
+<td><code>src/cluster_erp/config/settings.py:359</code></td>
+</tr>
+<tr>
+<td><code>control_encryption_key</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_CONTROL_ENCRYPTION_KEY</code></td>
+<td><code>core</code></td>
+<td>Geri okunması gereken kontrol düzlemi gizlerini mühürler.</td>
+<td><code>src/cluster_erp/config/settings.py:362</code></td>
+</tr>
+<tr>
+<td><code>attachment_allowed_extensions</code></td>
+<td><code>list[str]</code></td>
+<td>kaynağa bakın</td>
+<td><code>CLUSTER_ERP_ATTACHMENT_ALLOWED_EXTENSIONS</code></td>
+<td><code>core</code>, <code>server</code></td>
+<td>Genel yükleyicinin kabul ettiği dosya uzantıları.</td>
+<td><code>src/cluster_erp/config/settings.py:368</code></td>
+</tr>
+<tr>
+<td><code>backup_encryption_key</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_BACKUP_ENCRYPTION_KEY</code></td>
+<td><code>core</code>, <code>server</code></td>
+<td>Şifreli dökümler için anahtar; çok kiracılı kipte zorunlu.</td>
+<td><code>src/cluster_erp/config/settings.py:377</code></td>
+</tr>
+<tr>
+<td><code>wal_archive_dir</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_WAL_ARCHIVE_DIR</code></td>
+<td><code>server</code></td>
+<td>İsteğe bağlı WAL arşivinin klasörü.</td>
+<td><code>src/cluster_erp/config/settings.py:392</code></td>
+</tr>
+<tr>
+<td><code>cold_storage_dir</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_COLD_STORAGE_DIR</code></td>
+<td><code>server</code></td>
+<td>İsteğe bağlı soğuk CSV dışa aktarımının klasörü.</td>
+<td><code>src/cluster_erp/config/settings.py:393</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="posta">Posta<a class="headerlink" href="#posta">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Ayar</th>
+<th>Tür</th>
+<th>Varsayılan</th>
+<th>Ortam değişkeni</th>
+<th>Okuyan</th>
+<th>Anlamı</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mail_relay_none</code></td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+<td><code>CLUSTER_ERP_MAIL_RELAY_NONE</code></td>
+<td><code>server</code></td>
+<td>Düğümün sistem postası göndermediğini bildirir.</td>
+<td><code>src/cluster_erp/config/settings.py:384</code></td>
+</tr>
+<tr>
+<td><code>mail_relay_country</code></td>
+<td><code>str</code></td>
+<td><code>""</code></td>
+<td><code>CLUSTER_ERP_MAIL_RELAY_COUNTRY</code></td>
+<td><code>server</code></td>
+<td>Sistem posta aktarıcısının ülkesi.</td>
+<td><code>src/cluster_erp/config/settings.py:388</code></td>
+</tr>
+<tr>
+<td><code>smtp_host</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_SMTP_HOST</code></td>
+<td><code>core</code>, <code>server</code></td>
+<td>Sistem posta kutusunun SMTP sunucusu; boşsa yapılandırılmamıştır.</td>
+<td><code>src/cluster_erp/config/settings.py:394</code></td>
+</tr>
+<tr>
+<td><code>smtp_port</code></td>
+<td><code>int</code></td>
+<td><code>587</code></td>
+<td><code>CLUSTER_ERP_SMTP_PORT</code></td>
+<td><code>core</code></td>
+<td>Sistem posta kutusunun SMTP bağlantı noktası.</td>
+<td><code>src/cluster_erp/config/settings.py:395</code></td>
+</tr>
+<tr>
+<td><code>smtp_user</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_SMTP_USER</code></td>
+<td><code>core</code></td>
+<td>Sistem posta kutusunun SMTP kullanıcısı.</td>
+<td><code>src/cluster_erp/config/settings.py:396</code></td>
+</tr>
+<tr>
+<td><code>smtp_password</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_SMTP_PASSWORD</code></td>
+<td><code>core</code></td>
+<td>Sistem posta kutusunun SMTP parolası.</td>
+<td><code>src/cluster_erp/config/settings.py:397</code></td>
+</tr>
+<tr>
+<td><code>smtp_use_tls</code></td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+<td><code>CLUSTER_ERP_SMTP_USE_TLS</code></td>
+<td><code>core</code></td>
+<td>Sistem posta kutusu için STARTTLS kullanır.</td>
+<td><code>src/cluster_erp/config/settings.py:398</code></td>
+</tr>
+<tr>
+<td><code>smtp_from_email</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_SMTP_FROM_EMAIL</code></td>
+<td><code>core</code></td>
+<td>Gönderen adresi; smtp_host ayarlıysa zorunludur.</td>
+<td><code>src/cluster_erp/config/settings.py:399</code></td>
+</tr>
+<tr>
+<td><code>smtp_from_name</code></td>
+<td><code>str</code></td>
+<td><code>"Cluster ERP"</code></td>
+<td><code>CLUSTER_ERP_SMTP_FROM_NAME</code></td>
+<td><code>core</code></td>
+<td>Gönderenin görünen adı.</td>
+<td><code>src/cluster_erp/config/settings.py:400</code></td>
+</tr>
+<tr>
+<td><code>mail_encryption_key</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_MAIL_ENCRYPTION_KEY</code></td>
+<td><code>mail</code></td>
+<td>Saklanan posta hesabı gizlerini mühürleyen anahtar; çok kiracılı kipte zorunlu.</td>
+<td><code>src/cluster_erp/config/settings.py:408</code></td>
+</tr>
+<tr>
+<td><code>mail_attachment_max_bytes</code></td>
+<td><code>int</code></td>
+<td><code>10 * 1024 * 1024</code></td>
+<td><code>CLUSTER_ERP_MAIL_ATTACHMENT_MAX_BYTES</code></td>
+<td><code>mail</code></td>
+<td>Posta düzenleyicisinin kabul ettiği en büyük ek.</td>
+<td><code>src/cluster_erp/config/settings.py:412</code></td>
+</tr>
+<tr>
+<td><code>mail_sync_limit</code></td>
+<td><code>int</code></td>
+<td><code>30</code></td>
+<td><code>CLUSTER_ERP_MAIL_SYNC_LIMIT</code></td>
+<td><code>mail</code></td>
+<td>Eşitleme başına çekilen son gelen kutusu iletileri.</td>
+<td><code>src/cluster_erp/config/settings.py:414</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="i̇ş-varsayılanları">İş varsayılanları<a class="headerlink" href="#i̇ş-varsayılanları">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Ayar</th>
+<th>Tür</th>
+<th>Varsayılan</th>
+<th>Ortam değişkeni</th>
+<th>Okuyan</th>
+<th>Anlamı</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>allow_project_to_project_stock_transfer</code></td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+<td><code>CLUSTER_ERP_ALLOW_PROJECT_TO_PROJECT_STOCK_TRANSFER</code></td>
+<td><code>inventory</code></td>
+<td>Projeler arası doğrudan stok sahipliği aktarımına izin verir.</td>
+<td><code>src/cluster_erp/config/settings.py:184</code></td>
+</tr>
+<tr>
+<td><code>list_count_cap</code></td>
+<td><code>int</code></td>
+<td><code>10_000</code></td>
+<td><code>CLUSTER_ERP_LIST_COUNT_CAP</code></td>
+<td><code>core</code>, <code>server</code></td>
+<td>Listeler eşleşen satırları bu tavana kadar sayar; 0 tam sayım demektir.</td>
+<td><code>src/cluster_erp/config/settings.py:324</code></td>
+</tr>
+<tr>
+<td><code>rfq_portal_token_days</code></td>
+<td><code>int</code></td>
+<td><code>30</code></td>
+<td><code>CLUSTER_ERP_RFQ_PORTAL_TOKEN_DAYS</code></td>
+<td><code>procurement</code></td>
+<td>Tedarikçi portalı davet bağlantılarının ömrü.</td>
+<td><code>src/cluster_erp/config/settings.py:364</code></td>
+</tr>
+<tr>
+<td><code>tcmb_url</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_TCMB_URL</code></td>
+<td><code>currencies</code></td>
+<td>Günlük döviz kurlarının kaynağı; varsayılan Türkiye Cumhuriyet Merkez Bankası'nın herkese açık günlük XML'idir.</td>
+<td><code>src/cluster_erp/config/settings.py:416</code></td>
+</tr>
+<tr>
+<td><code>tcmb_sync_on_startup</code></td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+<td><code>CLUSTER_ERP_TCMB_SYNC_ON_STARTUP</code></td>
+<td>-</td>
+<td>Açılışta döviz kuru eşitlemesi.</td>
+<td><code>src/cluster_erp/config/settings.py:417</code></td>
+</tr>
+<tr>
+<td><code>tcmb_timeout_seconds</code></td>
+<td><code>int</code></td>
+<td><code>15</code></td>
+<td><code>CLUSTER_ERP_TCMB_TIMEOUT_SECONDS</code></td>
+<td><code>currencies</code></td>
+<td>Döviz kuru çekmenin zaman aşımı.</td>
+<td><code>src/cluster_erp/config/settings.py:418</code></td>
+</tr>
+<tr>
+<td><code>nesting_low_utilization_threshold</code></td>
+<td><code>int</code></td>
+<td><code>60</code></td>
+<td><code>CLUSTER_ERP_NESTING_LOW_UTILIZATION_THRESHOLD</code></td>
+<td><code>nesting</code></td>
+<td>Altında yerleşimin düşük kullanım uyarısı verdiği kullanım yüzdesi.</td>
+<td><code>src/cluster_erp/config/settings.py:420</code></td>
+</tr>
+<tr>
+<td><code>default_currency</code></td>
+<td><code>str</code></td>
+<td><code>"USD"</code></td>
+<td><code>CLUSTER_ERP_DEFAULT_CURRENCY</code></td>
+<td><code>procurement</code></td>
+<td>Varsayılan para birimi kodu.</td>
+<td><code>src/cluster_erp/config/settings.py:622</code></td>
+</tr>
+<tr>
+<td><code>pr_approval_threshold_amount</code></td>
+<td><code>int</code></td>
+<td><code>50000</code></td>
+<td><code>CLUSTER_ERP_PR_APPROVAL_THRESHOLD_AMOUNT</code></td>
+<td>-</td>
+<td>Satın alma talebi onay eşiği tutarı.</td>
+<td><code>src/cluster_erp/config/settings.py:623</code></td>
+</tr>
+<tr>
+<td><code>pr_approval_threshold_currency</code></td>
+<td><code>str</code></td>
+<td><code>"TRY"</code></td>
+<td><code>CLUSTER_ERP_PR_APPROVAL_THRESHOLD_CURRENCY</code></td>
+<td>-</td>
+<td>Bu eşiğin para birimi.</td>
+<td><code>src/cluster_erp/config/settings.py:624</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="analitik">Analitik<a class="headerlink" href="#analitik">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Ayar</th>
+<th>Tür</th>
+<th>Varsayılan</th>
+<th>Ortam değişkeni</th>
+<th>Okuyan</th>
+<th>Anlamı</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>analytics_quantile_type</code></td>
+<td><code>int</code></td>
+<td><code>1</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_QUANTILE_TYPE</code></td>
+<td><code>analytics</code></td>
+<td>Her yerde kullanılan kantil tanımı: 1 (aradeğerlemesiz) veya 7 (doğrusal).</td>
+<td><code>src/cluster_erp/config/settings.py:439</code></td>
+</tr>
+<tr>
+<td><code>analytics_trimmed_mean_pct</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("10")</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_TRIMMED_MEAN_PCT</code></td>
+<td><code>analytics</code></td>
+<td>Budanmış ortalama için her kuyruktan kesilen yüzde.</td>
+<td><code>src/cluster_erp/config/settings.py:442</code></td>
+</tr>
+<tr>
+<td><code>analytics_mad_sigma_constant</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("1.4826")</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_MAD_SIGMA_CONSTANT</code></td>
+<td><code>analytics</code></td>
+<td>MAD'den sigmaya tutarlılık sabiti.</td>
+<td><code>src/cluster_erp/config/settings.py:446</code></td>
+</tr>
+<tr>
+<td><code>analytics_min_n_for_zscore</code></td>
+<td><code>int</code></td>
+<td><code>11</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_MIN_N_FOR_ZSCORE</code></td>
+<td><code>analytics</code></td>
+<td>Z-puanı taraması için en az gözlem.</td>
+<td><code>src/cluster_erp/config/settings.py:451</code></td>
+</tr>
+<tr>
+<td><code>analytics_min_iqr_for_fence</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("0")</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_MIN_IQR_FOR_FENCE</code></td>
+<td><code>analytics</code></td>
+<td>IQR çiti için en küçük çeyrekler arası aralık.</td>
+<td><code>src/cluster_erp/config/settings.py:454</code></td>
+</tr>
+<tr>
+<td><code>analytics_abc_cutoff_a_pct</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("80")</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_ABC_CUTOFF_A_PCT</code></td>
+<td><code>analytics</code></td>
+<td>A sınıfını bitiren birikimli değer payı.</td>
+<td><code>src/cluster_erp/config/settings.py:460</code></td>
+</tr>
+<tr>
+<td><code>analytics_abc_cutoff_b_pct</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("95")</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_ABC_CUTOFF_B_PCT</code></td>
+<td><code>analytics</code></td>
+<td>B sınıfını bitiren birikimli değer payı.</td>
+<td><code>src/cluster_erp/config/settings.py:461</code></td>
+</tr>
+<tr>
+<td><code>analytics_abc_hysteresis_pct</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("2")</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_ABC_HYSTERESIS_PCT</code></td>
+<td><code>analytics</code></td>
+<td>Bir kalemin ABC sınıfı değiştirmeden önce aşması gereken pay.</td>
+<td><code>src/cluster_erp/config/settings.py:468</code></td>
+</tr>
+<tr>
+<td><code>analytics_abc_min_periods</code></td>
+<td><code>int</code></td>
+<td><code>3</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_ABC_MIN_PERIODS</code></td>
+<td><code>analytics</code></td>
+<td>ABC sınıflamasından önce talepli en az dönem.</td>
+<td><code>src/cluster_erp/config/settings.py:473</code></td>
+</tr>
+<tr>
+<td><code>analytics_sbc_adi_threshold</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("1.32")</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_SBC_ADI_THRESHOLD</code></td>
+<td><code>analytics</code></td>
+<td>SBC talep sınıflamasının ADI eşiği.</td>
+<td><code>src/cluster_erp/config/settings.py:478</code></td>
+</tr>
+<tr>
+<td><code>analytics_sbc_cv2_threshold</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("0.49")</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_SBC_CV2_THRESHOLD</code></td>
+<td><code>analytics</code></td>
+<td>SBC talep sınıflamasının CV kare eşiği.</td>
+<td><code>src/cluster_erp/config/settings.py:479</code></td>
+</tr>
+<tr>
+<td><code>analytics_sbc_min_occurrences</code></td>
+<td><code>int</code></td>
+<td><code>3</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_SBC_MIN_OCCURRENCES</code></td>
+<td><code>analytics</code></td>
+<td>SBC için sıfır olmayan en az talep oluşumu.</td>
+<td><code>src/cluster_erp/config/settings.py:481</code></td>
+</tr>
+<tr>
+<td><code>analytics_profile_exact_max_rows</code></td>
+<td><code>int</code></td>
+<td><code>200_000</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_PROFILE_EXACT_MAX_ROWS</code></td>
+<td><code>analytics</code></td>
+<td>Üstünde bir profilin örneklem kullandığı satır sayısı.</td>
+<td><code>src/cluster_erp/config/settings.py:487</code></td>
+</tr>
+<tr>
+<td><code>analytics_profile_sample_rows</code></td>
+<td><code>int</code></td>
+<td><code>50_000</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_PROFILE_SAMPLE_ROWS</code></td>
+<td><code>analytics</code></td>
+<td>Örneklemli bir profilin örneklem boyutu.</td>
+<td><code>src/cluster_erp/config/settings.py:488</code></td>
+</tr>
+<tr>
+<td><code>analytics_profile_top_values</code></td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_PROFILE_TOP_VALUES</code></td>
+<td><code>analytics</code></td>
+<td>Sütun profili başına döndürülen en sık değerler.</td>
+<td><code>src/cluster_erp/config/settings.py:490</code></td>
+</tr>
+<tr>
+<td><code>analytics_profile_sentinels</code></td>
+<td><code>list[str]</code></td>
+<td>kaynağa bakın</td>
+<td><code>CLUSTER_ERP_ANALYTICS_PROFILE_SENTINELS</code></td>
+<td><code>analytics</code></td>
+<td>Gizli eksik değer sayılan değerler.</td>
+<td><code>src/cluster_erp/config/settings.py:495</code></td>
+</tr>
+<tr>
+<td><code>analytics_inference_max_rows</code></td>
+<td><code>int</code></td>
+<td><code>100_000</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_INFERENCE_MAX_ROWS</code></td>
+<td><code>analytics</code></td>
+<td>Bir hipotez testinin çekebileceği en büyük örneklem.</td>
+<td><code>src/cluster_erp/config/settings.py:524</code></td>
+</tr>
+<tr>
+<td><code>analytics_summary_refresh_seconds</code></td>
+<td><code>int</code></td>
+<td><code>60</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_SUMMARY_REFRESH_SECONDS</code></td>
+<td><code>server</code></td>
+<td>Özet hücre yenilemesinin aralığı; 0 kapatır.</td>
+<td><code>src/cluster_erp/config/settings.py:530</code></td>
+</tr>
+<tr>
+<td><code>analytics_summary_rebuild_minutes</code></td>
+<td><code>int</code></td>
+<td><code>60</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_SUMMARY_REBUILD_MINUTES</code></td>
+<td><code>analytics</code></td>
+<td>Tam özet hücre yeniden kurulumunun aralığı.</td>
+<td><code>src/cluster_erp/config/settings.py:533</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="mrp-ve-ddmrp">MRP ve DDMRP<a class="headerlink" href="#mrp-ve-ddmrp">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Ayar</th>
+<th>Tür</th>
+<th>Varsayılan</th>
+<th>Ortam değişkeni</th>
+<th>Okuyan</th>
+<th>Anlamı</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mrp_default_planning_horizon_days</code></td>
+<td><code>int</code></td>
+<td><code>90</code></td>
+<td><code>CLUSTER_ERP_MRP_DEFAULT_PLANNING_HORIZON_DAYS</code></td>
+<td><code>procurement</code></td>
+<td>Kodda açıklama yok.</td>
+<td><code>src/cluster_erp/config/settings.py:571</code></td>
+</tr>
+<tr>
+<td><code>mrp_safety_stock_method</code></td>
+<td><code>str</code></td>
+<td><code>"fixed"</code></td>
+<td><code>CLUSTER_ERP_MRP_SAFETY_STOCK_METHOD</code></td>
+<td><code>procurement</code></td>
+<td>Kodda açıklama yok.</td>
+<td><code>src/cluster_erp/config/settings.py:572</code></td>
+</tr>
+<tr>
+<td><code>mrp_lot_sizing_default</code></td>
+<td><code>str</code></td>
+<td><code>"lot_for_lot"</code></td>
+<td><code>CLUSTER_ERP_MRP_LOT_SIZING_DEFAULT</code></td>
+<td><code>procurement</code></td>
+<td>Kodda açıklama yok.</td>
+<td><code>src/cluster_erp/config/settings.py:573</code></td>
+</tr>
+<tr>
+<td><code>mrp_reschedule_threshold_days</code></td>
+<td><code>int</code></td>
+<td><code>3</code></td>
+<td><code>CLUSTER_ERP_MRP_RESCHEDULE_THRESHOLD_DAYS</code></td>
+<td><code>procurement</code></td>
+<td>Kodda açıklama yok.</td>
+<td><code>src/cluster_erp/config/settings.py:574</code></td>
+</tr>
+<tr>
+<td><code>mrp_max_bom_depth</code></td>
+<td><code>int</code></td>
+<td><code>20</code></td>
+<td><code>CLUSTER_ERP_MRP_MAX_BOM_DEPTH</code></td>
+<td><code>procurement</code></td>
+<td>Kodda açıklama yok.</td>
+<td><code>src/cluster_erp/config/settings.py:575</code></td>
+</tr>
+<tr>
+<td><code>mrp_excess_receipt_tolerance_pct</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("10")</code></td>
+<td><code>CLUSTER_ERP_MRP_EXCESS_RECEIPT_TOLERANCE_PCT</code></td>
+<td><code>procurement</code></td>
+<td>Bir girişin azaltma istisnası ürettiği, planlanan ihtiyacın üzerindeki yüzde.</td>
+<td><code>src/cluster_erp/config/settings.py:582</code></td>
+</tr>
+<tr>
+<td><code>mrp_opening_period_days</code></td>
+<td><code>int</code></td>
+<td><code>21</code></td>
+<td><code>CLUSTER_ERP_MRP_OPENING_PERIOD_DAYS</code></td>
+<td><code>procurement</code></td>
+<td>Planlı bir siparişin üretim emrine çevrilebildiği pencere.</td>
+<td><code>src/cluster_erp/config/settings.py:591</code></td>
+</tr>
+<tr>
+<td><code>mrp_damping_delay_days</code></td>
+<td><code>int</code></td>
+<td><code>3</code></td>
+<td><code>CLUSTER_ERP_MRP_DAMPING_DELAY_DAYS</code></td>
+<td><code>procurement</code></td>
+<td>Aksiyon mesajından önce tolere edilen gecikme.</td>
+<td><code>src/cluster_erp/config/settings.py:592</code></td>
+</tr>
+<tr>
+<td><code>mrp_damping_advance_days</code></td>
+<td><code>int</code></td>
+<td><code>3</code></td>
+<td><code>CLUSTER_ERP_MRP_DAMPING_ADVANCE_DAYS</code></td>
+<td><code>procurement</code></td>
+<td>Aksiyon mesajından önce tolere edilen erkenlik.</td>
+<td><code>src/cluster_erp/config/settings.py:593</code></td>
+</tr>
+<tr>
+<td><code>mrp_consumption_backward_days</code></td>
+<td><code>int</code></td>
+<td><code>30</code></td>
+<td><code>CLUSTER_ERP_MRP_CONSUMPTION_BACKWARD_DAYS</code></td>
+<td><code>procurement</code></td>
+<td>İş günü cinsinden geriye tüketim penceresi.</td>
+<td><code>src/cluster_erp/config/settings.py:594</code></td>
+</tr>
+<tr>
+<td><code>mrp_consumption_forward_days</code></td>
+<td><code>int</code></td>
+<td><code>15</code></td>
+<td><code>CLUSTER_ERP_MRP_CONSUMPTION_FORWARD_DAYS</code></td>
+<td><code>procurement</code></td>
+<td>İş günü cinsinden ileriye tüketim penceresi.</td>
+<td><code>src/cluster_erp/config/settings.py:595</code></td>
+</tr>
+<tr>
+<td><code>mrp_default_cut_kerf_mm</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("3")</code></td>
+<td><code>CLUSTER_ERP_MRP_DEFAULT_CUT_KERF_MM</code></td>
+<td><code>bom</code>, <code>procurement</code>, <code>production</code></td>
+<td>Stok dönüşümü için milimetre cinsinden varsayılan kesim payı.</td>
+<td><code>src/cluster_erp/config/settings.py:596</code></td>
+</tr>
+<tr>
+<td><code>mrp_sheet_part_gap_mm</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("5")</code></td>
+<td><code>CLUSTER_ERP_MRP_SHEET_PART_GAP_MM</code></td>
+<td><code>bom</code>, <code>procurement</code>, <code>production</code></td>
+<td>Levhada parçalar arası boşluk, milimetre.</td>
+<td><code>src/cluster_erp/config/settings.py:597</code></td>
+</tr>
+<tr>
+<td><code>mrp_sheet_edge_margin_mm</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("10")</code></td>
+<td><code>CLUSTER_ERP_MRP_SHEET_EDGE_MARGIN_MM</code></td>
+<td><code>bom</code>, <code>procurement</code>, <code>production</code></td>
+<td>Levha kenar payı, milimetre.</td>
+<td><code>src/cluster_erp/config/settings.py:598</code></td>
+</tr>
+<tr>
+<td><code>mrp_abc_a_lot_sizing</code></td>
+<td><code>str</code></td>
+<td><code>"lot_for_lot"</code></td>
+<td><code>CLUSTER_ERP_MRP_ABC_A_LOT_SIZING</code></td>
+<td><code>procurement</code></td>
+<td>Kodda açıklama yok.</td>
+<td><code>src/cluster_erp/config/settings.py:599</code></td>
+</tr>
+<tr>
+<td><code>mrp_abc_b_lot_sizing</code></td>
+<td><code>str</code></td>
+<td><code>"period_order"</code></td>
+<td><code>CLUSTER_ERP_MRP_ABC_B_LOT_SIZING</code></td>
+<td><code>procurement</code></td>
+<td>Kodda açıklama yok.</td>
+<td><code>src/cluster_erp/config/settings.py:600</code></td>
+</tr>
+<tr>
+<td><code>mrp_abc_c_lot_sizing</code></td>
+<td><code>str</code></td>
+<td><code>"fixed_order"</code></td>
+<td><code>CLUSTER_ERP_MRP_ABC_C_LOT_SIZING</code></td>
+<td><code>procurement</code></td>
+<td>Kodda açıklama yok.</td>
+<td><code>src/cluster_erp/config/settings.py:601</code></td>
+</tr>
+<tr>
+<td><code>mrp_period_order_days</code></td>
+<td><code>int</code></td>
+<td><code>7</code></td>
+<td><code>CLUSTER_ERP_MRP_PERIOD_ORDER_DAYS</code></td>
+<td><code>procurement</code></td>
+<td>Kodda açıklama yok.</td>
+<td><code>src/cluster_erp/config/settings.py:602</code></td>
+</tr>
+<tr>
+<td><code>mrp_eoq_ordering_cost</code></td>
+<td><code>str</code></td>
+<td><code>"250.00"</code></td>
+<td><code>CLUSTER_ERP_MRP_EOQ_ORDERING_COST</code></td>
+<td><code>procurement</code></td>
+<td>Kodda açıklama yok.</td>
+<td><code>src/cluster_erp/config/settings.py:603</code></td>
+</tr>
+<tr>
+<td><code>mrp_eoq_holding_cost_rate</code></td>
+<td><code>str</code></td>
+<td><code>"0.25"</code></td>
+<td><code>CLUSTER_ERP_MRP_EOQ_HOLDING_COST_RATE</code></td>
+<td><code>procurement</code></td>
+<td>Kodda açıklama yok.</td>
+<td><code>src/cluster_erp/config/settings.py:604</code></td>
+</tr>
+<tr>
+<td><code>mrp_bucket_days</code></td>
+<td><code>int</code></td>
+<td><code>7</code></td>
+<td><code>CLUSTER_ERP_MRP_BUCKET_DAYS</code></td>
+<td><code>procurement</code></td>
+<td>Kodda açıklama yok.</td>
+<td><code>src/cluster_erp/config/settings.py:605</code></td>
+</tr>
+<tr>
+<td><code>mrp_flush_chunk</code></td>
+<td><code>int</code></td>
+<td><code>500</code></td>
+<td><code>CLUSTER_ERP_MRP_FLUSH_CHUNK</code></td>
+<td><code>procurement</code></td>
+<td>Kodda açıklama yok.</td>
+<td><code>src/cluster_erp/config/settings.py:606</code></td>
+</tr>
+<tr>
+<td><code>mrp_background_timeout_seconds</code></td>
+<td><code>int</code></td>
+<td><code>600</code></td>
+<td><code>CLUSTER_ERP_MRP_BACKGROUND_TIMEOUT_SECONDS</code></td>
+<td><code>procurement</code></td>
+<td>Kodda açıklama yok.</td>
+<td><code>src/cluster_erp/config/settings.py:607</code></td>
+</tr>
+<tr>
+<td><code>mrp_xyz_x_cov</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("0.5")</code></td>
+<td><code>CLUSTER_ERP_MRP_XYZ_X_COV</code></td>
+<td><code>procurement</code></td>
+<td>Altında bir kalemin X sınıfı olduğu değişim katsayısı.</td>
+<td><code>src/cluster_erp/config/settings.py:609</code></td>
+</tr>
+<tr>
+<td><code>mrp_xyz_y_cov</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("1.0")</code></td>
+<td><code>CLUSTER_ERP_MRP_XYZ_Y_COV</code></td>
+<td><code>procurement</code></td>
+<td>Altında bir kalemin Y sınıfı olduğu değişim katsayısı.</td>
+<td><code>src/cluster_erp/config/settings.py:610</code></td>
+</tr>
+<tr>
+<td><code>mrp_xyz_default_horizon_days</code></td>
+<td><code>int</code></td>
+<td><code>180</code></td>
+<td><code>CLUSTER_ERP_MRP_XYZ_DEFAULT_HORIZON_DAYS</code></td>
+<td><code>procurement</code></td>
+<td>Kodda açıklama yok.</td>
+<td><code>src/cluster_erp/config/settings.py:611</code></td>
+</tr>
+<tr>
+<td><code>mrp_leadtime_tolerance_days</code></td>
+<td><code>int</code></td>
+<td><code>2</code></td>
+<td><code>CLUSTER_ERP_MRP_LEADTIME_TOLERANCE_DAYS</code></td>
+<td><code>procurement</code></td>
+<td>Gerçek teslim süresi önerisinin toleransı.</td>
+<td><code>src/cluster_erp/config/settings.py:613</code></td>
+</tr>
+<tr>
+<td><code>mrp_leadtime_max_samples</code></td>
+<td><code>int</code></td>
+<td><code>12</code></td>
+<td><code>CLUSTER_ERP_MRP_LEADTIME_MAX_SAMPLES</code></td>
+<td><code>procurement</code></td>
+<td>Gerçek teslim süresi önerisinin örneklem boyutu.</td>
+<td><code>src/cluster_erp/config/settings.py:614</code></td>
+</tr>
+<tr>
+<td><code>ddmrp_adu_horizon_days</code></td>
+<td><code>int</code></td>
+<td><code>90</code></td>
+<td><code>CLUSTER_ERP_DDMRP_ADU_HORIZON_DAYS</code></td>
+<td><code>procurement</code></td>
+<td>DDMRP ortalama günlük kullanım ufku.</td>
+<td><code>src/cluster_erp/config/settings.py:617</code></td>
+</tr>
+<tr>
+<td><code>ddmrp_spike_threshold_pct</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("50")</code></td>
+<td><code>CLUSTER_ERP_DDMRP_SPIKE_THRESHOLD_PCT</code></td>
+<td><code>procurement</code></td>
+<td>Kırmızının yüzdesi olarak DDMRP sivrilme eşiği.</td>
+<td><code>src/cluster_erp/config/settings.py:618</code></td>
+</tr>
+<tr>
+<td><code>ddmrp_default_lt_factor</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("0.5")</code></td>
+<td><code>CLUSTER_ERP_DDMRP_DEFAULT_LT_FACTOR</code></td>
+<td><code>procurement</code></td>
+<td>Varsayılan tampon teslim süresi katsayısı.</td>
+<td><code>src/cluster_erp/config/settings.py:619</code></td>
+</tr>
+<tr>
+<td><code>ddmrp_default_variability_factor</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("0.5")</code></td>
+<td><code>CLUSTER_ERP_DDMRP_DEFAULT_VARIABILITY_FACTOR</code></td>
+<td><code>procurement</code></td>
+<td>Varsayılan tampon değişkenlik katsayısı.</td>
+<td><code>src/cluster_erp/config/settings.py:620</code></td>
+</tr>
+<tr>
+<td><code>ddmrp_default_order_cycle_days</code></td>
+<td><code>int</code></td>
+<td><code>7</code></td>
+<td><code>CLUSTER_ERP_DDMRP_DEFAULT_ORDER_CYCLE_DAYS</code></td>
+<td><code>procurement</code></td>
+<td>Varsayılan tampon sipariş döngüsü.</td>
+<td><code>src/cluster_erp/config/settings.py:621</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="günlükler-saklama-ve-gizlilik">Günlükler, saklama ve gizlilik<a class="headerlink" href="#günlükler-saklama-ve-gizlilik">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Ayar</th>
+<th>Tür</th>
+<th>Varsayılan</th>
+<th>Ortam değişkeni</th>
+<th>Okuyan</th>
+<th>Anlamı</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>activity_log_enabled</code></td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+<td><code>CLUSTER_ERP_ACTIVITY_LOG_ENABLED</code></td>
+<td><code>server</code></td>
+<td>İstek etkinlik günlüğünü açar veya kapatır.</td>
+<td><code>src/cluster_erp/config/settings.py:628</code></td>
+</tr>
+<tr>
+<td><code>activity_log_skip_paths</code></td>
+<td><code>list[str]</code></td>
+<td>kaynağa bakın</td>
+<td><code>CLUSTER_ERP_ACTIVITY_LOG_SKIP_PATHS</code></td>
+<td><code>server</code></td>
+<td>Günlüğe yazılmayan yollar.</td>
+<td><code>src/cluster_erp/config/settings.py:630</code></td>
+</tr>
+<tr>
+<td><code>activity_log_retention_days</code></td>
+<td><code>int</code></td>
+<td><code>90</code></td>
+<td><code>CLUSTER_ERP_ACTIVITY_LOG_RETENTION_DAYS</code></td>
+<td><code>server</code></td>
+<td>Etkinlik günlüğü satırlarının tutulduğu gün.</td>
+<td><code>src/cluster_erp/config/settings.py:640</code></td>
+</tr>
+<tr>
+<td><code>error_log_retention_days</code></td>
+<td><code>int</code></td>
+<td><code>365</code></td>
+<td><code>CLUSTER_ERP_ERROR_LOG_RETENTION_DAYS</code></td>
+<td><code>server</code></td>
+<td>Hata günlüğü satırlarının tutulduğu gün.</td>
+<td><code>src/cluster_erp/config/settings.py:641</code></td>
+</tr>
+<tr>
+<td><code>log_purge_batch_rows</code></td>
+<td><code>int</code></td>
+<td><code>10_000</code></td>
+<td><code>CLUSTER_ERP_LOG_PURGE_BATCH_ROWS</code></td>
+<td><code>server</code></td>
+<td>Günlük temizliğinin ifade başına sildiği satır.</td>
+<td><code>src/cluster_erp/config/settings.py:644</code></td>
+</tr>
+<tr>
+<td><code>log_sanitize_keys</code></td>
+<td><code>list[str]</code></td>
+<td>kaynağa bakın</td>
+<td><code>CLUSTER_ERP_LOG_SANITIZE_KEYS</code></td>
+<td><code>server</code></td>
+<td>Değerleri günlük özetlerinde maskelenen gövde anahtarları.</td>
+<td><code>src/cluster_erp/config/settings.py:653</code></td>
+</tr>
+<tr>
+<td><code>log_sanitize_path_keys</code></td>
+<td><code>dict[str, list[str]]</code></td>
+<td>kaynağa bakın</td>
+<td><code>CLUSTER_ERP_LOG_SANITIZE_PATH_KEYS</code></td>
+<td><code>server</code></td>
+<td>Yalnızca eşleşen yollarda maskelenen gövde anahtarları.</td>
+<td><code>src/cluster_erp/config/settings.py:695</code></td>
+</tr>
+<tr>
+<td><code>log_body_max_bytes</code></td>
+<td><code>int</code></td>
+<td><code>2048</code></td>
+<td><code>CLUSTER_ERP_LOG_BODY_MAX_BYTES</code></td>
+<td><code>server</code></td>
+<td>Saklanan bir gövde özetinin en büyük boyutu.</td>
+<td><code>src/cluster_erp/config/settings.py:700</code></td>
+</tr>
+<tr>
+<td><code>log_redact_path_tokens</code></td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+<td><code>CLUSTER_ERP_LOG_REDACT_PATH_TOKENS</code></td>
+<td><code>server</code></td>
+<td>Günlükte jeton benzeri yol parçalarını *** ile değiştirir.</td>
+<td><code>src/cluster_erp/config/settings.py:704</code></td>
+</tr>
+<tr>
+<td><code>log_username_cache_seconds</code></td>
+<td><code>int</code></td>
+<td><code>300</code></td>
+<td><code>CLUSTER_ERP_LOG_USERNAME_CACHE_SECONDS</code></td>
+<td><code>server</code></td>
+<td>Günlüğün çözülmüş bir kullanıcı adını yeniden kullandığı saniye.</td>
+<td><code>src/cluster_erp/config/settings.py:707</code></td>
+</tr>
+<tr>
+<td><code>change_history_redact_columns</code></td>
+<td><code>list[str]</code></td>
+<td><code>[]</code></td>
+<td><code>CLUSTER_ERP_CHANGE_HISTORY_REDACT_COLUMNS</code></td>
+<td><code>core</code>, <code>server</code></td>
+<td>Değişiklik geçmişinin değerlerini gizlediği ek sütunlar.</td>
+<td><code>src/cluster_erp/config/settings.py:711</code></td>
+</tr>
+<tr>
+<td><code>control_signup_retention_days</code></td>
+<td><code>int</code></td>
+<td><code>30</code></td>
+<td><code>CLUSTER_ERP_CONTROL_SIGNUP_RETENTION_DAYS</code></td>
+<td><code>server</code></td>
+<td>Tamamlanmamış bir kaydın kontrol düzleminde tutulduğu gün.</td>
+<td><code>src/cluster_erp/config/settings.py:718</code></td>
+</tr>
+<tr>
+<td><code>control_rate_limit_retention_hours</code></td>
+<td><code>int</code></td>
+<td><code>24</code></td>
+<td><code>CLUSTER_ERP_CONTROL_RATE_LIMIT_RETENTION_HOURS</code></td>
+<td><code>server</code></td>
+<td>Hız sınırı satırlarının tutulduğu saat.</td>
+<td><code>src/cluster_erp/config/settings.py:721</code></td>
+</tr>
+<tr>
+<td><code>control_actions_retention_years</code></td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+<td><code>CLUSTER_ERP_CONTROL_ACTIONS_RETENTION_YEARS</code></td>
+<td><code>server</code></td>
+<td>Operatör eylem kayıtlarının tutulduğu yıl.</td>
+<td><code>src/cluster_erp/config/settings.py:724</code></td>
+</tr>
+<tr>
+<td><code>signup_mail_spool_retention_days</code></td>
+<td><code>int</code></td>
+<td><code>7</code></td>
+<td><code>CLUSTER_ERP_SIGNUP_MAIL_SPOOL_RETENTION_DAYS</code></td>
+<td><code>server</code></td>
+<td>Biriktirilen doğrulama postalarının tutulduğu gün.</td>
+<td><code>src/cluster_erp/config/settings.py:727</code></td>
+</tr>
+<tr>
+<td><code>privacy_response_days</code></td>
+<td><code>int</code></td>
+<td><code>30</code></td>
+<td><code>CLUSTER_ERP_PRIVACY_RESPONSE_DAYS</code></td>
+<td><code>privacy</code></td>
+<td>Bir veri sahibi talebinin yanıtlanması gereken gün.</td>
+<td><code>src/cluster_erp/config/settings.py:733</code></td>
+</tr>
+<tr>
+<td><code>privacy_anonymised_marker</code></td>
+<td><code>str</code></td>
+<td><code>"[anonymised]"</code></td>
+<td><code>CLUSTER_ERP_PRIVACY_ANONYMISED_MARKER</code></td>
+<td><code>privacy</code></td>
+<td>Anonimleştirmede kimlik belirleyici alanların üzerine yazılan değer.</td>
+<td><code>src/cluster_erp/config/settings.py:737</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="türetilmiş-özellikler-ve-yardımcılar">Türetilmiş özellikler ve yardımcılar<a class="headerlink" href="#türetilmiş-özellikler-ve-yardımcılar">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Üye</th>
+<th>Döndürdüğü</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>database_url</code></td>
+<td>Varsayılan veritabanının async URL'si <code>postgresql+asyncpg://...</code></td>
+<td><code>src/cluster_erp/config/settings.py:838-843</code></td>
+</tr>
+<tr>
+<td><code>database_url_sync</code></td>
+<td>Düz <code>postgresql://</code> şemasıyla aynı URL</td>
+<td><code>src/cluster_erp/config/settings.py:845-850</code></td>
+</tr>
+<tr>
+<td><code>control_database_url</code></td>
+<td>Kontrol düzlemi veritabanının async URL'si</td>
+<td><code>src/cluster_erp/config/settings.py:852-857</code></td>
+</tr>
+<tr>
+<td><code>node_country_code</code></td>
+<td>Boşlukları alınmış ve büyük harfli <code>node_country</code></td>
+<td><code>src/cluster_erp/config/settings.py:860-863</code></td>
+</tr>
+<tr>
+<td><code>console_origin_list()</code></td>
+<td>Ayrıştırılmış <code>console_origins</code>; her köken <code>https://</code> ile başlamalıdır</td>
+<td><code>src/cluster_erp/config/settings.py:865-875</code></td>
+</tr>
+<tr>
+<td><code>country_node_map()</code></td>
+<td>Ayrıştırılmış <code>country_nodes</code>; iki harfli anahtarlar ve <code>https://</code> adresleri</td>
+<td><code>src/cluster_erp/config/settings.py:877-896</code></td>
+</tr>
+<tr>
+<td><code>region_codes()</code> ve <code>default_region</code></td>
+<td>Ayrıştırılmış <code>regions</code>; ilki varsayılandır</td>
+<td><code>src/cluster_erp/config/settings.py:899-905</code></td>
+</tr>
+<tr>
+<td><code>region_address(region)</code> ve <code>region_url(region, db_name, sync=False)</code></td>
+<td>Bir bölgenin veritabanının sunucusu ve URL'si</td>
+<td><code>src/cluster_erp/config/settings.py:915-944</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="kısıtlar-ve-doğrulama">Kısıtlar ve doğrulama<a class="headerlink" href="#kısıtlar-ve-doğrulama">¶</a></h2>
+<p><code>_validate_settings</code> doğrulayıcısı alanlar yüklendikten sonra çalışır (<code>src/cluster_erp/config/settings.py:739-836</code>). Yükleme şu durumlarda <code>ValueError</code> ile başarısız olur:</p>
+<ul>
+<li>Bir bölge kodu küçük harf, rakam veya tireden oluşan 2 ile 8 karakter değilse; <code>region_db_urls</code> bilinmeyen bir bölgeyi adlandırıyorsa; ya da varsayılan olmayan bir bölgenin sunucusu yoksa (<code>src/cluster_erp/config/settings.py:746-753</code>).</li>
+<li><code>node_country</code> ayarlı ve iki harfli bir kod değilse ya da <code>country_nodes</code> bu düğümün kendi ülkesini listelemiyorsa (<code>src/cluster_erp/config/settings.py:754-765</code>).</li>
+<li><code>multi_tenant</code> ve <code>debug</code> ikisi de açıksa (<code>src/cluster_erp/config/settings.py:766-770</code>).</li>
+<li><code>secret_key</code> hata ayıklama kipi dışında gelen varsayılanı koruyorsa, 32 karakterden kısaysa ya da hata ayıklama kipi dışında zayıfsa. Hata ayıklama kipinde varsayılan anahtar üretilmiş bir anahtarla değiştirilir, zayıf bir anahtar yalnızca uyarı yazar (<code>src/cluster_erp/config/settings.py:771-804</code>).</li>
+<li>Çok kiracılı kipte <code>storage_encryption_key</code>, <code>backup_encryption_key</code> veya <code>mail_encryption_key</code> boşsa (<code>src/cluster_erp/config/settings.py:805-821</code>).</li>
+<li><code>storage_encryption_key</code> veya <code>backup_encryption_key</code> ayarlı ama 32 baytlık onaltılık değer değilse (<code>src/cluster_erp/config/settings.py:822-827</code>).</li>
+<li><code>storage_backend</code> <code>s3</code> ve <code>s3_bucket</code> boşsa (<code>src/cluster_erp/config/settings.py:828-831</code>).</li>
+<li><code>smtp_host</code> ayarlı ve <code>smtp_from_email</code> boşsa (<code>src/cluster_erp/config/settings.py:832-835</code>).</li>
+</ul>
+<h2 id="tanıtılan-terimler">Tanıtılan terimler<a class="headerlink" href="#tanıtılan-terimler">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Terim</th>
+<th>Kod tanımlayıcısı</th>
+<th>Tanım</th>
+<th>Türkçe terim</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>settings</td>
+<td><code>Settings</code></td>
+<td>Yapılandırmayı <code>CLUSTER_ERP_</code> ortam değişkenlerinden ve <code>.env</code> dosyasından yükleyen Pydantic sınıfı.</td>
+<td>ayarlar</td>
+<td><code>src/cluster_erp/config/settings.py:64</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="i̇lgili-sayfalar">İlgili sayfalar<a class="headerlink" href="#i̇lgili-sayfalar">¶</a></h2>
+<ul>
+<li><a href="index.tr.html">Platform çekirdeği</a></li>
+<li><a href="../operations/configuration-reference.tr.html">Yapılandırma başvurusu</a></li>
+<li><a href="server-startup-and-app-factory.tr.html">Sunucu açılışı ve uygulama fabrikası</a></li>
+</ul>
+<hr>
+<p>7793ff4 numaralı commit ile 2026-11-09 tarihinde doğrulandı.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Doğrulanan commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../platform/server-startup-and-app-factory.tr.html"><span class="eyebrow">Önceki</span><span>Sunucu açılışı ve uygulama fabrikası</span></a><a class="next" href="../platform/shared-server-routes.tr.html"><span class="eyebrow">Sonraki</span><span>Ortak sunucu rotaları</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">Bu sayfada</p><ul class="outline">
+<li class="lvl2"><a href="#kapsam-ve-kaynak">Kapsam ve kaynak</a></li>
+<li class="lvl2"><a href="#veritabanı-bağlantısı">Veritabanı bağlantısı</a></li>
+<li class="lvl2"><a href="#çok-kiracılılık-bölgeler-ve-yerleşim">Çok kiracılılık, bölgeler ve yerleşim</a></li>
+<li class="lvl2"><a href="#sunucu-süreci">Sunucu süreci</a></li>
+<li class="lvl2"><a href="#kimlik-doğrulama-oturumlar-ve-lisanslama">Kimlik doğrulama, oturumlar ve lisanslama</a></li>
+<li class="lvl2"><a href="#kayıt-ve-herkese-açık-uçlar">Kayıt ve herkese açık uçlar</a></li>
+<li class="lvl2"><a href="#dosya-deposu-ve-yedekler">Dosya deposu ve yedekler</a></li>
+<li class="lvl2"><a href="#posta">Posta</a></li>
+<li class="lvl2"><a href="#i̇ş-varsayılanları">İş varsayılanları</a></li>
+<li class="lvl2"><a href="#analitik">Analitik</a></li>
+<li class="lvl2"><a href="#mrp-ve-ddmrp">MRP ve DDMRP</a></li>
+<li class="lvl2"><a href="#günlükler-saklama-ve-gizlilik">Günlükler, saklama ve gizlilik</a></li>
+<li class="lvl2"><a href="#türetilmiş-özellikler-ve-yardımcılar">Türetilmiş özellikler ve yardımcılar</a></li>
+<li class="lvl2"><a href="#kısıtlar-ve-doğrulama">Kısıtlar ve doğrulama</a></li>
+<li class="lvl2"><a href="#tanıtılan-terimler">Tanıtılan terimler</a></li>
+<li class="lvl2"><a href="#i̇lgili-sayfalar">İlgili sayfalar</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>docs/wiki altındaki Markdown kaynaklarından derlendi</span></footer>
+</body>
+</html>

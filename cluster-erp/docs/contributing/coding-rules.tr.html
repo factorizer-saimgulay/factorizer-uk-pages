@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kodlama kuralları · Cluster ERP Wiki</title>
+<meta name="description" content="Cluster ERP için projenin yazılı mühendislik kuralları; her biri onu uygulayan kod veya testle birlikte ya da kodla uygulanmadığı belirtilerek yeniden anlatılır.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="tr"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menü</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.tr.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Wiki&#x27;de ara" aria-label="Wiki&#x27;de ara" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="Eşleşen sayfa yok."></div>
+  </div>
+  <a class="lang-switch" href="../contributing/coding-rules.html" lang="en" hreflang="en">English</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Ana sayfa</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.tr.html">Cluster ERP wiki&#x27;si</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Genel bakış</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.tr.html">Genel bakış</a></li>
+<li class=""><a href="../overview/architecture-overview.tr.html">Mimariye genel bakış</a></li>
+<li class=""><a href="../overview/repository-map.tr.html">Depo haritası</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.tr.html">Cluster ERP nedir</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.tr.html">Platform çekirdeği</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.tr.html">Ekler, notlar ve depolama</a></li>
+<li class=""><a href="../platform/base-model-and-ids.tr.html">Temel model ve kimlikler</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.tr.html">Önbellek ve varlık damgası</a></li>
+<li class=""><a href="../platform/change-history.tr.html">Değişiklik geçmişi</a></li>
+<li class=""><a href="../platform/contracts-reference.tr.html">Sözleşmeler başvurusu</a></li>
+<li class=""><a href="../platform/database-and-sessions.tr.html">Veritabanı ve oturumlar</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.tr.html">Hatalar ve istisnalar</a></li>
+<li class=""><a href="../platform/event-bus.tr.html">Olay veri yolu</a></li>
+<li class=""><a href="../platform/metadata-model.tr.html">Metadata modeli</a></li>
+<li class=""><a href="../platform/module-lifecycle.tr.html">Modül yaşam döngüsü</a></li>
+<li class=""><a href="../platform/money-and-decimal.tr.html">Para ve Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.tr.html">PDF ve sistem postası</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.tr.html">Ürün kırılımı ve stok dönüşümü</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.tr.html">Referans veriler ve çekirdek i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.tr.html">İstek hattı ve ara katmanlar</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.tr.html">Arama, sayfalama ve toplu işlemler</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.tr.html">Sunucu açılışı ve uygulama fabrikası</a></li>
+<li class=""><a href="../platform/settings-reference.tr.html">Ayarlar başvurusu</a></li>
+<li class=""><a href="../platform/shared-server-routes.tr.html">Ortak sunucu rotaları</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.tr.html">Yumuşak silme ve kullanımdan kaldırma</a></li>
+<li class=""><a href="../platform/tenant-fields.tr.html">Kiracı alanları</a></li>
+<li class=""><a href="../platform/working-time.tr.html">Çalışma zamanı</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Kimlik ve erişim</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.tr.html">Kimlik, erişim, kiracılık, gizlilik ve lisans</a></li>
+<li class=""><a href="../identity-access/abac-policies.tr.html">ABAC politikaları</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.tr.html">Uygulama mağazası lisansları ve hakları</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.tr.html">Onaylar ve onay zincirleri</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.tr.html">Kimlik doğrulama ve oturumlar</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.tr.html">Alan ve satır erişimi</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.tr.html">Çok kiracılılık</a></li>
+<li class=""><a href="../identity-access/notification-rules.tr.html">Bildirim kuralları</a></li>
+<li class=""><a href="../identity-access/operator-console.tr.html">Operatör konsolu</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.tr.html">Gizlilik ve ilgili kişi başvuruları</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.tr.html">Roller ve izinler</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.tr.html">İkinci doğrulama adımı ve gizli değer saklama</a></li>
+<li class=""><a href="../identity-access/signup.tr.html">Kayıt</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web uygulaması</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.tr.html">Web uygulaması platformu</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.tr.html">Aksiyonlar ve aksiyon kartı</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.tr.html">Asistan ve sohbet ekranları</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.tr.html">Açılış, oturum ve API çağrıları</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.tr.html">Veri tazeleme ve değişiklik sinyalleri</a></li>
+<li class=""><a href="../web-app/device-classes.tr.html">Cihaz sınıfları</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.tr.html">Kapılı uygulama paketleri</a></li>
+<li class=""><a href="../web-app/generic-detail.tr.html">Genel ayrıntı</a></li>
+<li class=""><a href="../web-app/generic-form.tr.html">Genel form</a></li>
+<li class=""><a href="../web-app/generic-list.tr.html">Genel liste</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.tr.html">Genel ağaç ve ayar ekranları</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.tr.html">Ana ekran, dock ve başlatıcı</a></li>
+<li class=""><a href="../web-app/home-widgets.tr.html">Ana ekran bileşenleri</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.tr.html">Web uygulamasına dil ekleyin</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.tr.html">Metadata ile ekran ekleyin</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.tr.html">Uluslararasılaştırma ve diller</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.tr.html">Mail ve profil ekranları</a></li>
+<li class=""><a href="../web-app/metadata-rendering.tr.html">Metadata çizimi</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.tr.html">Modül uygulamaları ve uygulama kapsamı</a></li>
+<li class=""><a href="../web-app/overview.tr.html">Web uygulamasına genel bakış</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.tr.html">Kayıt belgeleri, görüntüleyici ve paylaşım</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.tr.html">Arama ve komut paleti</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.tr.html">Temalar, belirteçler ve erişilebilirlik</a></li>
+<li class=""><a href="../web-app/user-ui-state.tr.html">Kullanıcı arayüz durumu</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Masaüstü istemci</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.tr.html">Masaüstü istemci</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.tr.html">API istemcisi ve çalışanlar</a></li>
+<li class=""><a href="../desktop/chat-widget.tr.html">Sohbet bileşeni</a></li>
+<li class=""><a href="../desktop/generic-widgets.tr.html">Genel bileşenler</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.tr.html">Diller, temalar ve erişilebilirlik</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.tr.html">Metadata deposu ve yabancı anahtar önbelleği</a></li>
+<li class=""><a href="../desktop/module-screens.tr.html">Modül ekranları</a></li>
+<li class=""><a href="../desktop/overview.tr.html">Masaüstü istemciye genel bakış</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.tr.html">Masaüstü istemciyi çalıştırın</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.tr.html">Sinyal veri yolu ve watch_entity</a></li>
+<li class=""><a href="../desktop/tabs-panes-and-layout.tr.html">Sekmeler, bölmeler ve yerleşim</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">İş modülleri</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.tr.html">İş modülleri</a></li>
+<li class=""><a href="../modules/analytics/index.tr.html">Analytics modülü (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.tr.html">Analitik olgular</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.tr.html">Analitik tahmin ve sınıflandırma</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.tr.html">Analitik tarifleri ve sorgu kurucu</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.tr.html">Analitik raporları, özetleri ve çapraz</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.tr.html">Analitik istatistik ve çıkarım</a></li>
+<li class=""><a href="../modules/app_store.tr.html">App store modülü (app_store)</a></li>
+<li class=""><a href="../modules/auth.tr.html">Auth modülü (auth)</a></li>
+<li class=""><a href="../modules/bom.tr.html">BOM modülü (bom)</a></li>
+<li class=""><a href="../modules/calendars.tr.html">Calendars modülü (calendars)</a></li>
+<li class=""><a href="../modules/costing.tr.html">Costing modülü (costing)</a></li>
+<li class=""><a href="../modules/crm/index.tr.html">CRM modülü (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.tr.html">Müşteriler ve müşteri parçaları</a></li>
+<li class="sub"><a href="../modules/crm/inbox.tr.html">Teklif talebi gelen kutusu</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.tr.html">Müşteri teklif talepleri</a></li>
+<li class=""><a href="../modules/currencies.tr.html">Currencies modülü (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.tr.html">Design engineering modülü (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.tr.html">Documents modülü (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.tr.html">Fleet modülü (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.tr.html">Filo araçları</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.tr.html">Filo bakımı ve iş emirleri</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.tr.html">Filo sayaçları ve yakıt</a></li>
+<li class="sub"><a href="../modules/fleet/operations.tr.html">Filo operasyonları</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.tr.html">Filo TCO, telematik ve analitik</a></li>
+<li class=""><a href="../modules/intranet/index.tr.html">Intranet modülü (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.tr.html">İntranet erişimi, hedef kitlesi ve saklama</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.tr.html">İntranet içeriği ve akışı</a></li>
+<li class="sub"><a href="../modules/intranet/directory.tr.html">İntranet rehberi</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.tr.html">İntranet katılımı</a></li>
+<li class="sub"><a href="../modules/intranet/events.tr.html">İntranet etkinlikleri</a></li>
+<li class="sub"><a href="../modules/intranet/leave.tr.html">İntranet izinleri</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.tr.html">İntranet belgelerim</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.tr.html">İntranet bildirimleri ve tebligat</a></li>
+<li class="sub"><a href="../modules/intranet/requests.tr.html">İntranet talepleri</a></li>
+<li class=""><a href="../modules/inventory.tr.html">Inventory modülü (inventory)</a></li>
+<li class=""><a href="../modules/logs.tr.html">Logs modülü (logs)</a></li>
+<li class=""><a href="../modules/mail.tr.html">Mail modülü (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.tr.html">Nesting modülü (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.tr.html">Yerleşim motoru</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.tr.html">Yerleşim entegrasyonu ve KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.tr.html">Yerleşim işleri, parçalar ve artıklar</a></li>
+<li class=""><a href="../modules/owned_organisations.tr.html">Owned organisations modülü (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.tr.html">Parties modülü (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.tr.html">Adresler başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.tr.html">İletişim kanalları başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/parties.tr.html">Parties alt modülü başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.tr.html">Taraf birleştirme</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.tr.html">Kişi dilleri başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.tr.html">Parties ayarları ve başvuru verileri</a></li>
+<li class=""><a href="../modules/privacy.tr.html">Privacy modülü (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.tr.html">Procurement modülü (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.tr.html">Kritik malzemeler ve ikame</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.tr.html">Malzeme ihtiyaç planlaması</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.tr.html">Satın alma sözleşmeleri ve info kayıtları</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.tr.html">Satın alma siparişleri</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.tr.html">Satın alma talepleri</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.tr.html">Satın alma teklif talepleri</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.tr.html">Tedarikçiler</a></li>
+<li class=""><a href="../modules/production/index.tr.html">Production modülü (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.tr.html">Üretim emirleri ve versiyonları</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.tr.html">Rotalar ve operasyon tipleri</a></li>
+<li class="sub"><a href="../modules/production/scheduling.tr.html">Üretim çizelgeleme</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.tr.html">İş merkezleri ve kapasite</a></li>
+<li class="sub"><a href="../modules/production/work-orders.tr.html">İş emirleri</a></li>
+<li class=""><a href="../modules/products_and_services.tr.html">Products and services modülü (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.tr.html">Projects modülü (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.tr.html">Proje aksiyonları, aktiviteleri ve toplantıları</a></li>
+<li class="sub"><a href="../modules/projects/board.tr.html">Proje panosu</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.tr.html">Projeler, kalemler ve fikstürler</a></li>
+<li class="sub"><a href="../modules/projects/schedules.tr.html">Proje çizelgeleri</a></li>
+<li class=""><a href="../modules/purchasing_quotations.tr.html">Purchasing quotations modülü (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.tr.html">Quotations modülü (quotations)</a></li>
+<li class=""><a href="../modules/records.tr.html">Records modülü (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.tr.html">Sales orders modülü (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.tr.html">Satış siparişleri ve sipariş kalemleri</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.tr.html">Sevkiyatlar</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.tr.html">İhracat belgeleri</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.tr.html">Satış siparişi birimleri ve ayarları</a></li>
+<li class=""><a href="../modules/subscriptions.tr.html">Subscriptions modülü (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Asistan</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.tr.html">Niyet asistanı</a></li>
+<li class=""><a href="../ai/intent-assistant.tr.html">Niyet asistanı nasıl çalışır</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API referansı</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.tr.html">API başvurusu</a></li>
+<li class=""><a href="../api/analytics.tr.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.tr.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.tr.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.tr.html">Kimlik doğrulama ve başlıklar</a></li>
+<li class=""><a href="../api/bom.tr.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.tr.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.tr.html">API kuralları</a></li>
+<li class=""><a href="../api/costing.tr.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.tr.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.tr.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.tr.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.tr.html">Documents API (documents)</a></li>
+<li class=""><a href="../api/errors.tr.html">Hatalar</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.tr.html">İş hata kodları</a></li>
+<li class=""><a href="../api/fleet.tr.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.tr.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.tr.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.tr.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.tr.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.tr.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.tr.html">API&#x27;ye genel bakış</a></li>
+<li class=""><a href="../api/owned_organisations.tr.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.tr.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.tr.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.tr.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.tr.html">Procurement API: Kritik malzemeler uç noktaları (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.tr.html">Procurement API: Satın alma bilgi kayıtları uç noktaları (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.tr.html">Procurement API: MRP uç noktaları (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.tr.html">Procurement API: Satın alma sözleşmeleri uç noktaları (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.tr.html">Procurement API: Satın alma siparişleri uç noktaları (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.tr.html">Procurement API: Satın alma talepleri uç noktaları (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.tr.html">Procurement API: Satın alma teklif talepleri uç noktaları (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.tr.html">Procurement API: İkame grupları uç noktaları (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.tr.html">Procurement API: Tedarikçiler uç noktaları (suppliers)</a></li>
+<li class=""><a href="../api/production.tr.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.tr.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.tr.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.tr.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.tr.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.tr.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.tr.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.tr.html">Paylaşılan sunucu yolları API</a></li>
+<li class=""><a href="../api/subscriptions.tr.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.tr.html">Sistem uç noktaları API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">İşletme</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.tr.html">İşletim</a></li>
+<li class=""><a href="../operations/backups-and-restore.tr.html">Yedekler ve geri yükleme</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.tr.html">CI hattı ve sürüm</a></li>
+<li class=""><a href="../operations/configuration-reference.tr.html">Yapılandırma başvurusu</a></li>
+<li class=""><a href="../operations/container-measurement.tr.html">Konteyner ölçümü</a></li>
+<li class=""><a href="../operations/data-residency-check.tr.html">Veri ikameti denetimi</a></li>
+<li class=""><a href="../operations/database-migrations.tr.html">Veritabanı göçleri</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.tr.html">Demo ve staging verisi</a></li>
+<li class=""><a href="../operations/environments-and-promotion.tr.html">Ortamlar ve terfi</a></li>
+<li class=""><a href="../operations/install-a-linux-node.tr.html">Bir Linux düğümü kurun</a></li>
+<li class=""><a href="../operations/local-development-setup.tr.html">Yerel geliştirme kurulumu</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.tr.html">PostgreSQL rolleri ve ayarı</a></li>
+<li class=""><a href="../operations/reverse-proxy.tr.html">Ters vekil sunucu</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.tr.html">Zamanlanmış işler ve saklama</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.tr.html">Security.txt ve hazırlık</a></li>
+<li class=""><a href="../operations/service-and-process-manager.tr.html">Servis ve süreç yöneticisi</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.tr.html">Kiracı yaşam döngüsü</a></li>
+<li class=""><a href="../operations/windows-installer.tr.html">Windows kurucusu</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Katkı</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.tr.html">Katkı</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.tr.html">Mimari sınırlar</a></li>
+<li class="current"><a href="../contributing/coding-rules.tr.html">Kodlama kuralları</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.tr.html">Geliştirici araçları ve betikleri</a></li>
+<li class=""><a href="../contributing/e2e-battery.tr.html">E2e bataryası</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.tr.html">E2e süit kataloğu</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.tr.html">Lint ve tip denetimi</a></li>
+<li class=""><a href="../contributing/python-tests.tr.html">Python testleri</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.tr.html">Bir arka uç modülü yazın</a></li>
+<li class=""><a href="../contributing/writing-documentation.tr.html">Bir wiki sayfası yazın</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Karar kayıtları</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.tr.html">Karar kayıtları</a></li>
+<li class=""><a href="../decisions/data-driven-languages.tr.html">Veri güdümlü diller</a></li>
+<li class=""><a href="../decisions/decimal-money.tr.html">Decimal para</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.tr.html">Yalnız EventBus ile modüller arası iletişim</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.tr.html">Metadata güdümlü arayüz</a></li>
+<li class=""><a href="../decisions/no-hard-delete.tr.html">Fiziksel silme yok</a></li>
+<li class=""><a href="../decisions/party-unification.tr.html">Taraf birleşimi</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.tr.html">Ürün, model ve versiyon kırılımı</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.tr.html">Sunucu tarafı arayüz durumu</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.tr.html">ULID birincil anahtarlar</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Başvuru</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.tr.html">Başvuru</a></li>
+<li class=""><a href="../reference/glossary.tr.html">Sözlük</a></li>
+<li class=""><a href="../reference/related-material.tr.html">İlgili belgeler</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.tr.html">Ana sayfa</a> / Katkı</div>
+    <header class="page-head">
+      <p class="eyebrow">Referans</p>
+      <h1>Kodlama kuralları</h1>
+      <p class="lede">Cluster ERP için projenin yazılı mühendislik kuralları; her biri onu uygulayan kod veya testle birlikte ya da kodla uygulanmadığı belirtilerek yeniden anlatılır.</p>
+    </header>
+    <nav class="toc" aria-label="İçindekiler"><p class="eyebrow">İçindekiler</p><ul class="outline">
+<li class="lvl2"><a href="#kapsam-ve-kaynak">Kapsam ve kaynak</a></li>
+<li class="lvl2"><a href="#mimari-ve-iletişim">Mimari ve iletişim</a></li>
+<li class="lvl2"><a href="#veri-anahtarlar-ve-para">Veri, anahtarlar ve para</a></li>
+<li class="lvl2"><a href="#kayıtlar-ve-geçmiş">Kayıtlar ve geçmiş</a></li>
+<li class="lvl2"><a href="#web-arayüzü">Web arayüzü</a></li>
+<li class="lvl2"><a href="#diller-ve-metin">Diller ve metin</a></li>
+<li class="lvl2"><a href="#masaüstü-istemci">Masaüstü istemci</a></li>
+<li class="lvl2"><a href="#kod-kalitesi">Kod kalitesi</a></li>
+<li class="lvl2"><a href="#kısıtlar-ve-doğrulama">Kısıtlar ve doğrulama</a></li>
+<li class="lvl2"><a href="#tutarsızlıklar">Tutarsızlıklar</a></li>
+<li class="lvl2"><a href="#i̇lgili-sayfalar">İlgili sayfalar</a></li>
+</ul></nav>
+    <article class="prose">
+<p>Bu sayfa Cluster ERP için projenin yazılı mühendislik kurallarını sade sözcüklerle yeniden anlatır. Her kural, onu gerçekleştiren kodu ve onu uygulayan testi ya da kapıyı adlandırır. Depoda bir kuralı uygulayan hiçbir şey yoksa sayfa bunu söyler. En büyük kuralların gerekçeleri <a href="../decisions/index.tr.html">karar kayıtları</a> bölümündedir; bu sayfa başvuru tablosudur.</p>
+<h2 id="kapsam-ve-kaynak">Kapsam ve kaynak<a class="headerlink" href="#kapsam-ve-kaynak">¶</a></h2>
+<p>Kurallar projenin yazılı mühendislik kurallarından gelir. Uygulama sütunu; <code>tests/</code> içindeki testler, <code>.github/workflows/ci.yml</code> içindeki kapılar, <code>pyproject.toml</code> yapılandırması ve doğrulanan commit'teki atıf yapılan kaynak dosyalar okunarak çıkarıldı.</p>
+<ul>
+<li>Tanımlandığı yer: projenin yazılı mühendislik kuralları.</li>
+<li>Uygulandığı yer: <code>tests/test_architecture_boundaries.py</code>, <code>tests/test_metadata_driven_rules.py</code>, <code>tests/test_static_quality.py</code>, <code>tests/test_e2e_db_isolation.py</code>, <code>tests/</code> içindeki diğer dosyalar ve <code>.github/workflows/ci.yml</code>.</li>
+<li>Sayı: yedi grupta 34 kural; aşağıdaki tabloların satırları sayıldı.</li>
+</ul>
+<h2 id="mimari-ve-iletişim">Mimari ve iletişim<a class="headerlink" href="#mimari-ve-iletişim">¶</a></h2>
+<p>Bu kurallar modülleri birbirinden bağımsız tutar. Testlerin ayrıntısı <a href="architecture-boundaries.tr.html">mimari sınırlar</a> sayfasındadır.</p>
+<table>
+<thead>
+<tr>
+<th>Kural</th>
+<th>Kodun yaptığı</th>
+<th>Uygulayan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Modüller birbirini asla import etmez. İzin verilen tek import yetki kapısı <code>cluster_erp.modules.auth.guards</code>'tır.</td>
+<td>Sınır testi <code>src/cluster_erp/modules/</code> altındaki her Python dosyasını ayrıştırır ve başka bir modülün import'larını listeler.</td>
+<td><code>tests/test_architecture_boundaries.py:24</code>, <code>tests/test_architecture_boundaries.py:46-57</code></td>
+</tr>
+<tr>
+<td>Modüller arası iletişim, dondurulmuş dataclass sözleşmeleriyle <code>EventBus</code> üzerinden yapılır.</td>
+<td><code>EventBus.emit</code> bir olayı her aboneye dağıtır; <code>EventBus.query</code> bir sorgunun tek işleyicisini çağırır (<code>src/cluster_erp/core/event_bus.py:83-102</code>). Sözleşmeler <code>@dataclass(frozen=True, kw_only=True)</code> sınıflarıdır, örneğin <code>PartyRoleSet</code> (<code>src/cluster_erp/core/contracts.py:47-55</code>).</td>
+<td>Yukarıdaki import yasağı; aynı sorgu için ikinci işleyici <code>DuplicateQueryHandlerError</code> fırlatır (<code>src/cluster_erp/core/event_bus.py:78-79</code>)</td>
+</tr>
+<tr>
+<td>Her modül <code>ModuleBase</code>'den türer ve onun yaşam döngüsünü izler.</td>
+<td><code>ModuleBase</code>; <code>initialize</code>, <code>register_routes</code>, <code>register_events</code>, <code>shutdown</code> ve <code>get_metadata</code> bildirir (<code>src/cluster_erp/core/module_base.py:61-74</code>). Kayıt defteri ilk üçünü bu sırayla çağırır (<code>src/cluster_erp/core/module_registry.py:49-52</code>).</td>
+<td><code>tests/test_architecture_boundaries.py:60-72</code> her modülde bir <code>module.py</code> ve en az bir rota ister</td>
+</tr>
+<tr>
+<td>Uygulama katmanı birden çok modül servisini düzenleyebilir. Bir modül değildir.</td>
+<td><code>server/routes/party_composite.py</code> bir tarafı ve rol facet'lerini tek işlemde oluşturur (<code>src/cluster_erp/server/routes/party_composite.py:1-10</code>).</td>
+<td>Bir testle uygulanmaz. Sınır testi yalnız <code>src/cluster_erp/modules/</code> klasörünü tarar (<code>tests/test_architecture_boundaries.py:21</code>).</td>
+</tr>
+<tr>
+<td>Her alt modül iş mantığını <code>AsyncSession</code> alan bir serviste tutar. Rotalar servisi oluşturur ve Pydantic ile doğrular.</td>
+<td>Örnek: <code>UiStateService</code> (<code>src/cluster_erp/modules/auth/ui_state/services.py:12-44</code>) ve rotaları (<code>src/cluster_erp/modules/auth/ui_state/routes.py:21-39</code>).</td>
+<td>Koddan belirlenemedi. Katmanlamayı denetleyen test yok.</td>
+</tr>
+<tr>
+<td>Şema Alembic göçlerinden gelir. Bir modül tabloları kendisi oluşturmaz.</td>
+<td><code>initialize</code> yalnız modelleri import eder, örneğin <code>src/cluster_erp/modules/records/module.py:36-37</code>. Alembic her modülün <code>models.py</code> dosyasını import eder (<code>migrations/env.py:76-85</code>).</td>
+<td>CI tüm geçmişi uygular ve tek bir head ister (<code>.github/workflows/ci.yml:113-117</code>)</td>
+</tr>
+<tr>
+<td>Yayımlanmış bir göç asla düzenlenmez.</td>
+<td><code>pyproject.toml</code> göçleri "frozen historical records" olarak adlandırır ve onlar için yalnız satır uzunluğu kuralını gevşetir (<code>pyproject.toml:134-136</code>).</td>
+<td>Koddan belirlenemedi. Göçleri bir temel çizgiyle karşılaştıran test yok.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="veri-anahtarlar-ve-para">Veri, anahtarlar ve para<a class="headerlink" href="#veri-anahtarlar-ve-para">¶</a></h2>
+<p>Bu kurallar değerlerin ve anahtarların nasıl saklandığını belirler. Her mekanizma <a href="../platform/index.tr.html">platform bölümünde</a> belgelenir.</p>
+<table>
+<thead>
+<tr>
+<th>Kural</th>
+<th>Kodun yaptığı</th>
+<th>Uygulayan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Para <code>Decimal</code>'dir; veritabanında <code>Numeric</code>, JSON'da metindir ve <code>ROUND_HALF_EVEN</code> ile yuvarlanır.</td>
+<td>Okuma şemaları <code>Decimal</code> alanları metne dönüştürür (<code>src/cluster_erp/core/currencies.py:186-204</code>). <code>src/cluster_erp</code> altında <code>Mapped[float]</code> bildiren dosya yoktur (<code>grep -rn "Mapped\[float\]"</code> ile arandı). <code>ROUND_HALF_EVEN</code> 32 dosyada geçer, <code>ROUND_HALF_UP</code> hiçbirinde geçmez (<code>grep -rln</code> ile sayıldı).</td>
+<td><code>tests/test_analytics_contributions.py:120-133</code>, parasal bir analitik ölçü <code>Numeric</code> olmayan bir sütuna dayanırsa başarısız olur</td>
+</tr>
+<tr>
+<td>Para birimi, ülke ve adres yapısı sabit değil, veritabanındaki referans verilerdir.</td>
+<td><code>Country</code>, <code>AddressLevel</code> ve <code>AddressLevelValue</code> tablodur (<code>src/cluster_erp/modules/parties/settings/models.py:12</code>, <code>src/cluster_erp/modules/parties/settings/models.py:52</code>, <code>src/cluster_erp/modules/parties/settings/models.py:83</code>). <code>assert_known_currency</code> canlı referans verisi olmayan bir kodu reddeder (<code>src/cluster_erp/core/currencies.py:30-40</code>).</td>
+<td>Servislerdeki para birimi denetimi; genel kuralı kapsayan test yok</td>
+</tr>
+<tr>
+<td>Birincil anahtarlar <code>UUID</code> olarak saklanan ULID'lerdir.</td>
+<td><code>BaseModel.id</code> varsayılanı <code>new_ulid</code>'dir (<code>src/cluster_erp/core/models.py:20-24</code>, <code>src/cluster_erp/core/ulid.py:8-14</code>).</td>
+<td><code>BaseModel</code>'den kalıtım; aşağıdaki tutarsızlığa bakın</td>
+</tr>
+<tr>
+<td>Her kayıt denetim sütunları ve bir sürüm taşır.</td>
+<td><code>created_by</code>, <code>updated_by</code>, <code>deleted_at</code>, <code>deleted_by</code>, <code>deactivation_reason</code>, <code>deactivation_note</code> ve <code>version</code> (<code>src/cluster_erp/core/models.py:30-78</code>).</td>
+<td><code>BaseModel</code>'den kalıtım</td>
+</tr>
+<tr>
+<td>İş anahtarları <code>core_sequences</code>'tan gelir: bir önek ve bir sayaç; bazıları her yıl sıfırlanır.</td>
+<td><code>next_code</code> yıllık varlıklar için <code>PREFIX-YEAR-00001</code>, diğerleri için <code>PREFIX-000001</code> döndürür (<code>src/cluster_erp/core/sequence.py:154-171</code>, <code>src/cluster_erp/core/sequence.py:88-109</code>).</td>
+<td>İşlevin kendisi dışında koddan belirlenemedi</td>
+</tr>
+<tr>
+<td>Ürün, model ve versiyon kırılımı zorunludur. Yalnız ürüne geri düşme yoktur.</td>
+<td><code>ensure_product_breakdown</code>, bir ürünün modeli veya versiyonu yoksa HTTP 422 fırlatır (<code>src/cluster_erp/core/product_breakdown.py:112-118</code>). Stok satırlarının anahtarı üçünü de içerir (<code>src/cluster_erp/modules/inventory/stock/models.py:32-46</code>).</td>
+<td><code>src/cluster_erp/modules</code> altında 23 dosyada 49 servis çağrısı (<code>grep -rn "ensure_product_breakdown("</code> ile sayıldı)</td>
+</tr>
+<tr>
+<td>Müşteriler, tedarikçiler, kuruluşlar ve çalışanlar rol facet'leri olan tek bir taraftır.</td>
+<td><code>FacetMeta</code> taraf kartında bir rol bildirir (<code>src/cluster_erp/core/metadata.py:357-377</code>). <code>PartyRoleSet</code> rol bayrağını ayarlar (<code>src/cluster_erp/core/contracts.py:47-55</code>, <code>src/cluster_erp/modules/parties/module.py:130</code>).</td>
+<td><code>tests/test_metadata_driven_rules.py:51-60</code> rehberli oluşturma rollerini denetler</td>
+</tr>
+</tbody>
+</table>
+<h2 id="kayıtlar-ve-geçmiş">Kayıtlar ve geçmiş<a class="headerlink" href="#kayıtlar-ve-geçmiş">¶</a></h2>
+<p>Bu kurallar her kaydı ve her değişikliği saklar. Ayrıntılar <a href="../platform/soft-delete-and-deactivation.tr.html">yumuşak silme ve kullanımdan kaldırma</a> ve <a href="../platform/change-history.tr.html">değişiklik geçmişi</a> sayfalarındadır.</p>
+<table>
+<thead>
+<tr>
+<th>Kural</th>
+<th>Kodun yaptığı</th>
+<th>Uygulayan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kayıtlar asla fiziksel olarak silinmez. Silmek, nedenle kullanımdan kaldırmaktır.</td>
+<td><code>deleted_at</code> bir kaydı <code>deleted_by</code>, <code>deactivation_reason</code> ve <code>deactivation_note</code> ile kullanımdan kaldırılmış olarak işaretler (<code>src/cluster_erp/core/models.py:49-72</code>). <code>bulk_soft_delete</code> ORM üzerinden kullanımdan kaldırır (<code>src/cluster_erp/core/bulk_operations.py:20-55</code>).</td>
+<td><code>tests/test_live_row_uniqueness.py:1-15</code> benzersizliği yalnız canlı satırlarda tutar; böylece pasif bir değer yeniden kullanılabilir</td>
+</tr>
+<tr>
+<td>Tek genel fiziksel silme saklama temizliğidir.</td>
+<td><code>purge_expired</code>, saklama süresinden eski pasif satırları ve geçmişi kaldırır (<code>src/cluster_erp/modules/records/retention/purge.py:1-6</code>, <code>src/cluster_erp/modules/records/retention/purge.py:33-45</code>).</td>
+<td>Koddan belirlenemedi. Temizlik dışındaki <code>DELETE</code> ifadelerini tarayan test yok.</td>
+</tr>
+<tr>
+<td>Sahibiyle birlikte toptan yenilenen bağımlı alt satırlar ORM üzerinden silinir; böylece geçmiş her kaldırmayı kaydeder.</td>
+<td><code>orm_delete_where</code> (<code>src/cluster_erp/core/bulk_operations.py:58-75</code>), takvim şablon satırları ve istisna vardiyaları için kullanılır (<code>src/cluster_erp/modules/calendars/services.py:186-190</code>, <code>src/cluster_erp/modules/calendars/services.py:596-600</code>).</td>
+<td>Koddan belirlenemedi</td>
+</tr>
+<tr>
+<td>Değişiklik geçmişi otomatiktir. Kod geçmiş satırını asla elle yazmaz.</td>
+<td>Tek bir <code>before_flush</code> dinleyicisi oluşturma, güncelleme, kullanımdan kaldırma, etkinleştirme ve silmeyi aktör ve alan farkıyla kaydeder (<code>src/cluster_erp/core/change_history.py:318-351</code>).</td>
+<td><code>tests/test_change_history_redaction.py</code> ve <code>tests/test_change_history_tables_live.py</code> bir bölümünü kapsar</td>
+</tr>
+</tbody>
+</table>
+<h2 id="web-arayüzü">Web arayüzü<a class="headerlink" href="#web-arayüzü">¶</a></h2>
+<p>Web uygulaması ekranları metadata'dan çizer. Listeler, aksiyonlar ve ana ekran için davranış kuralları her modülde geçerlidir.</p>
+<table>
+<thead>
+<tr>
+<th>Kural</th>
+<th>Kodun yaptığı</th>
+<th>Uygulayan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Web uygulaması metadata ile yönetilir. Genel kodda tek bir modüle özgü kural yoktur.</td>
+<td>Genel motorlar <code>/api/v1/_meta</code> okur (<code>src/cluster_erp/server/app.py:1519-1546</code>).</td>
+<td><code>tests/test_architecture_boundaries.py:75-87</code> ve <code>tests/test_metadata_driven_rules.py:85-112</code></td>
+</tr>
+<tr>
+<td>Bir liste "yeni ekle"yi gezinme çubuğu düğmesi olarak değil, ilk satır olarak gösterir. Seçim basılı tutmadır. Aksiyonlar etiketli bir çipten açılır.</td>
+<td>Ekleme satırı listenin en üstünde kurulur (<code>webapp/js/gen-list.js:703-710</code>). <code>bindLongPress</code> 450 ms sonra devreye girer (<code>webapp/js/ui.js:71</code>). Aksiyon kartının başlığı etiketli çipi belirtir (<code>webapp/js/action-sheet.js:1-9</code>).</td>
+<td><code>web-client/_e2e_action_sheet.mjs</code> gibi tarayıcı süitleri; pytest testi yok</td>
+</tr>
+<tr>
+<td>Çoğaltılmış ana ekran düğmesi önde kalır ve asla gizlenmez.</td>
+<td><code>initTiles</code> düğmeyi bağlar (<code>webapp/js/tiles.js:116-124</code>).</td>
+<td>Koddan belirlenemedi; aşağıdaki tutarsızlığa bakın</td>
+</tr>
+<tr>
+<td>Bir modül tek bir uygulamadır; sayfaları o uygulamanın sekmeleridir.</td>
+<td>Her modülün kendi <code>module.py</code> dosyası ve API'si vardır (<code>tests/test_architecture_boundaries.py:60-72</code>).</td>
+<td><code>web-client/_e2e_procurement_app.mjs:1-3</code> ve diğer uygulama süitleri</td>
+</tr>
+<tr>
+<td>Kullanıcının yerleşimi sunucuda durur. Cihaz tercihleri tarayıcıda kalır.</td>
+<td><code>auth_user_ui_state</code> kullanıcı ve anahtar başına bir satır tutar (<code>src/cluster_erp/modules/auth/ui_state/models.py:13-35</code>). Tema ve saat dilimi <code>localStorage</code> kullanır (<code>webapp/js/prefs.js:5-6</code>). Masaüstü istemci yerleşimini <code>QSettings</code> içinde tutar (<code>src/cluster_erp/desktop/core/settings_store.py:10</code>).</td>
+<td><code>tests/test_e2e_db_isolation.py:177-200</code> yerleşime dokunan tarayıcı süitlerinin arayüz durumu bekçisini kullanmasını ister</td>
+</tr>
+<tr>
+<td>Cihaz deneyimleri ayrışır: sınıf yalnız genişlikten değil, hover ve işaretçiden gelir.</td>
+<td><code>PC_QUERY</code>, <code>PC_MIN_WIDTH</code> ve <code>PHONE_MAX_WIDTH</code> (<code>webapp/js/device-class.js:16-20</code>).</td>
+<td><code>web-client/_e2e_mobile_home.mjs</code> ve <code>web-client/_e2e_touch_sweep.mjs</code> tarayıcı süitleri</td>
+</tr>
+</tbody>
+</table>
+<h2 id="diller-ve-metin">Diller ve metin<a class="headerlink" href="#diller-ve-metin">¶</a></h2>
+<p>Görünen her metin bir dil dosyasından veya bir metadata etiketinden gelir. Dil listesini <a href="../decisions/data-driven-languages.tr.html">veri güdümlü diller</a> kaydı açıklar.</p>
+<table>
+<thead>
+<tr>
+<th>Kural</th>
+<th>Kodun yaptığı</th>
+<th>Uygulayan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kullanıcıya görünen sabit metin yoktur. Her yeni metin hem <code>en.json</code> hem <code>tr.json</code> içinde, doğru Türkçe karakterlerle bir anahtar alır.</td>
+<td>Web anahtarları <code>webapp/i18n/</code> içinde, masaüstü anahtarları <code>src/cluster_erp/desktop/i18n/</code> içindedir.</td>
+<td>Kısmen: <code>tests/test_party_form_contract.py:104-109</code> bir hata anahtarını dört dosyanın hepsinde denetler; <code>tests/test_metadata_driven_rules.py:77-82</code> ve <code>tests/test_metadata_driven_rules.py:172-173</code> İngilizce ve Türkçe etiket ister</td>
+</tr>
+<tr>
+<td>Yeni bir dil, yeni bir JSON dosyası ve bir bildirim satırıdır; kod değişikliği gerekmez.</td>
+<td><code>webapp/js/i18n.js</code> <code>languages.json</code> dosyasını okur (<code>webapp/js/i18n.js:1-7</code>, <code>webapp/js/i18n.js:32-44</code>). Masaüstü istemci klasöründeki her <code>*.json</code> dosyasını listeler (<code>src/cluster_erp/desktop/i18n/translator.py:92-99</code>).</td>
+<td><code>web-client/_e2e_lang.mjs:1-6</code> beklentilerini bildirimden türetir</td>
+</tr>
+<tr>
+<td>Geçerli dili olmayan bir metadata etiketi İngilizceye düşer.</td>
+<td><code>resolveLabel</code> (<code>webapp/js/meta.js:284-288</code>) ve <code>Translator.t</code> (<code>src/cluster_erp/desktop/i18n/translator.py:57-67</code>).</td>
+<td>Koddan belirlenemedi</td>
+</tr>
+</tbody>
+</table>
+<h2 id="masaüstü-istemci">Masaüstü istemci<a class="headerlink" href="#masaüstü-istemci">¶</a></h2>
+<p>Masaüstü istemci metadata'yı web uygulamasıyla paylaşır. Kendi kuralları API çağrıları ve sinyallerle ilgilidir.</p>
+<table>
+<thead>
+<tr>
+<th>Kural</th>
+<th>Kodun yaptığı</th>
+<th>Uygulayan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>API çağrıları bir <code>QThread</code> işçisinde eşzamanlı bir <code>httpx</code> istemcisi kullanır.</td>
+<td><code>ApiWorker</code> ve <code>ApiMixin</code> (<code>src/cluster_erp/desktop/core/api_worker.py:28</code>, <code>src/cluster_erp/desktop/core/api_worker.py:179</code>).</td>
+<td>Koddan belirlenemedi</td>
+</tr>
+<tr>
+<td>Değişiklik çağrıları varlıklarını adlandırır ve değişiklik sinyalini istemci yayar. Görünümler sinyali kendileri yaymaz.</td>
+<td><code>post</code>, <code>put</code> ve <code>delete</code> bir <code>EntityDescriptor</code> alır (<code>src/cluster_erp/desktop/core/api_client.py:223-268</code>). Görünümler <code>watch_entity</code> ile abone olur (<code>src/cluster_erp/desktop/core/signal_bus.py:55</code>).</td>
+<td>Koddan belirlenemedi</td>
+</tr>
+<tr>
+<td>Bilinen sağlam PySide6 sürümü gerektiği yerde sabitlenir.</td>
+<td><code>desktop</code> eki <code>PySide6&gt;=6.7.0</code> ister (<code>pyproject.toml:72-74</code>); CI <code>PySide6==6.8.3</code> kurar (<code>.github/workflows/ci.yml:50</code>).</td>
+<td>CI</td>
+</tr>
+</tbody>
+</table>
+<h2 id="kod-kalitesi">Kod kalitesi<a class="headerlink" href="#kod-kalitesi">¶</a></h2>
+<p>Bu kurallar CI'da ve test süitinde kapıdır. Yapılandırmayı <a href="lint-and-type-check.tr.html">lint ve tip denetimi</a> sayfası listeler.</p>
+<table>
+<thead>
+<tr>
+<th>Kural</th>
+<th>Kodun yaptığı</th>
+<th>Uygulayan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>mypy, Python 3.12 üzerinde, Pydantic eklentisiyle katı kipte çalışır.</td>
+<td><code>pyproject.toml:99-102</code></td>
+<td><code>.github/workflows/ci.yml:52</code>, <code>tests/test_static_quality.py:38-46</code></td>
+</tr>
+<tr>
+<td>Ruff <code>E</code>, <code>F</code>, <code>W</code>, <code>I</code>, <code>N</code>, <code>UP</code>, <code>B</code>, <code>A</code> ve <code>SIM</code> ailelerini 100 satır uzunluğuyla seçer. <code>TCH</code> bilerek dışarıda bırakılır.</td>
+<td><code>pyproject.toml:113-123</code></td>
+<td><code>.github/workflows/ci.yml:51</code>, <code>tests/test_static_quality.py:26-35</code></td>
+</tr>
+<tr>
+<td>Ürün kapalı kaynaklıdır. Üçüncü taraf lisansları uyumlu olmalıdır.</td>
+<td><code>pyproject.toml:10</code> lisansı bildirir; bağımlılık yorumları lisansları adlandırır, örneğin <code>pyproject.toml:55-57</code>.</td>
+<td>Koddan belirlenemedi. CI'da lisans denetimi çalışmaz.</td>
+</tr>
+<tr>
+<td>Katkıda bulunanlar bir şey söylemeden veya değiştirmeden önce doğrular ve test edilmemiş işi test edilmiş gibi sunmaz.</td>
+<td>Süreç kuralı.</td>
+<td>Koddan belirlenemedi</td>
+</tr>
+</tbody>
+</table>
+<h2 id="kısıtlar-ve-doğrulama">Kısıtlar ve doğrulama<a class="headerlink" href="#kısıtlar-ve-doğrulama">¶</a></h2>
+<p>Yukarıdaki testler iki yerde çalışır. <code>pytest</code> <code>tests/</code> klasörünü toplar (<code>pyproject.toml:151-153</code>) ve CI onu canlı testler kapalıyken çalıştırır (<code>.github/workflows/ci.yml:99</code>, <code>.github/workflows/ci.yml:124</code>). Tarayıcı kuralları yalnız CI'ın çalıştırmadığı e2e bataryasında çalışır (<code>.github/workflows/ci.yml:21-22</code>). Bkz. <a href="python-tests.tr.html">Python testleri</a> ve <a href="e2e-battery.tr.html">e2e bataryası</a>.</p>
+<h2 id="tutarsızlıklar">Tutarsızlıklar<a class="headerlink" href="#tutarsızlıklar">¶</a></h2>
+<aside class="adm adm-warning" role="note"><p class="adm-title">Uyarı</p><p>Tutarsızlık. Projenin yazılı mühendislik kuralları her birincil anahtarı <code>UUID</code> olarak saklanan bir ULID yapar. Kontrol düzlemi sınıfları <code>Operator</code> ve <code>OperatorAction</code> anahtarlarının varsayılanını <code>uuid.uuid4</code> yapar (<code>src/cluster_erp/core/tenancy.py:138</code>, <code>src/cluster_erp/core/tenancy.py:163</code>). <code>ControlRetentionRun</code>, <code>RetentionRun</code> ve bir analitik tablosu kendiliğinden artan bir <code>BigInteger</code> anahtar kullanır (<code>src/cluster_erp/core/tenancy.py:194</code>, <code>src/cluster_erp/modules/records/retention/models.py:44</code>, <code>src/cluster_erp/modules/analytics/models.py:123</code>). Bu sayfa kodu belgeler.</p>
+<p><strong>Uyarı:</strong> Tutarsızlık. Projenin yazılı mühendislik kuralları çoğaltılmış ana ekran düğmesinin asla gizlenmediğini söyler. Çoğaltılmış bir ana ekran kutucuğunun içinde düğme kaldırılır, çünkü çoğaltılmış bir ana ekran kendini bir daha çoğaltmaz (<code>webapp/js/tiles.js:119-122</code>). Bu sayfa kodu belgeler.</p>
+</aside>
+<h2 id="i̇lgili-sayfalar">İlgili sayfalar<a class="headerlink" href="#i̇lgili-sayfalar">¶</a></h2>
+<ul>
+<li><a href="index.tr.html">Katkı</a></li>
+<li><a href="architecture-boundaries.tr.html">Mimari sınırlar</a></li>
+<li><a href="../decisions/index.tr.html">Karar kayıtları</a></li>
+<li><a href="lint-and-type-check.tr.html">Lint ve tip denetimi</a></li>
+<li><a href="../reference/glossary.tr.html">Sözlük</a></li>
+</ul>
+<hr>
+<p>7793ff4 numaralı commit ile 2026-11-09 tarihinde doğrulandı.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Doğrulanan commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../contributing/architecture-boundaries.tr.html"><span class="eyebrow">Önceki</span><span>Mimari sınırlar</span></a><a class="next" href="../contributing/developer-tools-and-scripts.tr.html"><span class="eyebrow">Sonraki</span><span>Geliştirici araçları ve betikleri</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">Bu sayfada</p><ul class="outline">
+<li class="lvl2"><a href="#kapsam-ve-kaynak">Kapsam ve kaynak</a></li>
+<li class="lvl2"><a href="#mimari-ve-iletişim">Mimari ve iletişim</a></li>
+<li class="lvl2"><a href="#veri-anahtarlar-ve-para">Veri, anahtarlar ve para</a></li>
+<li class="lvl2"><a href="#kayıtlar-ve-geçmiş">Kayıtlar ve geçmiş</a></li>
+<li class="lvl2"><a href="#web-arayüzü">Web arayüzü</a></li>
+<li class="lvl2"><a href="#diller-ve-metin">Diller ve metin</a></li>
+<li class="lvl2"><a href="#masaüstü-istemci">Masaüstü istemci</a></li>
+<li class="lvl2"><a href="#kod-kalitesi">Kod kalitesi</a></li>
+<li class="lvl2"><a href="#kısıtlar-ve-doğrulama">Kısıtlar ve doğrulama</a></li>
+<li class="lvl2"><a href="#tutarsızlıklar">Tutarsızlıklar</a></li>
+<li class="lvl2"><a href="#i̇lgili-sayfalar">İlgili sayfalar</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>docs/wiki altındaki Markdown kaynaklarından derlendi</span></footer>
+</body>
+</html>

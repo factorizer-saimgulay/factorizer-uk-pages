@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Attachments, notes, and storage · Cluster ERP Wiki</title>
+<meta name="description" content="The shared core_attachments and core_notes tables, their services and routes, the upload policy, and the local, S3, and encrypted storage backends.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../platform/attachments-notes-and-storage.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.html">Overview</a></li>
+<li class=""><a href="../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.html">Platform core</a></li>
+<li class="current"><a href="../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../platform/change-history.html">Change history</a></li>
+<li class=""><a href="../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../platform/event-bus.html">Event bus</a></li>
+<li class=""><a href="../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class=""><a href="../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../web-app/generic-form.html">Generic form</a></li>
+<li class=""><a href="../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class=""><a href="../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.html">Desktop client</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class=""><a href="../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.html">Business modules</a></li>
+<li class=""><a href="../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class=""><a href="../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../modules/auth.html">Auth module (auth)</a></li>
+<li class=""><a href="../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class=""><a href="../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class=""><a href="../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../modules/intranet/requests.html">Intranet requests</a></li>
+<li class=""><a href="../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../modules/mail.html">Mail module (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class=""><a href="../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../modules/production/work-orders.html">Work orders</a></li>
+<li class=""><a href="../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.html">API reference</a></li>
+<li class=""><a href="../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.html">Documents API (documents)</a></li>
+<li class=""><a href="../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.html">API overview</a></li>
+<li class=""><a href="../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class=""><a href="../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.html">Operations</a></li>
+<li class=""><a href="../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class=""><a href="../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class=""><a href="../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.html">Reference</a></li>
+<li class=""><a href="../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.html">Home</a> / Platform</div>
+    <header class="page-head">
+      <p class="eyebrow">Reference</p>
+      <h1>Attachments, notes, and storage</h1>
+      <p class="lede">The shared core_attachments and core_notes tables, their services and routes, the upload policy, and the local, S3, and encrypted storage backends.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#scope-and-source">Scope and source</a></li>
+<li class="lvl2"><a href="#attachments">Attachments</a></li>
+<li class="lvl3"><a href="#attachment-routes">Attachment routes</a></li>
+<li class="lvl2"><a href="#upload-policy">Upload policy</a></li>
+<li class="lvl2"><a href="#notes">Notes</a></li>
+<li class="lvl3"><a href="#note-routes">Note routes</a></li>
+<li class="lvl2"><a href="#storage-backends">Storage backends</a></li>
+<li class="lvl2"><a href="#constraints-and-validation">Constraints and validation</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p>Any record in Cluster ERP can carry files and notes through two shared tables in the core. This page lists the tables, services, and routes in <code>core/attachments.py</code>, <code>core/notes.py</code>, <code>server/routes/attachments.py</code>, and <code>server/routes/notes.py</code>, the upload policy in <code>core/upload_policy.py</code>, and the storage backends in <code>core/storage.py</code>. The versioned document management of the <code>documents</code> module is a separate feature; see <a href="../modules/documents.html">documents</a>.</p>
+<h2 id="scope-and-source">Scope and source<a class="headerlink" href="#scope-and-source">¶</a></h2>
+<ul>
+<li>Defined in: <code>src/cluster_erp/core/attachments.py</code> (<code>Attachment</code>, <code>AttachmentService</code>), <code>src/cluster_erp/core/notes.py</code> (<code>Note</code>, <code>NoteService</code>), <code>src/cluster_erp/core/upload_policy.py</code> (<code>check_upload</code>), <code>src/cluster_erp/core/storage.py</code> (<code>StorageBackend</code>, <code>create_storage_backend</code>), <code>src/cluster_erp/server/routes/attachments.py</code>, <code>src/cluster_erp/server/routes/notes.py</code></li>
+<li>Count: 8 attachment routes and 6 note routes (counted from the <code>@router.</code> decorators); 3 storage backend classes; 40 default allowed extensions</li>
+</ul>
+<p>Both tables link to their parent record by <code>entity_type</code> and <code>entity_id</code>, with no foreign key, so any entity can use them.</p>
+<h2 id="attachments">Attachments<a class="headerlink" href="#attachments">¶</a></h2>
+<p><code>core_attachments</code> derives from <code>BaseModel</code> and adds these columns (<code>src/cluster_erp/core/attachments.py:51-63</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Meaning</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>code</code></td>
+<td><code>String(20)</code>, unique</td>
+<td>Business code from the <code>attachment</code> sequence</td>
+<td><code>src/cluster_erp/core/attachments.py:54</code>, <code>src/cluster_erp/core/attachments.py:123</code></td>
+</tr>
+<tr>
+<td><code>entity_type</code></td>
+<td><code>String(50)</code></td>
+<td>Type of the parent record</td>
+<td><code>src/cluster_erp/core/attachments.py:55</code></td>
+</tr>
+<tr>
+<td><code>entity_id</code></td>
+<td><code>UUID</code></td>
+<td>Id of the parent record</td>
+<td><code>src/cluster_erp/core/attachments.py:56</code></td>
+</tr>
+<tr>
+<td><code>filename</code></td>
+<td><code>String(255)</code></td>
+<td>Stored name: a random hex name plus the cleaned extension</td>
+<td><code>src/cluster_erp/core/attachments.py:57</code>, <code>src/cluster_erp/core/attachments.py:124-125</code></td>
+</tr>
+<tr>
+<td><code>original_filename</code></td>
+<td><code>String(255)</code></td>
+<td>The name the user uploaded</td>
+<td><code>src/cluster_erp/core/attachments.py:58</code></td>
+</tr>
+<tr>
+<td><code>content_type</code></td>
+<td><code>String(100)</code></td>
+<td>The content type declared by the upload</td>
+<td><code>src/cluster_erp/core/attachments.py:59</code></td>
+</tr>
+<tr>
+<td><code>file_size</code></td>
+<td><code>BigInteger</code></td>
+<td>Size in bytes</td>
+<td><code>src/cluster_erp/core/attachments.py:60</code></td>
+</tr>
+<tr>
+<td><code>storage_path</code></td>
+<td><code>String(500)</code></td>
+<td>Key in the storage backend</td>
+<td><code>src/cluster_erp/core/attachments.py:61</code></td>
+</tr>
+<tr>
+<td><code>sha256</code></td>
+<td><code>String(64)</code></td>
+<td>SHA-256 of the content</td>
+<td><code>src/cluster_erp/core/attachments.py:62</code></td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td><code>Text</code></td>
+<td>Optional description</td>
+<td><code>src/cluster_erp/core/attachments.py:63</code></td>
+</tr>
+</tbody>
+</table>
+<p>The storage key is <code>attachments/&lt;entity_type&gt;/&lt;entity_id&gt;/&lt;stored name&gt;</code>, prefixed with <code>tenants/&lt;tenant key&gt;/</code> on a multi-tenant node (<code>src/cluster_erp/core/attachments.py:38-48</code>). Downloads carry a <code>Content-Disposition</code> header built by <code>safe_content_disposition</code>, which strips quote, backslash, line-break, and semicolon characters from the ASCII name and percent-encodes the UTF-8 name (<code>src/cluster_erp/core/attachments.py:24-35</code>).</p>
+<p><code>AttachmentService</code> methods (<code>src/cluster_erp/core/attachments.py:88-206</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Behaviour</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>list_for_entity</code></td>
+<td>Live attachments of a record</td>
+<td><code>src/cluster_erp/core/attachments.py:93-104</code></td>
+</tr>
+<tr>
+<td><code>get</code></td>
+<td>One live attachment</td>
+<td><code>src/cluster_erp/core/attachments.py:106-112</code></td>
+</tr>
+<tr>
+<td><code>create</code></td>
+<td>Saves the bytes to storage, then inserts the row</td>
+<td><code>src/cluster_erp/core/attachments.py:114-143</code></td>
+</tr>
+<tr>
+<td><code>update</code></td>
+<td>Changes <code>description</code> or <code>original_filename</code></td>
+<td><code>src/cluster_erp/core/attachments.py:145-153</code></td>
+</tr>
+<tr>
+<td><code>delete</code></td>
+<td>Sets <code>deleted_at</code>; the stored file stays</td>
+<td><code>src/cluster_erp/core/attachments.py:155-161</code></td>
+</tr>
+<tr>
+<td><code>bulk_delete</code></td>
+<td>Deactivates many through <code>bulk_soft_delete</code></td>
+<td><code>src/cluster_erp/core/attachments.py:163-166</code></td>
+</tr>
+<tr>
+<td><code>get_file_data</code></td>
+<td>Loads the bytes from storage</td>
+<td><code>src/cluster_erp/core/attachments.py:168-169</code></td>
+</tr>
+<tr>
+<td><code>replace_file</code></td>
+<td>Deletes the old stored file, saves the new one, and updates the row</td>
+<td><code>src/cluster_erp/core/attachments.py:171-197</code></td>
+</tr>
+<tr>
+<td><code>count_for_entity</code></td>
+<td>Number of live attachments of a record</td>
+<td><code>src/cluster_erp/core/attachments.py:199-206</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="attachment-routes">Attachment routes<a class="headerlink" href="#attachment-routes">¶</a></h3>
+<p>The router prefix is <code>/api/v1/attachments</code> (<code>src/cluster_erp/server/routes/attachments.py:27</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Method and path</th>
+<th>Permission</th>
+<th>Purpose</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST /</code> (multipart: <code>entity_type</code>, <code>entity_id</code>, <code>description</code>, <code>file</code>)</td>
+<td><code>attachment.create</code></td>
+<td>Upload a file</td>
+<td><code>src/cluster_erp/server/routes/attachments.py:62-85</code></td>
+</tr>
+<tr>
+<td><code>GET /count/{entity_type}/{entity_id}</code></td>
+<td><code>attachment.read</code></td>
+<td>Count a record's files</td>
+<td><code>src/cluster_erp/server/routes/attachments.py:88-99</code></td>
+</tr>
+<tr>
+<td><code>GET /{attachment_id}/download</code></td>
+<td><code>attachment.download</code></td>
+<td>Download the bytes</td>
+<td><code>src/cluster_erp/server/routes/attachments.py:102-121</code></td>
+</tr>
+<tr>
+<td><code>GET /{entity_type}/{entity_id}</code></td>
+<td><code>attachment.read</code></td>
+<td>List a record's files</td>
+<td><code>src/cluster_erp/server/routes/attachments.py:124-135</code></td>
+</tr>
+<tr>
+<td><code>PUT /{attachment_id}/replace</code></td>
+<td><code>attachment.update</code></td>
+<td>Replace the file</td>
+<td><code>src/cluster_erp/server/routes/attachments.py:138-162</code></td>
+</tr>
+<tr>
+<td><code>PUT /{attachment_id}</code></td>
+<td><code>attachment.update</code></td>
+<td>Change description or name</td>
+<td><code>src/cluster_erp/server/routes/attachments.py:165-181</code></td>
+</tr>
+<tr>
+<td><code>POST /bulk-delete</code></td>
+<td><code>attachment.bulk_delete</code></td>
+<td>Deactivate many</td>
+<td><code>src/cluster_erp/server/routes/attachments.py:184-199</code></td>
+</tr>
+<tr>
+<td><code>DELETE /{attachment_id}</code></td>
+<td><code>attachment.delete</code></td>
+<td>Deactivate one</td>
+<td><code>src/cluster_erp/server/routes/attachments.py:202-215</code></td>
+</tr>
+</tbody>
+</table>
+<p>A download of a row whose file is missing answers <code>FILE_NOT_FOUND_ON_DISK</code> with HTTP 404 (<code>src/cluster_erp/server/routes/attachments.py:114-115</code>).</p>
+<h2 id="upload-policy">Upload policy<a class="headerlink" href="#upload-policy">¶</a></h2>
+<p><code>check_upload(filename, data, allowed)</code> returns the accepted extension or raises <code>AppError</code> with code <code>UPLOAD_TYPE_REFUSED</code> and HTTP 415 (<code>src/cluster_erp/core/upload_policy.py:65-84</code>). It applies two checks:</p>
+<ol>
+<li>The lower-case extension must be in the allow list: the setting <code>attachment_allowed_extensions</code>, or the 40 defaults in <code>DEFAULT_ALLOWED_EXTENSIONS</code> (<code>src/cluster_erp/core/upload_policy.py:21-27</code>, <code>src/cluster_erp/config/settings.py:368-374</code>).</li>
+<li>For 24 extensions with a known file signature, the content must start with that signature (<code>src/cluster_erp/core/upload_policy.py:30-55</code>, <code>src/cluster_erp/core/upload_policy.py:76-82</code>).</li>
+</ol>
+<p>The upload route calls <code>check_upload</code> with the configured list (<code>src/cluster_erp/server/routes/attachments.py:73-75</code>). The module docstring states that executables and scripts are not on the list (<code>src/cluster_erp/core/upload_policy.py:1-10</code>).</p>
+<h2 id="notes">Notes<a class="headerlink" href="#notes">¶</a></h2>
+<p><code>core_notes</code> derives from <code>BaseModel</code> and adds <code>code</code>, <code>entity_type</code>, <code>entity_id</code>, and <code>content</code> (<code>src/cluster_erp/core/notes.py:17-23</code>). <code>NoteCreate</code> takes <code>entity_type</code> (at most 50 characters), <code>entity_id</code>, and a non-empty <code>content</code>; <code>NoteUpdate</code> takes <code>content</code> (<code>src/cluster_erp/core/notes.py:26-33</code>). <code>NoteService</code> lists, gets, creates (with a code from the <code>note</code> sequence), updates, deactivates, bulk-deactivates, and counts notes (<code>src/cluster_erp/core/notes.py:48-114</code>).</p>
+<h3 id="note-routes">Note routes<a class="headerlink" href="#note-routes">¶</a></h3>
+<p>The router prefix is <code>/api/v1/notes</code> (<code>src/cluster_erp/server/routes/notes.py:14</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Method and path</th>
+<th>Permission</th>
+<th>Purpose</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET /{entity_type}/{entity_id}</code></td>
+<td><code>note.read</code></td>
+<td>List a record's notes</td>
+<td><code>src/cluster_erp/server/routes/notes.py:33-43</code></td>
+</tr>
+<tr>
+<td><code>GET /count/{entity_type}/{entity_id}</code></td>
+<td><code>note.read</code></td>
+<td>Count a record's notes</td>
+<td><code>src/cluster_erp/server/routes/notes.py:46-56</code></td>
+</tr>
+<tr>
+<td><code>POST /</code></td>
+<td><code>note.create</code></td>
+<td>Create a note</td>
+<td><code>src/cluster_erp/server/routes/notes.py:59-68</code></td>
+</tr>
+<tr>
+<td><code>PUT /{note_id}</code></td>
+<td><code>note.update</code></td>
+<td>Change a note</td>
+<td><code>src/cluster_erp/server/routes/notes.py:71-86</code></td>
+</tr>
+<tr>
+<td><code>POST /bulk-delete</code></td>
+<td><code>note.bulk_delete</code></td>
+<td>Deactivate many</td>
+<td><code>src/cluster_erp/server/routes/notes.py:89-101</code></td>
+</tr>
+<tr>
+<td><code>DELETE /{note_id}</code></td>
+<td><code>note.delete</code></td>
+<td>Deactivate one</td>
+<td><code>src/cluster_erp/server/routes/notes.py:104-116</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="storage-backends">Storage backends<a class="headerlink" href="#storage-backends">¶</a></h2>
+<p><code>StorageBackend</code> is a protocol with <code>save</code>, <code>load</code>, <code>delete</code>, and <code>exists</code> (<code>src/cluster_erp/core/storage.py:11-18</code>). The lifespan creates one backend per process and stores it on <code>app.state.storage</code> (<code>src/cluster_erp/server/app.py:65-75</code>, <code>src/cluster_erp/server/app.py:92</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Stores in</th>
+<th>Notes</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LocalStorageBackend</code></td>
+<td>A folder on disk (<code>storage_path</code>)</td>
+<td>Refuses keys containing <code>..</code> or resolving outside the root</td>
+<td><code>src/cluster_erp/core/storage.py:21-48</code></td>
+</tr>
+<tr>
+<td><code>S3StorageBackend</code></td>
+<td>An S3 or S3-compatible bucket</td>
+<td>Optional key prefix; blocking client calls run in a thread</td>
+<td><code>src/cluster_erp/core/storage.py:51-135</code></td>
+</tr>
+<tr>
+<td><code>EncryptedStorageBackend</code></td>
+<td>Wraps either backend</td>
+<td>Seals every saved object with AES-256-GCM, using the storage key as associated data; reads legacy plaintext objects unchanged</td>
+<td><code>src/cluster_erp/core/storage.py:138-174</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>create_storage_backend</code> picks S3 when <code>storage_backend</code> is <code>s3</code>, else local storage. It wraps the result in <code>EncryptedStorageBackend</code> when <code>storage_encryption_key</code> is set, and logs a warning when it is not (<code>src/cluster_erp/core/storage.py:177-209</code>). The settings validator requires the key in multi-tenant mode (<code>src/cluster_erp/config/settings.py:805-809</code>). Key handling is documented in <a href="../identity-access/second-factor-and-secret-storage.html">second factor and secret storage</a>.</p>
+<h2 id="constraints-and-validation">Constraints and validation<a class="headerlink" href="#constraints-and-validation">¶</a></h2>
+<ul>
+<li>An attachment row and its file are written in the same request; the file is saved before the row is flushed (<code>src/cluster_erp/core/attachments.py:126-142</code>).</li>
+<li>Deactivating an attachment does not remove the stored file (<code>src/cluster_erp/core/attachments.py:155-161</code>). Removal of files at retention time belongs to the <code>records</code> module; see <a href="../modules/records.html">records</a>.</li>
+</ul>
+<h2 id="terms-introduced">Terms introduced<a class="headerlink" href="#terms-introduced">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Code identifier</th>
+<th>Definition</th>
+<th>Turkish term</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>attachment</td>
+<td><code>Attachment</code></td>
+<td>A file linked to any record by entity type and id.</td>
+<td>ek</td>
+<td><code>src/cluster_erp/core/attachments.py:51</code></td>
+</tr>
+<tr>
+<td>note</td>
+<td><code>Note</code></td>
+<td>A text note linked to any record by entity type and id.</td>
+<td>not</td>
+<td><code>src/cluster_erp/core/notes.py:17</code></td>
+</tr>
+<tr>
+<td>storage backend</td>
+<td><code>StorageBackend</code></td>
+<td>The interface that saves and loads file bytes by key.</td>
+<td>depolama arka ucu</td>
+<td><code>src/cluster_erp/core/storage.py:11</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="index.html">Platform core</a></li>
+<li><a href="shared-server-routes.html">Shared server routes</a></li>
+<li><a href="settings-reference.html">Settings reference</a></li>
+<li><a href="../web-app/records-documents-viewer-and-share.html">Records, documents, viewer, and share</a></li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../platform/index.html"><span class="eyebrow">Previous</span><span>Platform core</span></a><a class="next" href="../platform/base-model-and-ids.html"><span class="eyebrow">Next</span><span>Base model and ids</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#scope-and-source">Scope and source</a></li>
+<li class="lvl2"><a href="#attachments">Attachments</a></li>
+<li class="lvl3"><a href="#attachment-routes">Attachment routes</a></li>
+<li class="lvl2"><a href="#upload-policy">Upload policy</a></li>
+<li class="lvl2"><a href="#notes">Notes</a></li>
+<li class="lvl3"><a href="#note-routes">Note routes</a></li>
+<li class="lvl2"><a href="#storage-backends">Storage backends</a></li>
+<li class="lvl2"><a href="#constraints-and-validation">Constraints and validation</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

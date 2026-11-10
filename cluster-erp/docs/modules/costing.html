@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Costing module (costing) · Cluster ERP Wiki</title>
+<meta name="description" content="Module page for costing, which rolls a BOM version up into material, labour, nesting, scrap, and overhead costs, a suggested price, and an approval flow.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../modules/costing.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.html">Overview</a></li>
+<li class=""><a href="../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.html">Platform core</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../platform/change-history.html">Change history</a></li>
+<li class=""><a href="../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../platform/event-bus.html">Event bus</a></li>
+<li class=""><a href="../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class=""><a href="../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../web-app/generic-form.html">Generic form</a></li>
+<li class=""><a href="../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class=""><a href="../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.html">Desktop client</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class=""><a href="../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.html">Business modules</a></li>
+<li class=""><a href="../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class=""><a href="../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../modules/auth.html">Auth module (auth)</a></li>
+<li class=""><a href="../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class="current"><a href="../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class=""><a href="../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../modules/intranet/requests.html">Intranet requests</a></li>
+<li class=""><a href="../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../modules/mail.html">Mail module (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class=""><a href="../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../modules/production/work-orders.html">Work orders</a></li>
+<li class=""><a href="../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.html">API reference</a></li>
+<li class=""><a href="../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.html">Documents API (documents)</a></li>
+<li class=""><a href="../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.html">API overview</a></li>
+<li class=""><a href="../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class=""><a href="../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.html">Operations</a></li>
+<li class=""><a href="../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class=""><a href="../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class=""><a href="../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.html">Reference</a></li>
+<li class=""><a href="../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.html">Home</a> / Business modules</div>
+    <header class="page-head">
+      <p class="eyebrow">Module</p>
+      <h1>Costing module (costing)</h1>
+      <p class="lede">Module page for costing, which rolls a BOM version up into material, labour, nesting, scrap, and overhead costs, a suggested price, and an approval flow.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#at-a-glance">At a glance</a></li>
+<li class="lvl2"><a href="#what-the-module-does">What the module does</a></li>
+<li class="lvl2"><a href="#sub-modules">Sub-modules</a></li>
+<li class="lvl2"><a href="#data-model">Data model</a></li>
+<li class="lvl2"><a href="#screens-and-metadata">Screens and metadata</a></li>
+<li class="lvl2"><a href="#status-and-actions">Status and actions</a></li>
+<li class="lvl2"><a href="#business-rules">Business rules</a></li>
+<li class="lvl3"><a href="#the-costing-roll-up">The costing roll-up</a></li>
+<li class="lvl3"><a href="#other-rules">Other rules</a></li>
+<li class="lvl2"><a href="#events-and-queries">Events and queries</a></li>
+<li class="lvl2"><a href="#permissions">Permissions</a></li>
+<li class="lvl2"><a href="#privacy-retention-and-history">Privacy, retention, and history</a></li>
+<li class="lvl2"><a href="#analytics-facts">Analytics facts</a></li>
+<li class="lvl2"><a href="#settings-and-reference-data">Settings and reference data</a></li>
+<li class="lvl2"><a href="#tests">Tests</a></li>
+<li class="lvl2"><a href="#discrepancies">Discrepancies</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p>The <code>costing</code> module in <code>src/cluster_erp/modules/costing/</code> costs a BOM version. A costing analysis reads the BOM explosion, applies labour and overhead rates, adds an optional nesting cost, and stores a cost breakdown, a total, a suggested price for a target margin, and a low-margin flag. An analysis then goes through submission, approval, or rejection, and an approved analysis linked to a quotation reports its price back. Labour rates and overhead rates are the module's own reference records.</p>
+<h2 id="at-a-glance">At a glance<a class="headerlink" href="#at-a-glance">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Value</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Package</td>
+<td><code>src/cluster_erp/modules/costing/</code></td>
+<td>folder</td>
+</tr>
+<tr>
+<td>Module class</td>
+<td><code>Module</code></td>
+<td><code>src/cluster_erp/modules/costing/module.py:15</code></td>
+</tr>
+<tr>
+<td><code>name</code> / <code>version</code></td>
+<td><code>costing</code> / <code>0.1.0</code></td>
+<td><code>src/cluster_erp/modules/costing/module.py:16-22</code></td>
+</tr>
+<tr>
+<td>API prefix</td>
+<td><code>/api/v1/costing</code> (<code>ModuleBase.api_prefix</code>)</td>
+<td><code>src/cluster_erp/core/module_base.py:37-38</code></td>
+</tr>
+<tr>
+<td>Sub-modules</td>
+<td>3: <code>costing_analyses</code>, <code>labor_rates</code>, <code>overhead_rates</code></td>
+<td>folder listing</td>
+</tr>
+<tr>
+<td>Tables</td>
+<td>5: <code>costing_costing_analyses</code>, <code>costing_cost_breakdown_items</code>, <code>costing_rate_snapshots</code>, <code>costing_labor_rates</code>, <code>costing_overhead_rates</code></td>
+<td><code>src/cluster_erp/modules/costing/costing_analyses/models.py:24</code>, <code>src/cluster_erp/modules/costing/costing_analyses/models.py:193</code>, <code>src/cluster_erp/modules/costing/costing_analyses/models.py:294</code>, <code>src/cluster_erp/modules/costing/labor_rates/models.py:15</code>, <code>src/cluster_erp/modules/costing/overhead_rates/models.py:13</code></td>
+</tr>
+<tr>
+<td>Entities in metadata</td>
+<td>3: <code>costing_analysis</code>, <code>labor_rate</code>, <code>overhead_rate</code></td>
+<td><code>src/cluster_erp/modules/costing/module.py:303-307</code></td>
+</tr>
+<tr>
+<td>Routes</td>
+<td>30 route decorators in the package</td>
+<td><code>grep</code> for <code>@router.</code></td>
+</tr>
+<tr>
+<td>Web app presence</td>
+<td>Catalogue app <code>costing</code></td>
+<td><code>src/cluster_erp/modules/app_store/catalog.json</code> (entry <code>costing</code>)</td>
+</tr>
+<tr>
+<td>Desktop presence</td>
+<td>Generic widgets only; no folder in <code>src/cluster_erp/desktop/modules/</code></td>
+<td>folder</td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-the-module-does">What the module does<a class="headerlink" href="#what-the-module-does">¶</a></h2>
+<ul>
+<li>Records a costing analysis for one BOM and BOM version, optionally linked to a quotation and a nesting job, with a target margin and a currency (<code>src/cluster_erp/modules/costing/costing_analyses/models.py:23-189</code>).</li>
+<li>Calculates the cost breakdown in tiers and stores one breakdown row per cost line (<code>src/cluster_erp/modules/costing/costing_analyses/services.py:256-708</code>).</li>
+<li>Stores a snapshot of every rate used, so a later rate change does not change the explanation of an old result (<code>src/cluster_erp/modules/costing/costing_analyses/services.py:627-662</code>).</li>
+<li>Lets a user set a final price, submit, approve, reject, return to draft, and supersede (<code>src/cluster_erp/modules/costing/costing_analyses/services.py:710-896</code>).</li>
+<li>Compares two to five analyses and clones an analysis as a what-if scenario with cost multipliers (<code>src/cluster_erp/modules/costing/costing_analyses/services.py:957-1159</code>).</li>
+<li>Keeps labour rates per work centre and operation type, and overhead rates with a basis and an apply order (<code>src/cluster_erp/modules/costing/labor_rates/models.py:14-68</code>, <code>src/cluster_erp/modules/costing/overhead_rates/models.py:12-54</code>).</li>
+</ul>
+<h2 id="sub-modules">Sub-modules<a class="headerlink" href="#sub-modules">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Sub-module</th>
+<th>Purpose</th>
+<th>Main entities</th>
+<th>Router</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>costing_analyses</code></td>
+<td>Analyses, breakdown, snapshots, lifecycle</td>
+<td><code>CostingAnalysis</code>, <code>CostBreakdownItem</code>, <code>CostingRateSnapshot</code></td>
+<td><code>/api/v1/costing/analyses</code></td>
+<td><code>src/cluster_erp/modules/costing/costing_analyses/routes.py:31</code></td>
+</tr>
+<tr>
+<td><code>labor_rates</code></td>
+<td>Labour rates</td>
+<td><code>LaborRate</code></td>
+<td><code>/api/v1/costing/labor-rates</code></td>
+<td><code>src/cluster_erp/modules/costing/labor_rates/routes.py:22</code></td>
+</tr>
+<tr>
+<td><code>overhead_rates</code></td>
+<td>Overhead rates</td>
+<td><code>OverheadRate</code></td>
+<td><code>/api/v1/costing/overhead-rates</code></td>
+<td><code>src/cluster_erp/modules/costing/overhead_rates/routes.py:22</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="data-model">Data model<a class="headerlink" href="#data-model">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Entity</th>
+<th>Table</th>
+<th>Key fields</th>
+<th>Notes</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CostingAnalysis</code></td>
+<td><code>costing_costing_analyses</code></td>
+<td><code>analysis_no</code>, <code>bom_id</code>, <code>bom_version_id</code>, <code>quote_id</code>, <code>nesting_job_id</code>, <code>status</code>, <code>is_scenario</code>, <code>parent_analysis_id</code>, <code>superseded_by_id</code>, seven cost totals, <code>target_margin_pct</code>, <code>actual_margin_pct</code>, <code>markup_pct</code>, <code>suggested_price</code>, <code>final_price</code>, <code>currency</code>, <code>low_margin_flag</code>, <code>calculation_version</code>, approval stamps</td>
+<td>money <code>Numeric(19, 4)</code>, percentages <code>Numeric(5, 2)</code></td>
+<td><code>src/cluster_erp/modules/costing/costing_analyses/models.py:23-189</code></td>
+</tr>
+<tr>
+<td><code>CostBreakdownItem</code></td>
+<td><code>costing_cost_breakdown_items</code></td>
+<td><code>analysis_id</code>, <code>cost_type</code>, <code>bom_item_id</code>, <code>part_id</code>, <code>work_center_id</code>, <code>operation_type</code>, <code>overhead_category</code>, <code>description</code>, <code>quantity</code>, <code>rate</code>, <code>scrap_factor</code>, <code>base_cost</code>, <code>scrap_cost</code>, <code>total_cost</code>, <code>currency</code>, <code>rate_snapshot_id</code></td>
+<td>one row per cost line</td>
+<td><code>src/cluster_erp/modules/costing/costing_analyses/models.py:192-290</code></td>
+</tr>
+<tr>
+<td><code>CostingRateSnapshot</code></td>
+<td><code>costing_rate_snapshots</code></td>
+<td><code>analysis_id</code>, <code>rate_type</code>, <code>source_rate_id</code>, <code>snapshot_data</code></td>
+<td>JSONB copy of a rate</td>
+<td><code>src/cluster_erp/modules/costing/costing_analyses/models.py:293-307</code></td>
+</tr>
+<tr>
+<td><code>LaborRate</code></td>
+<td><code>costing_labor_rates</code></td>
+<td><code>work_center_id</code>, <code>operation_type</code>, <code>rate_type</code>, <code>rate_per_hour</code>, <code>rate_per_unit</code>, <code>pricing_unit_id</code>, <code>currency</code>, <code>valid_from</code>, <code>valid_to</code>, <code>is_active</code></td>
+<td>one open rate per work centre and operation type</td>
+<td><code>src/cluster_erp/modules/costing/labor_rates/models.py:14-68</code></td>
+</tr>
+<tr>
+<td><code>OverheadRate</code></td>
+<td><code>costing_overhead_rates</code></td>
+<td><code>name</code>, <code>rate_type</code>, <code>basis</code>, <code>rate_value</code>, <code>currency</code>, <code>valid_from</code>, <code>valid_to</code>, <code>is_active</code>, <code>apply_order</code></td>
+<td>one open rate per <code>rate_type</code></td>
+<td><code>src/cluster_erp/modules/costing/overhead_rates/models.py:12-54</code></td>
+</tr>
+</tbody>
+</table>
+<p>"Open" means <code>valid_to</code> is empty and the row is live; partial unique indexes enforce it (<code>src/cluster_erp/modules/costing/labor_rates/models.py:16-24</code>, <code>src/cluster_erp/modules/costing/overhead_rates/models.py:14-21</code>). Money is <code>Numeric</code> and <code>Decimal</code>; see <a href="../platform/money-and-decimal.html">money and Decimal</a>.</p>
+<h2 id="screens-and-metadata">Screens and metadata<a class="headerlink" href="#screens-and-metadata">¶</a></h2>
+<p><code>get_metadata</code> declares a sidebar group <strong>Costing Management</strong> (Turkish <strong>Maliyet Yönetimi</strong>) with three lists: <strong>Costing Analyses</strong>, <strong>Labor Rates</strong>, and <strong>Overhead Rates</strong> (<code>src/cluster_erp/modules/costing/module.py:253-308</code>). The analysis list shows number, status, total cost, final price, actual margin, currency, low-margin flag, and calculation time, with a status filter (<code>src/cluster_erp/modules/costing/costing_analyses/metadata.py:125-200</code>).</p>
+<h2 id="status-and-actions">Status and actions<a class="headerlink" href="#status-and-actions">¶</a></h2>
+<p>Statuses and allowed transitions are fixed in the service (<code>src/cluster_erp/modules/costing/costing_analyses/services.py:71-80</code>): <code>draft</code> to <code>calculated</code>; <code>calculated</code> to <code>calculated</code> again or to <code>pending_approval</code>; <code>pending_approval</code> to <code>approved</code> or <code>rejected</code>; <code>approved</code> to <code>superseded</code>; <code>rejected</code> back to <code>draft</code>. <code>approved</code> and <code>superseded</code> analyses cannot be changed.</p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Label</th>
+<th>Condition</th>
+<th>Endpoint</th>
+<th>Permission</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>calculate</code></td>
+<td><strong>Calculate</strong></td>
+<td><code>status</code> is <code>draft</code></td>
+<td><code>POST /analyses/{id}/calculate</code></td>
+<td><code>costing_analysis.calculate</code></td>
+<td><code>src/cluster_erp/modules/costing/costing_analyses/metadata.py:41-51</code>, <code>src/cluster_erp/modules/costing/costing_analyses/routes.py:129-141</code></td>
+</tr>
+<tr>
+<td><code>recalculate</code></td>
+<td><strong>Recalculate</strong></td>
+<td><code>status</code> is <code>calculated</code></td>
+<td><code>POST /analyses/{id}/recalculate</code></td>
+<td><code>costing_analysis.calculate</code></td>
+<td><code>src/cluster_erp/modules/costing/costing_analyses/metadata.py:52-65</code>, <code>src/cluster_erp/modules/costing/costing_analyses/routes.py:144-156</code></td>
+</tr>
+<tr>
+<td><code>submit_approval</code></td>
+<td><strong>Submit for Approval</strong></td>
+<td><code>status</code> is <code>calculated</code></td>
+<td><code>POST /analyses/{id}/submit-for-approval</code></td>
+<td><code>costing_analysis.submit</code></td>
+<td><code>src/cluster_erp/modules/costing/costing_analyses/metadata.py:66-79</code>, <code>src/cluster_erp/modules/costing/costing_analyses/routes.py:175-187</code></td>
+</tr>
+<tr>
+<td><code>approve</code></td>
+<td><strong>Approve</strong></td>
+<td><code>status</code> is <code>pending_approval</code></td>
+<td><code>POST /analyses/{id}/approve</code></td>
+<td><code>costing_analysis.approve</code></td>
+<td><code>src/cluster_erp/modules/costing/costing_analyses/metadata.py:80-93</code>, <code>src/cluster_erp/modules/costing/costing_analyses/routes.py:190-203</code></td>
+</tr>
+<tr>
+<td><code>reject</code></td>
+<td><strong>Reject</strong></td>
+<td><code>status</code> is <code>pending_approval</code></td>
+<td><code>POST /analyses/{id}/reject</code></td>
+<td><code>costing_analysis.reject</code></td>
+<td><code>src/cluster_erp/modules/costing/costing_analyses/metadata.py:94-107</code>, <code>src/cluster_erp/modules/costing/costing_analyses/routes.py:206-219</code></td>
+</tr>
+<tr>
+<td><code>return_to_draft</code></td>
+<td><strong>Return to Draft</strong></td>
+<td><code>status</code> is <code>rejected</code></td>
+<td><code>POST /analyses/{id}/return-to-draft</code></td>
+<td><code>costing_analysis.update</code></td>
+<td><code>src/cluster_erp/modules/costing/costing_analyses/metadata.py:108-121</code>, <code>src/cluster_erp/modules/costing/costing_analyses/routes.py:222-234</code></td>
+</tr>
+</tbody>
+</table>
+<p>Two lifecycle routes have no <code>ActionMeta</code>: <code>POST /analyses/{id}/set-final-price</code> and <code>POST /analyses/{id}/supersede</code> (<code>src/cluster_erp/modules/costing/costing_analyses/routes.py:159-172</code>, <code>src/cluster_erp/modules/costing/costing_analyses/routes.py:237-250</code>).</p>
+<h2 id="business-rules">Business rules<a class="headerlink" href="#business-rules">¶</a></h2>
+<h3 id="the-costing-roll-up">The costing roll-up<a class="headerlink" href="#the-costing-roll-up">¶</a></h3>
+<p>The diagram shows the order of the tiers in <code>calculate</code>.</p>
+<figure class="diagram"><pre class="mermaid">flowchart TD
+ E[&quot;GetBomExplosion (bom)&quot;] --&gt; M[&quot;material tier: effective_qty x material_cost_per_unit, plus scrap&quot;]
+ E --&gt; L[&quot;labour tier: minutes x hourly rate, or qty x unit rate, plus scrap&quot;]
+ N[&quot;GetNestingJobById (nesting)&quot;] --&gt; NT[&quot;nesting tier: net_material_cost&quot;]
+ M --&gt; S[&quot;subtotal&quot;]
+ L --&gt; S
+ NT --&gt; S
+ S --&gt; O[&quot;overhead tier, in apply_order&quot;]
+ O --&gt; T[&quot;total_cost = material + labour + overhead + scrap + nesting&quot;]
+ T --&gt; P[&quot;suggested_price = total / (1 - target margin)&quot;]
+ P --&gt; F[&quot;low_margin_flag if margin below 15&quot;]</pre></figure>
+<p>In prose, step by step (<code>src/cluster_erp/modules/costing/costing_analyses/services.py:256-708</code>):</p>
+<ol>
+<li>The analysis must be allowed to move to <code>calculated</code> (<code>src/cluster_erp/modules/costing/costing_analyses/services.py:261-262</code>).</li>
+<li>The module asks the <code>bom</code> module for the explosion of the BOM version and fails if there is none or it has no items (<code>src/cluster_erp/modules/costing/costing_analyses/services.py:264-290</code>).</li>
+<li>It loads the active labour and overhead rates and refuses any rate whose currency differs from the analysis currency, with <code>COSTING_CURRENCY_MISMATCH</code> (<code>src/cluster_erp/modules/costing/costing_analyses/services.py:292-313</code>).</li>
+<li>It removes the previous breakdown rows and snapshots (<code>src/cluster_erp/modules/costing/costing_analyses/services.py:315-329</code>).</li>
+<li>Material tier: for each item with a material cost, base cost is effective quantity times material cost per unit, and scrap cost is base cost times the scrap factor (<code>src/cluster_erp/modules/costing/costing_analyses/services.py:346-404</code>).</li>
+<li>Labour tier: for each item with labour minutes, the rate is looked up by work centre and operation type, then work centre only, then operation type only, then the <code>general</code> operation type, then a rate with neither. A unit-price rate multiplies the quantity; an hourly rate multiplies the hours. Without a rate, the item's own labour cost per unit is used. Labour scrap is the labour cost times the scrap factor (<code>src/cluster_erp/modules/costing/costing_analyses/services.py:406-504</code>).</li>
+<li>Nesting tier: when the analysis names a nesting job, its <code>net_material_cost</code> becomes one breakdown line (<code>src/cluster_erp/modules/costing/costing_analyses/services.py:506-534</code>).</li>
+<li>Overhead tier: each active overhead rate, in <code>apply_order</code>, takes a percentage of labour, material, the total so far, or the running subtotal, or a fixed amount per unit of quantity; each result is added to the running subtotal (<code>src/cluster_erp/modules/costing/costing_analyses/services.py:536-587</code>).</li>
+<li>The total is material plus labour plus overhead plus scrap plus nesting (<code>src/cluster_erp/modules/costing/costing_analyses/services.py:589-600</code>).</li>
+<li>With a target margin, the suggested price is the total divided by one minus the margin, and the markup is derived from it (<code>src/cluster_erp/modules/costing/costing_analyses/services.py:602-619</code>).</li>
+<li>The low-margin flag is set when the margin is below 15 percent (<code>src/cluster_erp/modules/costing/costing_analyses/services.py:60</code>, <code>src/cluster_erp/modules/costing/costing_analyses/services.py:621-625</code>).</li>
+<li>Rate snapshots are stored, the status becomes <code>calculated</code>, <code>calculation_version</code> goes up by one, and <code>CostingCalculated</code> is emitted, plus <code>LowMarginAlert</code> when flagged (<code>src/cluster_erp/modules/costing/costing_analyses/services.py:627-706</code>).</li>
+</ol>
+<p>Each money result is rounded with <code>ROUND_HALF_EVEN</code> to four places (<code>src/cluster_erp/modules/costing/costing_analyses/services.py:359-372</code>, <code>src/cluster_erp/modules/costing/costing_analyses/services.py:606-609</code>).</p>
+<h3 id="other-rules">Other rules<a class="headerlink" href="#other-rules">¶</a></h3>
+<ul>
+<li>The final price can be set only on a <code>calculated</code> analysis; the actual margin becomes (price minus cost) divided by price, and the markup (price minus cost) divided by cost (<code>src/cluster_erp/modules/costing/costing_analyses/services.py:710-739</code>).</li>
+<li>Submission needs a final or a suggested price; without a final price, the suggested price is copied into it (<code>src/cluster_erp/modules/costing/costing_analyses/services.py:742-759</code>).</li>
+<li>Approval of an analysis with a quotation and a final price also emits <code>QuoteCostingCompleted</code> (<code>src/cluster_erp/modules/costing/costing_analyses/services.py:768-808</code>).</li>
+<li>Supersede needs a new analysis of the same BOM (<code>src/cluster_erp/modules/costing/costing_analyses/services.py:857-880</code>).</li>
+<li>Only a draft analysis can be deleted one by one (<code>src/cluster_erp/modules/costing/costing_analyses/services.py:233-244</code>).</li>
+<li>A scenario can be cloned from a <code>calculated</code> or <code>approved</code> analysis; material and labour lines are scaled by the given multipliers (<code>src/cluster_erp/modules/costing/costing_analyses/services.py:1031-1104</code>).</li>
+<li>A labour or overhead rate's <code>valid_to</code> may not be before its <code>valid_from</code> (<code>src/cluster_erp/modules/costing/labor_rates/services.py:159-163</code>, <code>src/cluster_erp/modules/costing/overhead_rates/services.py:107-111</code>). A labour rate type is <code>hourly</code> or <code>unit_price</code> (<code>src/cluster_erp/modules/costing/labor_rates/schemas.py:9</code>).</li>
+<li><code>analysis_no</code> comes from the yearly sequence <code>costing_analysis</code> (<code>src/cluster_erp/modules/costing/costing_analyses/services.py:183</code>).</li>
+</ul>
+<h2 id="events-and-queries">Events and queries<a class="headerlink" href="#events-and-queries">¶</a></h2>
+<p>The module consumes 7 contracts and produces 10, counted as on the <a href="parties/index.html">parties module</a> page.</p>
+<table>
+<thead>
+<tr>
+<th>Direction</th>
+<th>Contract class</th>
+<th>Handler or emitter</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>emits</td>
+<td><code>CostingCreated</code></td>
+<td><code>create</code></td>
+<td><code>src/cluster_erp/modules/costing/costing_analyses/services.py:200-209</code></td>
+</tr>
+<tr>
+<td>emits</td>
+<td><code>CostingCalculated</code>, <code>LowMarginAlert</code></td>
+<td><code>calculate</code></td>
+<td><code>src/cluster_erp/modules/costing/costing_analyses/services.py:660-692</code></td>
+</tr>
+<tr>
+<td>emits</td>
+<td><code>CostingApproved</code>, <code>QuoteCostingCompleted</code>, <code>CostingRejected</code>, <code>CostingSuperseded</code></td>
+<td>lifecycle methods</td>
+<td><code>src/cluster_erp/modules/costing/costing_analyses/services.py:786-808</code>, <code>src/cluster_erp/modules/costing/costing_analyses/services.py:828-836</code>, <code>src/cluster_erp/modules/costing/costing_analyses/services.py:886-894</code></td>
+</tr>
+<tr>
+<td>emits</td>
+<td><code>CostingRateUpdated</code></td>
+<td>rate updates</td>
+<td><code>src/cluster_erp/modules/costing/labor_rates/services.py:218</code>, <code>src/cluster_erp/modules/costing/overhead_rates/services.py:157</code></td>
+</tr>
+<tr>
+<td>queries</td>
+<td><code>GetBomExplosion</code>, <code>GetNestingJobById</code></td>
+<td><code>calculate</code></td>
+<td><code>src/cluster_erp/modules/costing/costing_analyses/services.py:262-267</code>, <code>src/cluster_erp/modules/costing/costing_analyses/services.py:508-513</code></td>
+</tr>
+<tr>
+<td>answers query</td>
+<td><code>GetCostingById</code>, <code>GetCostingByBomId</code></td>
+<td>handlers</td>
+<td><code>src/cluster_erp/modules/costing/module.py:66-70</code>, <code>src/cluster_erp/modules/costing/module.py:89-139</code></td>
+</tr>
+<tr>
+<td>answers query</td>
+<td><code>GetActiveLaborRate</code>, <code>GetActiveOverheadRates</code>, <code>GetCostBreakdown</code></td>
+<td>handlers</td>
+<td><code>src/cluster_erp/modules/costing/module.py:71-82</code>, <code>src/cluster_erp/modules/costing/module.py:141-223</code></td>
+</tr>
+<tr>
+<td>subscribes</td>
+<td><code>BomActivated</code>, <code>NestingCostCalculated</code></td>
+<td><code>_on_bom_activated</code>, <code>_on_nesting_cost_calculated</code></td>
+<td><code>src/cluster_erp/modules/costing/module.py:84-85</code>, <code>src/cluster_erp/modules/costing/module.py:227-231</code></td>
+</tr>
+</tbody>
+</table>
+<p>The two subscribed handlers have an empty body at this commit (<code>src/cluster_erp/modules/costing/module.py:227-231</code>). The full list is on the <a href="../platform/contracts-reference.html">contracts reference</a>.</p>
+<h2 id="permissions">Permissions<a class="headerlink" href="#permissions">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Permission key</th>
+<th>Used by</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>costing_analysis.read</code>, <code>.create</code>, <code>.update</code>, <code>.delete</code>, <code>.bulk_delete</code></td>
+<td>analysis routes, breakdown, compare, snapshots, scenario</td>
+<td><code>src/cluster_erp/modules/costing/costing_analyses/routes.py:43-295</code></td>
+</tr>
+<tr>
+<td><code>costing_analysis.calculate</code>, <code>.submit</code>, <code>.approve</code>, <code>.reject</code>, <code>.supersede</code></td>
+<td>lifecycle routes</td>
+<td><code>src/cluster_erp/modules/costing/costing_analyses/routes.py:135-244</code></td>
+</tr>
+<tr>
+<td><code>labor_rate.read</code>, <code>.create</code>, <code>.update</code>, <code>.delete</code>, <code>.bulk_delete</code></td>
+<td>labour rate routes</td>
+<td><code>src/cluster_erp/modules/costing/labor_rates/routes.py:34-113</code></td>
+</tr>
+<tr>
+<td><code>overhead_rate.read</code>, <code>.create</code>, <code>.update</code>, <code>.delete</code>, <code>.bulk_delete</code></td>
+<td>overhead rate routes</td>
+<td><code>src/cluster_erp/modules/costing/overhead_rates/routes.py:32-109</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="privacy-retention-and-history">Privacy, retention, and history<a class="headerlink" href="#privacy-retention-and-history">¶</a></h2>
+<p>The module stores user ids of submitters and approvers and no personal fields of its own; it has no <code>privacy_handlers.py</code>. Analyses and rates are soft-deleted. Changes are captured by <a href="../platform/change-history.html">change history</a>.</p>
+<h2 id="analytics-facts">Analytics facts<a class="headerlink" href="#analytics-facts">¶</a></h2>
+<p>This module has no <code>analytics_facts.py</code>.</p>
+<h2 id="settings-and-reference-data">Settings and reference data<a class="headerlink" href="#settings-and-reference-data">¶</a></h2>
+<p>Labour and overhead rates are the module's reference data; there is no settings section and no seed (<code>src/cluster_erp/modules/costing/module.py:28-30</code>). The low-margin threshold is the module constant <code>_LOW_MARGIN_THRESHOLD</code> (<code>src/cluster_erp/modules/costing/costing_analyses/services.py:60</code>).</p>
+<h2 id="tests">Tests<a class="headerlink" href="#tests">¶</a></h2>
+<p>Found by a <code>grep</code> for <code>modules.costing</code> in <code>tests/</code> and by file name in <code>web-client/</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Kind</th>
+<th>File</th>
+<th>Covers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_costing_app.mjs</code></td>
+<td>the costing app's three metadata lists and its store card</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_quote_line_bom.mjs</code>, <code>web-client/_e2e_order_shipment_chain.mjs</code></td>
+<td>chains that call costing routes</td>
+</tr>
+</tbody>
+</table>
+<p>No pytest file imports the module.</p>
+<h2 id="discrepancies">Discrepancies<a class="headerlink" href="#discrepancies">¶</a></h2>
+<aside class="adm adm-warning" role="note"><p class="adm-title">Warning</p><p>Discrepancy. The project's written engineering rules forbid hard deletes. A recalculation physically deletes the analysis's previous <code>CostBreakdownItem</code> and <code>CostingRateSnapshot</code> rows through <code>orm_delete_where</code>, which records each removal in change history (<code>src/cluster_erp/modules/costing/costing_analyses/services.py:315-329</code>, <code>src/cluster_erp/core/bulk_operations.py:58-75</code>). This page documents the code.</p>
+<p><strong>Warning:</strong> Discrepancy. The project's written engineering rules require currency to come from reference data and not from code. The analysis, labour-rate, and breakdown currency columns and the create schemas default to <code>TRY</code> (<code>src/cluster_erp/modules/costing/costing_analyses/models.py:135-140</code>, <code>src/cluster_erp/modules/costing/costing_analyses/models.py:279-284</code>, <code>src/cluster_erp/modules/costing/labor_rates/models.py:54-59</code>, <code>src/cluster_erp/modules/costing/costing_analyses/schemas.py:32</code>, <code>src/cluster_erp/modules/costing/labor_rates/schemas.py:19</code>). This page documents the code.</p>
+</aside>
+<h2 id="terms-introduced">Terms introduced<a class="headerlink" href="#terms-introduced">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Code identifier</th>
+<th>Definition</th>
+<th>Turkish term</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>costing analysis</td>
+<td><code>CostingAnalysis</code></td>
+<td>A costed BOM version with totals, price, margin, and a lifecycle.</td>
+<td>Maliyet analizi</td>
+<td><code>src/cluster_erp/modules/costing/costing_analyses/models.py:23</code></td>
+</tr>
+<tr>
+<td>cost breakdown item</td>
+<td><code>CostBreakdownItem</code></td>
+<td>One material, labour, nesting, or overhead line of an analysis.</td>
+<td>Maliyet kırılım kalemi</td>
+<td><code>src/cluster_erp/modules/costing/costing_analyses/models.py:192</code></td>
+</tr>
+<tr>
+<td>rate snapshot</td>
+<td><code>CostingRateSnapshot</code></td>
+<td>A frozen copy of a rate used by a calculation.</td>
+<td>Oran anlık görüntüsü</td>
+<td><code>src/cluster_erp/modules/costing/costing_analyses/models.py:293</code></td>
+</tr>
+<tr>
+<td>labour rate</td>
+<td><code>LaborRate</code></td>
+<td>An hourly or unit price for a work centre and operation type.</td>
+<td>İşçilik oranı</td>
+<td><code>src/cluster_erp/modules/costing/labor_rates/models.py:14</code></td>
+</tr>
+<tr>
+<td>overhead rate</td>
+<td><code>OverheadRate</code></td>
+<td>A percentage or per-unit overhead with a basis and an apply order.</td>
+<td>Genel gider oranı</td>
+<td><code>src/cluster_erp/modules/costing/overhead_rates/models.py:12</code></td>
+</tr>
+<tr>
+<td>scenario</td>
+<td><code>is_scenario</code></td>
+<td>A cloned analysis with cost multipliers for what-if comparison.</td>
+<td>Senaryo</td>
+<td><code>src/cluster_erp/modules/costing/costing_analyses/models.py:61</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="index.html">Modules index</a></li>
+<li><a href="bom.html">BOM module</a></li>
+<li><a href="nesting/index.html">Nesting module</a></li>
+<li><a href="quotations.html">Quotations module</a></li>
+<li><a href="../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li><a href="../api/costing.html">API reference for this module</a></li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../modules/calendars.html"><span class="eyebrow">Previous</span><span>Calendars module (calendars)</span></a><a class="next" href="../modules/crm/index.html"><span class="eyebrow">Next</span><span>CRM module (crm)</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#at-a-glance">At a glance</a></li>
+<li class="lvl2"><a href="#what-the-module-does">What the module does</a></li>
+<li class="lvl2"><a href="#sub-modules">Sub-modules</a></li>
+<li class="lvl2"><a href="#data-model">Data model</a></li>
+<li class="lvl2"><a href="#screens-and-metadata">Screens and metadata</a></li>
+<li class="lvl2"><a href="#status-and-actions">Status and actions</a></li>
+<li class="lvl2"><a href="#business-rules">Business rules</a></li>
+<li class="lvl3"><a href="#the-costing-roll-up">The costing roll-up</a></li>
+<li class="lvl3"><a href="#other-rules">Other rules</a></li>
+<li class="lvl2"><a href="#events-and-queries">Events and queries</a></li>
+<li class="lvl2"><a href="#permissions">Permissions</a></li>
+<li class="lvl2"><a href="#privacy-retention-and-history">Privacy, retention, and history</a></li>
+<li class="lvl2"><a href="#analytics-facts">Analytics facts</a></li>
+<li class="lvl2"><a href="#settings-and-reference-data">Settings and reference data</a></li>
+<li class="lvl2"><a href="#tests">Tests</a></li>
+<li class="lvl2"><a href="#discrepancies">Discrepancies</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

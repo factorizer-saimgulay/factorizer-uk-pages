@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BOM modülü (bom) · Cluster ERP Wiki</title>
+<meta name="description" content="Ürün kırılımı başına ürün ağaçlarını, versiyonlarını, kalemlerini, şablonlarını, patlatmayı ve rotaları besleyen okumaları içeren bom modülü sayfası.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="tr"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menü</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.tr.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Wiki&#x27;de ara" aria-label="Wiki&#x27;de ara" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="Eşleşen sayfa yok."></div>
+  </div>
+  <a class="lang-switch" href="../modules/bom.html" lang="en" hreflang="en">English</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Ana sayfa</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.tr.html">Cluster ERP wiki&#x27;si</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Genel bakış</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.tr.html">Genel bakış</a></li>
+<li class=""><a href="../overview/architecture-overview.tr.html">Mimariye genel bakış</a></li>
+<li class=""><a href="../overview/repository-map.tr.html">Depo haritası</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.tr.html">Cluster ERP nedir</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.tr.html">Platform çekirdeği</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.tr.html">Ekler, notlar ve depolama</a></li>
+<li class=""><a href="../platform/base-model-and-ids.tr.html">Temel model ve kimlikler</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.tr.html">Önbellek ve varlık damgası</a></li>
+<li class=""><a href="../platform/change-history.tr.html">Değişiklik geçmişi</a></li>
+<li class=""><a href="../platform/contracts-reference.tr.html">Sözleşmeler başvurusu</a></li>
+<li class=""><a href="../platform/database-and-sessions.tr.html">Veritabanı ve oturumlar</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.tr.html">Hatalar ve istisnalar</a></li>
+<li class=""><a href="../platform/event-bus.tr.html">Olay veri yolu</a></li>
+<li class=""><a href="../platform/metadata-model.tr.html">Metadata modeli</a></li>
+<li class=""><a href="../platform/module-lifecycle.tr.html">Modül yaşam döngüsü</a></li>
+<li class=""><a href="../platform/money-and-decimal.tr.html">Para ve Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.tr.html">PDF ve sistem postası</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.tr.html">Ürün kırılımı ve stok dönüşümü</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.tr.html">Referans veriler ve çekirdek i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.tr.html">İstek hattı ve ara katmanlar</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.tr.html">Arama, sayfalama ve toplu işlemler</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.tr.html">Sunucu açılışı ve uygulama fabrikası</a></li>
+<li class=""><a href="../platform/settings-reference.tr.html">Ayarlar başvurusu</a></li>
+<li class=""><a href="../platform/shared-server-routes.tr.html">Ortak sunucu rotaları</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.tr.html">Yumuşak silme ve kullanımdan kaldırma</a></li>
+<li class=""><a href="../platform/tenant-fields.tr.html">Kiracı alanları</a></li>
+<li class=""><a href="../platform/working-time.tr.html">Çalışma zamanı</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Kimlik ve erişim</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.tr.html">Kimlik, erişim, kiracılık, gizlilik ve lisans</a></li>
+<li class=""><a href="../identity-access/abac-policies.tr.html">ABAC politikaları</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.tr.html">Uygulama mağazası lisansları ve hakları</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.tr.html">Onaylar ve onay zincirleri</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.tr.html">Kimlik doğrulama ve oturumlar</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.tr.html">Alan ve satır erişimi</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.tr.html">Çok kiracılılık</a></li>
+<li class=""><a href="../identity-access/notification-rules.tr.html">Bildirim kuralları</a></li>
+<li class=""><a href="../identity-access/operator-console.tr.html">Operatör konsolu</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.tr.html">Gizlilik ve ilgili kişi başvuruları</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.tr.html">Roller ve izinler</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.tr.html">İkinci doğrulama adımı ve gizli değer saklama</a></li>
+<li class=""><a href="../identity-access/signup.tr.html">Kayıt</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web uygulaması</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.tr.html">Web uygulaması platformu</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.tr.html">Aksiyonlar ve aksiyon kartı</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.tr.html">Asistan ve sohbet ekranları</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.tr.html">Açılış, oturum ve API çağrıları</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.tr.html">Veri tazeleme ve değişiklik sinyalleri</a></li>
+<li class=""><a href="../web-app/device-classes.tr.html">Cihaz sınıfları</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.tr.html">Kapılı uygulama paketleri</a></li>
+<li class=""><a href="../web-app/generic-detail.tr.html">Genel ayrıntı</a></li>
+<li class=""><a href="../web-app/generic-form.tr.html">Genel form</a></li>
+<li class=""><a href="../web-app/generic-list.tr.html">Genel liste</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.tr.html">Genel ağaç ve ayar ekranları</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.tr.html">Ana ekran, dock ve başlatıcı</a></li>
+<li class=""><a href="../web-app/home-widgets.tr.html">Ana ekran bileşenleri</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.tr.html">Web uygulamasına dil ekleyin</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.tr.html">Metadata ile ekran ekleyin</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.tr.html">Uluslararasılaştırma ve diller</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.tr.html">Mail ve profil ekranları</a></li>
+<li class=""><a href="../web-app/metadata-rendering.tr.html">Metadata çizimi</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.tr.html">Modül uygulamaları ve uygulama kapsamı</a></li>
+<li class=""><a href="../web-app/overview.tr.html">Web uygulamasına genel bakış</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.tr.html">Kayıt belgeleri, görüntüleyici ve paylaşım</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.tr.html">Arama ve komut paleti</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.tr.html">Temalar, belirteçler ve erişilebilirlik</a></li>
+<li class=""><a href="../web-app/user-ui-state.tr.html">Kullanıcı arayüz durumu</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Masaüstü istemci</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.tr.html">Masaüstü istemci</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.tr.html">API istemcisi ve çalışanlar</a></li>
+<li class=""><a href="../desktop/chat-widget.tr.html">Sohbet bileşeni</a></li>
+<li class=""><a href="../desktop/generic-widgets.tr.html">Genel bileşenler</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.tr.html">Diller, temalar ve erişilebilirlik</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.tr.html">Metadata deposu ve yabancı anahtar önbelleği</a></li>
+<li class=""><a href="../desktop/module-screens.tr.html">Modül ekranları</a></li>
+<li class=""><a href="../desktop/overview.tr.html">Masaüstü istemciye genel bakış</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.tr.html">Masaüstü istemciyi çalıştırın</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.tr.html">Sinyal veri yolu ve watch_entity</a></li>
+<li class=""><a href="../desktop/tabs-panes-and-layout.tr.html">Sekmeler, bölmeler ve yerleşim</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">İş modülleri</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.tr.html">İş modülleri</a></li>
+<li class=""><a href="../modules/analytics/index.tr.html">Analytics modülü (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.tr.html">Analitik olgular</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.tr.html">Analitik tahmin ve sınıflandırma</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.tr.html">Analitik tarifleri ve sorgu kurucu</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.tr.html">Analitik raporları, özetleri ve çapraz</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.tr.html">Analitik istatistik ve çıkarım</a></li>
+<li class=""><a href="../modules/app_store.tr.html">App store modülü (app_store)</a></li>
+<li class=""><a href="../modules/auth.tr.html">Auth modülü (auth)</a></li>
+<li class="current"><a href="../modules/bom.tr.html">BOM modülü (bom)</a></li>
+<li class=""><a href="../modules/calendars.tr.html">Calendars modülü (calendars)</a></li>
+<li class=""><a href="../modules/costing.tr.html">Costing modülü (costing)</a></li>
+<li class=""><a href="../modules/crm/index.tr.html">CRM modülü (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.tr.html">Müşteriler ve müşteri parçaları</a></li>
+<li class="sub"><a href="../modules/crm/inbox.tr.html">Teklif talebi gelen kutusu</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.tr.html">Müşteri teklif talepleri</a></li>
+<li class=""><a href="../modules/currencies.tr.html">Currencies modülü (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.tr.html">Design engineering modülü (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.tr.html">Documents modülü (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.tr.html">Fleet modülü (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.tr.html">Filo araçları</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.tr.html">Filo bakımı ve iş emirleri</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.tr.html">Filo sayaçları ve yakıt</a></li>
+<li class="sub"><a href="../modules/fleet/operations.tr.html">Filo operasyonları</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.tr.html">Filo TCO, telematik ve analitik</a></li>
+<li class=""><a href="../modules/intranet/index.tr.html">Intranet modülü (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.tr.html">İntranet erişimi, hedef kitlesi ve saklama</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.tr.html">İntranet içeriği ve akışı</a></li>
+<li class="sub"><a href="../modules/intranet/directory.tr.html">İntranet rehberi</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.tr.html">İntranet katılımı</a></li>
+<li class="sub"><a href="../modules/intranet/events.tr.html">İntranet etkinlikleri</a></li>
+<li class="sub"><a href="../modules/intranet/leave.tr.html">İntranet izinleri</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.tr.html">İntranet belgelerim</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.tr.html">İntranet bildirimleri ve tebligat</a></li>
+<li class="sub"><a href="../modules/intranet/requests.tr.html">İntranet talepleri</a></li>
+<li class=""><a href="../modules/inventory.tr.html">Inventory modülü (inventory)</a></li>
+<li class=""><a href="../modules/logs.tr.html">Logs modülü (logs)</a></li>
+<li class=""><a href="../modules/mail.tr.html">Mail modülü (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.tr.html">Nesting modülü (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.tr.html">Yerleşim motoru</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.tr.html">Yerleşim entegrasyonu ve KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.tr.html">Yerleşim işleri, parçalar ve artıklar</a></li>
+<li class=""><a href="../modules/owned_organisations.tr.html">Owned organisations modülü (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.tr.html">Parties modülü (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.tr.html">Adresler başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.tr.html">İletişim kanalları başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/parties.tr.html">Parties alt modülü başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.tr.html">Taraf birleştirme</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.tr.html">Kişi dilleri başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.tr.html">Parties ayarları ve başvuru verileri</a></li>
+<li class=""><a href="../modules/privacy.tr.html">Privacy modülü (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.tr.html">Procurement modülü (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.tr.html">Kritik malzemeler ve ikame</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.tr.html">Malzeme ihtiyaç planlaması</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.tr.html">Satın alma sözleşmeleri ve info kayıtları</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.tr.html">Satın alma siparişleri</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.tr.html">Satın alma talepleri</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.tr.html">Satın alma teklif talepleri</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.tr.html">Tedarikçiler</a></li>
+<li class=""><a href="../modules/production/index.tr.html">Production modülü (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.tr.html">Üretim emirleri ve versiyonları</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.tr.html">Rotalar ve operasyon tipleri</a></li>
+<li class="sub"><a href="../modules/production/scheduling.tr.html">Üretim çizelgeleme</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.tr.html">İş merkezleri ve kapasite</a></li>
+<li class="sub"><a href="../modules/production/work-orders.tr.html">İş emirleri</a></li>
+<li class=""><a href="../modules/products_and_services.tr.html">Products and services modülü (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.tr.html">Projects modülü (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.tr.html">Proje aksiyonları, aktiviteleri ve toplantıları</a></li>
+<li class="sub"><a href="../modules/projects/board.tr.html">Proje panosu</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.tr.html">Projeler, kalemler ve fikstürler</a></li>
+<li class="sub"><a href="../modules/projects/schedules.tr.html">Proje çizelgeleri</a></li>
+<li class=""><a href="../modules/purchasing_quotations.tr.html">Purchasing quotations modülü (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.tr.html">Quotations modülü (quotations)</a></li>
+<li class=""><a href="../modules/records.tr.html">Records modülü (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.tr.html">Sales orders modülü (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.tr.html">Satış siparişleri ve sipariş kalemleri</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.tr.html">Sevkiyatlar</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.tr.html">İhracat belgeleri</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.tr.html">Satış siparişi birimleri ve ayarları</a></li>
+<li class=""><a href="../modules/subscriptions.tr.html">Subscriptions modülü (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Asistan</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.tr.html">Niyet asistanı</a></li>
+<li class=""><a href="../ai/intent-assistant.tr.html">Niyet asistanı nasıl çalışır</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API referansı</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.tr.html">API başvurusu</a></li>
+<li class=""><a href="../api/analytics.tr.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.tr.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.tr.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.tr.html">Kimlik doğrulama ve başlıklar</a></li>
+<li class=""><a href="../api/bom.tr.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.tr.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.tr.html">API kuralları</a></li>
+<li class=""><a href="../api/costing.tr.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.tr.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.tr.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.tr.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.tr.html">Documents API (documents)</a></li>
+<li class=""><a href="../api/errors.tr.html">Hatalar</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.tr.html">İş hata kodları</a></li>
+<li class=""><a href="../api/fleet.tr.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.tr.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.tr.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.tr.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.tr.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.tr.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.tr.html">API&#x27;ye genel bakış</a></li>
+<li class=""><a href="../api/owned_organisations.tr.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.tr.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.tr.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.tr.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.tr.html">Procurement API: Kritik malzemeler uç noktaları (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.tr.html">Procurement API: Satın alma bilgi kayıtları uç noktaları (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.tr.html">Procurement API: MRP uç noktaları (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.tr.html">Procurement API: Satın alma sözleşmeleri uç noktaları (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.tr.html">Procurement API: Satın alma siparişleri uç noktaları (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.tr.html">Procurement API: Satın alma talepleri uç noktaları (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.tr.html">Procurement API: Satın alma teklif talepleri uç noktaları (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.tr.html">Procurement API: İkame grupları uç noktaları (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.tr.html">Procurement API: Tedarikçiler uç noktaları (suppliers)</a></li>
+<li class=""><a href="../api/production.tr.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.tr.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.tr.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.tr.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.tr.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.tr.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.tr.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.tr.html">Paylaşılan sunucu yolları API</a></li>
+<li class=""><a href="../api/subscriptions.tr.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.tr.html">Sistem uç noktaları API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">İşletme</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.tr.html">İşletim</a></li>
+<li class=""><a href="../operations/backups-and-restore.tr.html">Yedekler ve geri yükleme</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.tr.html">CI hattı ve sürüm</a></li>
+<li class=""><a href="../operations/configuration-reference.tr.html">Yapılandırma başvurusu</a></li>
+<li class=""><a href="../operations/container-measurement.tr.html">Konteyner ölçümü</a></li>
+<li class=""><a href="../operations/data-residency-check.tr.html">Veri ikameti denetimi</a></li>
+<li class=""><a href="../operations/database-migrations.tr.html">Veritabanı göçleri</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.tr.html">Demo ve staging verisi</a></li>
+<li class=""><a href="../operations/environments-and-promotion.tr.html">Ortamlar ve terfi</a></li>
+<li class=""><a href="../operations/install-a-linux-node.tr.html">Bir Linux düğümü kurun</a></li>
+<li class=""><a href="../operations/local-development-setup.tr.html">Yerel geliştirme kurulumu</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.tr.html">PostgreSQL rolleri ve ayarı</a></li>
+<li class=""><a href="../operations/reverse-proxy.tr.html">Ters vekil sunucu</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.tr.html">Zamanlanmış işler ve saklama</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.tr.html">Security.txt ve hazırlık</a></li>
+<li class=""><a href="../operations/service-and-process-manager.tr.html">Servis ve süreç yöneticisi</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.tr.html">Kiracı yaşam döngüsü</a></li>
+<li class=""><a href="../operations/windows-installer.tr.html">Windows kurucusu</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Katkı</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.tr.html">Katkı</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.tr.html">Mimari sınırlar</a></li>
+<li class=""><a href="../contributing/coding-rules.tr.html">Kodlama kuralları</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.tr.html">Geliştirici araçları ve betikleri</a></li>
+<li class=""><a href="../contributing/e2e-battery.tr.html">E2e bataryası</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.tr.html">E2e süit kataloğu</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.tr.html">Lint ve tip denetimi</a></li>
+<li class=""><a href="../contributing/python-tests.tr.html">Python testleri</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.tr.html">Bir arka uç modülü yazın</a></li>
+<li class=""><a href="../contributing/writing-documentation.tr.html">Bir wiki sayfası yazın</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Karar kayıtları</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.tr.html">Karar kayıtları</a></li>
+<li class=""><a href="../decisions/data-driven-languages.tr.html">Veri güdümlü diller</a></li>
+<li class=""><a href="../decisions/decimal-money.tr.html">Decimal para</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.tr.html">Yalnız EventBus ile modüller arası iletişim</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.tr.html">Metadata güdümlü arayüz</a></li>
+<li class=""><a href="../decisions/no-hard-delete.tr.html">Fiziksel silme yok</a></li>
+<li class=""><a href="../decisions/party-unification.tr.html">Taraf birleşimi</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.tr.html">Ürün, model ve versiyon kırılımı</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.tr.html">Sunucu tarafı arayüz durumu</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.tr.html">ULID birincil anahtarlar</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Başvuru</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.tr.html">Başvuru</a></li>
+<li class=""><a href="../reference/glossary.tr.html">Sözlük</a></li>
+<li class=""><a href="../reference/related-material.tr.html">İlgili belgeler</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.tr.html">Ana sayfa</a> / İş modülleri</div>
+    <header class="page-head">
+      <p class="eyebrow">Modül</p>
+      <h1>BOM modülü (bom)</h1>
+      <p class="lede">Ürün kırılımı başına ürün ağaçlarını, versiyonlarını, kalemlerini, şablonlarını, patlatmayı ve rotaları besleyen okumaları içeren bom modülü sayfası.</p>
+    </header>
+    <nav class="toc" aria-label="İçindekiler"><p class="eyebrow">İçindekiler</p><ul class="outline">
+<li class="lvl2"><a href="#bir-bakışta">Bir bakışta</a></li>
+<li class="lvl2"><a href="#modül-ne-yapar">Modül ne yapar</a></li>
+<li class="lvl2"><a href="#alt-modüller">Alt modüller</a></li>
+<li class="lvl2"><a href="#veri-modeli">Veri modeli</a></li>
+<li class="lvl2"><a href="#ekranlar-ve-metadata">Ekranlar ve metadata</a></li>
+<li class="lvl2"><a href="#durumlar-ve-aksiyonlar">Durumlar ve aksiyonlar</a></li>
+<li class="lvl2"><a href="#i̇ş-kuralları">İş kuralları</a></li>
+<li class="lvl3"><a href="#patlatma-ve-operasyon-ürün-ağacı">Patlatma ve operasyon ürün ağacı</a></li>
+<li class="lvl2"><a href="#olaylar-ve-sorgular">Olaylar ve sorgular</a></li>
+<li class="lvl2"><a href="#yetkiler">Yetkiler</a></li>
+<li class="lvl2"><a href="#gizlilik-saklama-ve-geçmiş">Gizlilik, saklama ve geçmiş</a></li>
+<li class="lvl2"><a href="#analitik-olguları">Analitik olguları</a></li>
+<li class="lvl2"><a href="#ayarlar-ve-başvuru-verileri">Ayarlar ve başvuru verileri</a></li>
+<li class="lvl2"><a href="#testler">Testler</a></li>
+<li class="lvl2"><a href="#tutarsızlıklar">Tutarsızlıklar</a></li>
+<li class="lvl2"><a href="#tanıtılan-terimler">Tanıtılan terimler</a></li>
+<li class="lvl2"><a href="#i̇lgili-sayfalar">İlgili sayfalar</a></li>
+</ul></nav>
+    <article class="prose">
+<p><code>src/cluster_erp/modules/bom/</code> içindeki <code>bom</code> modülü, üretilen her ürün kırılımının ürün ağacını (BOM) tutar. Bir ürün ağacı kartı inşa ettiği ürünü, modeli ve versiyonu belirtir; taslaktan etkine, etkinden yerini almışa geçen numaralı versiyonları vardır ve her versiyonun bir kalem ağacı bulunur. Modül bir versiyonu maliyetlendirme, üretim ve planlama için etkin miktarlara patlatır ve <code>production</code> modülünün rota iskeletinin operasyon ürün ağacını (eBOM) türetmek için okuduğu ürün ağacını sunar.</p>
+<h2 id="bir-bakışta">Bir bakışta<a class="headerlink" href="#bir-bakışta">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Öğe</th>
+<th>Değer</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Paket</td>
+<td><code>src/cluster_erp/modules/bom/</code></td>
+<td>klasör</td>
+</tr>
+<tr>
+<td>Modül sınıfı</td>
+<td><code>Module</code></td>
+<td><code>src/cluster_erp/modules/bom/module.py:19</code></td>
+</tr>
+<tr>
+<td><code>name</code> / <code>version</code></td>
+<td><code>bom</code> / <code>0.1.0</code></td>
+<td><code>src/cluster_erp/modules/bom/module.py:20-26</code></td>
+</tr>
+<tr>
+<td>API öneki</td>
+<td><code>/api/v1/bom</code> (<code>ModuleBase.api_prefix</code>)</td>
+<td><code>src/cluster_erp/core/module_base.py:37-38</code></td>
+</tr>
+<tr>
+<td>Alt modüller</td>
+<td>4: <code>boms</code>, <code>bom_versions</code>, <code>bom_items</code>, <code>bom_templates</code></td>
+<td>klasör listesi</td>
+</tr>
+<tr>
+<td>Tablolar</td>
+<td>5: <code>bom_boms</code>, <code>bom_bom_versions</code>, <code>bom_bom_items</code>, <code>bom_bom_templates</code>, <code>bom_bom_template_items</code></td>
+<td>dört <code>models.py</code> dosyasındaki <code>__tablename__</code></td>
+</tr>
+<tr>
+<td>Metadata'daki varlıklar</td>
+<td>5: <code>bom</code>, <code>bom_version</code>, <code>bom_item</code>, <code>bom_template</code>, <code>bom_template_item</code></td>
+<td><code>src/cluster_erp/modules/bom/module.py:898-904</code></td>
+</tr>
+<tr>
+<td>Uçlar</td>
+<td>Pakette 39 uç dekoratörü</td>
+<td><code>@router.</code> için <code>grep</code></td>
+</tr>
+<tr>
+<td>Web uygulamasında yeri</td>
+<td>Kapılı bir paketten gelen <code>bom_explorer</code> özel bileşeniyle katalog uygulaması <code>bom</code></td>
+<td><code>src/cluster_erp/modules/app_store/catalog.json</code> (<code>bom</code> girdisi), <code>gated_apps/bom/app.js</code></td>
+</tr>
+<tr>
+<td>Masaüstünde yeri</td>
+<td><code>src/cluster_erp/desktop/modules/bom/</code> (<code>bom_explorer.py</code>, <code>bom_builder.py</code>)</td>
+<td>klasör</td>
+</tr>
+</tbody>
+</table>
+<h2 id="modül-ne-yapar">Modül ne yapar<a class="headerlink" href="#modül-ne-yapar">¶</a></h2>
+<ul>
+<li>Her ürün kırılımı için temel miktar, kullanım türü ve durumla tek bir ürün ağacı kartı tutar (<code>src/cluster_erp/modules/bom/boms/models.py:17-79</code>).</li>
+<li>Yapıyı sürümler: yalnızca taslaklar düzenlenebilir ve bir ürün ağacının en çok bir versiyonu etkindir (<code>src/cluster_erp/modules/bom/bom_versions/models.py:19-42</code>).</li>
+<li>Kalemleri bir versiyon içinde ağaç olarak saklar; kalem numarası, miktar, birim, fire katsayısı, kesim ölçüleri, üret-ya-da-satın-al seçimi, stok malzemesi, geçerlilik tarihleri ve birim başına işçilik ve maliyet değerleriyle (<code>src/cluster_erp/modules/bom/bom_items/models.py:18-142</code>).</li>
+<li>Yeniden kullanılabilir şablonları bir taslak versiyona kopyalar (<code>src/cluster_erp/modules/bom/bom_versions/services.py:544-651</code>).</li>
+<li>Bir versiyonu etkin miktarlara ve kırılım başına bir toplama patlatır (<code>src/cluster_erp/modules/bom/bom_versions/services.py:722-820</code>).</li>
+<li>Gezgin ağacını, nerede kullanıldığı verisini ve bir satın alma kapsama özetini sunar (<code>src/cluster_erp/modules/bom/bom_versions/services.py:822-836</code>, <code>src/cluster_erp/modules/bom/bom_versions/services.py:1141-1151</code>, <code>src/cluster_erp/modules/bom/bom_versions/services.py:1519-1520</code>).</li>
+<li>Parçası olan bir tasarım onaylandığında ilk taslak versiyonuyla bir ürün ağacı kartı oluşturur (<code>src/cluster_erp/modules/bom/module.py:667-775</code>).</li>
+</ul>
+<h2 id="alt-modüller">Alt modüller<a class="headerlink" href="#alt-modüller">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Alt modül</th>
+<th>Amaç</th>
+<th>Ana varlıklar</th>
+<th>Yönlendirici</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>boms</code></td>
+<td>Ürün ağacı kartları</td>
+<td><code>Bom</code></td>
+<td><code>/api/v1/bom/boms</code></td>
+<td><code>src/cluster_erp/modules/bom/boms/routes.py:31</code></td>
+</tr>
+<tr>
+<td><code>bom_versions</code></td>
+<td>Versiyonlar, yaşam döngüsü, patlatma, ağaç, kapsama, nerede kullanıldığı</td>
+<td><code>BomVersion</code></td>
+<td><code>/api/v1/bom/bom-versions</code></td>
+<td><code>src/cluster_erp/modules/bom/bom_versions/routes.py:26</code></td>
+</tr>
+<tr>
+<td><code>bom_items</code></td>
+<td>Bir versiyonun kalemleri</td>
+<td><code>BomItem</code></td>
+<td><code>/api/v1/bom/bom-items</code></td>
+<td><code>src/cluster_erp/modules/bom/bom_items/routes.py:31</code></td>
+</tr>
+<tr>
+<td><code>bom_templates</code></td>
+<td>Şablonlar ve kalemleri</td>
+<td><code>BomTemplate</code>, <code>BomTemplateItem</code></td>
+<td><code>/api/v1/bom/bom-templates</code></td>
+<td><code>src/cluster_erp/modules/bom/bom_templates/routes.py:29</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="veri-modeli">Veri modeli<a class="headerlink" href="#veri-modeli">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Varlık</th>
+<th>Tablo</th>
+<th>Anahtar alanlar</th>
+<th>Notlar</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Bom</code></td>
+<td><code>bom_boms</code></td>
+<td><code>bom_code</code>, <code>name</code>, <code>product_id</code>, <code>product_model_id</code>, <code>product_version_id</code>, <code>owner_design_id</code>, <code>base_quantity</code>, <code>usage_type</code>, <code>status</code>, <code>extra</code></td>
+<td>üç kırılım kimliği zorunlu</td>
+<td><code>src/cluster_erp/modules/bom/boms/models.py:17-79</code></td>
+</tr>
+<tr>
+<td><code>BomVersion</code></td>
+<td><code>bom_bom_versions</code></td>
+<td><code>bom_id</code>, <code>version_no</code>, <code>status</code>, <code>created_from_template_id</code>, <code>total_weight_kg</code>, <code>total_labor_min</code>, <code>total_material_cost</code>, <code>total_labor_cost</code>, <code>approved_by</code>, <code>approved_at</code>, <code>valid_from</code></td>
+<td>ürün ağacı başına bir canlı etkin versiyon; <code>version_no</code> ürün ağacı başına benzersiz</td>
+<td><code>src/cluster_erp/modules/bom/bom_versions/models.py:19-98</code></td>
+</tr>
+<tr>
+<td><code>BomItem</code></td>
+<td><code>bom_bom_items</code></td>
+<td><code>bom_version_id</code>, <code>parent_item_id</code>, <code>part_id</code>, <code>part_model_id</code>, <code>part_version_id</code>, <code>find_number</code>, <code>qty</code>, <code>uom</code>, <code>level</code>, <code>effective_from</code>, <code>effective_to</code>, <code>cut_length_mm</code>, <code>cut_width_mm</code>, <code>sourcing</code>, <code>stock_material_id</code> üçlüsü, <code>scrap_factor</code>, <code>is_phantom</code>, birim başına maliyet ve işçilik, <code>source</code></td>
+<td><code>part_id</code> bir ürün kimliğidir</td>
+<td><code>src/cluster_erp/modules/bom/bom_items/models.py:18-142</code></td>
+</tr>
+<tr>
+<td><code>BomTemplate</code></td>
+<td><code>bom_bom_templates</code></td>
+<td><code>template_code</code>, <code>name</code>, <code>family</code>, <code>description</code></td>
+<td></td>
+<td><code>src/cluster_erp/modules/bom/bom_templates/models.py:13-31</code></td>
+</tr>
+<tr>
+<td><code>BomTemplateItem</code></td>
+<td><code>bom_bom_template_items</code></td>
+<td><code>template_id</code>, <code>parent_item_id</code>, <code>part_id</code>, <code>find_number</code>, <code>qty</code>, <code>uom</code>, <code>cut_length_mm</code>, <code>is_phantom</code></td>
+<td>model veya versiyon sütunu yok</td>
+<td><code>src/cluster_erp/modules/bom/bom_templates/models.py:34-81</code></td>
+</tr>
+</tbody>
+</table>
+<p>Miktarlar ve para <code>Numeric</code> türündedir: kalem miktarı <code>Numeric(18, 4)</code>, maliyetler <code>Numeric(18, 4)</code>, fire katsayısı <code>Numeric(6, 4)</code> (<code>src/cluster_erp/modules/bom/bom_items/models.py:62-128</code>). Ürün kimlikleri düz UUID sütunlarıdır; <code>bom</code> modülü bunları veritabanı yabancı anahtarlarıyla değil EventBus üzerinden denetler (<code>src/cluster_erp/modules/bom/boms/services.py:203-213</code>).</p>
+<h2 id="ekranlar-ve-metadata">Ekranlar ve metadata<a class="headerlink" href="#ekranlar-ve-metadata">¶</a></h2>
+<p><code>get_metadata</code> dört bölümlü bir <strong>Ürün Ağacı Yönetimi</strong> (İngilizce <strong>BOM Management</strong>) kenar çubuğu grubu bildirir: <strong>Ürün Ağacı Gezgini</strong> (<code>bom_explorer</code> özel bileşeni), <strong>Ürün Ağaçları</strong>, <strong>Ürün Ağacı Versiyonları</strong> ve <strong>Ürün Ağacı Şablonları</strong> (<code>src/cluster_erp/modules/bom/module.py:838-905</code>). Gezgin sekmelerinin etiketleri <strong>Ürün Ağacı · BOM</strong> (<code>webapp/i18n/tr.json</code> anahtarı <code>bom_explorer.tab.cs03</code>) ve <strong>Operasyon Ürün Ağacı · eBOM</strong> (<code>webapp/i18n/tr.json</code> anahtarı <code>bom_explorer.tab.ca03</code>) olur. Ürün kartı üretilebilir ürünler için salt okunur bir <strong>Ürün Ağaçları</strong> sekmesi gösterir (<code>src/cluster_erp/modules/products_and_services/products/metadata.py:276-285</code>). Kapılı paketler <a href="../web-app/gated-app-bundles.tr.html">kapılı uygulama paketleri</a>, masaüstü gezgini <a href="../desktop/module-screens.tr.html">masaüstü modül ekranları</a> sayfasında anlatılır.</p>
+<h2 id="durumlar-ve-aksiyonlar">Durumlar ve aksiyonlar<a class="headerlink" href="#durumlar-ve-aksiyonlar">¶</a></h2>
+<p>Bir ürün ağacı kartı <code>active</code> veya <code>archived</code> olur; kullanım türü <code>manufacturing</code>, <code>engineering</code> veya <code>costing</code> olur (<code>src/cluster_erp/modules/bom/boms/schemas.py:10-11</code>). Bir versiyon <code>draft</code> durumundan <code>active</code> durumuna, oradan <code>superseded</code> durumuna geçer (<code>src/cluster_erp/modules/bom/bom_versions/models.py:20-24</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Aksiyon</th>
+<th>Etiket</th>
+<th>Koşul</th>
+<th>Uç</th>
+<th>İzin</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>activate</code></td>
+<td><strong>Aktifleştir</strong></td>
+<td><code>status</code> değeri <code>draft</code></td>
+<td><code>POST /bom-versions/{id}/activate</code></td>
+<td><code>bom.activate</code></td>
+<td><code>src/cluster_erp/modules/bom/bom_versions/metadata.py:48-58</code>, <code>src/cluster_erp/modules/bom/bom_versions/routes.py:145-154</code></td>
+</tr>
+<tr>
+<td><code>copy_from_template</code></td>
+<td><strong>Şablondan Kopyala</strong></td>
+<td><code>status</code> değeri <code>draft</code></td>
+<td><code>POST /bom-versions/{id}/copy-from-template</code></td>
+<td><code>bom.create</code></td>
+<td><code>src/cluster_erp/modules/bom/bom_versions/metadata.py:59-85</code>, <code>src/cluster_erp/modules/bom/bom_versions/routes.py:187-201</code></td>
+</tr>
+<tr>
+<td><code>supersede</code></td>
+<td><strong>Değiştir</strong></td>
+<td><code>status</code> değeri <code>active</code></td>
+<td><code>POST /bom-versions/{id}/supersede</code></td>
+<td><code>bom.activate</code></td>
+<td><code>src/cluster_erp/modules/bom/bom_versions/metadata.py:86-116</code>, <code>src/cluster_erp/modules/bom/bom_versions/routes.py:170-184</code></td>
+</tr>
+</tbody>
+</table>
+<p>Şema bir versiyonun yaşam döngüsünü gösterir.</p>
+<figure class="diagram"><pre class="mermaid">stateDiagram-v2
+ [*] --&gt; draft: oluşturma, klonlama veya otomatik BOM
+ draft --&gt; active: activate
+ active --&gt; superseded: taslak bir ardılla supersede
+ draft --&gt; [*]: silme
+ superseded --&gt; [*]</pre></figure>
+<p>Düz anlatımla: bir versiyon <code>draft</code> olarak oluşturulur (<code>src/cluster_erp/modules/bom/bom_versions/services.py:231-274</code>). <code>activate</code>, en az bir canlı kalemi olan ve ürün ağacında başka etkin versiyon bulunmayan bir taslak ister (<code>src/cluster_erp/modules/bom/bom_versions/services.py:417-474</code>). <code>supersede</code> tek çağrıda etkin versiyonu <code>superseded</code> yapar ve aynı ürün ağacının bir taslağını <code>active</code> yapar (<code>src/cluster_erp/modules/bom/bom_versions/services.py:476-542</code>). Yalnızca bir taslak silinebilir ve kalemleri de onunla gider (<code>src/cluster_erp/modules/bom/bom_versions/services.py:305-333</code>).</p>
+<h2 id="i̇ş-kuralları">İş kuralları<a class="headerlink" href="#i̇ş-kuralları">¶</a></h2>
+<ul>
+<li>Bir ürün ağacı kartını oluşturmak veya değiştirmek, ürünün var olduğunu ve modelin ve versiyonun ona ait olduğunu denetler (<code>src/cluster_erp/modules/bom/boms/services.py:80-108</code>, <code>src/cluster_erp/modules/bom/boms/services.py:130-139</code>).</li>
+<li>Arşivlenmiş bir ürün ağacı yalnızca yeniden etkin yapılabilir (<code>src/cluster_erp/modules/bom/boms/services.py:120-124</code>).</li>
+<li>Etkin veya yerini almış versiyonu olan bir ürün ağacı silinemez; bir ürün ağacını silmek versiyonlarını ve kalemlerini geçici olarak siler (<code>src/cluster_erp/modules/bom/boms/services.py:159-176</code>, <code>src/cluster_erp/modules/bom/boms/services.py:215-267</code>).</li>
+<li>Kalemler yalnızca taslak bir versiyonda eklenebilir veya değiştirilebilir (<code>src/cluster_erp/modules/bom/bom_items/services.py:135-137</code>).</li>
+<li>Sıfır miktar reddedilir; negatif miktar bir ko-üründür (<code>src/cluster_erp/modules/bom/bom_items/services.py:139-146</code>).</li>
+<li>Her kalemin kırılımı doğrulanır; model ve versiyon olmadan verilen bir stok malzemesi ürünün varsayılanlarını alır (<code>src/cluster_erp/modules/bom/bom_items/services.py:91-128</code>, <code>src/cluster_erp/modules/bom/bom_items/services.py:158-169</code>).</li>
+<li>Kalem seviyesi üst kalem zincirinden gelir; zincir döngü yapamaz ve 10 olan <code>MAX_BOM_DEPTH</code> değerinden derine inemez (<code>src/cluster_erp/modules/bom/bom_items/services.py:32</code>, <code>src/cluster_erp/modules/bom/bom_items/services.py:430-470</code>).</li>
+<li>Eksik bir fire katsayısı 0.0300 olan <code>DEFAULT_SCRAP_FACTOR</code> değerini alır (<code>src/cluster_erp/modules/bom/bom_items/services.py:33</code>, <code>src/cluster_erp/modules/bom/bom_items/services.py:180-181</code>).</li>
+<li><code>clone</code> herhangi bir versiyonu sonraki versiyon numarasıyla ve tüm kalemleriyle yeni bir taslağa kopyalar (<code>src/cluster_erp/modules/bom/bom_versions/services.py:335-415</code>).</li>
+<li>Versiyon toplamları: işçilik dakikaları ve işçilik maliyeti birim başına değerler çarpı miktardır; malzeme maliyeti birim maliyet çarpı miktar bölü bir eksi fire katsayısıdır; ağırlık, ürün ana verisinden yaprak kalemlerin net ağırlığını toplar (<code>src/cluster_erp/modules/bom/bom_versions/services.py:671-718</code>).</li>
+<li><code>bom_code</code> değeri <code>bom</code> yıllık dizisinden, <code>template_code</code> değeri <code>bom_template</code> dizisinden gelir (<code>src/cluster_erp/modules/bom/boms/services.py:89</code>, <code>src/cluster_erp/modules/bom/bom_templates/services.py:101</code>).</li>
+</ul>
+<h3 id="patlatma-ve-operasyon-ürün-ağacı">Patlatma ve operasyon ürün ağacı<a class="headerlink" href="#patlatma-ve-operasyon-ürün-ağacı">¶</a></h3>
+<p>Şema bir ürün ağacı versiyonunun diğer modüllerin okuduğu patlatmaya nasıl dönüştüğünü ve rota iskeletinin ağacı nasıl okuduğunu gösterir.</p>
+<figure class="diagram"><pre class="mermaid">flowchart TD
+ V[&quot;BomVersion ve BomItem satırları&quot;] --&gt; F[&quot;_filter_effective(as_of)&quot;]
+ F --&gt; Q[&quot;effective_qty = qty / (1 - fire), her üst kalemin qty / (1 - üst fire) değeriyle çarpılır&quot;]
+ Q --&gt; A[&quot;production atamalarından operation_type ve work_center_id&quot;]
+ A --&gt; R[&quot;parça, model, versiyon başına toplam&quot;]
+ R --&gt; X[&quot;GetBomExplosion yanıtı&quot;]
+ X --&gt; C[&quot;costing&quot;]
+ X --&gt; P[&quot;production ve MRP&quot;]
+ V --&gt; S[&quot;GetBomScaffoldTree yanıtı&quot;]
+ S --&gt; W[&quot;production rota iskeleti&quot;]
+ W --&gt; I[&quot;products_and_services modülüne CreateScaffoldIntermediate&quot;]</pre></figure>
+<p>Düz anlatımla: <code>explosion</code> bir versiyonun canlı kalemlerini yükler ve geçerlilik penceresi verilen tarihi içermeyen kalemleri tüm alt ağaçlarıyla düşürür (<code>src/cluster_erp/modules/bom/bom_versions/services.py:136-159</code>, <code>src/cluster_erp/modules/bom/bom_versions/services.py:734-741</code>). Her kalem için etkin miktar, miktarın bir eksi kendi fire katsayısına bölümüdür; sonra her üst kalemin miktarının bir eksi o üstün fire katsayısına bölümüyle çarpılır ve <code>ROUND_HALF_EVEN</code> ile dört basamağa yuvarlanır; negatif bir ko-ürün miktarı fire almaz (<code>src/cluster_erp/modules/bom/bom_versions/services.py:128-133</code>, <code>src/cluster_erp/modules/bom/bom_versions/services.py:748-767</code>). Operasyon türü ve iş merkezi <code>production</code> modülünün bileşen atamalarından gelir (<code>src/cluster_erp/modules/bom/bom_versions/services.py:790-796</code>). Toplam, etkin miktarları parça, model ve versiyon başına toplar (<code>src/cluster_erp/modules/bom/bom_versions/services.py:798-820</code>). Diğer modüller bunu <code>GetBomExplosion</code> ile ister (<code>src/cluster_erp/modules/bom/module.py:217-228</code>). Patlatma tek bir versiyon içindeki üst kalem bağlarını izler; gezgin <code>tree</code> ayrıca kendi etkin ürün ağacı olan kalemleri açar (<code>src/cluster_erp/modules/bom/bom_versions/services.py:1141-1151</code>).</p>
+<p>Operasyon ürün ağacı için <code>production</code> modülünün rota iskeleti tam bir ürün kırılımıyla <code>GetBomScaffoldTree</code> sorar. <code>bom</code> modülü tam olarak o kırılımın etkin versiyonuyla veya adı verilen bir versiyonla ve çözülmüş üret-ya-da-satın-al bilgisiyle tüm canlı kalemleriyle yanıt verir; varsayılan bir kırılıma geri dönmez (<code>src/cluster_erp/modules/bom/module.py:363-420</code>, <code>src/cluster_erp/modules/production/routings/scaffold.py:185-192</code>). İskelet hayalet olmayan kalemleri son bir birleştirme operasyonunun girdilerine dönüştürür ve hayalet kalemlerin alt kalemlerini yukarı taşır; bu modül docstring'inde anlatılır (<code>src/cluster_erp/modules/production/routings/scaffold.py:1-43</code>). Bir rotanın bir operasyonunun çıktısı olduğunda iskelet, <code>products_and_services</code> modülünden <code>CreateScaffoldIntermediate</code> ile bir ara ürün oluşturmasını veya yeniden kullanmasını ister (<code>src/cluster_erp/modules/production/routings/scaffold.py:2221-2239</code>). Rota tarafı <a href="production/routings-and-operation-types.tr.html">rotalar ve operasyon türleri</a> sayfasında belgelenir.</p>
+<h2 id="olaylar-ve-sorgular">Olaylar ve sorgular<a class="headerlink" href="#olaylar-ve-sorgular">¶</a></h2>
+<p>Modül 15 sözleşme tüketir ve 14 sözleşme üretir; sayım <a href="parties/index.tr.html">parties modülü</a> sayfasındaki gibi yapıldı. Tam liste <a href="../platform/contracts-reference.tr.html">sözleşmeler başvurusu</a> sayfasındadır.</p>
+<table>
+<thead>
+<tr>
+<th>Yön</th>
+<th>Sözleşme sınıfı</th>
+<th>İşleyici veya yayan</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>yayar</td>
+<td><code>BomDraftCreated</code></td>
+<td>versiyon oluşturma, klonlama, otomatik BOM</td>
+<td><code>src/cluster_erp/modules/bom/bom_versions/services.py:256-264</code>, <code>src/cluster_erp/modules/bom/bom_versions/services.py:406-414</code>, <code>src/cluster_erp/modules/bom/module.py:760-768</code></td>
+</tr>
+<tr>
+<td>yayar</td>
+<td><code>BomActivated</code>, <code>BomVersionActivated</code></td>
+<td><code>activate</code>, <code>supersede</code></td>
+<td><code>src/cluster_erp/modules/bom/bom_versions/services.py:455-473</code>, <code>src/cluster_erp/modules/bom/bom_versions/services.py:523-541</code></td>
+</tr>
+<tr>
+<td>yayar</td>
+<td><code>BomSuperseded</code></td>
+<td><code>supersede</code></td>
+<td><code>src/cluster_erp/modules/bom/bom_versions/services.py:515-522</code></td>
+</tr>
+<tr>
+<td>yayar</td>
+<td><code>BomItemChanged</code></td>
+<td>kalem oluşturma, güncelleme ve taşıma</td>
+<td><code>src/cluster_erp/modules/bom/bom_items/services.py:227</code>, <code>src/cluster_erp/modules/bom/bom_items/services.py:324</code>, <code>src/cluster_erp/modules/bom/bom_items/services.py:516</code></td>
+</tr>
+<tr>
+<td>sorgular</td>
+<td><code>GetProductById</code>, <code>GetProductDefaultBreakdown</code>, <code>GetBulkProductDefaultBreakdowns</code>, <code>GetDesignById</code> ve planlama okumaları</td>
+<td>servisler ve işleyiciler</td>
+<td><code>src/cluster_erp/modules/bom/boms/services.py:204-206</code>, <code>src/cluster_erp/modules/bom/bom_versions/services.py:598-608</code>, <code>src/cluster_erp/modules/bom/module.py:686-688</code></td>
+</tr>
+<tr>
+<td>sorguyu yanıtlar</td>
+<td><code>GetBomById</code>, <code>CreateBomForProduct</code>, <code>GetPartUsageCounts</code>, <code>IsBomActive</code>, <code>GetBomExplosion</code>, <code>GetActiveBomVersionForProduct</code>, <code>GetBomVersionsUpdatedAt</code>, <code>GetActiveBomItemsForProduct</code>, <code>GetBomScaffoldTree</code>, <code>GetBomItemDisplay</code>, <code>GetBomMaterials</code>, <code>GetBomVersionDisplay</code></td>
+<td><code>module.py</code> içindeki işleyiciler</td>
+<td><code>src/cluster_erp/modules/bom/module.py:85-123</code></td>
+</tr>
+<tr>
+<td>abone olur</td>
+<td><code>DesignApproved</code></td>
+<td><code>_handle_design_approved</code></td>
+<td><code>src/cluster_erp/modules/bom/module.py:124</code>, <code>src/cluster_erp/modules/bom/module.py:667-775</code></td>
+</tr>
+<tr>
+<td>abone olur</td>
+<td><code>ProductDeleted</code></td>
+<td><code>_handle_product_deleted</code></td>
+<td><code>src/cluster_erp/modules/bom/module.py:125</code>, <code>src/cluster_erp/modules/bom/module.py:777-816</code></td>
+</tr>
+<tr>
+<td>abone olur</td>
+<td><code>DescribeFieldConsumers</code></td>
+<td><code>_describe_field_consumers</code></td>
+<td><code>src/cluster_erp/modules/bom/module.py:65</code>, <code>src/cluster_erp/modules/bom/module.py:907-937</code></td>
+</tr>
+</tbody>
+</table>
+<p>Aboneliklerin taşıdığı kurallar:</p>
+<ul>
+<li><code>DesignApproved</code> olayında modül tasarımın parçasını okur, o ürünün varsayılan modelini ve versiyonunu alır ve tasarımın adını taşıyan, taslak versiyon 1'i olan <code>active</code> bir ürün ağacı kartı oluşturur. Parçası olmayan bir tasarımı, zaten bir ürün ağacına sahip bir tasarımı ve varsayılan kırılımı olmayan bir ürünü atlar (<code>src/cluster_erp/modules/bom/module.py:667-775</code>).</li>
+<li><code>ProductDeleted</code> olayında modül silinen ürünün yalnızca taslak versiyonlardaki kalemlerini geçici olarak siler; etkin ve yerini almış versiyonlar satırlarını korur (<code>src/cluster_erp/modules/bom/module.py:777-816</code>).</li>
+</ul>
+<h2 id="yetkiler">Yetkiler<a class="headerlink" href="#yetkiler">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>İzin anahtarı</th>
+<th>Kullanan</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bom.read</code></td>
+<td>her okuma ucu</td>
+<td><code>src/cluster_erp/modules/bom/boms/routes.py:51-99</code>, <code>src/cluster_erp/modules/bom/bom_versions/routes.py:35-295</code>, <code>src/cluster_erp/modules/bom/bom_items/routes.py:61-219</code>, <code>src/cluster_erp/modules/bom/bom_templates/routes.py:38-146</code></td>
+</tr>
+<tr>
+<td><code>bom.create</code></td>
+<td>oluşturma, güncelleme, silme, toplu silme, klonlama, şablondan kopyalama, yeniden hesaplama, kalem taşıma</td>
+<td><code>src/cluster_erp/modules/bom/boms/routes.py:131-170</code>, <code>src/cluster_erp/modules/bom/bom_versions/routes.py:109-207</code>, <code>src/cluster_erp/modules/bom/bom_items/routes.py:233-293</code>, <code>src/cluster_erp/modules/bom/bom_templates/routes.py:107-199</code></td>
+</tr>
+<tr>
+<td><code>bom.activate</code></td>
+<td>etkinleştirme ve yerine geçirme</td>
+<td><code>src/cluster_erp/modules/bom/bom_versions/routes.py:148</code>, <code>src/cluster_erp/modules/bom/bom_versions/routes.py:174</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="gizlilik-saklama-ve-geçmiş">Gizlilik, saklama ve geçmiş<a class="headerlink" href="#gizlilik-saklama-ve-geçmiş">¶</a></h2>
+<p>Modül kişisel veri saklamaz ve <code>privacy_handlers.py</code> dosyası yoktur. Silme baştan sona geçicidir ve versiyon ile kalem silmeleri aynı aktörle zincirlenir (<code>src/cluster_erp/modules/bom/boms/services.py:215-249</code>). Değişiklikler <a href="../platform/change-history.tr.html">değişiklik geçmişi</a> tarafından kaydedilir.</p>
+<h2 id="analitik-olguları">Analitik olguları<a class="headerlink" href="#analitik-olguları">¶</a></h2>
+<p>Bu modülün <code>analytics_facts.py</code> dosyası yoktur.</p>
+<h2 id="ayarlar-ve-başvuru-verileri">Ayarlar ve başvuru verileri<a class="headerlink" href="#ayarlar-ve-başvuru-verileri">¶</a></h2>
+<p>Modülün ayarlar bölümü yoktur. Stoktan işlenen kalemler için stok birimi hesabı, kesim payı, levha aralığı ve kenar payı ayarlarını <code>core/stock_conversion.py</code> üzerinden okur (<code>src/cluster_erp/modules/bom/bom_versions/services.py:95-125</code>); bkz. <a href="../platform/product-breakdown-and-stock-conversion.tr.html">ürün kırılımı ve stok dönüşümü</a>.</p>
+<h2 id="testler">Testler<a class="headerlink" href="#testler">¶</a></h2>
+<p><code>tests/</code> içinde <code>modules.bom</code> için <code>grep</code> ile ve <code>web-client/</code> içinde dosya adıyla bulundu.</p>
+<table>
+<thead>
+<tr>
+<th>Tür</th>
+<th>Dosya</th>
+<th>Kapsam</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pytest</td>
+<td><code>tests/test_bom_bugfix_batch_2026_10_08.py</code></td>
+<td>birim seçicileri, kalem birimi, versiyon toplamları formülü, metadata biçimi (10 test)</td>
+</tr>
+<tr>
+<td>pytest</td>
+<td><code>tests/test_record_links.py</code></td>
+<td>ürün ağacı metadata'sındaki kayıt bağlantıları (3 test)</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_bom_app.mjs</code></td>
+<td>ürün ağacı uygulaması: gezgin ve kayıt listeleri</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_bom_me2m.mjs</code>, <code>web-client/_e2e_bom_me2m_matrix.mjs</code></td>
+<td>satın alma kapsama sekmesi ve hesabı</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_bom_open_in_explorer.mjs</code></td>
+<td>bir ürün ağacını ürün kartından gezginde açma</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_ebom_scaffold.mjs</code>, <code>web-client/_e2e_ebom_wizard.mjs</code>, <code>web-client/_e2e_ebom_operation_staging.mjs</code></td>
+<td>ürün ağacını okuyan rota iskeleti</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_bom_bugfix_batch.mjs</code></td>
+<td>tarayıcıda ürün ağacı formları</td>
+</tr>
+</tbody>
+</table>
+<h2 id="tutarsızlıklar">Tutarsızlıklar<a class="headerlink" href="#tutarsızlıklar">¶</a></h2>
+<aside class="adm adm-warning" role="note"><p class="adm-title">Uyarı</p><p>Tutarsızlık. Projenin yazılı mühendislik kuralları ürün, model ve versiyon kırılımını zorunlu kılar ve sessiz bir geri dönüşü yasaklar. <code>BomTemplateItem</code> yalnızca <code>part_id</code> saklar (<code>src/cluster_erp/modules/bom/bom_templates/models.py:51-55</code>). Bir şablon kopyalandığında her kalem ürününün varsayılan modelini ve versiyonunu alır ve bir ürünün varsayılanı yoksa kopyalama başarısız olur (<code>src/cluster_erp/modules/bom/bom_versions/services.py:596-617</code>). Tasarım onayındaki otomatik ürün ağacı da varsayılan kırılımı alır (<code>src/cluster_erp/modules/bom/module.py:718-735</code>). Bu sayfa kodu belgeler.</p>
+<p><strong>Uyarı:</strong> Tutarsızlık. Projenin yazılı mühendislik kuralları kodda sabit değerleri yasaklar ve yapılandırma değerleri ister. Varsayılan fire katsayısı ve en büyük ürün ağacı derinliği modül sabitleridir (<code>src/cluster_erp/modules/bom/bom_items/services.py:32-33</code>). Bu sayfa kodu belgeler.</p>
+</aside>
+<h2 id="tanıtılan-terimler">Tanıtılan terimler<a class="headerlink" href="#tanıtılan-terimler">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Terim</th>
+<th>Kod tanımlayıcısı</th>
+<th>Tanım</th>
+<th>Türkçe terim</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bill of materials</td>
+<td><code>Bom</code></td>
+<td>Bir yapının inşa ettiği ürün kırılımını belirten kart.</td>
+<td>Ürün ağacı</td>
+<td><code>src/cluster_erp/modules/bom/boms/models.py:17</code></td>
+</tr>
+<tr>
+<td>BOM version</td>
+<td><code>BomVersion</code></td>
+<td>Bir ürün ağacı yapısının yaşam döngüsü olan numaralı anlık görüntüsü.</td>
+<td>Ürün ağacı versiyonu</td>
+<td><code>src/cluster_erp/modules/bom/bom_versions/models.py:19</code></td>
+</tr>
+<tr>
+<td>BOM item</td>
+<td><code>BomItem</code></td>
+<td>Bir ürün ağacı versiyonunun tek bir pozisyonu.</td>
+<td>Ürün ağacı kalemi</td>
+<td><code>src/cluster_erp/modules/bom/bom_items/models.py:18</code></td>
+</tr>
+<tr>
+<td>explosion</td>
+<td><code>explosion</code></td>
+<td>Etkin miktarları ve kırılım başına toplamı olan düz kalem listesi.</td>
+<td>Patlatma</td>
+<td><code>src/cluster_erp/modules/bom/bom_versions/services.py:722</code></td>
+</tr>
+<tr>
+<td>effective quantity</td>
+<td><code>effective_qty</code></td>
+<td>Fire ve üst kalem çarpımından sonra bitmiş birim başına miktar.</td>
+<td>Etkin miktar</td>
+<td><code>src/cluster_erp/modules/bom/bom_versions/services.py:748-767</code></td>
+</tr>
+<tr>
+<td>co-product</td>
+<td>negatif <code>qty</code></td>
+<td>Negatif miktarlı, beklenen bir çıktı olan ürün ağacı kalemi.</td>
+<td>Ko-ürün</td>
+<td><code>src/cluster_erp/modules/bom/bom_items/services.py:139-146</code></td>
+</tr>
+<tr>
+<td>phantom item</td>
+<td><code>is_phantom</code></td>
+<td>Alt kalemleri çarpılmış talebi taşıdığı için kapsamanın atladığı kalem.</td>
+<td>Hayalet kalem</td>
+<td><code>src/cluster_erp/modules/bom/bom_versions/services.py:830-831</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="i̇lgili-sayfalar">İlgili sayfalar<a class="headerlink" href="#i̇lgili-sayfalar">¶</a></h2>
+<ul>
+<li><a href="index.tr.html">Modüller dizini</a></li>
+<li><a href="products_and_services.tr.html">Products and services modülü</a></li>
+<li><a href="design_engineering.tr.html">Design engineering modülü</a></li>
+<li><a href="costing.tr.html">Costing modülü</a></li>
+<li><a href="production/index.tr.html">Production modülü</a></li>
+<li><a href="../platform/product-breakdown-and-stock-conversion.tr.html">Ürün kırılımı ve stok dönüşümü</a></li>
+<li><a href="../api/bom.tr.html">Bu modülün API başvurusu</a></li>
+</ul>
+<hr>
+<p>7793ff4 numaralı commit ile 2026-11-09 tarihinde doğrulandı.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Doğrulanan commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../modules/auth.tr.html"><span class="eyebrow">Önceki</span><span>Auth modülü (auth)</span></a><a class="next" href="../modules/calendars.tr.html"><span class="eyebrow">Sonraki</span><span>Calendars modülü (calendars)</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">Bu sayfada</p><ul class="outline">
+<li class="lvl2"><a href="#bir-bakışta">Bir bakışta</a></li>
+<li class="lvl2"><a href="#modül-ne-yapar">Modül ne yapar</a></li>
+<li class="lvl2"><a href="#alt-modüller">Alt modüller</a></li>
+<li class="lvl2"><a href="#veri-modeli">Veri modeli</a></li>
+<li class="lvl2"><a href="#ekranlar-ve-metadata">Ekranlar ve metadata</a></li>
+<li class="lvl2"><a href="#durumlar-ve-aksiyonlar">Durumlar ve aksiyonlar</a></li>
+<li class="lvl2"><a href="#i̇ş-kuralları">İş kuralları</a></li>
+<li class="lvl3"><a href="#patlatma-ve-operasyon-ürün-ağacı">Patlatma ve operasyon ürün ağacı</a></li>
+<li class="lvl2"><a href="#olaylar-ve-sorgular">Olaylar ve sorgular</a></li>
+<li class="lvl2"><a href="#yetkiler">Yetkiler</a></li>
+<li class="lvl2"><a href="#gizlilik-saklama-ve-geçmiş">Gizlilik, saklama ve geçmiş</a></li>
+<li class="lvl2"><a href="#analitik-olguları">Analitik olguları</a></li>
+<li class="lvl2"><a href="#ayarlar-ve-başvuru-verileri">Ayarlar ve başvuru verileri</a></li>
+<li class="lvl2"><a href="#testler">Testler</a></li>
+<li class="lvl2"><a href="#tutarsızlıklar">Tutarsızlıklar</a></li>
+<li class="lvl2"><a href="#tanıtılan-terimler">Tanıtılan terimler</a></li>
+<li class="lvl2"><a href="#i̇lgili-sayfalar">İlgili sayfalar</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>docs/wiki altındaki Markdown kaynaklarından derlendi</span></footer>
+</body>
+</html>

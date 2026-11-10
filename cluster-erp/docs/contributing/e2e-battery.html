@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>E2e battery · Cluster ERP Wiki</title>
+<meta name="description" content="How the browser e2e battery of Cluster ERP runs every _e2e_*.mjs suite against one test instance, and how the shared helpers keep the test database isolated.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../contributing/e2e-battery.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.html">Overview</a></li>
+<li class=""><a href="../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.html">Platform core</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../platform/change-history.html">Change history</a></li>
+<li class=""><a href="../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../platform/event-bus.html">Event bus</a></li>
+<li class=""><a href="../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class=""><a href="../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../web-app/generic-form.html">Generic form</a></li>
+<li class=""><a href="../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class=""><a href="../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.html">Desktop client</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class=""><a href="../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.html">Business modules</a></li>
+<li class=""><a href="../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class=""><a href="../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../modules/auth.html">Auth module (auth)</a></li>
+<li class=""><a href="../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class=""><a href="../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class=""><a href="../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../modules/intranet/requests.html">Intranet requests</a></li>
+<li class=""><a href="../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../modules/mail.html">Mail module (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class=""><a href="../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../modules/production/work-orders.html">Work orders</a></li>
+<li class=""><a href="../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.html">API reference</a></li>
+<li class=""><a href="../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.html">Documents API (documents)</a></li>
+<li class=""><a href="../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.html">API overview</a></li>
+<li class=""><a href="../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class=""><a href="../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.html">Operations</a></li>
+<li class=""><a href="../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class=""><a href="../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class="current"><a href="../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.html">Reference</a></li>
+<li class=""><a href="../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.html">Home</a> / Contributing</div>
+    <header class="page-head">
+      <p class="eyebrow">Explanation</p>
+      <h1>E2e battery</h1>
+      <p class="lede">How the browser e2e battery of Cluster ERP runs every _e2e_*.mjs suite against one test instance, and how the shared helpers keep the test database isolated.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#in-short">In short</a></li>
+<li class="lvl2"><a href="#how-it-works">How it works</a></li>
+<li class="lvl3"><a href="#the-run">The run</a></li>
+<li class="lvl3"><a href="#runner-options">Runner options</a></li>
+<li class="lvl3"><a href="#the-shared-base-module">The shared base module</a></li>
+<li class="lvl3"><a href="#the-ui-state-guard">The ui-state guard</a></li>
+<li class="lvl3"><a href="#fixtures">Fixtures</a></li>
+<li class="lvl2"><a href="#why-it-is-built-this-way">Why it is built this way</a></li>
+<li class="lvl2"><a href="#rules-and-boundaries">Rules and boundaries</a></li>
+<li class="lvl2"><a href="#interaction-with-other-parts">Interaction with other parts</a></li>
+<li class="lvl2"><a href="#limits-and-open-points">Limits and open points</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p>The e2e battery is the browser test run of Cluster ERP. One Node script, <code>web-client/_run_battery.mjs</code>, runs every <code>_e2e_*.mjs</code> suite in turn against one test instance and writes a log. Four shared modules give the suites their target address, their test account, their fixtures, and a clean home-screen layout. This page explains the run and the isolation rules; the suites themselves are listed in the <a href="e2e-suite-catalogue.html">e2e suite catalogue</a>.</p>
+<h2 id="in-short">In short<a class="headerlink" href="#in-short">¶</a></h2>
+<ul>
+<li>The runner executes the suites one after another, because they share one server and one database (<code>web-client/_run_battery.mjs:15-16</code>).</li>
+<li>A suite passes only when it prints a line of the form <code>N passed, M failed</code> with <code>M</code> equal to zero; a suite that exits without that line counts as a failure (<code>web-client/_run_battery.mjs:18-20</code>, <code>web-client/_run_battery.mjs:110-119</code>).</li>
+<li>The target address and the test database name come from one shared module, and the default target is the local test instance, not the development server (<code>web-client/_shared_e2e_base.mjs:4-17</code>, <code>web-client/_shared_e2e_base.mjs:40-46</code>).</li>
+<li>Suites that touch the home layout must use the ui-state guard, which saves and restores the test account's layout (<code>web-client/_ui_state_guard.mjs:1-11</code>, <code>tests/test_e2e_db_isolation.py:177-200</code>).</li>
+<li>CI does not run the battery; it runs on the staging node before a tag is cut (<code>.github/workflows/ci.yml:21-22</code>).</li>
+</ul>
+<h2 id="how-it-works">How it works<a class="headerlink" href="#how-it-works">¶</a></h2>
+<h3 id="the-run">The run<a class="headerlink" href="#the-run">¶</a></h3>
+<p>The flowchart shows one battery run.</p>
+<figure class="diagram"><pre class="mermaid">flowchart TD
+ start[&quot;node _run_battery.mjs&quot;] --&gt; list[&quot;collect _e2e_*.mjs, apply --filter and --exclude, sort&quot;]
+ list --&gt; h1{&quot;GET /health equals 200?&quot;}
+ h1 --&gt;|no| stop[&quot;exit 2: server not answering&quot;]
+ h1 --&gt;|yes| loop[&quot;spawn next suite with node&quot;]
+ loop --&gt; wait{&quot;result line printed before timeout?&quot;}
+ wait --&gt;|yes| add[&quot;add passed and failed to totals&quot;]
+ wait --&gt;|no| broken[&quot;count 1 failure, name the suite&quot;]
+ add --&gt; more{&quot;more suites?&quot;}
+ broken --&gt; more
+ more --&gt;|yes| loop
+ more --&gt;|no| h2{&quot;GET /health equals 200?&quot;}
+ h2 --&gt;|no| inc[&quot;exit 2: run inconclusive&quot;]
+ h2 --&gt;|yes| done[&quot;exit 0 if no failures, else 1&quot;]</pre></figure>
+<p>In prose:</p>
+<ol>
+<li>The runner lists the files in <code>web-client/</code> whose names start with <code>_e2e_</code> and end with <code>.mjs</code>, applies <code>--filter</code> and <code>--exclude</code>, and sorts them (<code>web-client/_run_battery.mjs:42-46</code>). With <code>--list</code> it prints the list and stops (<code>web-client/_run_battery.mjs:48-52</code>).</li>
+<li>It asks the target's <code>/health</code> route. If the answer is not 200, it exits with code 2 before running anything (<code>web-client/_run_battery.mjs:54-70</code>).</li>
+<li>It starts each suite as a separate Node process and collects its output (<code>web-client/_run_battery.mjs:78-99</code>). A suite that runs longer than the timeout is killed and recorded as timed out. The default timeout is 900 seconds; <code>--timeout</code> changes it (<code>web-client/_run_battery.mjs:39-41</code>, <code>web-client/_run_battery.mjs:83-93</code>).</li>
+<li>It reads the result line, adds the counts, and names every suite with failures or without a result line (<code>web-client/_run_battery.mjs:110-119</code>).</li>
+<li>At the end it asks <code>/health</code> again, writes the totals and the failing suites to the log, and exits with 0 when nothing failed, 1 when something failed, and 2 when the server stopped answering (<code>web-client/_run_battery.mjs:124-137</code>).</li>
+</ol>
+<h3 id="runner-options">Runner options<a class="headerlink" href="#runner-options">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Effect</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--log &lt;name&gt;</code></td>
+<td>Log file name; the default is <code>battery.log</code></td>
+<td><code>web-client/_run_battery.mjs:8-9</code>, <code>web-client/_run_battery.mjs:33</code></td>
+</tr>
+<tr>
+<td><code>--filter &lt;text&gt;</code></td>
+<td>Run only suites whose file name contains the text</td>
+<td><code>web-client/_run_battery.mjs:10</code>, <code>web-client/_run_battery.mjs:44</code></td>
+</tr>
+<tr>
+<td><code>--exclude &lt;a,b&gt;</code></td>
+<td>Leave out suites whose file name contains any of the texts</td>
+<td><code>web-client/_run_battery.mjs:11</code>, <code>web-client/_run_battery.mjs:35-38</code></td>
+</tr>
+<tr>
+<td><code>--list</code></td>
+<td>Print the suites that would run, then stop</td>
+<td><code>web-client/_run_battery.mjs:12</code>, <code>web-client/_run_battery.mjs:48-52</code></td>
+</tr>
+<tr>
+<td><code>--timeout &lt;seconds&gt;</code></td>
+<td>Per-suite limit, default 900</td>
+<td><code>web-client/_run_battery.mjs:13</code>, <code>web-client/_run_battery.mjs:41</code></td>
+</tr>
+</tbody>
+</table>
+<p>A typical full run, from <code>web-client/</code>:</p>
+<div class="hl"><pre><span></span><code>node<span class="w"> </span>_run_battery.mjs<span class="w"> </span>--log<span class="w"> </span>battery
+</code></pre></div>
+
+<p>Source: <code>web-client/_run_battery.mjs:8-13</code>.</p>
+<h3 id="the-shared-base-module">The shared base module<a class="headerlink" href="#the-shared-base-module">¶</a></h3>
+<p>Every suite imports <code>web-client/_shared_e2e_base.mjs</code> (197 of 197 suites, counted with <code>grep -L</code>). It provides:</p>
+<table>
+<thead>
+<tr>
+<th>Export</th>
+<th>Purpose</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>APP_URL</code>, <code>API_URL</code>, <code>E2E_BASE</code></td>
+<td>Target addresses built from <code>CLUSTER_E2E_BASE</code></td>
+<td><code>web-client/_shared_e2e_base.mjs:14-17</code></td>
+</tr>
+<tr>
+<td><code>E2E_TENANT_DOMAIN</code>, <code>asLogin</code></td>
+<td>Sign-in through one tenant on a multi-tenant node, from <code>CLUSTER_E2E_TENANT_DOMAIN</code></td>
+<td><code>web-client/_shared_e2e_base.mjs:19-38</code></td>
+</tr>
+<tr>
+<td><code>E2E_DB_NAME</code>, <code>E2E_DB_HOST</code></td>
+<td>The database a suite may reach directly, from <code>CLUSTER_E2E_DB</code> and <code>CLUSTER_E2E_DB_HOST</code></td>
+<td><code>web-client/_shared_e2e_base.mjs:40-48</code></td>
+</tr>
+<tr>
+<td><code>E2E_SERVER_ENV</code>, <code>SELF_HOSTED_MT_BASE</code></td>
+<td>Environment and address for suites that start their own server</td>
+<td><code>web-client/_shared_e2e_base.mjs:61-90</code>, <code>web-client/_shared_e2e_base.mjs:108</code></td>
+</tr>
+<tr>
+<td><code>ROOT</code>, <code>PG_BIN</code>, <code>pgTool</code></td>
+<td>Repository path and PostgreSQL client tools, resolved per platform</td>
+<td><code>web-client/_shared_e2e_base.mjs:110-130</code></td>
+</tr>
+<tr>
+<td><code>waitForServerHealth</code>, <code>killTree</code></td>
+<td>Wait for a self-started server; stop a process tree on every platform</td>
+<td><code>web-client/_shared_e2e_base.mjs:139-184</code></td>
+</tr>
+<tr>
+<td><code>goHome</code>, <code>gotoHome</code></td>
+<td>Return to the home screen even when a background app was restored</td>
+<td><code>web-client/_shared_e2e_base.mjs:186-228</code></td>
+</tr>
+<tr>
+<td><code>holdPress</code></td>
+<td>A long press that holds until the page confirms the gesture</td>
+<td><code>web-client/_shared_e2e_base.mjs:230-261</code></td>
+</tr>
+<tr>
+<td><code>appModuleUrl</code></td>
+<td>The URL of a web module as the page loaded it</td>
+<td><code>web-client/_shared_e2e_base.mjs:277-287</code></td>
+</tr>
+<tr>
+<td><code>report</code></td>
+<td>Print the result line and wait until it reaches the pipe</td>
+<td><code>web-client/_shared_e2e_base.mjs:263-295</code></td>
+</tr>
+</tbody>
+</table>
+<p>Passwords used by the direct database helpers come from environment variables; their values are omitted under the security disclosure policy.</p>
+<h3 id="the-ui-state-guard">The ui-state guard<a class="headerlink" href="#the-ui-state-guard">¶</a></h3>
+<p>The home layout belongs to the user account on the server (see <a href="../decisions/server-side-ui-state.html">server-side UI state</a>). <code>guardUiState</code> signs in as the dedicated test account, refuses to continue as the administrator account, saves the account's stored layout keys, writes a known test board, and restores the originals when the process ends, also on a crash or an interrupt (<code>web-client/_ui_state_guard.mjs:34-49</code>, <code>web-client/_ui_state_guard.mjs:114-195</code>). The keys it guards are listed in <code>DEFAULT_KEYS</code> (<code>web-client/_ui_state_guard.mjs:106-113</code>). <code>guardUiStateWithApps</code> adds app tiles to the test board (<code>web-client/_ui_state_guard.mjs:91-97</code>). 118 suites call <code>guardUiState</code> (counted with <code>grep -l</code>).</p>
+<h3 id="fixtures">Fixtures<a class="headerlink" href="#fixtures">¶</a></h3>
+<p><code>web-client/_shared_fixtures.mjs</code> creates preconditions through the public API, the way a user would, and does nothing when the data already exists (<code>web-client/_shared_fixtures.mjs:1-4</code>). Examples are <code>ensureGroupWorkweek</code>, <code>ensureRfqWithVendor</code>, and <code>ensureRichBom</code> (<code>web-client/_shared_fixtures.mjs:42</code>, <code>web-client/_shared_fixtures.mjs:61</code>, <code>web-client/_shared_fixtures.mjs:266</code>). 18 suites import it. <code>web-client/_shared_history.mjs</code> builds sales-order and production history for the analytics suites in a window relative to today (<code>web-client/_shared_history.mjs:1-13</code>, <code>web-client/_shared_history.mjs:22-29</code>). 7 suites import it.</p>
+<h2 id="why-it-is-built-this-way">Why it is built this way<a class="headerlink" href="#why-it-is-built-this-way">¶</a></h2>
+<p>The reasons are stated in the code. The default target is the test instance so that "a careless run cannot reach the user's data" (<code>web-client/_shared_e2e_base.mjs:4-13</code>). The database name travels with the base address because a suite once wrote to a different database than the one under test (<code>tests/test_e2e_db_isolation.py:3-18</code>). The runner kills a hung suite so that one wedged browser does not stop a nightly run (<code>web-client/_run_battery.mjs:75-77</code>). <code>report</code> waits for the write because <code>process.exit()</code> lost result lines in a pipe under load (<code>web-client/_shared_e2e_base.mjs:263-276</code>).</p>
+<h2 id="rules-and-boundaries">Rules and boundaries<a class="headerlink" href="#rules-and-boundaries">¶</a></h2>
+<p><code>tests/test_e2e_db_isolation.py</code> reads every suite as text and enforces these rules:</p>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A suite that starts a child process able to reach the database sets <code>CLUSTER_ERP_DB_NAME</code> from <code>E2E_DB_NAME</code></td>
+<td><code>tests/test_e2e_db_isolation.py:64-106</code></td>
+</tr>
+<tr>
+<td>A self-hosted suite names only databases that carry the <code>test</code> marker</td>
+<td><code>tests/test_e2e_db_isolation.py:51-91</code></td>
+</tr>
+<tr>
+<td>No suite writes a server address or port as a literal</td>
+<td><code>tests/test_e2e_db_isolation.py:109-128</code></td>
+</tr>
+<tr>
+<td>The shared helper is not named like a suite</td>
+<td><code>tests/test_e2e_db_isolation.py:131-139</code></td>
+</tr>
+<tr>
+<td>No single-quoted string tries to interpolate <code>${...}</code></td>
+<td><code>tests/test_e2e_db_isolation.py:142-174</code></td>
+</tr>
+<tr>
+<td>A suite that reads or writes the home layout uses the ui-state guard</td>
+<td><code>tests/test_e2e_db_isolation.py:177-200</code></td>
+</tr>
+</tbody>
+</table>
+<p>Seven suites start their own server and are self-hosted (counted with <code>grep -l CLUSTER_ERP_SERVER_PORT</code>): <code>_e2e_operator_console.mjs</code>, <code>_e2e_residency.mjs</code>, <code>_e2e_sep_companies.mjs</code>, <code>_e2e_sep_roles.mjs</code>, <code>_e2e_tenant_isolation.mjs</code>, <code>_e2e_tenant_regions.mjs</code>, and <code>_e2e_tenant_signup.mjs</code>. The runner comment says these and the region suite are excluded when the battery runs against a remote node (<code>web-client/_run_battery.mjs:35-37</code>).</p>
+<h2 id="interaction-with-other-parts">Interaction with other parts<a class="headerlink" href="#interaction-with-other-parts">¶</a></h2>
+<p>The battery needs a running test instance; how to start a server is on <a href="../operations/local-development-setup.html">local development setup</a>. The promotion from staging to production uses the battery result; see <a href="../operations/environments-and-promotion.html">environments and promotion</a>. The pytest isolation guard runs in CI even though the battery does not (<code>.github/workflows/ci.yml:124</code>).</p>
+<h2 id="limits-and-open-points">Limits and open points<a class="headerlink" href="#limits-and-open-points">¶</a></h2>
+<ul>
+<li>The <code>web-client/</code> folder also holds older numbered PowerShell run scripts, one per historical run, and many log files from past runs. The runner header says it replaces those per-run scripts (<code>web-client/_run_battery.mjs:5-6</code>). They are not part of the current procedure and are not described one by one.</li>
+<li>Not determined from code: a schedule for the battery. No scheduler entry for <code>_run_battery.mjs</code> exists in <code>.github/workflows/</code> or <code>deploy/</code>.</li>
+</ul>
+<aside class="adm adm-warning" role="note"><p class="adm-title">Warning</p><p>Discrepancy. The CI workflow comment speaks of 174 browser suites (<code>.github/workflows/ci.yml:21</code>). The folder holds 197 files that match <code>_e2e_*.mjs</code> (counted with <code>ls web-client/_e2e_*.mjs</code>). This page documents the folder.</p>
+</aside>
+<h2 id="terms-introduced">Terms introduced<a class="headerlink" href="#terms-introduced">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Code identifier</th>
+<th>Definition</th>
+<th>Turkish term</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>e2e battery</td>
+<td><code>_run_battery.mjs</code></td>
+<td>The sequential run of every browser suite against one test instance, with one log and one total.</td>
+<td>E2e bataryası</td>
+<td><code>web-client/_run_battery.mjs:1-20</code></td>
+</tr>
+<tr>
+<td>e2e suite</td>
+<td><code>_e2e_*.mjs</code></td>
+<td>One Node script that drives the web app or the API and prints a result line.</td>
+<td>E2e süiti</td>
+<td><code>web-client/_run_battery.mjs:42-46</code></td>
+</tr>
+<tr>
+<td>result line</td>
+<td><code>report</code></td>
+<td>The line <code>N passed, M failed</code> that a suite prints and the runner reads.</td>
+<td>Sonuç satırı</td>
+<td><code>web-client/_shared_e2e_base.mjs:289-295</code></td>
+</tr>
+<tr>
+<td>self-hosted suite</td>
+<td><code>SELF_HOSTED_MT_BASE</code></td>
+<td>A suite that starts its own server and databases instead of using the shared test instance.</td>
+<td>Kendi sunuculu süit</td>
+<td><code>tests/test_e2e_db_isolation.py:51-60</code></td>
+</tr>
+<tr>
+<td>ui-state guard</td>
+<td><code>guardUiState</code></td>
+<td>The helper that gives a suite a known home layout and restores the account's layout afterwards.</td>
+<td>Arayüz durumu bekçisi</td>
+<td><code>web-client/_ui_state_guard.mjs:114</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="index.html">Contributing</a></li>
+<li><a href="e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li><a href="python-tests.html">Python tests</a></li>
+<li><a href="developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li><a href="../web-app/user-ui-state.html">User UI state</a></li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../contributing/developer-tools-and-scripts.html"><span class="eyebrow">Previous</span><span>Developer tools and scripts</span></a><a class="next" href="../contributing/e2e-suite-catalogue.html"><span class="eyebrow">Next</span><span>E2e suite catalogue</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#in-short">In short</a></li>
+<li class="lvl2"><a href="#how-it-works">How it works</a></li>
+<li class="lvl3"><a href="#the-run">The run</a></li>
+<li class="lvl3"><a href="#runner-options">Runner options</a></li>
+<li class="lvl3"><a href="#the-shared-base-module">The shared base module</a></li>
+<li class="lvl3"><a href="#the-ui-state-guard">The ui-state guard</a></li>
+<li class="lvl3"><a href="#fixtures">Fixtures</a></li>
+<li class="lvl2"><a href="#why-it-is-built-this-way">Why it is built this way</a></li>
+<li class="lvl2"><a href="#rules-and-boundaries">Rules and boundaries</a></li>
+<li class="lvl2"><a href="#interaction-with-other-parts">Interaction with other parts</a></li>
+<li class="lvl2"><a href="#limits-and-open-points">Limits and open points</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

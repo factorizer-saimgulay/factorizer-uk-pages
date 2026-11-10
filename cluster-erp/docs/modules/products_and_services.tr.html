@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Products and services modülü (products_and_services) · Cluster ERP Wiki</title>
+<meta name="description" content="Ürünleri, modelleri, versiyonları, kategorileri, tedarikçi kaynaklarını ve ölçü birimlerini içeren products_and_services modülü sayfası.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="tr"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menü</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.tr.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Wiki&#x27;de ara" aria-label="Wiki&#x27;de ara" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="Eşleşen sayfa yok."></div>
+  </div>
+  <a class="lang-switch" href="../modules/products_and_services.html" lang="en" hreflang="en">English</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Ana sayfa</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.tr.html">Cluster ERP wiki&#x27;si</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Genel bakış</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.tr.html">Genel bakış</a></li>
+<li class=""><a href="../overview/architecture-overview.tr.html">Mimariye genel bakış</a></li>
+<li class=""><a href="../overview/repository-map.tr.html">Depo haritası</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.tr.html">Cluster ERP nedir</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.tr.html">Platform çekirdeği</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.tr.html">Ekler, notlar ve depolama</a></li>
+<li class=""><a href="../platform/base-model-and-ids.tr.html">Temel model ve kimlikler</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.tr.html">Önbellek ve varlık damgası</a></li>
+<li class=""><a href="../platform/change-history.tr.html">Değişiklik geçmişi</a></li>
+<li class=""><a href="../platform/contracts-reference.tr.html">Sözleşmeler başvurusu</a></li>
+<li class=""><a href="../platform/database-and-sessions.tr.html">Veritabanı ve oturumlar</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.tr.html">Hatalar ve istisnalar</a></li>
+<li class=""><a href="../platform/event-bus.tr.html">Olay veri yolu</a></li>
+<li class=""><a href="../platform/metadata-model.tr.html">Metadata modeli</a></li>
+<li class=""><a href="../platform/module-lifecycle.tr.html">Modül yaşam döngüsü</a></li>
+<li class=""><a href="../platform/money-and-decimal.tr.html">Para ve Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.tr.html">PDF ve sistem postası</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.tr.html">Ürün kırılımı ve stok dönüşümü</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.tr.html">Referans veriler ve çekirdek i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.tr.html">İstek hattı ve ara katmanlar</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.tr.html">Arama, sayfalama ve toplu işlemler</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.tr.html">Sunucu açılışı ve uygulama fabrikası</a></li>
+<li class=""><a href="../platform/settings-reference.tr.html">Ayarlar başvurusu</a></li>
+<li class=""><a href="../platform/shared-server-routes.tr.html">Ortak sunucu rotaları</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.tr.html">Yumuşak silme ve kullanımdan kaldırma</a></li>
+<li class=""><a href="../platform/tenant-fields.tr.html">Kiracı alanları</a></li>
+<li class=""><a href="../platform/working-time.tr.html">Çalışma zamanı</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Kimlik ve erişim</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.tr.html">Kimlik, erişim, kiracılık, gizlilik ve lisans</a></li>
+<li class=""><a href="../identity-access/abac-policies.tr.html">ABAC politikaları</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.tr.html">Uygulama mağazası lisansları ve hakları</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.tr.html">Onaylar ve onay zincirleri</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.tr.html">Kimlik doğrulama ve oturumlar</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.tr.html">Alan ve satır erişimi</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.tr.html">Çok kiracılılık</a></li>
+<li class=""><a href="../identity-access/notification-rules.tr.html">Bildirim kuralları</a></li>
+<li class=""><a href="../identity-access/operator-console.tr.html">Operatör konsolu</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.tr.html">Gizlilik ve ilgili kişi başvuruları</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.tr.html">Roller ve izinler</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.tr.html">İkinci doğrulama adımı ve gizli değer saklama</a></li>
+<li class=""><a href="../identity-access/signup.tr.html">Kayıt</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web uygulaması</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.tr.html">Web uygulaması platformu</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.tr.html">Aksiyonlar ve aksiyon kartı</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.tr.html">Asistan ve sohbet ekranları</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.tr.html">Açılış, oturum ve API çağrıları</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.tr.html">Veri tazeleme ve değişiklik sinyalleri</a></li>
+<li class=""><a href="../web-app/device-classes.tr.html">Cihaz sınıfları</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.tr.html">Kapılı uygulama paketleri</a></li>
+<li class=""><a href="../web-app/generic-detail.tr.html">Genel ayrıntı</a></li>
+<li class=""><a href="../web-app/generic-form.tr.html">Genel form</a></li>
+<li class=""><a href="../web-app/generic-list.tr.html">Genel liste</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.tr.html">Genel ağaç ve ayar ekranları</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.tr.html">Ana ekran, dock ve başlatıcı</a></li>
+<li class=""><a href="../web-app/home-widgets.tr.html">Ana ekran bileşenleri</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.tr.html">Web uygulamasına dil ekleyin</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.tr.html">Metadata ile ekran ekleyin</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.tr.html">Uluslararasılaştırma ve diller</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.tr.html">Mail ve profil ekranları</a></li>
+<li class=""><a href="../web-app/metadata-rendering.tr.html">Metadata çizimi</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.tr.html">Modül uygulamaları ve uygulama kapsamı</a></li>
+<li class=""><a href="../web-app/overview.tr.html">Web uygulamasına genel bakış</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.tr.html">Kayıt belgeleri, görüntüleyici ve paylaşım</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.tr.html">Arama ve komut paleti</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.tr.html">Temalar, belirteçler ve erişilebilirlik</a></li>
+<li class=""><a href="../web-app/user-ui-state.tr.html">Kullanıcı arayüz durumu</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Masaüstü istemci</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.tr.html">Masaüstü istemci</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.tr.html">API istemcisi ve çalışanlar</a></li>
+<li class=""><a href="../desktop/chat-widget.tr.html">Sohbet bileşeni</a></li>
+<li class=""><a href="../desktop/generic-widgets.tr.html">Genel bileşenler</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.tr.html">Diller, temalar ve erişilebilirlik</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.tr.html">Metadata deposu ve yabancı anahtar önbelleği</a></li>
+<li class=""><a href="../desktop/module-screens.tr.html">Modül ekranları</a></li>
+<li class=""><a href="../desktop/overview.tr.html">Masaüstü istemciye genel bakış</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.tr.html">Masaüstü istemciyi çalıştırın</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.tr.html">Sinyal veri yolu ve watch_entity</a></li>
+<li class=""><a href="../desktop/tabs-panes-and-layout.tr.html">Sekmeler, bölmeler ve yerleşim</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">İş modülleri</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.tr.html">İş modülleri</a></li>
+<li class=""><a href="../modules/analytics/index.tr.html">Analytics modülü (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.tr.html">Analitik olgular</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.tr.html">Analitik tahmin ve sınıflandırma</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.tr.html">Analitik tarifleri ve sorgu kurucu</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.tr.html">Analitik raporları, özetleri ve çapraz</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.tr.html">Analitik istatistik ve çıkarım</a></li>
+<li class=""><a href="../modules/app_store.tr.html">App store modülü (app_store)</a></li>
+<li class=""><a href="../modules/auth.tr.html">Auth modülü (auth)</a></li>
+<li class=""><a href="../modules/bom.tr.html">BOM modülü (bom)</a></li>
+<li class=""><a href="../modules/calendars.tr.html">Calendars modülü (calendars)</a></li>
+<li class=""><a href="../modules/costing.tr.html">Costing modülü (costing)</a></li>
+<li class=""><a href="../modules/crm/index.tr.html">CRM modülü (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.tr.html">Müşteriler ve müşteri parçaları</a></li>
+<li class="sub"><a href="../modules/crm/inbox.tr.html">Teklif talebi gelen kutusu</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.tr.html">Müşteri teklif talepleri</a></li>
+<li class=""><a href="../modules/currencies.tr.html">Currencies modülü (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.tr.html">Design engineering modülü (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.tr.html">Documents modülü (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.tr.html">Fleet modülü (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.tr.html">Filo araçları</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.tr.html">Filo bakımı ve iş emirleri</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.tr.html">Filo sayaçları ve yakıt</a></li>
+<li class="sub"><a href="../modules/fleet/operations.tr.html">Filo operasyonları</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.tr.html">Filo TCO, telematik ve analitik</a></li>
+<li class=""><a href="../modules/intranet/index.tr.html">Intranet modülü (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.tr.html">İntranet erişimi, hedef kitlesi ve saklama</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.tr.html">İntranet içeriği ve akışı</a></li>
+<li class="sub"><a href="../modules/intranet/directory.tr.html">İntranet rehberi</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.tr.html">İntranet katılımı</a></li>
+<li class="sub"><a href="../modules/intranet/events.tr.html">İntranet etkinlikleri</a></li>
+<li class="sub"><a href="../modules/intranet/leave.tr.html">İntranet izinleri</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.tr.html">İntranet belgelerim</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.tr.html">İntranet bildirimleri ve tebligat</a></li>
+<li class="sub"><a href="../modules/intranet/requests.tr.html">İntranet talepleri</a></li>
+<li class=""><a href="../modules/inventory.tr.html">Inventory modülü (inventory)</a></li>
+<li class=""><a href="../modules/logs.tr.html">Logs modülü (logs)</a></li>
+<li class=""><a href="../modules/mail.tr.html">Mail modülü (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.tr.html">Nesting modülü (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.tr.html">Yerleşim motoru</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.tr.html">Yerleşim entegrasyonu ve KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.tr.html">Yerleşim işleri, parçalar ve artıklar</a></li>
+<li class=""><a href="../modules/owned_organisations.tr.html">Owned organisations modülü (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.tr.html">Parties modülü (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.tr.html">Adresler başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.tr.html">İletişim kanalları başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/parties.tr.html">Parties alt modülü başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.tr.html">Taraf birleştirme</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.tr.html">Kişi dilleri başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.tr.html">Parties ayarları ve başvuru verileri</a></li>
+<li class=""><a href="../modules/privacy.tr.html">Privacy modülü (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.tr.html">Procurement modülü (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.tr.html">Kritik malzemeler ve ikame</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.tr.html">Malzeme ihtiyaç planlaması</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.tr.html">Satın alma sözleşmeleri ve info kayıtları</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.tr.html">Satın alma siparişleri</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.tr.html">Satın alma talepleri</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.tr.html">Satın alma teklif talepleri</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.tr.html">Tedarikçiler</a></li>
+<li class=""><a href="../modules/production/index.tr.html">Production modülü (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.tr.html">Üretim emirleri ve versiyonları</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.tr.html">Rotalar ve operasyon tipleri</a></li>
+<li class="sub"><a href="../modules/production/scheduling.tr.html">Üretim çizelgeleme</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.tr.html">İş merkezleri ve kapasite</a></li>
+<li class="sub"><a href="../modules/production/work-orders.tr.html">İş emirleri</a></li>
+<li class="current"><a href="../modules/products_and_services.tr.html">Products and services modülü (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.tr.html">Projects modülü (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.tr.html">Proje aksiyonları, aktiviteleri ve toplantıları</a></li>
+<li class="sub"><a href="../modules/projects/board.tr.html">Proje panosu</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.tr.html">Projeler, kalemler ve fikstürler</a></li>
+<li class="sub"><a href="../modules/projects/schedules.tr.html">Proje çizelgeleri</a></li>
+<li class=""><a href="../modules/purchasing_quotations.tr.html">Purchasing quotations modülü (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.tr.html">Quotations modülü (quotations)</a></li>
+<li class=""><a href="../modules/records.tr.html">Records modülü (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.tr.html">Sales orders modülü (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.tr.html">Satış siparişleri ve sipariş kalemleri</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.tr.html">Sevkiyatlar</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.tr.html">İhracat belgeleri</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.tr.html">Satış siparişi birimleri ve ayarları</a></li>
+<li class=""><a href="../modules/subscriptions.tr.html">Subscriptions modülü (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Asistan</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.tr.html">Niyet asistanı</a></li>
+<li class=""><a href="../ai/intent-assistant.tr.html">Niyet asistanı nasıl çalışır</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API referansı</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.tr.html">API başvurusu</a></li>
+<li class=""><a href="../api/analytics.tr.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.tr.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.tr.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.tr.html">Kimlik doğrulama ve başlıklar</a></li>
+<li class=""><a href="../api/bom.tr.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.tr.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.tr.html">API kuralları</a></li>
+<li class=""><a href="../api/costing.tr.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.tr.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.tr.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.tr.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.tr.html">Documents API (documents)</a></li>
+<li class=""><a href="../api/errors.tr.html">Hatalar</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.tr.html">İş hata kodları</a></li>
+<li class=""><a href="../api/fleet.tr.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.tr.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.tr.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.tr.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.tr.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.tr.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.tr.html">API&#x27;ye genel bakış</a></li>
+<li class=""><a href="../api/owned_organisations.tr.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.tr.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.tr.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.tr.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.tr.html">Procurement API: Kritik malzemeler uç noktaları (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.tr.html">Procurement API: Satın alma bilgi kayıtları uç noktaları (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.tr.html">Procurement API: MRP uç noktaları (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.tr.html">Procurement API: Satın alma sözleşmeleri uç noktaları (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.tr.html">Procurement API: Satın alma siparişleri uç noktaları (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.tr.html">Procurement API: Satın alma talepleri uç noktaları (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.tr.html">Procurement API: Satın alma teklif talepleri uç noktaları (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.tr.html">Procurement API: İkame grupları uç noktaları (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.tr.html">Procurement API: Tedarikçiler uç noktaları (suppliers)</a></li>
+<li class=""><a href="../api/production.tr.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.tr.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.tr.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.tr.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.tr.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.tr.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.tr.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.tr.html">Paylaşılan sunucu yolları API</a></li>
+<li class=""><a href="../api/subscriptions.tr.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.tr.html">Sistem uç noktaları API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">İşletme</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.tr.html">İşletim</a></li>
+<li class=""><a href="../operations/backups-and-restore.tr.html">Yedekler ve geri yükleme</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.tr.html">CI hattı ve sürüm</a></li>
+<li class=""><a href="../operations/configuration-reference.tr.html">Yapılandırma başvurusu</a></li>
+<li class=""><a href="../operations/container-measurement.tr.html">Konteyner ölçümü</a></li>
+<li class=""><a href="../operations/data-residency-check.tr.html">Veri ikameti denetimi</a></li>
+<li class=""><a href="../operations/database-migrations.tr.html">Veritabanı göçleri</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.tr.html">Demo ve staging verisi</a></li>
+<li class=""><a href="../operations/environments-and-promotion.tr.html">Ortamlar ve terfi</a></li>
+<li class=""><a href="../operations/install-a-linux-node.tr.html">Bir Linux düğümü kurun</a></li>
+<li class=""><a href="../operations/local-development-setup.tr.html">Yerel geliştirme kurulumu</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.tr.html">PostgreSQL rolleri ve ayarı</a></li>
+<li class=""><a href="../operations/reverse-proxy.tr.html">Ters vekil sunucu</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.tr.html">Zamanlanmış işler ve saklama</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.tr.html">Security.txt ve hazırlık</a></li>
+<li class=""><a href="../operations/service-and-process-manager.tr.html">Servis ve süreç yöneticisi</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.tr.html">Kiracı yaşam döngüsü</a></li>
+<li class=""><a href="../operations/windows-installer.tr.html">Windows kurucusu</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Katkı</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.tr.html">Katkı</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.tr.html">Mimari sınırlar</a></li>
+<li class=""><a href="../contributing/coding-rules.tr.html">Kodlama kuralları</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.tr.html">Geliştirici araçları ve betikleri</a></li>
+<li class=""><a href="../contributing/e2e-battery.tr.html">E2e bataryası</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.tr.html">E2e süit kataloğu</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.tr.html">Lint ve tip denetimi</a></li>
+<li class=""><a href="../contributing/python-tests.tr.html">Python testleri</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.tr.html">Bir arka uç modülü yazın</a></li>
+<li class=""><a href="../contributing/writing-documentation.tr.html">Bir wiki sayfası yazın</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Karar kayıtları</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.tr.html">Karar kayıtları</a></li>
+<li class=""><a href="../decisions/data-driven-languages.tr.html">Veri güdümlü diller</a></li>
+<li class=""><a href="../decisions/decimal-money.tr.html">Decimal para</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.tr.html">Yalnız EventBus ile modüller arası iletişim</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.tr.html">Metadata güdümlü arayüz</a></li>
+<li class=""><a href="../decisions/no-hard-delete.tr.html">Fiziksel silme yok</a></li>
+<li class=""><a href="../decisions/party-unification.tr.html">Taraf birleşimi</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.tr.html">Ürün, model ve versiyon kırılımı</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.tr.html">Sunucu tarafı arayüz durumu</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.tr.html">ULID birincil anahtarlar</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Başvuru</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.tr.html">Başvuru</a></li>
+<li class=""><a href="../reference/glossary.tr.html">Sözlük</a></li>
+<li class=""><a href="../reference/related-material.tr.html">İlgili belgeler</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.tr.html">Ana sayfa</a> / İş modülleri</div>
+    <header class="page-head">
+      <p class="eyebrow">Modül</p>
+      <h1>Products and services modülü (products_and_services)</h1>
+      <p class="lede">Ürünleri, modelleri, versiyonları, kategorileri, tedarikçi kaynaklarını ve ölçü birimlerini içeren products_and_services modülü sayfası.</p>
+    </header>
+    <nav class="toc" aria-label="İçindekiler"><p class="eyebrow">İçindekiler</p><ul class="outline">
+<li class="lvl2"><a href="#bir-bakışta">Bir bakışta</a></li>
+<li class="lvl2"><a href="#modül-ne-yapar">Modül ne yapar</a></li>
+<li class="lvl2"><a href="#alt-modüller">Alt modüller</a></li>
+<li class="lvl2"><a href="#veri-modeli">Veri modeli</a></li>
+<li class="lvl3"><a href="#ürün-model-ve-versiyon-kırılımı">Ürün, model ve versiyon kırılımı</a></li>
+<li class="lvl3"><a href="#varlıklar">Varlıklar</a></li>
+<li class="lvl2"><a href="#ekranlar-ve-metadata">Ekranlar ve metadata</a></li>
+<li class="lvl2"><a href="#durumlar-ve-aksiyonlar">Durumlar ve aksiyonlar</a></li>
+<li class="lvl2"><a href="#i̇ş-kuralları">İş kuralları</a></li>
+<li class="lvl2"><a href="#olaylar-ve-sorgular">Olaylar ve sorgular</a></li>
+<li class="lvl2"><a href="#yetkiler">Yetkiler</a></li>
+<li class="lvl2"><a href="#gizlilik-saklama-ve-geçmiş">Gizlilik, saklama ve geçmiş</a></li>
+<li class="lvl2"><a href="#analitik-olguları">Analitik olguları</a></li>
+<li class="lvl2"><a href="#ayarlar-ve-başvuru-verileri">Ayarlar ve başvuru verileri</a></li>
+<li class="lvl2"><a href="#testler">Testler</a></li>
+<li class="lvl2"><a href="#tutarsızlıklar">Tutarsızlıklar</a></li>
+<li class="lvl2"><a href="#tanıtılan-terimler">Tanıtılan terimler</a></li>
+<li class="lvl2"><a href="#i̇lgili-sayfalar">İlgili sayfalar</a></li>
+</ul></nav>
+    <article class="prose">
+<p><code>src/cluster_erp/modules/products_and_services/</code> içindeki <code>products_and_services</code> modülü malzeme ana verisidir. Planlama, stok ebadı ve maliyet alanlarıyla ürünleri ve hizmetleri, zorunlu ürün, model ve versiyon kırılımını, bir kategori ağacını, kırılım başına tedarikçi kaynaklarını ve ölçü birimlerini tutar. Bir ürünü anan diğer her modül bu modüle EventBus üzerinden sorar. Ortak kırılım kuralı <a href="../platform/product-breakdown-and-stock-conversion.tr.html">ürün kırılımı ve stok dönüşümü</a> sayfasında açıklanır.</p>
+<h2 id="bir-bakışta">Bir bakışta<a class="headerlink" href="#bir-bakışta">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Öğe</th>
+<th>Değer</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Paket</td>
+<td><code>src/cluster_erp/modules/products_and_services/</code></td>
+<td>klasör</td>
+</tr>
+<tr>
+<td>Modül sınıfı</td>
+<td><code>Module</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/module.py:18</code></td>
+</tr>
+<tr>
+<td><code>name</code> / <code>version</code></td>
+<td><code>products_and_services</code> / <code>0.1.0</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/module.py:19-25</code></td>
+</tr>
+<tr>
+<td>API öneki</td>
+<td><code>/api/v1/products_and_services</code> (<code>ModuleBase.api_prefix</code>)</td>
+<td><code>src/cluster_erp/core/module_base.py:37-38</code></td>
+</tr>
+<tr>
+<td>Alt modüller</td>
+<td>6: <code>products</code>, <code>product_models</code>, <code>product_versions</code>, <code>categories</code>, <code>vendors</code>, <code>settings</code></td>
+<td>klasör listesi</td>
+</tr>
+<tr>
+<td>Tablolar</td>
+<td>9 (paketteki <code>__tablename__</code> sayısı)</td>
+<td><code>src/cluster_erp/modules/products_and_services/models.py</code></td>
+</tr>
+<tr>
+<td>Metadata'daki varlıklar</td>
+<td>7: <code>product</code>, <code>product_model</code>, <code>product_version</code>, <code>product_vendor</code>, <code>category</code>, <code>unit_category</code>, <code>unit</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/module.py:998-1006</code></td>
+</tr>
+<tr>
+<td>Uçlar</td>
+<td>Pakette 55 uç dekoratörü</td>
+<td><code>@router.</code> için <code>grep</code></td>
+</tr>
+<tr>
+<td>Web uygulamasında yeri</td>
+<td>Katalog uygulaması <code>products</code></td>
+<td><code>src/cluster_erp/modules/app_store/catalog.json</code> (<code>products</code> girdisi)</td>
+</tr>
+<tr>
+<td>Masaüstünde yeri</td>
+<td>Yalnızca genel bileşenler; <code>src/cluster_erp/desktop/modules/</code> içinde klasör yok</td>
+<td>klasör</td>
+</tr>
+</tbody>
+</table>
+<h2 id="modül-ne-yapar">Modül ne yapar<a class="headerlink" href="#modül-ne-yapar">¶</a></h2>
+<ul>
+<li>Ürünleri ve hizmetleri malzeme türü, dört yetenek bayrağı, durum, birimler, fiziksel veriler, stok ebadı ve üret-ya-da-satın-al verileri, planlama parametreleri, maliyet alanları ve ticari verilerle tutar (<code>src/cluster_erp/modules/products_and_services/products/models.py:20-351</code>).</li>
+<li>Her ürüne en az bir model ve her modele en az bir versiyon verir; böylece stok ve belgeler her zaman tam bir kırılıma kayıt atabilir (<code>src/cluster_erp/modules/products_and_services/product_versions/models.py:16-19</code>).</li>
+<li>Bir ürünü bir kategori ağacının birden çok kategorisine bağlar (<code>src/cluster_erp/modules/products_and_services/products/models.py:395-417</code>, <code>src/cluster_erp/modules/products_and_services/categories/models.py:11-30</code>).</li>
+<li>Tedarikçi kaynaklarını ürün, model, versiyon ve tedarikçi tarafı başına kaydeder (<code>src/cluster_erp/modules/products_and_services/vendors/models.py:14-63</code>).</li>
+<li>Dönüşüm katsayılarıyla birim kategorilerini ve birimleri tutar ve başlangıçta varsayılan bir küme tohumlar (<code>src/cluster_erp/modules/products_and_services/module.py:31-50</code>).</li>
+</ul>
+<h2 id="alt-modüller">Alt modüller<a class="headerlink" href="#alt-modüller">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Alt modül</th>
+<th>Amaç</th>
+<th>Ana varlıklar</th>
+<th>Yönlendirici</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>products</code></td>
+<td>Ürünler ve hizmetler, kategori bağları, hizmet bölümü, fotoğraf</td>
+<td><code>Product</code>, <code>ProductServiceAttributes</code>, <code>ProductCategoryLink</code></td>
+<td><code>/products</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/products/routes.py:32</code></td>
+</tr>
+<tr>
+<td><code>product_models</code></td>
+<td>Bir ürünün modelleri, fotoğraf</td>
+<td><code>ProductModel</code></td>
+<td><code>/models</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/product_models/routes.py:25</code></td>
+</tr>
+<tr>
+<td><code>product_versions</code></td>
+<td>Bir modelin versiyonları</td>
+<td><code>ProductVersion</code></td>
+<td><code>/versions</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/product_versions/routes.py:22</code></td>
+</tr>
+<tr>
+<td><code>categories</code></td>
+<td>Kategori ağacı</td>
+<td><code>ProductCategory</code></td>
+<td><code>/categories</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/categories/routes.py:22</code></td>
+</tr>
+<tr>
+<td><code>vendors</code></td>
+<td>Tedarikçi kaynakları</td>
+<td><code>ProductVendor</code></td>
+<td><code>/vendors</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/vendors/routes.py:24</code></td>
+</tr>
+<tr>
+<td><code>settings</code></td>
+<td>Birim kategorileri ve birimler</td>
+<td><code>UnitCategory</code>, <code>UnitOfMeasure</code></td>
+<td><code>/settings</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/settings/routes.py:29</code></td>
+</tr>
+</tbody>
+</table>
+<p>Yönlendirici yolları modül önekine görelidir; altı yönlendiricinin tamamı uygulama yetkisine bağlı tek bir modül yönlendiricisi altında durur (<code>src/cluster_erp/modules/products_and_services/module.py:75-83</code>).</p>
+<h2 id="veri-modeli">Veri modeli<a class="headerlink" href="#veri-modeli">¶</a></h2>
+<h3 id="ürün-model-ve-versiyon-kırılımı">Ürün, model ve versiyon kırılımı<a class="headerlink" href="#ürün-model-ve-versiyon-kırılımı">¶</a></h3>
+<p>Şema kırılım tablolarını ve onları gösteren satırları gösterir.</p>
+<figure class="diagram"><pre class="mermaid">erDiagram
+ Product ||--|{ ProductModel : &quot;product_id&quot;
+ ProductModel ||--|{ ProductVersion : &quot;product_model_id&quot;
+ Product ||--o{ ProductCategoryLink : &quot;product_id&quot;
+ ProductCategory ||--o{ ProductCategoryLink : &quot;category_id&quot;
+ Product ||--o| ProductServiceAttributes : &quot;product_id&quot;
+ ProductVersion ||--o{ ProductVendor : &quot;product_version_id&quot;
+ UnitCategory ||--|{ UnitOfMeasure : &quot;category_id&quot;
+ UnitOfMeasure ||--o{ Product : &quot;base_unit_id&quot;</pre></figure>
+<p>Düz anlatımla: bir ürünün bir veya daha fazla modeli, bir modelin bir veya daha fazla versiyonu vardır. Ürün başına tam olarak bir canlı model ve model başına tam olarak bir canlı versiyon <code>is_default</code> taşır; bunu kısmi benzersiz indeksler zorlar (<code>src/cluster_erp/modules/products_and_services/product_models/models.py:32-38</code>, <code>src/cluster_erp/modules/products_and_services/product_versions/models.py:35-41</code>). Bir versiyon adı kendi modeli içinde benzersizdir (<code>src/cluster_erp/modules/products_and_services/product_versions/models.py:42-49</code>). Bir ürünün kategori bağları ve, bir hizmetse, tek bir hizmet bölümü satırı vardır. Bir tedarikçi kaynağı bir ürünü, bir modeli, bir versiyonu ve bir tedarikçi tarafını belirtir (<code>src/cluster_erp/modules/products_and_services/vendors/models.py:16-49</code>). Birimler bir birim kategorisine aittir ve bir ürün temel, satın alma, satış, ağırlık, hacim ve boyut birimlerini gösterir (<code>src/cluster_erp/modules/products_and_services/products/models.py:103-138</code>).</p>
+<h3 id="varlıklar">Varlıklar<a class="headerlink" href="#varlıklar">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Varlık</th>
+<th>Tablo</th>
+<th>Anahtar alanlar</th>
+<th>Notlar</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Product</code></td>
+<td><code>products_products</code></td>
+<td><code>code</code>, <code>name</code>, <code>sku</code>, <code>barcode</code>, <code>material_type</code>, <code>category_id</code>, <code>is_purchasable</code>, <code>is_sellable</code>, <code>is_manufacturable</code>, <code>is_stockable</code>, <code>status</code>, <code>stock_form</code>, <code>sourcing_preference</code>, <code>standard_cost</code>, <code>extra</code></td>
+<td><code>sku</code> ve <code>barcode</code> canlı satırlar arasında benzersiz</td>
+<td><code>src/cluster_erp/modules/products_and_services/products/models.py:20-351</code></td>
+</tr>
+<tr>
+<td><code>ProductServiceAttributes</code></td>
+<td><code>products_service_attributes</code></td>
+<td><code>product_id</code>, <code>billing_method</code>, <code>rate_basis</code>, <code>standard_rate</code>, <code>currency_code</code>, <code>duration_value</code>, <code>is_billable</code></td>
+<td>ürün başına bir canlı satır</td>
+<td><code>src/cluster_erp/modules/products_and_services/products/models.py:353-392</code></td>
+</tr>
+<tr>
+<td><code>ProductCategoryLink</code></td>
+<td><code>products_product_category_links</code></td>
+<td><code>product_id</code>, <code>category_id</code></td>
+<td>canlı satırlar arasında benzersiz çift</td>
+<td><code>src/cluster_erp/modules/products_and_services/products/models.py:395-417</code></td>
+</tr>
+<tr>
+<td><code>ProductModel</code></td>
+<td><code>products_models</code></td>
+<td><code>code</code>, <code>product_id</code>, <code>name</code>, <code>sku</code>, <code>barcode</code>, <code>attributes</code>, <code>is_default</code>, <code>photo_attachment_id</code></td>
+<td>ürün başına bir canlı varsayılan</td>
+<td><code>src/cluster_erp/modules/products_and_services/product_models/models.py:17-66</code></td>
+</tr>
+<tr>
+<td><code>ProductVersion</code></td>
+<td><code>products_model_versions</code></td>
+<td><code>code</code>, <code>product_model_id</code>, <code>name</code>, <code>sku</code>, <code>barcode</code>, <code>attributes</code>, <code>is_default</code></td>
+<td>model başına bir canlı varsayılan</td>
+<td><code>src/cluster_erp/modules/products_and_services/product_versions/models.py:16-63</code></td>
+</tr>
+<tr>
+<td><code>ProductCategory</code></td>
+<td><code>products_categories</code></td>
+<td><code>code</code>, <code>name</code>, <code>parent_id</code>, <code>sort_order</code></td>
+<td>kendine başvuran ağaç</td>
+<td><code>src/cluster_erp/modules/products_and_services/categories/models.py:11-30</code></td>
+</tr>
+<tr>
+<td><code>ProductVendor</code></td>
+<td><code>products_product_vendors</code></td>
+<td><code>product_id</code>, <code>product_model_id</code>, <code>product_version_id</code>, <code>party_id</code>, <code>vendor_part_number</code>, <code>lead_time_days</code>, <code>unit_price</code>, <code>currency</code>, <code>is_preferred</code>, <code>valid_from</code>, <code>valid_to</code></td>
+<td>canlı satırlar arasında kırılım ve taraf başına benzersiz</td>
+<td><code>src/cluster_erp/modules/products_and_services/vendors/models.py:14-63</code></td>
+</tr>
+<tr>
+<td><code>UnitCategory</code></td>
+<td><code>products_unit_categories</code></td>
+<td><code>code</code>, <code>name</code>, <code>translations</code></td>
+<td>kod ve ad canlı satırlar arasında benzersiz</td>
+<td><code>src/cluster_erp/modules/products_and_services/settings/models.py:13-39</code></td>
+</tr>
+<tr>
+<td><code>UnitOfMeasure</code></td>
+<td><code>products_units_of_measure</code></td>
+<td><code>code</code>, <code>category_id</code>, <code>name</code>, <code>symbol</code>, <code>is_base_unit</code>, <code>conversion_factor</code>, <code>sort_order</code></td>
+<td><code>symbol</code> canlı satırlar arasında benzersiz; katsayı <code>Numeric(24, 6)</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/settings/models.py:42-79</code></td>
+</tr>
+</tbody>
+</table>
+<p>Para ve miktar sütunları <code>Numeric</code> türündedir; maliyetler ve tedarikçi fiyatları <code>Numeric(18, 4)</code> kullanır (<code>src/cluster_erp/modules/products_and_services/products/models.py:313-314</code>, <code>src/cluster_erp/modules/products_and_services/vendors/models.py:56</code>). Decimal değerler dizge olarak serileştirilir (<code>src/cluster_erp/modules/products_and_services/products/schemas.py:149-151</code>, <code>src/cluster_erp/modules/products_and_services/products/schemas.py:478-481</code>). Bkz. <a href="../platform/money-and-decimal.tr.html">para ve Decimal</a>.</p>
+<h2 id="ekranlar-ve-metadata">Ekranlar ve metadata<a class="headerlink" href="#ekranlar-ve-metadata">¶</a></h2>
+<p><code>get_metadata</code> üç bölümlü bir <strong>Ürünler ve Hizmetler</strong> (İngilizce <strong>Products &amp; Services</strong>) kenar çubuğu grubu bildirir: <strong>Ürünler</strong> (liste), <strong>Kategoriler</strong> (ağaç) ve <code>unit_category</code> ile <code>unit</code> sekmeli <strong>Ayarlar</strong> (<code>src/cluster_erp/modules/products_and_services/module.py:954-997</code>). Ürün ayrıntısında <strong>Genel</strong>, <strong>Hizmet</strong>, <strong>Fiziksel Özellikler</strong>, <strong>Envanter ve Planlama</strong>, <strong>Üretim ve Maliyet</strong>, <strong>Tedarikçiler</strong>, <strong>Modeller</strong>, <strong>Ürün Ağaçları</strong> ve <strong>Stok</strong> sekmeleri vardır (<code>src/cluster_erp/modules/products_and_services/products/metadata.py:222-295</code>). <strong>Hizmet</strong> sekmesi yalnızca <code>service</code> malzeme türü için görünür; fiziksel, envanter, üretim ve stok sekmeleri onun için gizlenir. <strong>Ürün Ağaçları</strong> sekmesi yalnızca üretilebilir ürünler için görünür ve <code>bom</code> modülünün listesini okur; <strong>Stok</strong> ise <code>inventory</code> modülünün listesini okur (<code>src/cluster_erp/modules/products_and_services/products/metadata.py:230-294</code>). Oluşturma formu ilk modelin adını, SKU'sunu ve barkodunu ve ilk versiyonun adını toplar (<code>src/cluster_erp/modules/products_and_services/products/metadata.py:381-424</code>). Ürünlerin ve modellerin fotoğrafları vardır (<code>src/cluster_erp/modules/products_and_services/products/metadata.py:118</code>, <code>src/cluster_erp/modules/products_and_services/products/metadata.py:1328</code>). Kategori ağacı <code>GET /categories/tree</code> kullanır (<code>src/cluster_erp/modules/products_and_services/categories/metadata.py:26-32</code>).</p>
+<h2 id="durumlar-ve-aksiyonlar">Durumlar ve aksiyonlar<a class="headerlink" href="#durumlar-ve-aksiyonlar">¶</a></h2>
+<p>Ürün durumları <code>draft</code>, <code>active</code>, <code>blocked</code> ve <code>obsolete</code> olur (<code>src/cluster_erp/modules/products_and_services/products/schemas.py:24-28</code>). Durum bir form alanıdır ve değişikliği <code>ProductStatusChanged</code> yayar (<code>src/cluster_erp/modules/products_and_services/products/services.py:590-598</code>). Modül tek bir <code>ActionMeta</code> bildirir.</p>
+<table>
+<thead>
+<tr>
+<th>Aksiyon</th>
+<th>Etiket</th>
+<th>Koşul</th>
+<th>Uç</th>
+<th>İzin</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>seed_defaults</code> (birim kategorisi)</td>
+<td><strong>Varsayılanları Yükle</strong></td>
+<td>yok (genel)</td>
+<td><code>POST /settings/unit-categories/seed-defaults</code></td>
+<td><code>unit_category.seed</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/settings/metadata.py:29-37</code>, <code>src/cluster_erp/modules/products_and_services/settings/routes.py:84-91</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="i̇ş-kuralları">İş kuralları<a class="headerlink" href="#i̇ş-kuralları">¶</a></h2>
+<ul>
+<li>Her malzeme türünün, yük bir bayrağı belirtmediğinde kullanılan varsayılan yetenek bayrakları vardır (<code>src/cluster_erp/modules/products_and_services/products/schemas.py:34-89</code>, <code>src/cluster_erp/modules/products_and_services/products/services.py:296-312</code>).</li>
+<li>Kesin kısıtlar: bir hizmet ne stoklanabilir ne üretilebilirdir, bir sarf malzemesi stoklanamaz ve bir hammadde üretilemez; ihlal <code>PRODUCT_CAPABILITY_VIOLATION</code> yanıtını verir (<code>src/cluster_erp/modules/products_and_services/products/schemas.py:91-95</code>, <code>src/cluster_erp/modules/products_and_services/products/services.py:671-683</code>).</li>
+<li>Stoklanamayan bir ürünün parti, seri, raf ömrü, emniyet stoku ve yeniden sipariş noktası alanları temizlenir (<code>src/cluster_erp/modules/products_and_services/products/services.py:48-55</code>, <code>src/cluster_erp/modules/products_and_services/products/services.py:316-318</code>).</li>
+<li>SKU ve barkod canlı ürünler arasında boş olmalıdır (<code>src/cluster_erp/modules/products_and_services/products/services.py:272-292</code>).</li>
+<li>Bir ürün oluşturmak varsayılan modelini oluşturur; ad verilmezse model ürünün adını alır. Model de varsayılan versiyonunu oluşturur; versiyonun adı varsayılan olarak <code>1</code> olur (<code>src/cluster_erp/modules/products_and_services/products/services.py:376-395</code>, <code>src/cluster_erp/modules/products_and_services/product_models/services.py:103-112</code>, <code>src/cluster_erp/modules/products_and_services/product_models/schemas.py:22</code>).</li>
+<li>Bir ürünün ilk modeli ve bir modelin ilk versiyonu varsayılan olur; yeni bir varsayılan bayrağı eskisinden alır (<code>src/cluster_erp/modules/products_and_services/product_models/services.py:78-99</code>, <code>src/cluster_erp/modules/products_and_services/product_versions/services.py:72-90</code>).</li>
+<li>Varsayılan model veya versiyon varsayılanlıktan düşürülemez, kullanımdan kaldırılamaz veya silinemez; yanıt HTTP 409 ile <code>PRODUCT_MODEL_DEFAULT_PROTECTED</code> veya <code>PRODUCT_VERSION_DEFAULT_PROTECTED</code> olur (<code>src/cluster_erp/modules/products_and_services/product_models/services.py:115-160</code>, <code>src/cluster_erp/modules/products_and_services/product_versions/services.py:92-140</code>).</li>
+<li>Etkin bir ürün ağacı versiyonunun canlı bileşeni olan bir ürün silinemez; modül <code>bom</code> modülüne <code>GetPartUsageCounts</code> ile sorar ve <code>PRODUCT_IN_ACTIVE_BOM</code> yanıtını verir (<code>src/cluster_erp/modules/products_and_services/products/services.py:604-626</code>).</li>
+<li>Bir ürünü silmek kategori bağlarını ve hizmet bölümünü de aynı zaman damgasıyla geçici olarak siler; yeniden etkinleştirmek onları geri getirir (<code>src/cluster_erp/modules/products_and_services/products/services.py:628-660</code>, <code>src/cluster_erp/modules/products_and_services/module.py:165-236</code>).</li>
+<li>Bir üründe belirtilen her kategori canlı olmalıdır; ilki normalleştirilmemiş <code>category_id</code> olur (<code>src/cluster_erp/modules/products_and_services/products/services.py:151-206</code>).</li>
+<li>Bir tedarikçi kaynağı ürünün ve tarafın var olduğunu denetler, kırılımı doğrular ve aynı kırılım ve taraf için ikinci bir canlı kaynağı HTTP 409 ile reddeder (<code>src/cluster_erp/modules/products_and_services/vendors/services.py:94-143</code>).</li>
+<li>Birim dönüşümü yalnızca tek bir birim kategorisi içinde çalışır: değer çarpı kaynak katsayı, bölü hedef katsayı (<code>src/cluster_erp/modules/products_and_services/settings/services.py:237-247</code>). Tohumda 13 birim kategorisi vardır (<code>src/cluster_erp/modules/products_and_services/settings/seed_data.py</code>, <code>code</code> anahtarlı girdiler).</li>
+<li>Kodlar <code>product</code>, <code>product_model</code>, <code>product_version</code>, <code>product_category</code> ve <code>unit_of_measure</code> yıllık dizilerinden gelir (<code>src/cluster_erp/modules/products_and_services/products/services.py:325</code>, <code>src/cluster_erp/modules/products_and_services/product_models/services.py:79</code>, <code>src/cluster_erp/modules/products_and_services/product_versions/services.py:73</code>).</li>
+</ul>
+<h2 id="olaylar-ve-sorgular">Olaylar ve sorgular<a class="headerlink" href="#olaylar-ve-sorgular">¶</a></h2>
+<p>Modül 19 sözleşme tüketir ve 8 sözleşme üretir; sayım <a href="parties/index.tr.html">parties modülü</a> sayfasındaki gibi yapıldı. Üreticilerin ve tüketicilerin tam listesi <a href="../platform/contracts-reference.tr.html">sözleşmeler başvurusu</a> sayfasındadır.</p>
+<table>
+<thead>
+<tr>
+<th>Yön</th>
+<th>Sözleşme sınıfı</th>
+<th>İşleyici veya yayan</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>yayar</td>
+<td><code>ProductCreated</code>, <code>ServiceCreated</code></td>
+<td><code>ProductService.create</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/products/services.py:407-424</code></td>
+</tr>
+<tr>
+<td>yayar</td>
+<td><code>ProductUpdated</code>, <code>ProductStatusChanged</code></td>
+<td><code>ProductService.update</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/products/services.py:582-598</code></td>
+</tr>
+<tr>
+<td>yayar</td>
+<td><code>ProductDeleted</code></td>
+<td><code>ProductService.delete</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/products/services.py:652-659</code></td>
+</tr>
+<tr>
+<td>sorgular</td>
+<td><code>GetPartUsageCounts</code>, <code>GetProductById</code>, <code>GetPartyById</code></td>
+<td>ürün silme; tedarikçi oluşturma</td>
+<td><code>src/cluster_erp/modules/products_and_services/products/services.py:609-616</code>, <code>src/cluster_erp/modules/products_and_services/vendors/services.py:96-111</code></td>
+</tr>
+<tr>
+<td>sorguyu yanıtlar</td>
+<td><code>ValidateProductBreakdown</code>, <code>GetProductDefaultBreakdown</code>, <code>GetBulkProductDefaultBreakdowns</code></td>
+<td><code>_handle_validate_breakdown</code>, <code>_handle_default_breakdown</code>, <code>_handle_bulk_default_breakdowns</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/module.py:131-138</code>, <code>src/cluster_erp/modules/products_and_services/module.py:759-916</code></td>
+</tr>
+<tr>
+<td>sorguyu yanıtlar</td>
+<td><code>GetProductById</code></td>
+<td><code>_handle_get_product</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/module.py:108</code>, <code>src/cluster_erp/modules/products_and_services/module.py:238-317</code></td>
+</tr>
+<tr>
+<td>sorguyu yanıtlar</td>
+<td><code>ConvertQuantity</code>, <code>GetUnitOfMeasure</code>, <code>FindUnitOfMeasure</code></td>
+<td>birim işleyicileri</td>
+<td><code>src/cluster_erp/modules/products_and_services/module.py:109-115</code></td>
+</tr>
+<tr>
+<td>sorguyu yanıtlar</td>
+<td><code>IsProductManufacturable</code>, <code>IsProductPurchasable</code>, <code>IsProductSellable</code>, <code>GetProductsByMaterialType</code></td>
+<td>bayrak işleyicileri</td>
+<td><code>src/cluster_erp/modules/products_and_services/module.py:116-119</code></td>
+</tr>
+<tr>
+<td>sorguyu yanıtlar</td>
+<td><code>GetProductVendors</code>, <code>GetBulkProductVendors</code>, <code>GetProductPlanningData</code>, <code>SetProductPlanningClassification</code>, <code>ApplyProductBufferZones</code></td>
+<td>planlama işleyicileri</td>
+<td><code>src/cluster_erp/modules/products_and_services/module.py:120-130</code></td>
+</tr>
+<tr>
+<td>sorguyu yanıtlar</td>
+<td><code>CreateScaffoldIntermediate</code></td>
+<td><code>_handle_create_scaffold_intermediate</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/module.py:133-135</code>, <code>src/cluster_erp/modules/products_and_services/module.py:806-875</code></td>
+</tr>
+<tr>
+<td>abone olur</td>
+<td><code>RecordActivated</code>, <code>DescribeAnalyticsFacts</code></td>
+<td><code>_on_record_activated</code>, <code>describe_analytics_facts</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/module.py:107</code>, <code>src/cluster_erp/modules/products_and_services/module.py:142-147</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>CreateScaffoldIntermediate</code>, bir rota operasyonunun çıktısı için stoklanabilir ama üretilemez bir yarı mamul ürünü oluşturur veya SKU'ya göre yeniden kullanır (<code>src/cluster_erp/modules/products_and_services/module.py:806-875</code>). <a href="bom.tr.html">BOM modülü</a> sayfasında anlatılan rota iskeleti tarafından kullanılır.</p>
+<h2 id="yetkiler">Yetkiler<a class="headerlink" href="#yetkiler">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>İzin anahtarı</th>
+<th>Kullanan</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>product.read</code>, <code>.create</code>, <code>.update</code>, <code>.delete</code>, <code>.bulk_delete</code></td>
+<td>ürün ve fotoğraf uçları</td>
+<td><code>src/cluster_erp/modules/products_and_services/products/routes.py:55-266</code></td>
+</tr>
+<tr>
+<td><code>product_model.read</code>, <code>.create</code>, <code>.update</code>, <code>.delete</code>, <code>.bulk_delete</code></td>
+<td>model ve fotoğraf uçları</td>
+<td><code>src/cluster_erp/modules/products_and_services/product_models/routes.py:32-199</code></td>
+</tr>
+<tr>
+<td><code>product_version.read</code>, <code>.create</code>, <code>.update</code>, <code>.delete</code>, <code>.bulk_delete</code></td>
+<td>versiyon uçları</td>
+<td><code>src/cluster_erp/modules/products_and_services/product_versions/routes.py:29-101</code></td>
+</tr>
+<tr>
+<td><code>category.read</code>, <code>.create</code>, <code>.update</code>, <code>.delete</code>, <code>.bulk_delete</code></td>
+<td>kategori uçları</td>
+<td><code>src/cluster_erp/modules/products_and_services/categories/routes.py:28-97</code></td>
+</tr>
+<tr>
+<td><code>product_vendor.read</code>, <code>.create</code>, <code>.update</code>, <code>.delete</code>, <code>.bulk_delete</code></td>
+<td>tedarikçi uçları</td>
+<td><code>src/cluster_erp/modules/products_and_services/vendors/routes.py:34-127</code></td>
+</tr>
+<tr>
+<td><code>unit_category.*</code>, <code>unit.*</code></td>
+<td>birim uçları</td>
+<td><code>src/cluster_erp/modules/products_and_services/settings/routes.py:59-265</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="gizlilik-saklama-ve-geçmiş">Gizlilik, saklama ve geçmiş<a class="headerlink" href="#gizlilik-saklama-ve-geçmiş">¶</a></h2>
+<p>Modül kendine ait kişisel veri saklamaz ve <code>privacy_handlers.py</code> dosyası yoktur. Bir tedarikçi kaynağı, tedarikçi tarafının görünen adını <code>vendor_name_cache</code> içinde tutar (<code>src/cluster_erp/modules/products_and_services/vendors/models.py:51</code>, <code>src/cluster_erp/modules/products_and_services/vendors/services.py:145-148</code>). Değişiklikler <a href="../platform/change-history.tr.html">değişiklik geçmişi</a> tarafından kaydedilir.</p>
+<h2 id="analitik-olguları">Analitik olguları<a class="headerlink" href="#analitik-olguları">¶</a></h2>
+<p><code>analytics_facts.py</code>, <code>products_products</code> üzerinde tek bir olgu kümesi, <code>product</code>, bildirir; boyutları malzeme türü, durum, stok biçimi, temin tercihi, ABC göstergesi, aktif ve oluşturulma tarihi, ölçüleri <code>product_count</code> ve <code>average_lead_time_days</code> olur (<code>src/cluster_erp/modules/products_and_services/analytics_facts.py:21-87</code>).</p>
+<h2 id="ayarlar-ve-başvuru-verileri">Ayarlar ve başvuru verileri<a class="headerlink" href="#ayarlar-ve-başvuru-verileri">¶</a></h2>
+<p>Birim kategorileri ve birimler veritabanındaki başvuru verileridir. Modül her başlangıçta varsayılan kümeyi <code>UNIT_SEED_DATA</code> içinden tohumlar (<code>src/cluster_erp/modules/products_and_services/module.py:37-50</code>, <code>src/cluster_erp/modules/products_and_services/settings/services.py:86-150</code>). <strong>Varsayılanları Yükle</strong> aksiyonu aynı tohumlamayı istek üzerine çalıştırır.</p>
+<h2 id="testler">Testler<a class="headerlink" href="#testler">¶</a></h2>
+<p><code>tests/</code> içinde <code>modules.products_and_services</code> için <code>grep</code> ile ve <code>web-client/</code> içinde dosya adıyla bulundu.</p>
+<table>
+<thead>
+<tr>
+<th>Tür</th>
+<th>Dosya</th>
+<th>Kapsam</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pytest</td>
+<td><code>tests/test_bom_bugfix_batch_2026_10_08.py</code></td>
+<td>ürün ağacı formlarının kullandığı ürün metadata'sı, birim tohum verisi ve birim seçicileri (10 test)</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_products.mjs</code></td>
+<td>ürünler uygulaması: liste, kategori ağacı, ayrıntı, ayarlar</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_products_service.mjs</code></td>
+<td>hizmet bölümü, çoklu kategori ve türe duyarlı form</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_product_model_versions.mjs</code></td>
+<td>web uygulamasında ürün, model ve versiyon zinciri</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_make_or_buy_stock.mjs</code></td>
+<td>stok ebadı, üret-ya-da-satın-al ve stok malzemesi kırılımı</td>
+</tr>
+</tbody>
+</table>
+<h2 id="tutarsızlıklar">Tutarsızlıklar<a class="headerlink" href="#tutarsızlıklar">¶</a></h2>
+<aside class="adm adm-warning" role="note"><p class="adm-title">Uyarı</p><p>Tutarsızlık. Projenin yazılı mühendislik kuralları bir model veya versiyon eksik olduğunda sessiz bir geri dönüşü yasaklar. Bir güncelleme bir stok malzemesini veya bir takip ürününü model ve versiyon olmadan belirttiğinde <code>ProductService</code> bunları o ürünün varsayılan modeli ve versiyonuyla doldurur ve yalnızca varsayılan yoksa 422 yanıtı verir (<code>src/cluster_erp/modules/products_and_services/products/services.py:427-500</code>, <code>src/cluster_erp/modules/products_and_services/products/services.py:556-562</code>). Saklanan satır her zaman üç kimliği de taşır. Bu sayfa kodu belgeler.</p>
+<p><strong>Uyarı:</strong> Tutarsızlık. Projenin yazılı mühendislik kuralları bir <code>desktop/modules/products_and_services/</code> masaüstü klasörü listeler. <code>src/cluster_erp/desktop/modules/</code> klasöründe böyle bir klasör yoktur. Bu sayfa kodu belgeler.</p>
+</aside>
+<h2 id="tanıtılan-terimler">Tanıtılan terimler<a class="headerlink" href="#tanıtılan-terimler">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Terim</th>
+<th>Kod tanımlayıcısı</th>
+<th>Tanım</th>
+<th>Türkçe terim</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>product</td>
+<td><code>Product</code></td>
+<td>Malzeme ana verisindeki bir kalem veya hizmet.</td>
+<td>Ürün</td>
+<td><code>src/cluster_erp/modules/products_and_services/products/models.py:20</code></td>
+</tr>
+<tr>
+<td>product model</td>
+<td><code>ProductModel</code></td>
+<td>Bir ürünün bir varyantı; her ürünün varsayılan bir modeli vardır.</td>
+<td>Ürün modeli</td>
+<td><code>src/cluster_erp/modules/products_and_services/product_models/models.py:17</code></td>
+</tr>
+<tr>
+<td>product version</td>
+<td><code>ProductVersion</code></td>
+<td>Bir modelin bir versiyonu; stok ürün, model ve versiyon başına tutulur.</td>
+<td>Ürün versiyonu</td>
+<td><code>src/cluster_erp/modules/products_and_services/product_versions/models.py:16</code></td>
+</tr>
+<tr>
+<td>material type</td>
+<td><code>material_type</code></td>
+<td>Varsayılan yetenek bayraklarını belirleyen ürün çeşidi.</td>
+<td>Malzeme türü</td>
+<td><code>src/cluster_erp/modules/products_and_services/products/schemas.py:12-21</code></td>
+</tr>
+<tr>
+<td>vendor source</td>
+<td><code>ProductVendor</code></td>
+<td>Bir ürün kırılımını fiyat ve teslim süresiyle tedarik eden bir tedarikçi tarafı.</td>
+<td>Tedarikçi kaynağı</td>
+<td><code>src/cluster_erp/modules/products_and_services/vendors/models.py:14</code></td>
+</tr>
+<tr>
+<td>unit of measure</td>
+<td><code>UnitOfMeasure</code></td>
+<td>Birim kategorisi içinde dönüşüm katsayısı olan bir birim.</td>
+<td>Ölçü birimi</td>
+<td><code>src/cluster_erp/modules/products_and_services/settings/models.py:42</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="i̇lgili-sayfalar">İlgili sayfalar<a class="headerlink" href="#i̇lgili-sayfalar">¶</a></h2>
+<ul>
+<li><a href="index.tr.html">Modüller dizini</a></li>
+<li><a href="../platform/product-breakdown-and-stock-conversion.tr.html">Ürün kırılımı ve stok dönüşümü</a></li>
+<li><a href="../decisions/product-model-version-breakdown.tr.html">Ürün, model ve versiyon kırılımı karar kaydı</a></li>
+<li><a href="bom.tr.html">BOM modülü</a></li>
+<li><a href="inventory.tr.html">Inventory modülü</a></li>
+<li><a href="../api/products_and_services.tr.html">Bu modülün API başvurusu</a></li>
+<li>İlgili malzeme, tarihsel, doğrulanmadı: ağaç içi not <code>src/cluster_erp/modules/products_and_services/docs/how-to.md</code>. Ürün versiyonlarından söz etmez ve ürün modelinde bulunmayan <code>default_unit_id</code> adlı bir alan kullanır (<code>src/cluster_erp/modules/products_and_services/products/models.py:103-116</code>).</li>
+</ul>
+<hr>
+<p>7793ff4 numaralı commit ile 2026-11-09 tarihinde doğrulandı.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Doğrulanan commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../modules/production/work-orders.tr.html"><span class="eyebrow">Önceki</span><span>İş emirleri</span></a><a class="next" href="../modules/projects/index.tr.html"><span class="eyebrow">Sonraki</span><span>Projects modülü (projects)</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">Bu sayfada</p><ul class="outline">
+<li class="lvl2"><a href="#bir-bakışta">Bir bakışta</a></li>
+<li class="lvl2"><a href="#modül-ne-yapar">Modül ne yapar</a></li>
+<li class="lvl2"><a href="#alt-modüller">Alt modüller</a></li>
+<li class="lvl2"><a href="#veri-modeli">Veri modeli</a></li>
+<li class="lvl3"><a href="#ürün-model-ve-versiyon-kırılımı">Ürün, model ve versiyon kırılımı</a></li>
+<li class="lvl3"><a href="#varlıklar">Varlıklar</a></li>
+<li class="lvl2"><a href="#ekranlar-ve-metadata">Ekranlar ve metadata</a></li>
+<li class="lvl2"><a href="#durumlar-ve-aksiyonlar">Durumlar ve aksiyonlar</a></li>
+<li class="lvl2"><a href="#i̇ş-kuralları">İş kuralları</a></li>
+<li class="lvl2"><a href="#olaylar-ve-sorgular">Olaylar ve sorgular</a></li>
+<li class="lvl2"><a href="#yetkiler">Yetkiler</a></li>
+<li class="lvl2"><a href="#gizlilik-saklama-ve-geçmiş">Gizlilik, saklama ve geçmiş</a></li>
+<li class="lvl2"><a href="#analitik-olguları">Analitik olguları</a></li>
+<li class="lvl2"><a href="#ayarlar-ve-başvuru-verileri">Ayarlar ve başvuru verileri</a></li>
+<li class="lvl2"><a href="#testler">Testler</a></li>
+<li class="lvl2"><a href="#tutarsızlıklar">Tutarsızlıklar</a></li>
+<li class="lvl2"><a href="#tanıtılan-terimler">Tanıtılan terimler</a></li>
+<li class="lvl2"><a href="#i̇lgili-sayfalar">İlgili sayfalar</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>docs/wiki altındaki Markdown kaynaklarından derlendi</span></footer>
+</body>
+</html>

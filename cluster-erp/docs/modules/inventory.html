@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inventory module (inventory) · Cluster ERP Wiki</title>
+<meta name="description" content="Module page for inventory, the warehouses, storage locations, stock levels per product breakdown, goods movements, reservations, batches, and serial numbers.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../modules/inventory.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.html">Overview</a></li>
+<li class=""><a href="../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.html">Platform core</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../platform/change-history.html">Change history</a></li>
+<li class=""><a href="../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../platform/event-bus.html">Event bus</a></li>
+<li class=""><a href="../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class=""><a href="../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../web-app/generic-form.html">Generic form</a></li>
+<li class=""><a href="../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class=""><a href="../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.html">Desktop client</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class=""><a href="../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.html">Business modules</a></li>
+<li class=""><a href="../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class=""><a href="../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../modules/auth.html">Auth module (auth)</a></li>
+<li class=""><a href="../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class=""><a href="../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class=""><a href="../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../modules/intranet/requests.html">Intranet requests</a></li>
+<li class="current"><a href="../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../modules/mail.html">Mail module (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class=""><a href="../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../modules/production/work-orders.html">Work orders</a></li>
+<li class=""><a href="../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.html">API reference</a></li>
+<li class=""><a href="../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.html">Documents API (documents)</a></li>
+<li class=""><a href="../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.html">API overview</a></li>
+<li class=""><a href="../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class=""><a href="../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.html">Operations</a></li>
+<li class=""><a href="../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class=""><a href="../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class=""><a href="../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.html">Reference</a></li>
+<li class=""><a href="../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.html">Home</a> / Business modules</div>
+    <header class="page-head">
+      <p class="eyebrow">Module</p>
+      <h1>Inventory module (inventory)</h1>
+      <p class="lede">Module page for inventory, the warehouses, storage locations, stock levels per product breakdown, goods movements, reservations, batches, and serial numbers.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#at-a-glance">At a glance</a></li>
+<li class="lvl2"><a href="#what-the-module-does">What the module does</a></li>
+<li class="lvl2"><a href="#sub-modules">Sub-modules</a></li>
+<li class="lvl2"><a href="#data-model">Data model</a></li>
+<li class="lvl2"><a href="#screens-and-metadata">Screens and metadata</a></li>
+<li class="lvl2"><a href="#status-and-actions">Status and actions</a></li>
+<li class="lvl2"><a href="#business-rules">Business rules</a></li>
+<li class="lvl2"><a href="#events-and-queries">Events and queries</a></li>
+<li class="lvl2"><a href="#permissions">Permissions</a></li>
+<li class="lvl2"><a href="#privacy-retention-and-history">Privacy, retention, and history</a></li>
+<li class="lvl2"><a href="#analytics-facts">Analytics facts</a></li>
+<li class="lvl2"><a href="#settings-and-reference-data">Settings and reference data</a></li>
+<li class="lvl2"><a href="#tests">Tests</a></li>
+<li class="lvl2"><a href="#discrepancies">Discrepancies</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p>The <code>inventory</code> module in <code>src/cluster_erp/modules/inventory/</code> keeps the stock of the company. It holds warehouses and storage locations, one stock level row per product, model, version, place, batch, owning project, and custodian, and the goods movements that change those rows. It also manages stock reservations, usage decisions on received goods, project stock loans, batches, and serial numbers. Purchasing, production, nesting, and sales post their stock changes to this module through the EventBus.</p>
+<h2 id="at-a-glance">At a glance<a class="headerlink" href="#at-a-glance">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Value</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Package</td>
+<td><code>src/cluster_erp/modules/inventory/</code></td>
+<td>folder</td>
+</tr>
+<tr>
+<td>Module class</td>
+<td><code>Module</code></td>
+<td><code>src/cluster_erp/modules/inventory/module.py:16</code></td>
+</tr>
+<tr>
+<td><code>name</code> / <code>version</code></td>
+<td><code>inventory</code> / <code>0.1.0</code></td>
+<td><code>src/cluster_erp/modules/inventory/module.py:17-23</code></td>
+</tr>
+<tr>
+<td>API prefix</td>
+<td><code>/api/v1/inventory</code> (<code>ModuleBase.api_prefix</code>)</td>
+<td><code>src/cluster_erp/core/module_base.py:37-38</code></td>
+</tr>
+<tr>
+<td>Sub-modules</td>
+<td>3: <code>warehouses</code>, <code>stock</code>, <code>batches</code></td>
+<td>folder listing</td>
+</tr>
+<tr>
+<td>Tables</td>
+<td>9: <code>inventory_warehouses</code>, <code>inventory_storage_locations</code>, <code>inventory_stock_levels</code>, <code>inventory_goods_movements</code>, <code>inventory_usage_decisions</code>, <code>inventory_stock_reservations</code>, <code>inventory_project_stock_loans</code>, <code>inventory_batches</code>, <code>inventory_serial_numbers</code></td>
+<td><code>__tablename__</code> in the three <code>models.py</code> files</td>
+</tr>
+<tr>
+<td>Entities in metadata</td>
+<td>14 keys in <code>entities</code></td>
+<td><code>src/cluster_erp/modules/inventory/module.py:628-643</code></td>
+</tr>
+<tr>
+<td>Routes</td>
+<td>51 route decorators in the package</td>
+<td><code>grep</code> for <code>@...router.get/post/put/patch/delete</code></td>
+</tr>
+<tr>
+<td>Actions</td>
+<td>16 <code>ActionMeta</code> entries</td>
+<td><code>grep "ActionMeta("</code> in the package</td>
+</tr>
+<tr>
+<td>Migrations</td>
+<td>17 files</td>
+<td>files in <code>migrations/versions/</code> whose text contains one of the nine table names</td>
+</tr>
+<tr>
+<td>Web app presence</td>
+<td>Catalogue app <code>inventory</code>; the custom widget <code>warehouse_dashboard</code> from a gated bundle</td>
+<td><code>src/cluster_erp/modules/app_store/catalog.json</code> (entry <code>inventory</code>), <code>gated_apps/inventory/app.js:170</code></td>
+</tr>
+<tr>
+<td>Desktop presence</td>
+<td><code>src/cluster_erp/desktop/modules/inventory/</code> (<code>warehouse_dashboard.py</code>)</td>
+<td>folder</td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-the-module-does">What the module does<a class="headerlink" href="#what-the-module-does">¶</a></h2>
+<ul>
+<li>Keeps warehouses with a code that is unique among live rows, and their storage locations (<code>src/cluster_erp/modules/inventory/warehouses/models.py:13-71</code>).</li>
+<li>Keeps stock per product, model, and version. The quantity is split into six categories: unrestricted, reserved, quality, blocked, blocked at goods receipt, and returns (<code>src/cluster_erp/modules/inventory/stock/models.py:25-123</code>).</li>
+<li>Posts goods movements of 13 types and writes one movement row per change (<code>src/cluster_erp/modules/inventory/stock/services.py:78-92</code>).</li>
+<li>Reserves unrestricted stock for a reference and later consumes or cancels the reservation (<code>src/cluster_erp/modules/inventory/stock/services.py:1901-2080</code>).</li>
+<li>Records a usage decision on a received quantity and posts the follow-up movement (<code>src/cluster_erp/modules/inventory/stock/services.py:1496-1666</code>).</li>
+<li>Moves stock between a project stripe and common stock, and lends stock between stripes with a payback (<code>src/cluster_erp/modules/inventory/stock/services.py:542-800</code>).</li>
+<li>Tracks batches with origin, expiry, and status, and serial numbers with status (<code>src/cluster_erp/modules/inventory/batches/models.py:14-125</code>).</li>
+<li>Serves a warehouse dashboard read model (<code>src/cluster_erp/modules/inventory/warehouses/services.py:145</code>).</li>
+</ul>
+<h2 id="sub-modules">Sub-modules<a class="headerlink" href="#sub-modules">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Sub-module</th>
+<th>Purpose</th>
+<th>Main entities</th>
+<th>Router</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>warehouses</code></td>
+<td>Warehouses, storage locations, dashboard</td>
+<td><code>Warehouse</code>, <code>StorageLocation</code></td>
+<td><code>/warehouses</code>, <code>/locations</code></td>
+<td><code>src/cluster_erp/modules/inventory/warehouses/routes.py:33-34</code></td>
+</tr>
+<tr>
+<td><code>stock</code></td>
+<td>Stock levels, movements, reservations, usage decisions, loans</td>
+<td><code>StockLevel</code>, <code>GoodsMovement</code>, <code>StockReservation</code>, <code>UsageDecision</code>, <code>ProjectStockLoan</code></td>
+<td><code>/stock</code>, <code>/movements</code>, <code>/reservations</code>, <code>/usage-decisions</code></td>
+<td><code>src/cluster_erp/modules/inventory/stock/routes.py:47-53</code></td>
+</tr>
+<tr>
+<td><code>batches</code></td>
+<td>Batches and serial numbers</td>
+<td><code>Batch</code>, <code>SerialNumber</code></td>
+<td><code>/batches</code>, <code>/serial-numbers</code></td>
+<td><code>src/cluster_erp/modules/inventory/batches/routes.py:33-34</code></td>
+</tr>
+</tbody>
+</table>
+<p>All routers are mounted under the module prefix with the app entitlement dependency <code>require_app("inventory")</code> (<code>src/cluster_erp/modules/inventory/module.py:52-62</code>).</p>
+<h2 id="data-model">Data model<a class="headerlink" href="#data-model">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Entity</th>
+<th>Table</th>
+<th>Key fields</th>
+<th>Notes</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Warehouse</code></td>
+<td><code>inventory_warehouses</code></td>
+<td><code>code</code>, <code>name</code>, <code>address</code>, <code>is_active</code>, <code>extra</code></td>
+<td><code>code</code> unique among live rows</td>
+<td><code>src/cluster_erp/modules/inventory/warehouses/models.py:13-46</code></td>
+</tr>
+<tr>
+<td><code>StorageLocation</code></td>
+<td><code>inventory_storage_locations</code></td>
+<td><code>warehouse_id</code>, <code>code</code>, <code>name</code>, <code>zone</code>, <code>is_active</code>, <code>extra</code></td>
+<td></td>
+<td><code>src/cluster_erp/modules/inventory/warehouses/models.py:48-71</code></td>
+</tr>
+<tr>
+<td><code>StockLevel</code></td>
+<td><code>inventory_stock_levels</code></td>
+<td><code>product_id</code>, <code>product_model_id</code>, <code>product_version_id</code>, <code>warehouse_id</code>, <code>storage_location_id</code>, <code>batch_id</code>, <code>owner_project_id</code>, <code>custodian_party_id</code>, six quantity columns</td>
+<td>one live row per composite key</td>
+<td><code>src/cluster_erp/modules/inventory/stock/models.py:25-123</code></td>
+</tr>
+<tr>
+<td><code>GoodsMovement</code></td>
+<td><code>inventory_goods_movements</code></td>
+<td><code>movement_no</code>, <code>movement_type</code>, product breakdown, <code>warehouse_id</code>, <code>to_warehouse_id</code>, <code>qty</code>, <code>batch_id</code>, <code>serial_number_id</code>, <code>owner_project_id</code>, <code>reference_type</code>, <code>reference_id</code>, <code>waybill_no</code>, <code>posted_at</code>, <code>posted_by</code>, <code>is_reversed</code>, <code>original_movement_id</code></td>
+<td><code>movement_no</code> unique</td>
+<td><code>src/cluster_erp/modules/inventory/stock/models.py:125-268</code></td>
+</tr>
+<tr>
+<td><code>UsageDecision</code></td>
+<td><code>inventory_usage_decisions</code></td>
+<td><code>decision_no</code>, <code>movement_id</code>, product breakdown, <code>qty</code>, <code>source_stock_type</code>, <code>decision_code</code>, <code>target_stock_type</code>, <code>follow_up_movement_id</code></td>
+<td></td>
+<td><code>src/cluster_erp/modules/inventory/stock/models.py:270-345</code></td>
+</tr>
+<tr>
+<td><code>StockReservation</code></td>
+<td><code>inventory_stock_reservations</code></td>
+<td>product breakdown, <code>warehouse_id</code>, <code>qty</code>, <code>reference_type</code>, <code>reference_id</code>, <code>status</code> (default <code>active</code>), <code>consumed_at</code>, <code>cancelled_at</code></td>
+<td></td>
+<td><code>src/cluster_erp/modules/inventory/stock/models.py:347-413</code></td>
+</tr>
+<tr>
+<td><code>ProjectStockLoan</code></td>
+<td><code>inventory_project_stock_loans</code></td>
+<td><code>loan_no</code>, <code>lender_project_id</code>, <code>borrower_project_id</code>, product breakdown, <code>qty</code>, <code>qty_paid</code>, <code>status</code> (default <code>open</code>), <code>due_date</code></td>
+<td></td>
+<td><code>src/cluster_erp/modules/inventory/stock/models.py:415-474</code></td>
+</tr>
+<tr>
+<td><code>Batch</code></td>
+<td><code>inventory_batches</code></td>
+<td>product breakdown, <code>batch_number</code>, <code>origin_type</code>, <code>party_id</code>, <code>expiry_date</code>, <code>status</code></td>
+<td><code>batch_number</code> unique per product among live rows</td>
+<td><code>src/cluster_erp/modules/inventory/batches/models.py:14-76</code></td>
+</tr>
+<tr>
+<td><code>SerialNumber</code></td>
+<td><code>inventory_serial_numbers</code></td>
+<td>product breakdown, <code>serial_number</code>, <code>batch_id</code>, <code>status</code></td>
+<td><code>serial_number</code> unique among live rows</td>
+<td><code>src/cluster_erp/modules/inventory/batches/models.py:78-125</code></td>
+</tr>
+</tbody>
+</table>
+<p>The stock key always carries the product breakdown. The partial unique index <code>uq_stock_level_composite</code> covers product, model, version, and warehouse, plus location, batch, owning project, and custodian with <code>NULL</code> coalesced, on live rows only (<code>src/cluster_erp/modules/inventory/stock/models.py:27-47</code>). Quantities are <code>Numeric(14, 4)</code> (<code>src/cluster_erp/modules/inventory/stock/models.py:91-122</code>). The module stores no money column; the analytics docstring states this (<code>src/cluster_erp/modules/inventory/analytics_facts.py:17-18</code>). The product breakdown is checked through the EventBus with <code>ensure_product_breakdown</code>, not by database foreign keys (<code>src/cluster_erp/core/product_breakdown.py:86</code>, <code>src/cluster_erp/modules/inventory/stock/services.py:370-376</code>).</p>
+<h2 id="screens-and-metadata">Screens and metadata<a class="headerlink" href="#screens-and-metadata">¶</a></h2>
+<p><code>get_metadata</code> declares a sidebar group <strong>Inventory</strong> (Turkish <strong>Envanter</strong>) with eight sections: <strong>Warehouse Dashboard</strong> (custom widget <code>warehouse_dashboard</code>), <strong>Warehouses</strong>, <strong>Stock Levels</strong>, <strong>Goods Movements</strong>, <strong>Batches</strong>, <strong>Serial Numbers</strong>, <strong>Usage Decisions</strong>, and <strong>Stock Reservations</strong> (<code>src/cluster_erp/modules/inventory/module.py:536-626</code>). The 14 entity keys include drill-down views such as <code>warehouse_stock_level</code>, <code>batch_movement</code>, and <code>product_stock_level</code> (<code>src/cluster_erp/modules/inventory/module.py:628-643</code>). The web dashboard calls one read model, <code>GET /inventory/warehouses/dashboard</code> (<code>gated_apps/inventory/app.js:7-11</code>, <code>src/cluster_erp/modules/inventory/warehouses/routes.py:99</code>). The web app renders the rest generically; see <a href="../web-app/generic-list.html">generic list</a> and <a href="../web-app/gated-app-bundles.html">gated app bundles</a>. The desktop dashboard is described on <a href="../desktop/module-screens.html">desktop module screens</a>.</p>
+<h2 id="status-and-actions">Status and actions<a class="headerlink" href="#status-and-actions">¶</a></h2>
+<p>Stock has no status field; movements change quantities. A reservation is <code>active</code>, <code>consumed</code>, or <code>cancelled</code> (<code>src/cluster_erp/modules/inventory/stock/services.py:1950</code>, <code>src/cluster_erp/modules/inventory/stock/services.py:2015</code>, <code>src/cluster_erp/modules/inventory/stock/services.py:2068</code>). A movement carries <code>is_reversed</code> (<code>src/cluster_erp/modules/inventory/stock/models.py:253-257</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Label</th>
+<th>Condition</th>
+<th>Endpoint</th>
+<th>Permission</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>goods_receipt</code></td>
+<td><strong>Goods Receipt</strong></td>
+<td>none</td>
+<td><code>POST /stock/goods-receipt</code></td>
+<td><code>goods_movement.create</code></td>
+<td><code>src/cluster_erp/modules/inventory/stock/metadata.py:675-770</code>, <code>src/cluster_erp/modules/inventory/stock/routes.py:156-183</code></td>
+</tr>
+<tr>
+<td><code>goods_issue</code></td>
+<td><strong>Goods Issue</strong></td>
+<td>none</td>
+<td><code>POST /stock/goods-issue</code></td>
+<td><code>goods_movement.create</code></td>
+<td><code>src/cluster_erp/modules/inventory/stock/metadata.py:771-866</code></td>
+</tr>
+<tr>
+<td><code>subcontract_issue</code>, <code>subcontract_return</code>, <code>subcontract_consume</code></td>
+<td><strong>Issue to Subcontractor</strong>, <strong>Return from Subcontractor</strong>, <strong>Consume at Subcontractor</strong></td>
+<td>none</td>
+<td><code>POST /stock/subcontract-issue</code>, <code>/subcontract-return</code>, <code>/subcontract-consume</code></td>
+<td><code>goods_movement.create</code></td>
+<td><code>src/cluster_erp/modules/inventory/stock/metadata.py:867-1004</code>, <code>src/cluster_erp/modules/inventory/stock/routes.py:598-633</code></td>
+</tr>
+<tr>
+<td><code>transfer</code></td>
+<td><strong>Transfer</strong></td>
+<td>none</td>
+<td><code>POST /stock/transfer</code></td>
+<td><code>goods_movement.create</code></td>
+<td><code>src/cluster_erp/modules/inventory/stock/metadata.py:1005-1083</code></td>
+</tr>
+<tr>
+<td><code>adjustment</code></td>
+<td><strong>Adjustment</strong></td>
+<td>none</td>
+<td><code>POST /stock/adjustment</code></td>
+<td><code>goods_movement.create</code></td>
+<td><code>src/cluster_erp/modules/inventory/stock/metadata.py:1084-1139</code></td>
+</tr>
+<tr>
+<td><code>gr_blocked_receipt</code></td>
+<td><strong>GR Blocked Receipt</strong></td>
+<td>none</td>
+<td><code>POST /stock/gr-blocked-receipt</code></td>
+<td><code>goods_movement.create</code></td>
+<td><code>src/cluster_erp/modules/inventory/stock/metadata.py:1140-1220</code></td>
+</tr>
+<tr>
+<td><code>stock_category_transfer</code></td>
+<td><strong>Category Transfer</strong></td>
+<td>none</td>
+<td><code>POST /stock/stock-category-transfer</code></td>
+<td><code>goods_movement.create</code></td>
+<td><code>src/cluster_erp/modules/inventory/stock/metadata.py:1221-1301</code></td>
+</tr>
+<tr>
+<td><code>return_to_vendor</code></td>
+<td><strong>Return to Vendor</strong></td>
+<td>none</td>
+<td><code>POST /stock/return-to-vendor</code></td>
+<td><code>goods_movement.create</code></td>
+<td><code>src/cluster_erp/modules/inventory/stock/metadata.py:1302-1390</code></td>
+</tr>
+<tr>
+<td><code>scrap</code></td>
+<td><strong>Scrap</strong></td>
+<td>none</td>
+<td><code>POST /stock/scrap</code></td>
+<td><code>goods_movement.create</code></td>
+<td><code>src/cluster_erp/modules/inventory/stock/metadata.py:1391-1456</code></td>
+</tr>
+<tr>
+<td><code>reverse</code></td>
+<td><strong>Reverse</strong></td>
+<td><code>is_reversed</code> is false</td>
+<td><code>POST /movements/{id}/reverse</code></td>
+<td><code>goods_movement.create</code></td>
+<td><code>src/cluster_erp/modules/inventory/stock/metadata.py:1457-1472</code></td>
+</tr>
+<tr>
+<td><code>create_reservation</code></td>
+<td><strong>Create Reservation</strong></td>
+<td>none</td>
+<td><code>POST /reservations/</code></td>
+<td><code>stock_reservation.create</code></td>
+<td><code>src/cluster_erp/modules/inventory/stock/metadata.py:1593-1639</code></td>
+</tr>
+<tr>
+<td><code>consume</code>, <code>cancel</code></td>
+<td><strong>Consume</strong>, <strong>Cancel</strong></td>
+<td><code>status</code> is <code>active</code></td>
+<td><code>POST /reservations/{id}/consume</code>, <code>/cancel</code></td>
+<td><code>stock_reservation.create</code></td>
+<td><code>src/cluster_erp/modules/inventory/stock/metadata.py:1640-1661</code></td>
+</tr>
+<tr>
+<td><code>create_usage_decision</code></td>
+<td><strong>Record Usage Decision</strong></td>
+<td>none</td>
+<td><code>POST /usage-decisions/</code></td>
+<td><code>usage_decision.create</code></td>
+<td><code>src/cluster_erp/modules/inventory/stock/metadata.py:2633-2698</code>, <code>src/cluster_erp/modules/inventory/stock/routes.py:579-597</code></td>
+</tr>
+</tbody>
+</table>
+<p>The <code>ActionMeta</code> class has no permission field; the permission comes from the route's <code>require_permission</code> (<code>src/cluster_erp/core/metadata.py:418-434</code>). The routes for ownership transfer and project loans have no <code>ActionMeta</code> (<code>src/cluster_erp/modules/inventory/stock/routes.py:217-289</code>).</p>
+<h2 id="business-rules">Business rules<a class="headerlink" href="#business-rules">¶</a></h2>
+<ul>
+<li>Every posting first asks <code>GetProductById</code> and refuses a product that is not stockable (<code>src/cluster_erp/modules/inventory/stock/services.py:2119-2134</code>).</li>
+<li>A batch-managed product needs a batch, and a serial-tracked product needs a serial number. A blocked or expired batch is refused (<code>src/cluster_erp/modules/inventory/stock/services.py:2136-2193</code>).</li>
+<li>A goods receipt adds to the unrestricted quantity of the matching stock row and creates the row when it is missing. The row is read with a row lock (<code>src/cluster_erp/modules/inventory/stock/services.py:2195-2286</code>).</li>
+<li>A goods receipt that names a purchase order as reference is refused; purchase order receipts go through the procurement receive flow (<code>src/cluster_erp/modules/inventory/stock/routes.py:166-178</code>).</li>
+<li>A decrease takes the requested quantity from the given project stripe. A goods issue may take the rest from common stock and then writes one movement per stripe; the other decreases refuse a shortfall (<code>src/cluster_erp/modules/inventory/stock/services.py:2288-2363</code>, <code>src/cluster_erp/modules/inventory/stock/services.py:473-490</code>).</li>
+<li>A transfer between two project stripes is refused unless the setting <code>allow_project_to_project_stock_transfer</code> is on (<code>src/cluster_erp/modules/inventory/stock/services.py:552-566</code>).</li>
+<li>A project loan needs two different sides, at least one of them a project (<code>src/cluster_erp/modules/inventory/stock/services.py:615-640</code>).</li>
+<li>An adjustment sets the unrestricted quantity to the new value and records the difference as the movement quantity (<code>src/cluster_erp/modules/inventory/stock/services.py:1051-1100</code>).</li>
+<li>Stock categories move only along nine allowed pairs, for example <code>gr_blocked</code> to <code>unrestricted</code> or <code>quality</code> to <code>blocked</code> (<code>src/cluster_erp/modules/inventory/stock/services.py:112-122</code>).</li>
+<li>A usage decision applies only to a goods receipt or a blocked goods receipt, and not beyond the undecided quantity. <code>accept</code> and <code>conditional_accept</code> move to unrestricted, <code>reject</code> returns to the vendor, <code>rework</code> moves to blocked, and <code>scrap</code> posts a scrap movement (<code>src/cluster_erp/modules/inventory/stock/services.py:124-135</code>, <code>src/cluster_erp/modules/inventory/stock/services.py:1496-1625</code>).</li>
+<li>A reservation moves quantity from unrestricted to reserved. Consuming removes it from reserved; cancelling returns it to unrestricted (<code>src/cluster_erp/modules/inventory/stock/services.py:1901-2080</code>).</li>
+<li>A movement can be reversed once, and a reversal movement cannot be reversed (<code>src/cluster_erp/modules/inventory/stock/services.py:1730-1760</code>).</li>
+<li>Batch origin is <code>customer</code>, <code>supplier</code>, or <code>internal</code> (<code>src/cluster_erp/modules/inventory/batches/services.py:35</code>).</li>
+<li>Movement numbers come from the yearly sequence <code>goods_movement</code>, decisions from <code>usage_decision</code>, and loans from <code>stock_loan</code> (<code>src/cluster_erp/modules/inventory/stock/services.py:383</code>).</li>
+</ul>
+<h2 id="events-and-queries">Events and queries<a class="headerlink" href="#events-and-queries">¶</a></h2>
+<p>The module consumes 14 contracts and produces 20, counted as on the <a href="parties/index.html">parties module</a> page. The full list is on the <a href="../platform/contracts-reference.html">contracts reference</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Direction</th>
+<th>Contract class</th>
+<th>Handler or emitter</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>emits</td>
+<td><code>GoodsReceived</code>, <code>GoodsIssued</code>, <code>StockTransferred</code>, <code>StockAdjusted</code>, <code>GrBlockedReceived</code>, <code>StockCategoryTransferred</code>, <code>ReturnedToVendor</code>, <code>ScrapPosted</code>, <code>UsageDecisionRecorded</code>, <code>GoodsMovementReversed</code></td>
+<td>the posting methods of <code>StockService</code></td>
+<td><code>src/cluster_erp/modules/inventory/stock/services.py:431-447</code>, <code>src/cluster_erp/modules/inventory/stock/services.py:527-1879</code></td>
+</tr>
+<tr>
+<td>emits</td>
+<td><code>StockReserved</code>, <code>StockReservationConsumed</code>, <code>StockReservationCancelled</code></td>
+<td>reservation methods</td>
+<td><code>src/cluster_erp/modules/inventory/stock/services.py:1957</code>, <code>src/cluster_erp/modules/inventory/stock/services.py:2020</code>, <code>src/cluster_erp/modules/inventory/stock/services.py:2073</code></td>
+</tr>
+<tr>
+<td>emits</td>
+<td><code>BatchCreated</code></td>
+<td><code>BatchService.create</code></td>
+<td><code>src/cluster_erp/modules/inventory/batches/services.py:135</code></td>
+</tr>
+<tr>
+<td>answers query</td>
+<td><code>GetStockLevel</code>, <code>GetWarehouseById</code>, <code>GetBulkStockLevels</code>, <code>GetConsumptionHistory</code>, <code>GetBatchExpirySchedule</code>, <code>GetBatchesByProduct</code>, <code>IsStockAvailable</code></td>
+<td>handlers in <code>module.py</code></td>
+<td><code>src/cluster_erp/modules/inventory/module.py:86-110</code></td>
+</tr>
+<tr>
+<td>answers query</td>
+<td><code>ReserveStock</code>, <code>ConsumeReservation</code>, <code>CancelReservation</code>, <code>PostGoodsReceipt</code>, <code>PostGoodsIssue</code></td>
+<td>handlers in <code>module.py</code></td>
+<td><code>src/cluster_erp/modules/inventory/module.py:111-115</code>, <code>src/cluster_erp/modules/inventory/module.py:392-495</code></td>
+</tr>
+<tr>
+<td>subscribes</td>
+<td><code>DescribeFieldConsumers</code></td>
+<td><code>_describe_field_consumers</code></td>
+<td><code>src/cluster_erp/modules/inventory/module.py:68</code>, <code>src/cluster_erp/modules/inventory/module.py:646-696</code></td>
+</tr>
+<tr>
+<td>subscribes</td>
+<td><code>DescribeAnalyticsFacts</code></td>
+<td><code>describe_analytics_facts</code></td>
+<td><code>src/cluster_erp/modules/inventory/module.py:119-124</code></td>
+</tr>
+</tbody>
+</table>
+<p>The query handlers for reservations and postings commit their own session (<code>src/cluster_erp/modules/inventory/module.py:410</code>, <code>src/cluster_erp/modules/inventory/module.py:465</code>, <code>src/cluster_erp/modules/inventory/module.py:494</code>). The field-consumer answer marks the product flag <code>is_stockable</code> as a hard dependency and <code>batch_managed</code> and <code>serial_tracked</code> as soft ones (<code>src/cluster_erp/modules/inventory/module.py:646-696</code>); see <a href="../platform/tenant-fields.html">tenant fields</a>.</p>
+<h2 id="permissions">Permissions<a class="headerlink" href="#permissions">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Permission key</th>
+<th>Used by</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>warehouse.read</code>, <code>.create</code>, <code>.update</code>, <code>.delete</code></td>
+<td>warehouse routes</td>
+<td><code>src/cluster_erp/modules/inventory/warehouses/routes.py:73-149</code></td>
+</tr>
+<tr>
+<td><code>storage_location.read</code>, <code>.create</code>, <code>.update</code>, <code>.delete</code></td>
+<td>location routes and the warehouse location list</td>
+<td><code>src/cluster_erp/modules/inventory/warehouses/routes.py:168-274</code></td>
+</tr>
+<tr>
+<td><code>stock_level.read</code></td>
+<td>stock level, availability, and loan reads</td>
+<td><code>src/cluster_erp/modules/inventory/stock/routes.py:69-136</code>, <code>src/cluster_erp/modules/inventory/stock/routes.py:273</code></td>
+</tr>
+<tr>
+<td><code>goods_movement.read</code>, <code>goods_movement.create</code></td>
+<td>movement reads and all postings</td>
+<td><code>src/cluster_erp/modules/inventory/stock/routes.py:163-437</code>, <code>src/cluster_erp/modules/inventory/stock/routes.py:601-627</code></td>
+</tr>
+<tr>
+<td><code>stock_reservation.read</code>, <code>stock_reservation.create</code></td>
+<td>reservation routes</td>
+<td><code>src/cluster_erp/modules/inventory/stock/routes.py:460-520</code></td>
+</tr>
+<tr>
+<td><code>usage_decision.read</code>, <code>usage_decision.create</code></td>
+<td>usage decision routes</td>
+<td><code>src/cluster_erp/modules/inventory/stock/routes.py:540-586</code></td>
+</tr>
+<tr>
+<td><code>batch.*</code>, <code>serial_number.*</code></td>
+<td>batch and serial routes</td>
+<td><code>src/cluster_erp/modules/inventory/batches/routes.py:58-217</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="privacy-retention-and-history">Privacy, retention, and history<a class="headerlink" href="#privacy-retention-and-history">¶</a></h2>
+<p>The module has no <code>privacy_handlers.py</code>. Warehouse, location, batch, and serial deletes set <code>deleted_at</code> (<code>src/cluster_erp/modules/inventory/warehouses/services.py:137-143</code>, <code>src/cluster_erp/modules/inventory/batches/services.py:178-184</code>). Movements have no delete route; a wrong movement is reversed by a counter movement (<code>src/cluster_erp/modules/inventory/stock/routes.py:376-450</code>, <code>src/cluster_erp/modules/inventory/stock/services.py:1730</code>). Changes are captured by <a href="../platform/change-history.html">change history</a>.</p>
+<h2 id="analytics-facts">Analytics facts<a class="headerlink" href="#analytics-facts">¶</a></h2>
+<p><code>analytics_facts.py</code> contributes one fact set, <code>goods_movement</code>, over <code>inventory_goods_movements</code>. Its dimensions are movement type, product, warehouse, party, reference type, reversal flag, and posting date. Its measures are <code>movement_count</code> and <code>total_qty</code>, read with <code>goods_movement.read</code> (<code>src/cluster_erp/modules/inventory/analytics_facts.py:29-104</code>). Stock levels are not contributed; the docstring gives the reason (<code>src/cluster_erp/modules/inventory/analytics_facts.py:1-8</code>). See <a href="analytics/analytics-facts.html">analytics facts</a>.</p>
+<h2 id="settings-and-reference-data">Settings and reference data<a class="headerlink" href="#settings-and-reference-data">¶</a></h2>
+<p>The module has no settings section. The project-to-project transfer switch is the server setting <code>allow_project_to_project_stock_transfer</code>, default <code>False</code>, read through <code>Settings</code> (<code>src/cluster_erp/config/settings.py:184</code>, <code>src/cluster_erp/modules/inventory/stock/services.py:561</code>); see <a href="../platform/settings-reference.html">settings reference</a>.</p>
+<h2 id="tests">Tests<a class="headerlink" href="#tests">¶</a></h2>
+<p>Found by a <code>grep</code> for <code>modules.inventory</code> in <code>tests/</code> (no hit) and for the path <code>/inventory/</code> in <code>web-client/_e2e_*.mjs</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Kind</th>
+<th>File</th>
+<th>Covers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_inventory_app.mjs</code></td>
+<td>the inventory app</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_procurement_gr.mjs</code></td>
+<td>goods receipt from purchase orders</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_project_stock_phase2a.mjs</code>, <code>web-client/_e2e_project_pegging_phase2b.mjs</code></td>
+<td>project stock stripes and pegging</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_make_or_buy_stock.mjs</code></td>
+<td>cut-from-stock issues</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_mrp_hygiene_faz0.mjs</code> and the other <code>_e2e_mrp_*</code> suites</td>
+<td>stock read by the MRP run</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_unique_soft_delete.mjs</code></td>
+<td>live-row uniqueness</td>
+</tr>
+</tbody>
+</table>
+<h2 id="discrepancies">Discrepancies<a class="headerlink" href="#discrepancies">¶</a></h2>
+<aside class="adm adm-note" role="note"><p class="adm-title">Note</p><p><code>qty</code> is a positive magnitude for receipts, issues and transfers; direction comes from <code>movement_type</code>. An adjustment is the exception: it writes the difference between the counted and the booked quantity as <code>qty</code>, which is negative when stock goes down (<code>src/cluster_erp/modules/inventory/stock/services.py:1075-1087</code>). A total over mixed movement types therefore measures activity volume, not net stock change (<code>src/cluster_erp/modules/inventory/analytics_facts.py:10-15</code>).</p>
+</aside>
+<h2 id="terms-introduced">Terms introduced<a class="headerlink" href="#terms-introduced">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Code identifier</th>
+<th>Definition</th>
+<th>Turkish term</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>stock level</td>
+<td><code>StockLevel</code></td>
+<td>The stock quantities of one product breakdown at one place, batch, owning project, and custodian.</td>
+<td>Stok seviyesi</td>
+<td><code>src/cluster_erp/modules/inventory/stock/models.py:25</code></td>
+</tr>
+<tr>
+<td>goods movement</td>
+<td><code>GoodsMovement</code></td>
+<td>One posted change of stock with a type, a quantity, and a reference.</td>
+<td>Mal hareketi</td>
+<td><code>src/cluster_erp/modules/inventory/stock/models.py:125</code></td>
+</tr>
+<tr>
+<td>stock category</td>
+<td><code>_VALID_STOCK_CATEGORIES</code></td>
+<td>One of the six quantity buckets of a stock level.</td>
+<td>Stok kategorisi</td>
+<td><code>src/cluster_erp/modules/inventory/stock/services.py:94-101</code></td>
+</tr>
+<tr>
+<td>usage decision</td>
+<td><code>UsageDecision</code></td>
+<td>The decision on a received quantity that moves it to a target category or out of stock.</td>
+<td>Kullanım kararı</td>
+<td><code>src/cluster_erp/modules/inventory/stock/models.py:270</code></td>
+</tr>
+<tr>
+<td>stock reservation</td>
+<td><code>StockReservation</code></td>
+<td>Unrestricted stock set aside for a reference.</td>
+<td>Stok rezervasyonu</td>
+<td><code>src/cluster_erp/modules/inventory/stock/models.py:347</code></td>
+</tr>
+<tr>
+<td>project stripe</td>
+<td><code>owner_project_id</code></td>
+<td>The part of a stock level owned by one project; <code>NULL</code> is common stock.</td>
+<td>Proje şeridi</td>
+<td><code>src/cluster_erp/modules/inventory/stock/models.py:79</code></td>
+</tr>
+<tr>
+<td>project stock loan</td>
+<td><code>ProjectStockLoan</code></td>
+<td>Stock lent from one stripe to another with a payback obligation.</td>
+<td>Proje stok ödüncü</td>
+<td><code>src/cluster_erp/modules/inventory/stock/models.py:415</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="index.html">Modules index</a></li>
+<li><a href="procurement/index.html">Procurement module</a></li>
+<li><a href="production/index.html">Production module</a></li>
+<li><a href="../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li><a href="../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li><a href="../api/inventory.html">API reference for this module</a></li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../modules/intranet/requests.html"><span class="eyebrow">Previous</span><span>Intranet requests</span></a><a class="next" href="../modules/logs.html"><span class="eyebrow">Next</span><span>Logs module (logs)</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#at-a-glance">At a glance</a></li>
+<li class="lvl2"><a href="#what-the-module-does">What the module does</a></li>
+<li class="lvl2"><a href="#sub-modules">Sub-modules</a></li>
+<li class="lvl2"><a href="#data-model">Data model</a></li>
+<li class="lvl2"><a href="#screens-and-metadata">Screens and metadata</a></li>
+<li class="lvl2"><a href="#status-and-actions">Status and actions</a></li>
+<li class="lvl2"><a href="#business-rules">Business rules</a></li>
+<li class="lvl2"><a href="#events-and-queries">Events and queries</a></li>
+<li class="lvl2"><a href="#permissions">Permissions</a></li>
+<li class="lvl2"><a href="#privacy-retention-and-history">Privacy, retention, and history</a></li>
+<li class="lvl2"><a href="#analytics-facts">Analytics facts</a></li>
+<li class="lvl2"><a href="#settings-and-reference-data">Settings and reference data</a></li>
+<li class="lvl2"><a href="#tests">Tests</a></li>
+<li class="lvl2"><a href="#discrepancies">Discrepancies</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

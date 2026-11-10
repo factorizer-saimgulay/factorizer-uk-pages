@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Authentication and sessions · Cluster ERP Wiki</title>
+<meta name="description" content="How tenant users sign in, how access and refresh tokens are issued, carried, rotated, and revoked, and which settings control them.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../identity-access/authentication-and-sessions.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.html">Overview</a></li>
+<li class=""><a href="../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.html">Platform core</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../platform/change-history.html">Change history</a></li>
+<li class=""><a href="../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../platform/event-bus.html">Event bus</a></li>
+<li class=""><a href="../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class=""><a href="../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class="current"><a href="../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../web-app/generic-form.html">Generic form</a></li>
+<li class=""><a href="../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class=""><a href="../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.html">Desktop client</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class=""><a href="../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.html">Business modules</a></li>
+<li class=""><a href="../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class=""><a href="../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../modules/auth.html">Auth module (auth)</a></li>
+<li class=""><a href="../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class=""><a href="../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class=""><a href="../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../modules/intranet/requests.html">Intranet requests</a></li>
+<li class=""><a href="../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../modules/mail.html">Mail module (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class=""><a href="../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../modules/production/work-orders.html">Work orders</a></li>
+<li class=""><a href="../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.html">API reference</a></li>
+<li class=""><a href="../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.html">Documents API (documents)</a></li>
+<li class=""><a href="../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.html">API overview</a></li>
+<li class=""><a href="../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class=""><a href="../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.html">Operations</a></li>
+<li class=""><a href="../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class=""><a href="../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class=""><a href="../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.html">Reference</a></li>
+<li class=""><a href="../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.html">Home</a> / Identity and access</div>
+    <header class="page-head">
+      <p class="eyebrow">Explanation</p>
+      <h1>Authentication and sessions</h1>
+      <p class="lede">How tenant users sign in, how access and refresh tokens are issued, carried, rotated, and revoked, and which settings control them.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#in-short">In short</a></li>
+<li class="lvl2"><a href="#how-it-works">How it works</a></li>
+<li class="lvl3"><a href="#sign-in-and-refresh-flow">Sign-in and refresh flow</a></li>
+<li class="lvl3"><a href="#token-contents">Token contents</a></li>
+<li class="lvl3"><a href="#cookie-transport">Cookie transport</a></li>
+<li class="lvl3"><a href="#revocation-and-sign-out">Revocation and sign-out</a></li>
+<li class="lvl3"><a href="#failed-attempts">Failed attempts</a></li>
+<li class="lvl3"><a href="#permission-memory">Permission memory</a></li>
+<li class="lvl3"><a href="#first-administrator">First administrator</a></li>
+<li class="lvl2"><a href="#why-it-is-built-this-way">Why it is built this way</a></li>
+<li class="lvl2"><a href="#rules-and-boundaries">Rules and boundaries</a></li>
+<li class="lvl2"><a href="#interaction-with-other-parts">Interaction with other parts</a></li>
+<li class="lvl2"><a href="#limits-and-open-points">Limits and open points</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p>Cluster ERP signs tenant users in with a user name or company e-mail and a password, then issues a short-lived access token and a rotating refresh token. The web client receives both tokens as HttpOnly cookies; the desktop client and scripts receive them in the response body and send a Bearer header. This page explains the sign-in routes in <code>modules/auth/login/routes.py</code>, the token helpers in <code>modules/auth/jwt_utils.py</code>, the cookie transport in <code>modules/auth/session_cookies.py</code>, password hashing in <code>modules/auth/password.py</code>, revocation through <code>auth_token_blacklist</code>, and the permission memory in <code>modules/auth/auth_cache.py</code>. The operator console has its own sign-in; see <a href="operator-console.html">operator console</a>.</p>
+<h2 id="in-short">In short<a class="headerlink" href="#in-short">¶</a></h2>
+<ul>
+<li>Passwords are hashed with Argon2 through <code>argon2.PasswordHasher</code>, and a hash is upgraded when its parameters are outdated (<code>src/cluster_erp/modules/auth/password.py:3-21</code>, <code>src/cluster_erp/modules/auth/users/services.py:298-308</code>).</li>
+<li>Access and refresh tokens are signed with the <code>secret_key</code> setting; each carries a unique <code>jti</code> and a <code>type</code> claim that <code>verify_token</code> checks (<code>src/cluster_erp/modules/auth/jwt_utils.py:10-60</code>, <code>src/cluster_erp/modules/auth/jwt_utils.py:80-91</code>).</li>
+<li>The web client asks for cookie transport with the <code>X-Token-Transport</code> header; cookie-carried writes must also carry the <code>X-Requested-With</code> header (<code>src/cluster_erp/modules/auth/session_cookies.py:31-39</code>, <code>src/cluster_erp/modules/auth/session_cookies.py:112-121</code>).</li>
+<li>Every refresh spends the presented refresh token and issues a new pair; the session end is fixed at sign-in and survives rotation (<code>src/cluster_erp/modules/auth/login/routes.py:283-354</code>).</li>
+<li>Sign-out, a password change, and an anonymisation stamp <code>last_logout_at</code>, which invalidates every token issued earlier (<code>src/cluster_erp/modules/auth/login/routes.py:423-424</code>, <code>src/cluster_erp/modules/auth/users/services.py:273-276</code>, <code>src/cluster_erp/modules/auth/privacy_handlers.py:96</code>, <code>src/cluster_erp/modules/auth/guards.py:153-165</code>).</li>
+</ul>
+<h2 id="how-it-works">How it works<a class="headerlink" href="#how-it-works">¶</a></h2>
+<h3 id="sign-in-and-refresh-flow">Sign-in and refresh flow<a class="headerlink" href="#sign-in-and-refresh-flow">¶</a></h3>
+<p>The sequence shows a web sign-in, a later request, and a refresh.</p>
+<figure class="diagram"><pre class="mermaid">sequenceDiagram
+ participant C as web client
+ participant L as login route
+ participant U as UserService
+ participant G as get_current_user
+ participant R as refresh route
+ C-&gt;&gt;L: POST /api/v1/auth/login with X-Token-Transport
+ L-&gt;&gt;L: _check_attempt_budget
+ L-&gt;&gt;U: get_by_identifier, authenticate
+ U--&gt;&gt;L: AuthUser or None
+ L--&gt;&gt;C: user and permissions, tokens in HttpOnly cookies
+ C-&gt;&gt;G: request with access cookie and X-Requested-With
+ G-&gt;&gt;G: verify_token, jti blacklist, last_logout_at
+ C-&gt;&gt;R: POST /api/v1/auth/refresh with refresh cookie
+ R-&gt;&gt;R: spend old jti, check last_logout_at
+ R--&gt;&gt;C: new access and refresh cookies</pre></figure>
+<p>In prose:</p>
+<ol>
+<li>The login route first checks the failed-attempt budget for the pair of client address and user name (<code>src/cluster_erp/modules/auth/login/routes.py:129-131</code>).</li>
+<li><code>get_by_identifier</code> resolves the user name. When nothing matches and the identifier holds <code>@</code>, it tries the company e-mail, then the part before <code>@</code> as a user name (<code>src/cluster_erp/modules/auth/users/services.py:92-119</code>).</li>
+<li>A locked account is refused before the password is checked (<code>src/cluster_erp/modules/auth/login/routes.py:135-147</code>).</li>
+<li><code>authenticate</code> refuses inactive users, verifies the password, and re-hashes it when needed (<code>src/cluster_erp/modules/auth/users/services.py:298-308</code>).</li>
+<li>On success, the route clears the failure counter, stamps <code>last_login_at</code> at most once a minute, and loads role and permission codes (<code>src/cluster_erp/modules/auth/login/routes.py:181-201</code>).</li>
+<li>It issues the tokens. In multi-tenant mode both tokens carry the tenant key resolved for the request (<code>src/cluster_erp/modules/auth/login/routes.py:203-228</code>).</li>
+<li>A cookie client gets empty token fields in the body and the tokens in cookies; other clients get the tokens in the body (<code>src/cluster_erp/modules/auth/login/routes.py:230-257</code>).</li>
+<li>Every protected request runs <code>get_current_user</code>. It reads the credential, applies the CSRF rule, verifies the access token, requires a <code>jti</code>, checks the blacklist, loads the live user with roles, and compares <code>iat</code> with <code>last_logout_at</code> (<code>src/cluster_erp/modules/auth/guards.py:85-167</code>).</li>
+<li>The refresh route verifies the refresh token, blacklists its <code>jti</code>, refuses a second use after a short grace window, refuses tokens issued before the last sign-out, and issues a new pair with the same absolute session end (<code>src/cluster_erp/modules/auth/login/routes.py:260-370</code>).</li>
+</ol>
+<h3 id="token-contents">Token contents<a class="headerlink" href="#token-contents">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Claims</th>
+<th>Lifetime setting</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Access</td>
+<td><code>sub</code>, <code>roles</code>, <code>type</code> set to <code>access</code>, <code>jti</code>, <code>iat</code>, <code>exp</code>, optional <code>tenant</code></td>
+<td><code>jwt_access_expire_minutes</code></td>
+<td><code>src/cluster_erp/modules/auth/jwt_utils.py:10-30</code></td>
+</tr>
+<tr>
+<td>Refresh</td>
+<td><code>sub</code>, <code>type</code> set to <code>refresh</code>, <code>jti</code>, <code>iat</code>, <code>exp</code>, <code>sexp</code> (absolute session end), <code>persist</code>, optional <code>tenant</code></td>
+<td><code>jwt_refresh_expire_days</code>, or <code>jwt_session_hours</code> without "remember me"</td>
+<td><code>src/cluster_erp/modules/auth/jwt_utils.py:33-60</code>, <code>src/cluster_erp/modules/auth/login/routes.py:215-228</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>read_tenant_claim</code> reads the tenant claim of a signature-verified token and ignores expiry. It only routes a request to its tenant database; authentication still runs <code>verify_token</code> (<code>src/cluster_erp/modules/auth/jwt_utils.py:63-77</code>). See <a href="multi-tenancy.html">multi-tenancy</a>.</p>
+<h3 id="cookie-transport">Cookie transport<a class="headerlink" href="#cookie-transport">¶</a></h3>
+<p><code>set_session_cookies</code> writes two cookies. Both are <code>HttpOnly</code>, <code>SameSite=Strict</code>, and <code>Secure</code> over HTTPS. The access cookie uses path <code>/</code> and takes the <code>__Host-</code> prefix over HTTPS; the refresh cookie is limited to the path <code>/api/v1/auth</code> (<code>src/cluster_erp/modules/auth/session_cookies.py:46-54</code>, <code>src/cluster_erp/modules/auth/session_cookies.py:124-153</code>). Without "remember me" (<strong>Keep me signed in on this device</strong>, <code>webapp/i18n/en.json</code> key <code>auth.remember_me</code>), the cookies carry no <code>Max-Age</code> and the refresh chain ends after <code>jwt_session_hours</code> (<code>src/cluster_erp/modules/auth/login/routes.py:215-220</code>). A well-formed Bearer header takes precedence over the access cookie (<code>src/cluster_erp/modules/auth/session_cookies.py:63-75</code>).</p>
+<h3 id="revocation-and-sign-out">Revocation and sign-out<a class="headerlink" href="#revocation-and-sign-out">¶</a></h3>
+<ul>
+<li><code>POST /api/v1/auth/logout</code> blacklists the access token <code>jti</code>, and for a cookie session also the refresh token <code>jti</code>. It clears both cookies and stamps <code>last_logout_at</code> (<code>src/cluster_erp/modules/auth/login/routes.py:373-431</code>).</li>
+<li>The blacklist table <code>auth_token_blacklist</code> holds <code>token_jti</code> (unique) and <code>expires_at</code> (<code>src/cluster_erp/modules/auth/token_blacklist/models.py:11-23</code>). The daily log retention pass deletes expired rows (<code>src/cluster_erp/server/app.py:1168-1192</code>, <code>src/cluster_erp/server/app.py:1281</code>).</li>
+<li><code>POST /api/v1/auth/users/me/change-password</code> verifies the current password and stamps <code>last_logout_at</code> (<code>src/cluster_erp/modules/auth/users/routes.py:162-174</code>, <code>src/cluster_erp/modules/auth/users/services.py:255-278</code>).</li>
+</ul>
+<h3 id="failed-attempts">Failed attempts<a class="headerlink" href="#failed-attempts">¶</a></h3>
+<p>Two mechanisms limit password guessing:</p>
+<ul>
+<li>A failure budget per client address and user name, counted in the table <code>auth_login_budget</code> so that every worker process shares it. The limit is the setting <code>login_rate_limit_per_minute</code>; above it the route answers HTTP 429 with <code>AUTH_TOO_MANY_ATTEMPTS</code> (<code>src/cluster_erp/modules/auth/login/routes.py:53-120</code>). Successful sign-ins do not consume the budget (<code>src/cluster_erp/modules/auth/login/routes.py:56-58</code>).</li>
+<li>An account lockout after a fixed number of consecutive failures, for a fixed period (<code>_MAX_FAILED_ATTEMPTS</code>, <code>_LOCKOUT_MINUTES</code>), stored in <code>failed_login_count</code> and <code>locked_until</code> (<code>src/cluster_erp/modules/auth/login/routes.py:48-49</code>, <code>src/cluster_erp/modules/auth/login/routes.py:150-168</code>, <code>src/cluster_erp/modules/auth/users/models.py:67-76</code>).</li>
+</ul>
+<h3 id="permission-memory">Permission memory<a class="headerlink" href="#permission-memory">¶</a></h3>
+<p><code>auth_cache</code> keeps each user's permission codes and each permission's active policies in process memory for <code>auth_cache_seconds</code> seconds, keyed by database name (<code>src/cluster_erp/modules/auth/auth_cache.py:41-55</code>, <code>src/cluster_erp/modules/auth/auth_cache.py:97-135</code>, <code>src/cluster_erp/server/app.py:1310</code>). A version stamp from <code>core_cache_versions</code>, moved by database triggers, makes a change in one worker visible in all workers on the next request (<code>src/cluster_erp/modules/auth/auth_cache.py:63-89</code>). An <code>after_flush</code> listener clears the memory when roles, grants, user roles, permissions, or policies change (<code>src/cluster_erp/modules/auth/auth_cache.py:153-184</code>). The user row itself is not cached (<code>src/cluster_erp/modules/auth/auth_cache.py:13-14</code>).</p>
+<h3 id="first-administrator">First administrator<a class="headerlink" href="#first-administrator">¶</a></h3>
+<p>At start-up, <code>_seed_permissions_from_metadata</code> ensures the <code>admin</code> role and then calls <code>ensure_bootstrap_admin</code>, which creates one administrator only when the database has no user (<code>src/cluster_erp/server/app.py:862-900</code>, <code>src/cluster_erp/modules/auth/users/services.py:412-453</code>). The account takes its name, e-mail, and password from <code>bootstrap_admin_username</code>, <code>bootstrap_admin_email</code>, and <code>bootstrap_admin_password</code> or <code>bootstrap_admin_password_hash</code> (<code>src/cluster_erp/config/settings.py:195-201</code>). When no password is configured, a random one is generated and written to an owner-only file named by <code>bootstrap_password_file</code>; the log carries only the file path (<code>src/cluster_erp/server/app.py:881</code>, <code>src/cluster_erp/server/app.py:914-923</code>, <code>src/cluster_erp/server/app.py:591-609</code>). <code>assign_admin_to_unassigned</code> gives the <code>admin</code> role to role-less users only while no active administrator exists (<code>src/cluster_erp/modules/auth/users/services.py:455-499</code>); <code>tests/test_admin_bootstrap.py</code> pins this.</p>
+<aside class="adm adm-note" role="note"><p class="adm-title">Note</p><p>With no bootstrap password configured, the generated first password is written to an owner-only file and only the path is logged (<code>src/cluster_erp/server/app.py:914-923</code>); the comments above <code>bootstrap_admin_username</code> and <code>bootstrap_password_file</code> state the same (<code>src/cluster_erp/config/settings.py:187-195</code>, <code>src/cluster_erp/config/settings.py:202-205</code>).</p>
+</aside>
+<h2 id="why-it-is-built-this-way">Why it is built this way<a class="headerlink" href="#why-it-is-built-this-way">¶</a></h2>
+<ul>
+<li>The module docstring of <code>session_cookies.py</code> gives the reasons for cookie transport: no browser storage protects a token from injected script, so the web client never sees a token, and the custom header adds a second CSRF barrier beside <code>SameSite=Strict</code> (<code>src/cluster_erp/modules/auth/session_cookies.py:1-20</code>).</li>
+<li>The rotation comment states that the reuse grace window lets two frames of the same origin refresh at once (<code>src/cluster_erp/modules/auth/login/routes.py:283-286</code>). The absolute session end prevents rotation from extending a session (<code>src/cluster_erp/modules/auth/jwt_utils.py:41-45</code>).</li>
+<li>The failure budget lives in the database because an in-process counter gave each worker its own budget (<code>src/cluster_erp/modules/auth/login/routes.py:53-59</code>).</li>
+<li>The failed-attempt counter is committed before the error response because the session dependency rolls back on any exception (<code>src/cluster_erp/modules/auth/login/routes.py:162-168</code>).</li>
+</ul>
+<h2 id="rules-and-boundaries">Rules and boundaries<a class="headerlink" href="#rules-and-boundaries">¶</a></h2>
+<ul>
+<li>Other modules use only <code>modules/auth/guards.py</code> from the auth module; the comment names <code>tests/test_architecture_boundaries.py</code> as the test that holds the line (<code>src/cluster_erp/modules/auth/guards.py:22-27</code>).</li>
+<li>The actor of change history comes from the same access token, read again by <code>_resolve_actor_id</code> in the session dependency (<code>src/cluster_erp/server/dependencies.py:82-101</code>). See <a href="../platform/database-and-sessions.html">database and sessions</a>.</li>
+<li>Token lifetimes, the session length, the reuse grace window, the failure budget, and the cache lifetime are settings: <code>jwt_access_expire_minutes</code>, <code>jwt_refresh_expire_days</code>, <code>jwt_session_hours</code>, <code>jwt_refresh_reuse_grace_seconds</code>, <code>login_rate_limit_per_minute</code>, and <code>auth_cache_seconds</code> (<code>src/cluster_erp/config/settings.py:307-332</code>). Their types and defaults are in the <a href="../platform/settings-reference.html">settings reference</a>.</li>
+</ul>
+<h2 id="interaction-with-other-parts">Interaction with other parts<a class="headerlink" href="#interaction-with-other-parts">¶</a></h2>
+<ul>
+<li>The <code>auth</code> module answers <code>GetUserById</code> and <code>GetUserPermissions</code> on the EventBus for other modules (<code>src/cluster_erp/modules/auth/module.py:81-82</code>, <code>src/cluster_erp/modules/auth/module.py:110-144</code>).</li>
+<li>In multi-tenant mode, the session dependency resolves the tenant before the login route runs, and the route stamps the tenant key into both tokens (<code>src/cluster_erp/server/dependencies.py:104-157</code>, <code>src/cluster_erp/modules/auth/login/routes.py:203-213</code>).</li>
+<li>The web client side of sign-in is documented in <a href="../web-app/boot-session-and-api.html">boot, session, and API</a>.</li>
+</ul>
+<h2 id="limits-and-open-points">Limits and open points<a class="headerlink" href="#limits-and-open-points">¶</a></h2>
+<ul>
+<li>Tenant users have no second factor in the code at this commit: <code>verify_totp</code> is called only from <code>src/cluster_erp/server/operators.py:162</code>. See <a href="second-factor-and-secret-storage.html">second factor and secret storage</a>.</li>
+<li>A password policy beyond length is not determined from code. The schemas set lengths of 8 to 128 characters, and the setting <code>password_min_length</code> (<code>src/cluster_erp/config/settings.py:327</code>) is not read by any code at this commit (<code>src/cluster_erp/modules/auth/users/schemas.py:12</code>, <code>src/cluster_erp/modules/auth/users/schemas.py:54-60</code>).</li>
+</ul>
+<h2 id="terms-introduced">Terms introduced<a class="headerlink" href="#terms-introduced">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Code identifier</th>
+<th>Definition</th>
+<th>Turkish term</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>access token</td>
+<td><code>create_access_token</code></td>
+<td>A short-lived signed token that authenticates one user's requests.</td>
+<td>erişim belirteci</td>
+<td><code>src/cluster_erp/modules/auth/jwt_utils.py:10</code></td>
+</tr>
+<tr>
+<td>refresh token</td>
+<td><code>create_refresh_token</code></td>
+<td>A signed token that is spent once to obtain a new token pair.</td>
+<td>yenileme belirteci</td>
+<td><code>src/cluster_erp/modules/auth/jwt_utils.py:33</code></td>
+</tr>
+<tr>
+<td>token blacklist</td>
+<td><code>TokenBlacklist</code></td>
+<td>The table of revoked token ids that are refused until they expire.</td>
+<td>belirteç kara listesi</td>
+<td><code>src/cluster_erp/modules/auth/token_blacklist/models.py:11</code></td>
+</tr>
+<tr>
+<td>cookie transport</td>
+<td><code>wants_cookie_transport</code></td>
+<td>The web sign-in mode in which the tokens travel only as HttpOnly cookies instead of in the response body.</td>
+<td>çerez taşıması</td>
+<td><code>src/cluster_erp/modules/auth/session_cookies.py:42</code></td>
+</tr>
+<tr>
+<td>sign-in failure budget</td>
+<td><code>_check_attempt_budget</code></td>
+<td>The per-client and per-name limit on failed sign-ins within one minute.</td>
+<td>giriş hata bütçesi</td>
+<td><code>src/cluster_erp/modules/auth/login/routes.py:71</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li><a href="roles-and-permissions.html">Roles and permissions</a></li>
+<li><a href="multi-tenancy.html">Multi-tenancy</a></li>
+<li><a href="../modules/auth.html">Auth module</a></li>
+<li><a href="../api/authentication-and-headers.html">API authentication and headers</a></li>
+<li><a href="../platform/settings-reference.html">Settings reference</a></li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../identity-access/approvals-and-approval-chains.html"><span class="eyebrow">Previous</span><span>Approvals and approval chains</span></a><a class="next" href="../identity-access/field-and-row-access.html"><span class="eyebrow">Next</span><span>Field and row access</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#in-short">In short</a></li>
+<li class="lvl2"><a href="#how-it-works">How it works</a></li>
+<li class="lvl3"><a href="#sign-in-and-refresh-flow">Sign-in and refresh flow</a></li>
+<li class="lvl3"><a href="#token-contents">Token contents</a></li>
+<li class="lvl3"><a href="#cookie-transport">Cookie transport</a></li>
+<li class="lvl3"><a href="#revocation-and-sign-out">Revocation and sign-out</a></li>
+<li class="lvl3"><a href="#failed-attempts">Failed attempts</a></li>
+<li class="lvl3"><a href="#permission-memory">Permission memory</a></li>
+<li class="lvl3"><a href="#first-administrator">First administrator</a></li>
+<li class="lvl2"><a href="#why-it-is-built-this-way">Why it is built this way</a></li>
+<li class="lvl2"><a href="#rules-and-boundaries">Rules and boundaries</a></li>
+<li class="lvl2"><a href="#interaction-with-other-parts">Interaction with other parts</a></li>
+<li class="lvl2"><a href="#limits-and-open-points">Limits and open points</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

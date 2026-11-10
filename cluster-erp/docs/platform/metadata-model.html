@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Metadata model · Cluster ERP Wiki</title>
+<meta name="description" content="The 45 Pydantic classes in core/metadata.py that describe modules, entities, forms, lists, detail views, actions, and the sidebar as the server-side contract for both clients.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../platform/metadata-model.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.html">Overview</a></li>
+<li class=""><a href="../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.html">Platform core</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../platform/change-history.html">Change history</a></li>
+<li class=""><a href="../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../platform/event-bus.html">Event bus</a></li>
+<li class="current"><a href="../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class=""><a href="../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../web-app/generic-form.html">Generic form</a></li>
+<li class=""><a href="../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class=""><a href="../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.html">Desktop client</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class=""><a href="../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.html">Business modules</a></li>
+<li class=""><a href="../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class=""><a href="../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../modules/auth.html">Auth module (auth)</a></li>
+<li class=""><a href="../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class=""><a href="../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class=""><a href="../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../modules/intranet/requests.html">Intranet requests</a></li>
+<li class=""><a href="../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../modules/mail.html">Mail module (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class=""><a href="../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../modules/production/work-orders.html">Work orders</a></li>
+<li class=""><a href="../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.html">API reference</a></li>
+<li class=""><a href="../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.html">Documents API (documents)</a></li>
+<li class=""><a href="../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.html">API overview</a></li>
+<li class=""><a href="../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class=""><a href="../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.html">Operations</a></li>
+<li class=""><a href="../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class=""><a href="../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class=""><a href="../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.html">Reference</a></li>
+<li class=""><a href="../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.html">Home</a> / Platform</div>
+    <header class="page-head">
+      <p class="eyebrow">Reference</p>
+      <h1>Metadata model</h1>
+      <p class="lede">The 45 Pydantic classes in core/metadata.py that describe modules, entities, forms, lists, detail views, actions, and the sidebar as the server-side contract for both clients.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#scope-and-source">Scope and source</a></li>
+<li class="lvl3"><a href="#how-metadata-is-served">How metadata is served</a></li>
+<li class="lvl2"><a href="#module-and-entity">Module and entity</a></li>
+<li class="lvl2"><a href="#forms-and-fields">Forms and fields</a></li>
+<li class="lvl2"><a href="#lists">Lists</a></li>
+<li class="lvl2"><a href="#detail-views">Detail views</a></li>
+<li class="lvl2"><a href="#parties-facets-and-composite-creation">Parties, facets, and composite creation</a></li>
+<li class="lvl2"><a href="#actions-and-links">Actions and links</a></li>
+<li class="lvl2"><a href="#trees-sidebar-and-home">Trees, sidebar, and home</a></li>
+<li class="lvl2"><a href="#tenant-fields">Tenant fields</a></li>
+<li class="lvl2"><a href="#constraints-and-validation">Constraints and validation</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p>Every module describes its screens with metadata: Pydantic objects defined in <code>src/cluster_erp/core/metadata.py</code>. This page lists those classes and their main fields as the server-side contract. How the web app renders them is documented on <a href="../web-app/metadata-rendering.html">metadata rendering</a>; the desktop client is documented in the <a href="../desktop/index.html">desktop section</a>.</p>
+<h2 id="scope-and-source">Scope and source<a class="headerlink" href="#scope-and-source">¶</a></h2>
+<ul>
+<li>Defined in: <code>src/cluster_erp/core/metadata.py</code></li>
+<li>Count: 45 classes (counted with <code>grep -c "^class "</code>), plus the alias <code>LabelDict = dict[str, str]</code> (<code>src/cluster_erp/core/metadata.py:7</code>). 186 calls of <code>EntityMeta(</code> exist under <code>src/cluster_erp</code> (counted with <code>grep -rn "EntityMeta("</code>).</li>
+</ul>
+<p><code>LabelDict</code> maps a language code to a text, for example <code>{"en": "...", "tr": "..."}</code>. Every label, placeholder, help text, and description in the metadata uses it.</p>
+<h3 id="how-metadata-is-served">How metadata is served<a class="headerlink" href="#how-metadata-is-served">¶</a></h3>
+<p>A module returns its <code>ModuleMeta</code> from <code>get_metadata()</code> (<code>src/cluster_erp/core/module_base.py:73-74</code>). <code>GET /api/v1/_meta</code> serialises every loaded module's metadata with <code>model_dump(exclude_none=True)</code> after the tenant-field entities are added, into one JSON document <code>{"version": "1.0", "modules": {...}}</code>. The document is built once per process and served with an ETag and a gzip form, and only to a signed-in caller (<code>src/cluster_erp/server/app.py:1518-1556</code>). A field whose value is <code>None</code> is therefore absent from the document.</p>
+<h2 id="module-and-entity">Module and entity<a class="headerlink" href="#module-and-entity">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Purpose</th>
+<th>Main fields</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ModuleMeta</code></td>
+<td>One module's whole description</td>
+<td><code>name</code>, <code>version</code>, <code>description</code>, <code>label</code>, <code>icon</code>, <code>order</code>, <code>sidebar</code>, <code>entities</code>, <code>provides</code>, <code>assistant_starters</code>, <code>home_widgets</code></td>
+<td><code>src/cluster_erp/core/metadata.py:719-740</code></td>
+</tr>
+<tr>
+<td><code>EntityMeta</code></td>
+<td>One entity: labels, endpoints, form, list, detail, actions, and options</td>
+<td><code>label</code>, <code>label_plural</code>, <code>entity_type</code>, <code>endpoints</code>, <code>form</code>, <code>list_view</code>, <code>detail_view</code>, <code>actions</code>, <code>links</code>, <code>identity</code>, <code>facets</code>, <code>tree_view</code>, <code>lock</code>, <code>tenant_fields</code>, <code>photo</code>, <code>parent_entity</code>, <code>is_settings_entity</code></td>
+<td><code>src/cluster_erp/core/metadata.py:553-649</code></td>
+</tr>
+<tr>
+<td><code>EndpointMeta</code></td>
+<td>One HTTP method and module-relative path</td>
+<td><code>method</code>, <code>path</code></td>
+<td><code>src/cluster_erp/core/metadata.py:406-408</code></td>
+</tr>
+<tr>
+<td><code>ScopeMeta</code></td>
+<td>Scopes an entity by a parent entity</td>
+<td><code>entity</code>, <code>field</code>, <code>label</code>, <code>endpoint</code></td>
+<td><code>src/cluster_erp/core/metadata.py:411-415</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>EntityMeta</code> checks at construction that the form tabs of its detail view cover every form group that is not <code>create_only</code>, and that they name no unknown group. A mismatch raises <code>ValueError</code> when the module is imported (<code>src/cluster_erp/core/metadata.py:617-649</code>).</p>
+<h2 id="forms-and-fields">Forms and fields<a class="headerlink" href="#forms-and-fields">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Purpose</th>
+<th>Main fields</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FormMeta</code></td>
+<td>A form as a list of field groups</td>
+<td><code>field_groups</code></td>
+<td><code>src/cluster_erp/core/metadata.py:171-172</code></td>
+</tr>
+<tr>
+<td><code>FieldGroupMeta</code></td>
+<td>A group of fields, optionally conditional or create-only</td>
+<td><code>key</code>, <code>label</code>, <code>group_type</code>, <code>condition</code>, <code>nested_key</code>, <code>create_only</code>, <code>edit_only</code>, <code>description</code>, <code>fields</code></td>
+<td><code>src/cluster_erp/core/metadata.py:149-168</code></td>
+</tr>
+<tr>
+<td><code>FieldMeta</code></td>
+<td>One field</td>
+<td><code>key</code>, <code>label</code>, <code>field_type</code>, <code>required</code>, <code>choices</code>, <code>source</code>, <code>read_only</code>, <code>immutable_on_edit</code>, <code>permission</code>, <code>switch</code>, <code>autofill</code>, <code>weight</code>, <code>help</code>, <code>storage</code></td>
+<td><code>src/cluster_erp/core/metadata.py:79-146</code></td>
+</tr>
+<tr>
+<td><code>ChoiceMeta</code></td>
+<td>One choice of an enum</td>
+<td><code>value</code>, <code>label</code></td>
+<td><code>src/cluster_erp/core/metadata.py:10-12</code></td>
+</tr>
+<tr>
+<td><code>ForeignKeySource</code></td>
+<td>Where a foreign-key picker loads its options</td>
+<td><code>module</code>, <code>endpoint</code>, <code>value_field</code>, <code>display_field</code>, <code>params</code>, <code>hierarchical</code>, <code>create_scope</code>, <code>group_field</code></td>
+<td><code>src/cluster_erp/core/metadata.py:21-33</code></td>
+</tr>
+<tr>
+<td><code>CreateScopeMeta</code></td>
+<td>Pre-fills a field when a record is created from a picker</td>
+<td><code>target_field</code>, <code>source_field</code>, <code>source</code></td>
+<td><code>src/cluster_erp/core/metadata.py:15-18</code></td>
+</tr>
+<tr>
+<td><code>ConditionalSourceMeta</code></td>
+<td>A picker source that applies only under a condition</td>
+<td><code>condition</code>, <code>source</code></td>
+<td><code>src/cluster_erp/core/metadata.py:61-63</code></td>
+</tr>
+<tr>
+<td><code>ConditionMeta</code></td>
+<td>A field-value condition; <code>value</code> may list alternatives separated by a pipe, <code>negate</code> inverts it</td>
+<td><code>field</code>, <code>value</code>, <code>negate</code></td>
+<td><code>src/cluster_erp/core/metadata.py:52-58</code></td>
+</tr>
+<tr>
+<td><code>AutofillMeta</code></td>
+<td>Copies a value from the selected foreign record into another field</td>
+<td><code>source_fields</code>, <code>target_field</code>, <code>resolve</code></td>
+<td><code>src/cluster_erp/core/metadata.py:36-44</code></td>
+</tr>
+<tr>
+<td><code>AutoGenerateRule</code></td>
+<td>A template that fills a field when other fields match</td>
+<td><code>when</code>, <code>template</code></td>
+<td><code>src/cluster_erp/core/metadata.py:47-49</code></td>
+</tr>
+<tr>
+<td><code>DynamicFormSource</code></td>
+<td>Sub-fields fetched from a driver field's selected record</td>
+<td><code>driver_field</code>, <code>module</code>, <code>endpoint</code>, <code>schema_field</code></td>
+<td><code>src/cluster_erp/core/metadata.py:66-76</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>FieldMeta.field_type</code> takes one of 19 values: <code>string</code>, <code>text</code>, <code>integer</code>, <code>float</code>, <code>decimal</code>, <code>boolean</code>, <code>date</code>, <code>datetime</code>, <code>enum</code>, <code>multi_enum</code>, <code>foreign_key</code>, <code>multi_foreign_key</code>, <code>json</code>, <code>hidden_scope_field</code>, <code>file_upload</code>, <code>suggest_combo</code>, <code>dynamic_form</code>, <code>field_list</code>, and <code>string_list</code> (<code>src/cluster_erp/core/metadata.py:82-102</code>). <code>FieldMeta.permission</code> hides a field's value from callers without that permission code; the comment names <code>core/field_access.py</code> as the enforcing code (<code>src/cluster_erp/core/metadata.py:115-119</code>). <code>FieldMeta.switch</code> shows a field only while a tenant display switch is on (<code>src/cluster_erp/core/metadata.py:120-125</code>). <code>FieldMeta.storage</code> is <code>column</code> for shipped fields and <code>extra</code> for tenant-defined fields (<code>src/cluster_erp/core/metadata.py:142-146</code>).</p>
+<h2 id="lists">Lists<a class="headerlink" href="#lists">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Purpose</th>
+<th>Main fields</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ListViewMeta</code></td>
+<td>A list screen</td>
+<td><code>paginated</code>, <code>search_enabled</code>, <code>columns</code>, <code>filters</code></td>
+<td><code>src/cluster_erp/core/metadata.py:238-242</code></td>
+</tr>
+<tr>
+<td><code>ColumnMeta</code></td>
+<td>One column</td>
+<td><code>key</code>, <code>data_key</code>, <code>label</code>, <code>width</code>, <code>stretch</code>, <code>align</code>, <code>switch</code>, <code>formatter</code>, <code>choices</code>, <code>display_endpoint</code>, <code>display_field</code>, <code>value_field</code>, <code>legend</code></td>
+<td><code>src/cluster_erp/core/metadata.py:175-227</code></td>
+</tr>
+<tr>
+<td><code>FilterMeta</code></td>
+<td>One list filter</td>
+<td><code>key</code>, <code>label</code>, <code>filter_type</code>, <code>choices</code>, <code>source</code></td>
+<td><code>src/cluster_erp/core/metadata.py:230-235</code></td>
+</tr>
+<tr>
+<td><code>SubTableMeta</code></td>
+<td>Columns of a sub-entity table</td>
+<td><code>columns</code></td>
+<td><code>src/cluster_erp/core/metadata.py:380-381</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>ColumnMeta.formatter</code> takes one of <code>boolean</code>, <code>active_flag</code>, <code>date</code>, <code>datetime</code>, <code>decimal</code>, <code>enum</code>, <code>foreign_key</code>, <code>entity_type</code>, <code>entity_record</code>, or <code>i18n_message</code> (<code>src/cluster_erp/core/metadata.py:190-212</code>).</p>
+<h2 id="detail-views">Detail views<a class="headerlink" href="#detail-views">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Purpose</th>
+<th>Main fields</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DetailViewMeta</code></td>
+<td>A record card</td>
+<td><code>title_field</code>, <code>tabs</code></td>
+<td><code>src/cluster_erp/core/metadata.py:299-301</code></td>
+</tr>
+<tr>
+<td><code>DetailTabMeta</code></td>
+<td>One tab of a record card</td>
+<td><code>key</code>, <code>label</code>, <code>tab_type</code>, <code>custom_widget</code>, <code>entity</code>, <code>entity_module</code>, <code>field_groups</code>, <code>config</code>, <code>condition</code>, <code>scope_param</code>, <code>read_only</code>, <code>completeness_endpoint</code></td>
+<td><code>src/cluster_erp/core/metadata.py:252-296</code></td>
+</tr>
+<tr>
+<td><code>CompletenessMeta</code> and <code>CompletenessTierMeta</code></td>
+<td>Completeness tiers of a record</td>
+<td><code>tiers</code>; <code>key</code>, <code>label</code>, <code>fields</code></td>
+<td><code>src/cluster_erp/core/metadata.py:466-473</code></td>
+</tr>
+<tr>
+<td><code>RecordLockMeta</code></td>
+<td>The field values at which a record becomes read-only</td>
+<td><code>field</code>, <code>values</code></td>
+<td><code>src/cluster_erp/core/metadata.py:476-492</code></td>
+</tr>
+<tr>
+<td><code>AvatarMeta</code></td>
+<td>A record's profile photo</td>
+<td><code>field</code>, <code>endpoint</code></td>
+<td><code>src/cluster_erp/core/metadata.py:495-503</code></td>
+</tr>
+<tr>
+<td><code>EmptyStateMeta</code></td>
+<td>Text and icon of an empty list</td>
+<td><code>icon</code>, <code>title</code>, <code>description</code>, <code>action_label</code></td>
+<td><code>src/cluster_erp/core/metadata.py:459-463</code></td>
+</tr>
+<tr>
+<td><code>SemanticGroupMeta</code></td>
+<td>A named group of fields</td>
+<td><code>key</code>, <code>label</code></td>
+<td><code>src/cluster_erp/core/metadata.py:454-456</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>DetailTabMeta.tab_type</code> takes one of <code>form</code>, <code>custom</code>, <code>sub_entity_table</code>, <code>sub_entity_tree</code>, <code>permission_checklist</code>, <code>role_checklist</code>, <code>access_summary</code>, <code>completeness</code>, or <code>read_model_panel</code> (<code>src/cluster_erp/core/metadata.py:255-270</code>). The <code>RecordLockMeta</code> docstring requires <code>values</code> to come from the same constant that the service enforces (<code>src/cluster_erp/core/metadata.py:486-488</code>).</p>
+<h2 id="parties-facets-and-composite-creation">Parties, facets, and composite creation<a class="headerlink" href="#parties-facets-and-composite-creation">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Purpose</th>
+<th>Main fields</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>IdentityMeta</code></td>
+<td>Marks an entity as a facet of a canonical record in another module</td>
+<td><code>field</code>, <code>module</code>, <code>entity</code></td>
+<td><code>src/cluster_erp/core/metadata.py:304-313</code></td>
+</tr>
+<tr>
+<td><code>FacetMeta</code></td>
+<td>A role a party can play, shown inline on the party card</td>
+<td><code>module</code>, <code>entity</code>, <code>link_field</code>, <code>sections</code>, <code>multi</code>, <code>list_endpoint</code>, <code>requires_flag</code></td>
+<td><code>src/cluster_erp/core/metadata.py:357-377</code></td>
+</tr>
+<tr>
+<td><code>FacetSectionMeta</code></td>
+<td>One section a facet contributes to the card</td>
+<td><code>kind</code>, <code>label</code>, <code>form_groups</code>, <code>sub_entity</code>, <code>sub_module</code>, <code>party_scoped</code>, <code>columns</code>, <code>table</code>, <code>scope_param</code>, <code>scope_field</code></td>
+<td><code>src/cluster_erp/core/metadata.py:316-354</code></td>
+</tr>
+<tr>
+<td><code>CompositeCreateMeta</code> and <code>CompositeRoleMeta</code></td>
+<td>Guided creation of a record with role facets in one call</td>
+<td><code>endpoint</code>, <code>roles</code>; <code>key</code>, <code>flag_field</code>, <code>buckets</code></td>
+<td><code>src/cluster_erp/core/metadata.py:506-514</code></td>
+</tr>
+</tbody>
+</table>
+<p>These classes implement the party unification rule of the project's written engineering rules. See <a href="../modules/parties/party-unification.html">party unification</a>.</p>
+<h2 id="actions-and-links">Actions and links<a class="headerlink" href="#actions-and-links">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Purpose</th>
+<th>Main fields</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ActionMeta</code></td>
+<td>An action on records</td>
+<td><code>key</code>, <code>label</code>, <code>endpoint</code>, <code>scope</code>, <code>icon</code>, <code>condition</code>, <code>conditions</code>, <code>body_fields</code>, <code>body_field_groups</code>, <code>description</code></td>
+<td><code>src/cluster_erp/core/metadata.py:418-434</code></td>
+</tr>
+<tr>
+<td><code>ActionConditionMeta</code></td>
+<td>When an action, tab, or link is offered</td>
+<td><code>field</code>, <code>value</code>, <code>negate</code></td>
+<td><code>src/cluster_erp/core/metadata.py:245-249</code></td>
+</tr>
+<tr>
+<td><code>RecordLinkMeta</code></td>
+<td>A shortcut from a record card to an app screen</td>
+<td><code>key</code>, <code>label</code>, <code>icon</code>, <code>module</code>, <code>section</code>, <code>params</code>, <code>condition</code></td>
+<td><code>src/cluster_erp/core/metadata.py:437-451</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>ActionMeta.scope</code> is one of <code>global</code>, <code>single_record</code>, or <code>parent</code> (<code>src/cluster_erp/core/metadata.py:422</code>). See <a href="../web-app/actions-and-action-sheet.html">actions and action sheet</a>.</p>
+<h2 id="trees-sidebar-and-home">Trees, sidebar, and home<a class="headerlink" href="#trees-sidebar-and-home">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Purpose</th>
+<th>Main fields</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TreeViewMeta</code></td>
+<td>A tree screen</td>
+<td><code>display_key</code>, <code>children_key</code>, <code>parent_id_key</code>, <code>tree_endpoint</code>, <code>nested</code>, <code>scope</code>, <code>max_depth_warning</code></td>
+<td><code>src/cluster_erp/core/metadata.py:390-397</code></td>
+</tr>
+<tr>
+<td><code>TreeScopeMeta</code></td>
+<td>Scope of a tree by another entity</td>
+<td><code>entity</code>, <code>field</code>, <code>list_endpoint</code></td>
+<td><code>src/cluster_erp/core/metadata.py:384-387</code></td>
+</tr>
+<tr>
+<td><code>DynamicComponentsMeta</code></td>
+<td>Levels and values loaded by a trigger field</td>
+<td><code>trigger_field</code>, <code>levels_endpoint</code>, <code>values_endpoint</code></td>
+<td><code>src/cluster_erp/core/metadata.py:400-403</code></td>
+</tr>
+<tr>
+<td><code>SidebarMeta</code></td>
+<td>The navigation of a module</td>
+<td><code>groups</code></td>
+<td><code>src/cluster_erp/core/metadata.py:715-716</code></td>
+</tr>
+<tr>
+<td><code>SidebarGroupMeta</code></td>
+<td>A navigation group</td>
+<td><code>key</code>, <code>label</code>, <code>icon</code>, <code>sections</code></td>
+<td><code>src/cluster_erp/core/metadata.py:691-695</code></td>
+</tr>
+<tr>
+<td><code>SidebarSectionMeta</code></td>
+<td>One screen of a module</td>
+<td><code>key</code>, <code>label</code>, <code>view_type</code>, <code>icon</code>, <code>entity</code>, <code>list_endpoint</code>, <code>tabs</code>, <code>entity_tabs</code>, <code>custom_widget</code>, <code>hidden_from_bar</code>, <code>required_permission</code>, <code>description</code></td>
+<td><code>src/cluster_erp/core/metadata.py:664-688</code></td>
+</tr>
+<tr>
+<td><code>EntityTabRef</code></td>
+<td>One tab of a <code>tabbed_list</code> section</td>
+<td><code>module</code>, <code>entity</code>, <code>label</code>, <code>icon</code>, <code>list_endpoint</code></td>
+<td><code>src/cluster_erp/core/metadata.py:652-661</code></td>
+</tr>
+<tr>
+<td><code>HomeWidgetMeta</code></td>
+<td>A home-screen widget offered by a module</td>
+<td><code>key</code>, <code>label</code>, <code>icon</code>, <code>size</code>, <code>custom_widget</code>, <code>open_section</code></td>
+<td><code>src/cluster_erp/core/metadata.py:698-712</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>SidebarSectionMeta.view_type</code> is one of <code>list</code>, <code>detail</code>, <code>tree</code>, <code>settings</code>, <code>custom</code>, or <code>tabbed_list</code> (<code>src/cluster_erp/core/metadata.py:667</code>). <code>HomeWidgetMeta.size</code> must match the pattern <code>NxM</code> (<code>src/cluster_erp/core/metadata.py:710</code>).</p>
+<h2 id="tenant-fields">Tenant fields<a class="headerlink" href="#tenant-fields">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Purpose</th>
+<th>Main fields</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TenantFieldsMeta</code></td>
+<td>Declares that an entity accepts tenant-defined fields</td>
+<td><code>buckets</code></td>
+<td><code>src/cluster_erp/core/metadata.py:545-550</code></td>
+</tr>
+<tr>
+<td><code>TenantBucketMeta</code></td>
+<td>One storage bucket for tenant field values</td>
+<td><code>key</code>, <code>label</code>, <code>nested_key</code>, <code>group_keys</code>, <code>placement_group_keys</code>, <code>table</code>, <code>entity_types</code></td>
+<td><code>src/cluster_erp/core/metadata.py:517-542</code></td>
+</tr>
+</tbody>
+</table>
+<p>See <a href="tenant-fields.html">tenant fields</a>.</p>
+<h2 id="constraints-and-validation">Constraints and validation<a class="headerlink" href="#constraints-and-validation">¶</a></h2>
+<ul>
+<li>Metadata objects are Pydantic models; a wrong literal value or a missing required field fails when the module builds its metadata.</li>
+<li>At start-up the server fails if a <code>sub_entity_table</code> tab points at an entity without columns (<code>src/cluster_erp/server/app.py:547-589</code>).</li>
+<li>The project's written engineering rules make the web app fully metadata-driven: screen, form, list, and action behaviour comes from metadata. <code>tests/test_metadata_driven_rules.py</code> and <code>tests/test_architecture_boundaries.py:75</code> guard parts of this rule; see <a href="../contributing/architecture-boundaries.html">architecture boundaries</a>.</li>
+</ul>
+<h2 id="terms-introduced">Terms introduced<a class="headerlink" href="#terms-introduced">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Code identifier</th>
+<th>Definition</th>
+<th>Turkish term</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>metadata</td>
+<td><code>ModuleMeta</code></td>
+<td>The declarative description of a module's screens that both clients render.</td>
+<td>metadata</td>
+<td><code>src/cluster_erp/core/metadata.py:719</code></td>
+</tr>
+<tr>
+<td>entity metadata</td>
+<td><code>EntityMeta</code></td>
+<td>The description of one entity's endpoints, form, list, card, and actions.</td>
+<td>varlık metadata'sı</td>
+<td><code>src/cluster_erp/core/metadata.py:553</code></td>
+</tr>
+<tr>
+<td>facet</td>
+<td><code>FacetMeta</code></td>
+<td>A role a party can play, shown as a section of the party card.</td>
+<td>rol bölümü</td>
+<td><code>src/cluster_erp/core/metadata.py:357</code></td>
+</tr>
+<tr>
+<td>label dictionary</td>
+<td><code>LabelDict</code></td>
+<td>A mapping from language code to display text.</td>
+<td>etiket sözlüğü</td>
+<td><code>src/cluster_erp/core/metadata.py:7</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="index.html">Platform core</a></li>
+<li><a href="../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li><a href="tenant-fields.html">Tenant fields</a></li>
+<li><a href="module-lifecycle.html">Module lifecycle</a></li>
+<li><a href="../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../platform/event-bus.html"><span class="eyebrow">Previous</span><span>Event bus</span></a><a class="next" href="../platform/module-lifecycle.html"><span class="eyebrow">Next</span><span>Module lifecycle</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#scope-and-source">Scope and source</a></li>
+<li class="lvl3"><a href="#how-metadata-is-served">How metadata is served</a></li>
+<li class="lvl2"><a href="#module-and-entity">Module and entity</a></li>
+<li class="lvl2"><a href="#forms-and-fields">Forms and fields</a></li>
+<li class="lvl2"><a href="#lists">Lists</a></li>
+<li class="lvl2"><a href="#detail-views">Detail views</a></li>
+<li class="lvl2"><a href="#parties-facets-and-composite-creation">Parties, facets, and composite creation</a></li>
+<li class="lvl2"><a href="#actions-and-links">Actions and links</a></li>
+<li class="lvl2"><a href="#trees-sidebar-and-home">Trees, sidebar, and home</a></li>
+<li class="lvl2"><a href="#tenant-fields">Tenant fields</a></li>
+<li class="lvl2"><a href="#constraints-and-validation">Constraints and validation</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

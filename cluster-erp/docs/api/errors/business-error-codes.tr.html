@@ -1,0 +1,1907 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>İş hata kodları · Cluster ERP Wiki</title>
+<meta name="description" content="src/cluster_erp/core/errors.py iş bölümlerindeki hata kodları; HTTP durumu, atma konumları ve ilk konumdaki iletiyle.">
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="icon" href="../../assets/mark.svg" type="image/svg+xml">
+<script defer src="../../assets/mermaid.min.js"></script>
+<script defer src="../../assets/site.js" data-root="../../" data-lang="tr"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menü</button>
+  <a class="brand" href="/"><img src="../../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../../index.tr.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Wiki&#x27;de ara" aria-label="Wiki&#x27;de ara" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="Eşleşen sayfa yok."></div>
+  </div>
+  <a class="lang-switch" href="../../api/errors/business-error-codes.html" lang="en" hreflang="en">English</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Ana sayfa</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../../README.tr.html">Cluster ERP wiki&#x27;si</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Genel bakış</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../../overview/index.tr.html">Genel bakış</a></li>
+<li class=""><a href="../../overview/architecture-overview.tr.html">Mimariye genel bakış</a></li>
+<li class=""><a href="../../overview/repository-map.tr.html">Depo haritası</a></li>
+<li class=""><a href="../../overview/what-is-cluster-erp.tr.html">Cluster ERP nedir</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../../platform/index.tr.html">Platform çekirdeği</a></li>
+<li class=""><a href="../../platform/attachments-notes-and-storage.tr.html">Ekler, notlar ve depolama</a></li>
+<li class=""><a href="../../platform/base-model-and-ids.tr.html">Temel model ve kimlikler</a></li>
+<li class=""><a href="../../platform/cache-and-asset-stamp.tr.html">Önbellek ve varlık damgası</a></li>
+<li class=""><a href="../../platform/change-history.tr.html">Değişiklik geçmişi</a></li>
+<li class=""><a href="../../platform/contracts-reference.tr.html">Sözleşmeler başvurusu</a></li>
+<li class=""><a href="../../platform/database-and-sessions.tr.html">Veritabanı ve oturumlar</a></li>
+<li class=""><a href="../../platform/errors-and-exceptions.tr.html">Hatalar ve istisnalar</a></li>
+<li class=""><a href="../../platform/event-bus.tr.html">Olay veri yolu</a></li>
+<li class=""><a href="../../platform/metadata-model.tr.html">Metadata modeli</a></li>
+<li class=""><a href="../../platform/module-lifecycle.tr.html">Modül yaşam döngüsü</a></li>
+<li class=""><a href="../../platform/money-and-decimal.tr.html">Para ve Decimal</a></li>
+<li class=""><a href="../../platform/pdf-and-system-mail.tr.html">PDF ve sistem postası</a></li>
+<li class=""><a href="../../platform/product-breakdown-and-stock-conversion.tr.html">Ürün kırılımı ve stok dönüşümü</a></li>
+<li class=""><a href="../../platform/reference-data-and-core-i18n.tr.html">Referans veriler ve çekirdek i18n</a></li>
+<li class=""><a href="../../platform/request-pipeline-and-middleware.tr.html">İstek hattı ve ara katmanlar</a></li>
+<li class=""><a href="../../platform/search-pagination-and-bulk.tr.html">Arama, sayfalama ve toplu işlemler</a></li>
+<li class=""><a href="../../platform/server-startup-and-app-factory.tr.html">Sunucu açılışı ve uygulama fabrikası</a></li>
+<li class=""><a href="../../platform/settings-reference.tr.html">Ayarlar başvurusu</a></li>
+<li class=""><a href="../../platform/shared-server-routes.tr.html">Ortak sunucu rotaları</a></li>
+<li class=""><a href="../../platform/soft-delete-and-deactivation.tr.html">Yumuşak silme ve kullanımdan kaldırma</a></li>
+<li class=""><a href="../../platform/tenant-fields.tr.html">Kiracı alanları</a></li>
+<li class=""><a href="../../platform/working-time.tr.html">Çalışma zamanı</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Kimlik ve erişim</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../../identity-access/index.tr.html">Kimlik, erişim, kiracılık, gizlilik ve lisans</a></li>
+<li class=""><a href="../../identity-access/abac-policies.tr.html">ABAC politikaları</a></li>
+<li class=""><a href="../../identity-access/app-store-licensing-and-entitlements.tr.html">Uygulama mağazası lisansları ve hakları</a></li>
+<li class=""><a href="../../identity-access/approvals-and-approval-chains.tr.html">Onaylar ve onay zincirleri</a></li>
+<li class=""><a href="../../identity-access/authentication-and-sessions.tr.html">Kimlik doğrulama ve oturumlar</a></li>
+<li class=""><a href="../../identity-access/field-and-row-access.tr.html">Alan ve satır erişimi</a></li>
+<li class=""><a href="../../identity-access/multi-tenancy.tr.html">Çok kiracılılık</a></li>
+<li class=""><a href="../../identity-access/notification-rules.tr.html">Bildirim kuralları</a></li>
+<li class=""><a href="../../identity-access/operator-console.tr.html">Operatör konsolu</a></li>
+<li class=""><a href="../../identity-access/privacy-and-data-subject-requests.tr.html">Gizlilik ve ilgili kişi başvuruları</a></li>
+<li class=""><a href="../../identity-access/roles-and-permissions.tr.html">Roller ve izinler</a></li>
+<li class=""><a href="../../identity-access/second-factor-and-secret-storage.tr.html">İkinci doğrulama adımı ve gizli değer saklama</a></li>
+<li class=""><a href="../../identity-access/signup.tr.html">Kayıt</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web uygulaması</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../../web-app/index.tr.html">Web uygulaması platformu</a></li>
+<li class=""><a href="../../web-app/actions-and-action-sheet.tr.html">Aksiyonlar ve aksiyon kartı</a></li>
+<li class=""><a href="../../web-app/assistant-and-chat-ui.tr.html">Asistan ve sohbet ekranları</a></li>
+<li class=""><a href="../../web-app/boot-session-and-api.tr.html">Açılış, oturum ve API çağrıları</a></li>
+<li class=""><a href="../../web-app/data-refresh-and-change-signals.tr.html">Veri tazeleme ve değişiklik sinyalleri</a></li>
+<li class=""><a href="../../web-app/device-classes.tr.html">Cihaz sınıfları</a></li>
+<li class=""><a href="../../web-app/gated-app-bundles.tr.html">Kapılı uygulama paketleri</a></li>
+<li class=""><a href="../../web-app/generic-detail.tr.html">Genel ayrıntı</a></li>
+<li class=""><a href="../../web-app/generic-form.tr.html">Genel form</a></li>
+<li class=""><a href="../../web-app/generic-list.tr.html">Genel liste</a></li>
+<li class=""><a href="../../web-app/generic-tree-and-settings.tr.html">Genel ağaç ve ayar ekranları</a></li>
+<li class=""><a href="../../web-app/home-dock-and-launcher.tr.html">Ana ekran, dock ve başlatıcı</a></li>
+<li class=""><a href="../../web-app/home-widgets.tr.html">Ana ekran bileşenleri</a></li>
+<li class=""><a href="../../web-app/how-to-add-a-language.tr.html">Web uygulamasına dil ekleyin</a></li>
+<li class=""><a href="../../web-app/how-to-add-a-screen-with-metadata.tr.html">Metadata ile ekran ekleyin</a></li>
+<li class=""><a href="../../web-app/i18n-and-languages.tr.html">Uluslararasılaştırma ve diller</a></li>
+<li class=""><a href="../../web-app/mail-and-profile-screens.tr.html">Mail ve profil ekranları</a></li>
+<li class=""><a href="../../web-app/metadata-rendering.tr.html">Metadata çizimi</a></li>
+<li class=""><a href="../../web-app/module-apps-and-app-scope.tr.html">Modül uygulamaları ve uygulama kapsamı</a></li>
+<li class=""><a href="../../web-app/overview.tr.html">Web uygulamasına genel bakış</a></li>
+<li class=""><a href="../../web-app/records-documents-viewer-and-share.tr.html">Kayıt belgeleri, görüntüleyici ve paylaşım</a></li>
+<li class=""><a href="../../web-app/search-and-command-palette.tr.html">Arama ve komut paleti</a></li>
+<li class=""><a href="../../web-app/themes-tokens-and-accessibility.tr.html">Temalar, belirteçler ve erişilebilirlik</a></li>
+<li class=""><a href="../../web-app/user-ui-state.tr.html">Kullanıcı arayüz durumu</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Masaüstü istemci</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../../desktop/index.tr.html">Masaüstü istemci</a></li>
+<li class=""><a href="../../desktop/api-client-and-workers.tr.html">API istemcisi ve çalışanlar</a></li>
+<li class=""><a href="../../desktop/chat-widget.tr.html">Sohbet bileşeni</a></li>
+<li class=""><a href="../../desktop/generic-widgets.tr.html">Genel bileşenler</a></li>
+<li class=""><a href="../../desktop/i18n-themes-and-accessibility.tr.html">Diller, temalar ve erişilebilirlik</a></li>
+<li class=""><a href="../../desktop/metadata-store-and-fk-cache.tr.html">Metadata deposu ve yabancı anahtar önbelleği</a></li>
+<li class=""><a href="../../desktop/module-screens.tr.html">Modül ekranları</a></li>
+<li class=""><a href="../../desktop/overview.tr.html">Masaüstü istemciye genel bakış</a></li>
+<li class=""><a href="../../desktop/run-the-desktop-client.tr.html">Masaüstü istemciyi çalıştırın</a></li>
+<li class=""><a href="../../desktop/signal-bus-and-watch-entity.tr.html">Sinyal veri yolu ve watch_entity</a></li>
+<li class=""><a href="../../desktop/tabs-panes-and-layout.tr.html">Sekmeler, bölmeler ve yerleşim</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">İş modülleri</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../../modules/index.tr.html">İş modülleri</a></li>
+<li class=""><a href="../../modules/analytics/index.tr.html">Analytics modülü (analytics)</a></li>
+<li class="sub"><a href="../../modules/analytics/analytics-facts.tr.html">Analitik olgular</a></li>
+<li class="sub"><a href="../../modules/analytics/forecasting-and-classification.tr.html">Analitik tahmin ve sınıflandırma</a></li>
+<li class="sub"><a href="../../modules/analytics/recipes-and-query-builder.tr.html">Analitik tarifleri ve sorgu kurucu</a></li>
+<li class="sub"><a href="../../modules/analytics/reports-summaries-and-cross.tr.html">Analitik raporları, özetleri ve çapraz</a></li>
+<li class="sub"><a href="../../modules/analytics/statistics-and-inference.tr.html">Analitik istatistik ve çıkarım</a></li>
+<li class=""><a href="../../modules/app_store.tr.html">App store modülü (app_store)</a></li>
+<li class=""><a href="../../modules/auth.tr.html">Auth modülü (auth)</a></li>
+<li class=""><a href="../../modules/bom.tr.html">BOM modülü (bom)</a></li>
+<li class=""><a href="../../modules/calendars.tr.html">Calendars modülü (calendars)</a></li>
+<li class=""><a href="../../modules/costing.tr.html">Costing modülü (costing)</a></li>
+<li class=""><a href="../../modules/crm/index.tr.html">CRM modülü (crm)</a></li>
+<li class="sub"><a href="../../modules/crm/customers-and-customer-parts.tr.html">Müşteriler ve müşteri parçaları</a></li>
+<li class="sub"><a href="../../modules/crm/inbox.tr.html">Teklif talebi gelen kutusu</a></li>
+<li class="sub"><a href="../../modules/crm/rfqs.tr.html">Müşteri teklif talepleri</a></li>
+<li class=""><a href="../../modules/currencies.tr.html">Currencies modülü (currencies)</a></li>
+<li class=""><a href="../../modules/design_engineering.tr.html">Design engineering modülü (design_engineering)</a></li>
+<li class=""><a href="../../modules/documents.tr.html">Documents modülü (documents)</a></li>
+<li class=""><a href="../../modules/fleet/index.tr.html">Fleet modülü (fleet)</a></li>
+<li class="sub"><a href="../../modules/fleet/assets.tr.html">Filo araçları</a></li>
+<li class="sub"><a href="../../modules/fleet/maintenance-and-work-orders.tr.html">Filo bakımı ve iş emirleri</a></li>
+<li class="sub"><a href="../../modules/fleet/meters-and-fuel.tr.html">Filo sayaçları ve yakıt</a></li>
+<li class="sub"><a href="../../modules/fleet/operations.tr.html">Filo operasyonları</a></li>
+<li class="sub"><a href="../../modules/fleet/tco-telematics-and-analytics.tr.html">Filo TCO, telematik ve analitik</a></li>
+<li class=""><a href="../../modules/intranet/index.tr.html">Intranet modülü (intranet)</a></li>
+<li class="sub"><a href="../../modules/intranet/access-audience-and-retention.tr.html">İntranet erişimi, hedef kitlesi ve saklama</a></li>
+<li class="sub"><a href="../../modules/intranet/content-and-feed.tr.html">İntranet içeriği ve akışı</a></li>
+<li class="sub"><a href="../../modules/intranet/directory.tr.html">İntranet rehberi</a></li>
+<li class="sub"><a href="../../modules/intranet/engagement.tr.html">İntranet katılımı</a></li>
+<li class="sub"><a href="../../modules/intranet/events.tr.html">İntranet etkinlikleri</a></li>
+<li class="sub"><a href="../../modules/intranet/leave.tr.html">İntranet izinleri</a></li>
+<li class="sub"><a href="../../modules/intranet/my-documents.tr.html">İntranet belgelerim</a></li>
+<li class="sub"><a href="../../modules/intranet/notifications-and-delivery.tr.html">İntranet bildirimleri ve tebligat</a></li>
+<li class="sub"><a href="../../modules/intranet/requests.tr.html">İntranet talepleri</a></li>
+<li class=""><a href="../../modules/inventory.tr.html">Inventory modülü (inventory)</a></li>
+<li class=""><a href="../../modules/logs.tr.html">Logs modülü (logs)</a></li>
+<li class=""><a href="../../modules/mail.tr.html">Mail modülü (mail)</a></li>
+<li class=""><a href="../../modules/nesting/index.tr.html">Nesting modülü (nesting)</a></li>
+<li class="sub"><a href="../../modules/nesting/engine.tr.html">Yerleşim motoru</a></li>
+<li class="sub"><a href="../../modules/nesting/integration-and-kpi.tr.html">Yerleşim entegrasyonu ve KPI</a></li>
+<li class="sub"><a href="../../modules/nesting/jobs-parts-and-remnants.tr.html">Yerleşim işleri, parçalar ve artıklar</a></li>
+<li class=""><a href="../../modules/owned_organisations.tr.html">Owned organisations modülü (owned_organisations)</a></li>
+<li class=""><a href="../../modules/parties/index.tr.html">Parties modülü (parties)</a></li>
+<li class="sub"><a href="../../modules/parties/addresses.tr.html">Adresler başvurusu</a></li>
+<li class="sub"><a href="../../modules/parties/communication-channels.tr.html">İletişim kanalları başvurusu</a></li>
+<li class="sub"><a href="../../modules/parties/parties.tr.html">Parties alt modülü başvurusu</a></li>
+<li class="sub"><a href="../../modules/parties/party-unification.tr.html">Taraf birleştirme</a></li>
+<li class="sub"><a href="../../modules/parties/person-languages.tr.html">Kişi dilleri başvurusu</a></li>
+<li class="sub"><a href="../../modules/parties/settings-and-reference-data.tr.html">Parties ayarları ve başvuru verileri</a></li>
+<li class=""><a href="../../modules/privacy.tr.html">Privacy modülü (privacy)</a></li>
+<li class=""><a href="../../modules/procurement/index.tr.html">Procurement modülü (procurement)</a></li>
+<li class="sub"><a href="../../modules/procurement/critical-materials-and-substitution.tr.html">Kritik malzemeler ve ikame</a></li>
+<li class="sub"><a href="../../modules/procurement/mrp.tr.html">Malzeme ihtiyaç planlaması</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-contracts-and-info-records.tr.html">Satın alma sözleşmeleri ve info kayıtları</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-orders.tr.html">Satın alma siparişleri</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-requests.tr.html">Satın alma talepleri</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-rfqs.tr.html">Satın alma teklif talepleri</a></li>
+<li class="sub"><a href="../../modules/procurement/suppliers.tr.html">Tedarikçiler</a></li>
+<li class=""><a href="../../modules/production/index.tr.html">Production modülü (production)</a></li>
+<li class="sub"><a href="../../modules/production/production-orders-and-versions.tr.html">Üretim emirleri ve versiyonları</a></li>
+<li class="sub"><a href="../../modules/production/routings-and-operation-types.tr.html">Rotalar ve operasyon tipleri</a></li>
+<li class="sub"><a href="../../modules/production/scheduling.tr.html">Üretim çizelgeleme</a></li>
+<li class="sub"><a href="../../modules/production/work-centers-and-capacity.tr.html">İş merkezleri ve kapasite</a></li>
+<li class="sub"><a href="../../modules/production/work-orders.tr.html">İş emirleri</a></li>
+<li class=""><a href="../../modules/products_and_services.tr.html">Products and services modülü (products_and_services)</a></li>
+<li class=""><a href="../../modules/projects/index.tr.html">Projects modülü (projects)</a></li>
+<li class="sub"><a href="../../modules/projects/actions-activities-and-meetings.tr.html">Proje aksiyonları, aktiviteleri ve toplantıları</a></li>
+<li class="sub"><a href="../../modules/projects/board.tr.html">Proje panosu</a></li>
+<li class="sub"><a href="../../modules/projects/projects-and-items.tr.html">Projeler, kalemler ve fikstürler</a></li>
+<li class="sub"><a href="../../modules/projects/schedules.tr.html">Proje çizelgeleri</a></li>
+<li class=""><a href="../../modules/purchasing_quotations.tr.html">Purchasing quotations modülü (purchasing_quotations)</a></li>
+<li class=""><a href="../../modules/quotations.tr.html">Quotations modülü (quotations)</a></li>
+<li class=""><a href="../../modules/records.tr.html">Records modülü (records)</a></li>
+<li class=""><a href="../../modules/sales_orders/index.tr.html">Sales orders modülü (sales_orders)</a></li>
+<li class="sub"><a href="../../modules/sales_orders/orders-and-lines.tr.html">Satış siparişleri ve sipariş kalemleri</a></li>
+<li class="sub"><a href="../../modules/sales_orders/shipments.tr.html">Sevkiyatlar</a></li>
+<li class="sub"><a href="../../modules/sales_orders/trade-documents.tr.html">İhracat belgeleri</a></li>
+<li class="sub"><a href="../../modules/sales_orders/units-and-settings.tr.html">Satış siparişi birimleri ve ayarları</a></li>
+<li class=""><a href="../../modules/subscriptions.tr.html">Subscriptions modülü (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Asistan</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../../ai/index.tr.html">Niyet asistanı</a></li>
+<li class=""><a href="../../ai/intent-assistant.tr.html">Niyet asistanı nasıl çalışır</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">API referansı</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../../api/index.tr.html">API başvurusu</a></li>
+<li class=""><a href="../../api/analytics.tr.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../../api/app_store.tr.html">App store API (app_store)</a></li>
+<li class=""><a href="../../api/auth.tr.html">Auth API (auth)</a></li>
+<li class=""><a href="../../api/authentication-and-headers.tr.html">Kimlik doğrulama ve başlıklar</a></li>
+<li class=""><a href="../../api/bom.tr.html">BOM API (bom)</a></li>
+<li class=""><a href="../../api/calendars.tr.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../../api/conventions.tr.html">API kuralları</a></li>
+<li class=""><a href="../../api/costing.tr.html">Costing API (costing)</a></li>
+<li class=""><a href="../../api/crm.tr.html">CRM API (crm)</a></li>
+<li class=""><a href="../../api/currencies.tr.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../../api/design_engineering.tr.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../../api/documents.tr.html">Documents API (documents)</a></li>
+<li class=""><a href="../../api/errors.tr.html">Hatalar</a></li>
+<li class="current sub"><a href="../../api/errors/business-error-codes.tr.html">İş hata kodları</a></li>
+<li class=""><a href="../../api/fleet.tr.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../../api/intranet.tr.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../../api/inventory.tr.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../../api/logs.tr.html">Logs API (logs)</a></li>
+<li class=""><a href="../../api/mail.tr.html">Mail API (mail)</a></li>
+<li class=""><a href="../../api/nesting.tr.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../../api/overview.tr.html">API&#x27;ye genel bakış</a></li>
+<li class=""><a href="../../api/owned_organisations.tr.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../../api/parties.tr.html">Parties API (parties)</a></li>
+<li class=""><a href="../../api/privacy.tr.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../../api/procurement.tr.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../../api/procurement/critical_materials.tr.html">Procurement API: Kritik malzemeler uç noktaları (critical_materials)</a></li>
+<li class="sub"><a href="../../api/procurement/info_records.tr.html">Procurement API: Satın alma bilgi kayıtları uç noktaları (info_records)</a></li>
+<li class="sub"><a href="../../api/procurement/mrp.tr.html">Procurement API: MRP uç noktaları (mrp)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_contracts.tr.html">Procurement API: Satın alma sözleşmeleri uç noktaları (purchase_contracts)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_orders.tr.html">Procurement API: Satın alma siparişleri uç noktaları (purchase_orders)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_requests.tr.html">Procurement API: Satın alma talepleri uç noktaları (purchase_requests)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_rfqs.tr.html">Procurement API: Satın alma teklif talepleri uç noktaları (purchase_rfqs)</a></li>
+<li class="sub"><a href="../../api/procurement/substitution_groups.tr.html">Procurement API: İkame grupları uç noktaları (substitution_groups)</a></li>
+<li class="sub"><a href="../../api/procurement/suppliers.tr.html">Procurement API: Tedarikçiler uç noktaları (suppliers)</a></li>
+<li class=""><a href="../../api/production.tr.html">Production API (production)</a></li>
+<li class=""><a href="../../api/products_and_services.tr.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../../api/projects.tr.html">Projects API (projects)</a></li>
+<li class=""><a href="../../api/purchasing_quotations.tr.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../../api/quotations.tr.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../../api/records.tr.html">Records API (records)</a></li>
+<li class=""><a href="../../api/sales_orders.tr.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../../api/server-routes.tr.html">Paylaşılan sunucu yolları API</a></li>
+<li class=""><a href="../../api/subscriptions.tr.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../../api/system-endpoints.tr.html">Sistem uç noktaları API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">İşletme</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../../operations/index.tr.html">İşletim</a></li>
+<li class=""><a href="../../operations/backups-and-restore.tr.html">Yedekler ve geri yükleme</a></li>
+<li class=""><a href="../../operations/ci-pipeline-and-release.tr.html">CI hattı ve sürüm</a></li>
+<li class=""><a href="../../operations/configuration-reference.tr.html">Yapılandırma başvurusu</a></li>
+<li class=""><a href="../../operations/container-measurement.tr.html">Konteyner ölçümü</a></li>
+<li class=""><a href="../../operations/data-residency-check.tr.html">Veri ikameti denetimi</a></li>
+<li class=""><a href="../../operations/database-migrations.tr.html">Veritabanı göçleri</a></li>
+<li class=""><a href="../../operations/demo-and-staging-data.tr.html">Demo ve staging verisi</a></li>
+<li class=""><a href="../../operations/environments-and-promotion.tr.html">Ortamlar ve terfi</a></li>
+<li class=""><a href="../../operations/install-a-linux-node.tr.html">Bir Linux düğümü kurun</a></li>
+<li class=""><a href="../../operations/local-development-setup.tr.html">Yerel geliştirme kurulumu</a></li>
+<li class=""><a href="../../operations/postgresql-roles-and-tuning.tr.html">PostgreSQL rolleri ve ayarı</a></li>
+<li class=""><a href="../../operations/reverse-proxy.tr.html">Ters vekil sunucu</a></li>
+<li class=""><a href="../../operations/scheduled-jobs-and-retention.tr.html">Zamanlanmış işler ve saklama</a></li>
+<li class=""><a href="../../operations/security-txt-and-readiness.tr.html">Security.txt ve hazırlık</a></li>
+<li class=""><a href="../../operations/service-and-process-manager.tr.html">Servis ve süreç yöneticisi</a></li>
+<li class=""><a href="../../operations/tenant-lifecycle.tr.html">Kiracı yaşam döngüsü</a></li>
+<li class=""><a href="../../operations/windows-installer.tr.html">Windows kurucusu</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Katkı</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../../contributing/index.tr.html">Katkı</a></li>
+<li class=""><a href="../../contributing/architecture-boundaries.tr.html">Mimari sınırlar</a></li>
+<li class=""><a href="../../contributing/coding-rules.tr.html">Kodlama kuralları</a></li>
+<li class=""><a href="../../contributing/developer-tools-and-scripts.tr.html">Geliştirici araçları ve betikleri</a></li>
+<li class=""><a href="../../contributing/e2e-battery.tr.html">E2e bataryası</a></li>
+<li class=""><a href="../../contributing/e2e-suite-catalogue.tr.html">E2e süit kataloğu</a></li>
+<li class=""><a href="../../contributing/lint-and-type-check.tr.html">Lint ve tip denetimi</a></li>
+<li class=""><a href="../../contributing/python-tests.tr.html">Python testleri</a></li>
+<li class=""><a href="../../contributing/write-a-backend-module.tr.html">Bir arka uç modülü yazın</a></li>
+<li class=""><a href="../../contributing/writing-documentation.tr.html">Bir wiki sayfası yazın</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Karar kayıtları</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../../decisions/index.tr.html">Karar kayıtları</a></li>
+<li class=""><a href="../../decisions/data-driven-languages.tr.html">Veri güdümlü diller</a></li>
+<li class=""><a href="../../decisions/decimal-money.tr.html">Decimal para</a></li>
+<li class=""><a href="../../decisions/eventbus-only-inter-module-communication.tr.html">Yalnız EventBus ile modüller arası iletişim</a></li>
+<li class=""><a href="../../decisions/metadata-driven-ui.tr.html">Metadata güdümlü arayüz</a></li>
+<li class=""><a href="../../decisions/no-hard-delete.tr.html">Fiziksel silme yok</a></li>
+<li class=""><a href="../../decisions/party-unification.tr.html">Taraf birleşimi</a></li>
+<li class=""><a href="../../decisions/product-model-version-breakdown.tr.html">Ürün, model ve versiyon kırılımı</a></li>
+<li class=""><a href="../../decisions/server-side-ui-state.tr.html">Sunucu tarafı arayüz durumu</a></li>
+<li class=""><a href="../../decisions/ulid-primary-keys.tr.html">ULID birincil anahtarlar</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Başvuru</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../../reference/index.tr.html">Başvuru</a></li>
+<li class=""><a href="../../reference/glossary.tr.html">Sözlük</a></li>
+<li class=""><a href="../../reference/related-material.tr.html">İlgili belgeler</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../../index.tr.html">Ana sayfa</a> / API referansı</div>
+    <header class="page-head">
+      <p class="eyebrow">Referans</p>
+      <h1>İş hata kodları</h1>
+      <p class="lede">src/cluster_erp/core/errors.py iş bölümlerindeki hata kodları; HTTP durumu, atma konumları ve ilk konumdaki iletiyle.</p>
+    </header>
+    <nav class="toc" aria-label="İçindekiler"><p class="eyebrow">İçindekiler</p><ul class="outline">
+<li class="lvl2"><a href="#i̇ş-alanına-göre-kodlar">İş alanına göre kodlar</a></li>
+<li class="lvl3"><a href="#crm">CRM</a></li>
+<li class="lvl3"><a href="#teklifler">Teklifler</a></li>
+<li class="lvl3"><a href="#satış-siparişleri">Satış siparişleri</a></li>
+<li class="lvl3"><a href="#projeler">Projeler</a></li>
+<li class="lvl3"><a href="#ürün-ağacı">Ürün ağacı</a></li>
+<li class="lvl3"><a href="#tasarım-ve-mühendislik">Tasarım ve mühendislik</a></li>
+<li class="lvl3"><a href="#ürünler-ve-malzemeler">Ürünler ve malzemeler</a></li>
+<li class="lvl3"><a href="#envanter">Envanter</a></li>
+<li class="lvl3"><a href="#üretim">Üretim</a></li>
+<li class="lvl3"><a href="#yerleşim">Yerleşim</a></li>
+<li class="lvl3"><a href="#maliyetlendirme">Maliyetlendirme</a></li>
+<li class="lvl3"><a href="#satın-alma">Satın alma</a></li>
+<li class="lvl2"><a href="#i̇lgili-sayfalar">İlgili sayfalar</a></li>
+</ul></nav>
+    <article class="prose">
+<p>Bu sayfa <a href="../errors.tr.html">Hatalar</a> sayfasının devamıdır. <code>src/cluster_erp/core/errors.py</code> dosyasının CRM'den satın almaya iş bölümlerindeki kod sabitlerini; orada anlatılan sözdizimi ağacı taramasıyla bulunan durum, atma konumu sayısı, ilk konum ve iletiyle listeler. Atma konumu olmayan kod tanımlıdır ama taranan hiçbir çağrı onu atmaz.</p>
+<h2 id="i̇ş-alanına-göre-kodlar">İş alanına göre kodlar<a class="headerlink" href="#i̇ş-alanına-göre-kodlar">¶</a></h2>
+<p>Dosyanın her yorum bölümü için bir tablo.</p>
+<h3 id="crm">CRM<a class="headerlink" href="#crm">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Kod</th>
+<th>Tanım yeri</th>
+<th>HTTP durumu</th>
+<th>Atma konumu</th>
+<th>İlk konum</th>
+<th>İlk konumdaki ileti</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RFQ_INVALID_STATUS</code></td>
+<td><code>src/cluster_erp/core/errors.py:88</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/crm/rfqs/services.py:291</code></td>
+<td><code>Action '{action}' is not allowed while the RFQ is '{rfq.status}'</code></td>
+</tr>
+<tr>
+<td><code>RFQ_PACKAGE_INCOMPLETE</code></td>
+<td><code>src/cluster_erp/core/errors.py:89</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>RFQ_INCOMPLETE</code></td>
+<td><code>src/cluster_erp/core/errors.py:90</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/crm/rfqs/services.py:340</code></td>
+<td><code>'RFQ is incomplete: ' + '; '.join((r.label_en for r in missing))</code></td>
+</tr>
+<tr>
+<td><code>PRFQ_INVALID_STATUS</code></td>
+<td><code>src/cluster_erp/core/errors.py:92</code></td>
+<td><code>409</code></td>
+<td>12</td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/services.py:188</code></td>
+<td><code>Cannot edit an RFQ in status '{rfq.status}'</code></td>
+</tr>
+<tr>
+<td><code>PRFQ_INCOMPLETE</code></td>
+<td><code>src/cluster_erp/core/errors.py:93</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/services.py:299</code></td>
+<td><code>'RFQ is incomplete: ' + '; '.join((r.label_en for r in missing))</code></td>
+</tr>
+<tr>
+<td><code>PRFQ_AWARD_INVALID</code></td>
+<td><code>src/cluster_erp/core/errors.py:94</code></td>
+<td><code>422</code></td>
+<td>5</td>
+<td><code>src/cluster_erp/modules/procurement/purchase_rfqs/services.py:778</code></td>
+<td><code>Quotation line references a line not in this RFQ</code></td>
+</tr>
+<tr>
+<td><code>PURQ_INVALID_STATUS</code></td>
+<td><code>src/cluster_erp/core/errors.py:96</code></td>
+<td><code>409</code></td>
+<td>4</td>
+<td><code>src/cluster_erp/modules/purchasing_quotations/quotations/services.py:233</code></td>
+<td><code>Cannot delete a quotation in status '{q.status}'</code></td>
+</tr>
+<tr>
+<td><code>PURQ_INCOMPLETE</code></td>
+<td><code>src/cluster_erp/core/errors.py:97</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/purchasing_quotations/quotations/services.py:276</code></td>
+<td><code>'Quotation is incomplete: ' + '; '.join((r.label_en for r in missing))</code></td>
+</tr>
+<tr>
+<td><code>PURQ_AWARD_INVALID</code></td>
+<td><code>src/cluster_erp/core/errors.py:98</code></td>
+<td><code>422</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/purchasing_quotations/quotations/services.py:305</code></td>
+<td><code>Award references a line not in this quotation</code></td>
+</tr>
+<tr>
+<td><code>PCON_INVALID_STATUS</code></td>
+<td><code>src/cluster_erp/core/errors.py:100</code></td>
+<td><code>409</code></td>
+<td>3</td>
+<td><code>src/cluster_erp/modules/procurement/purchase_contracts/services.py:203</code></td>
+<td><code>Cannot delete a contract in status '{c.status}'</code></td>
+</tr>
+<tr>
+<td><code>PCON_INCOMPLETE</code></td>
+<td><code>src/cluster_erp/core/errors.py:101</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/procurement/purchase_contracts/services.py:246</code></td>
+<td><code>'Contract is incomplete: ' + '; '.join((r.label_en for r in missing))</code></td>
+</tr>
+<tr>
+<td><code>RFQ_DECLINED</code></td>
+<td><code>src/cluster_erp/core/errors.py:102</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>RFQ_ARIBA_DUE_DATE_IMMUTABLE</code></td>
+<td><code>src/cluster_erp/core/errors.py:103</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/crm/rfqs/services.py:225</code></td>
+<td><code>Due date cannot be changed for Ariba-sourced RFQs</code></td>
+</tr>
+<tr>
+<td><code>RFQ_DUPLICATE_SUBJECT</code></td>
+<td><code>src/cluster_erp/core/errors.py:104</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/crm/rfqs/services.py:521</code></td>
+<td><code>An RFQ with the same subject for this customer exists within the last {window_days} days</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="teklifler">Teklifler<a class="headerlink" href="#teklifler">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Kod</th>
+<th>Tanım yeri</th>
+<th>HTTP durumu</th>
+<th>Atma konumu</th>
+<th>İlk konum</th>
+<th>İlk konumdaki ileti</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>QUOTE_INVALID_STATUS</code></td>
+<td><code>src/cluster_erp/core/errors.py:107</code></td>
+<td><code>400</code>, <code>409</code></td>
+<td>8</td>
+<td><code>src/cluster_erp/modules/quotations/quotes/services.py:474</code></td>
+<td><code>Quote must be in pending_mgmt_approval status</code></td>
+</tr>
+<tr>
+<td><code>QUOTE_NOT_APPROVED</code></td>
+<td><code>src/cluster_erp/core/errors.py:108</code></td>
+<td><code>400</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/quotations/quotes/services.py:564</code></td>
+<td><code>Management approval is required before sending</code></td>
+</tr>
+<tr>
+<td><code>QUOTE_IMMUTABLE_AFTER_SENT</code></td>
+<td><code>src/cluster_erp/core/errors.py:109</code></td>
+<td><code>400</code></td>
+<td>3</td>
+<td><code>src/cluster_erp/modules/quotations/line_items/services.py:266</code></td>
+<td><code>Line items cannot be modified after the quote is sent</code></td>
+</tr>
+<tr>
+<td><code>QUOTE_ACTIVE_EXISTS</code></td>
+<td><code>src/cluster_erp/core/errors.py:110</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/quotations/quotes/services.py:1312</code></td>
+<td><code>An active quote already exists for this RFQ</code></td>
+</tr>
+<tr>
+<td><code>QUOTE_FEASIBILITY_NOT_DONE</code></td>
+<td><code>src/cluster_erp/core/errors.py:111</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>QUOTE_BOM_REQUIRED</code></td>
+<td><code>src/cluster_erp/core/errors.py:112</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>QUOTE_COSTING_REQUIRED</code></td>
+<td><code>src/cluster_erp/core/errors.py:113</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>QUOTE_MGMT_APPROVAL_REQUIRED</code></td>
+<td><code>src/cluster_erp/core/errors.py:114</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/quotations/quotes/services.py:505</code></td>
+<td><code>Management approval meeting must be scheduled first</code></td>
+</tr>
+<tr>
+<td><code>QUOTE_INCOMPLETE</code></td>
+<td><code>src/cluster_erp/core/errors.py:117</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/quotations/quotes/services.py:583</code></td>
+<td><code>'Quotation is incomplete: ' + '; '.join((r.label_en for r in missing))</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="satış-siparişleri">Satış siparişleri<a class="headerlink" href="#satış-siparişleri">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Kod</th>
+<th>Tanım yeri</th>
+<th>HTTP durumu</th>
+<th>Atma konumu</th>
+<th>İlk konum</th>
+<th>İlk konumdaki ileti</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ORDER_INVALID_STATUS</code></td>
+<td><code>src/cluster_erp/core/errors.py:120</code></td>
+<td><code>400</code>, <code>409</code>, <code>422</code></td>
+<td>25</td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/services.py:194</code></td>
+<td><code>Quote must be sent before a sales order can reference it</code></td>
+</tr>
+<tr>
+<td><code>ORDER_PO_CHECK_REQUIRED</code></td>
+<td><code>src/cluster_erp/core/errors.py:121</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/services.py:603</code></td>
+<td><code>A passing PO check is required before accepting the order</code></td>
+</tr>
+<tr>
+<td><code>ORDER_ALREADY_OPENED</code></td>
+<td><code>src/cluster_erp/core/errors.py:122</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>UNIT_LIMIT_EXCEEDED</code></td>
+<td><code>src/cluster_erp/core/errors.py:124</code></td>
+<td><code>409</code>, <code>422</code></td>
+<td>3</td>
+<td><code>src/cluster_erp/modules/sales_orders/units/services.py:201</code></td>
+<td><code>Order line {line.line_no} has a fractional quantity ({ordered}); units exist only for whol...</code></td>
+</tr>
+<tr>
+<td><code>UNIT_FROZEN</code></td>
+<td><code>src/cluster_erp/core/errors.py:125</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/sales_orders/units/services.py:283</code></td>
+<td><code>Unit {unit.code} is {unit.status}: its identifiers are printed on issued documents and can...</code></td>
+</tr>
+<tr>
+<td><code>SHIPMENT_INVALID_STATUS</code></td>
+<td><code>src/cluster_erp/core/errors.py:126</code></td>
+<td><code>400</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/services.py:1062</code></td>
+<td><code>Cannot move shipment {shipment.code} from '{shipment.status}' to '{target}'</code></td>
+</tr>
+<tr>
+<td><code>SHIPMENT_CHECK_FAILED</code></td>
+<td><code>src/cluster_erp/core/errors.py:127</code></td>
+<td><code>409</code>, <code>422</code></td>
+<td>4</td>
+<td><code>src/cluster_erp/modules/sales_orders/shipments/services.py:810</code></td>
+<td><code>Unit {unit.code} is {unit.status} and cannot be shipped again</code></td>
+</tr>
+<tr>
+<td><code>TRADE_DOCUMENT_BLOCKED</code></td>
+<td><code>src/cluster_erp/core/errors.py:128</code></td>
+<td><code>404</code>, <code>422</code></td>
+<td>5</td>
+<td><code>src/cluster_erp/modules/sales_orders/trade_documents/services.py:66</code></td>
+<td><code>The document number template {template} needs {name} but the shipment has no value for i...</code></td>
+</tr>
+<tr>
+<td><code>PDF_RENDERER_UNAVAILABLE</code></td>
+<td><code>src/cluster_erp/core/errors.py:129</code></td>
+<td><code>503</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/core/pdf_render.py:73</code></td>
+<td><code>PDF rendering needs the playwright package (see pyproject)</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="projeler">Projeler<a class="headerlink" href="#projeler">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Kod</th>
+<th>Tanım yeri</th>
+<th>HTTP durumu</th>
+<th>Atma konumu</th>
+<th>İlk konum</th>
+<th>İlk konumdaki ileti</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PROJECT_INVALID_STATUS</code></td>
+<td><code>src/cluster_erp/core/errors.py:132</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/projects/projects/services.py:305</code></td>
+<td><code>Cannot transition from '{project.status}' to '{target}'</code></td>
+</tr>
+<tr>
+<td><code>PROJECT_KICKOFF_NOT_DONE</code></td>
+<td><code>src/cluster_erp/core/errors.py:133</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PROJECT_SCHEDULE_NOT_DRAFT</code></td>
+<td><code>src/cluster_erp/core/errors.py:134</code></td>
+<td><code>400</code></td>
+<td>4</td>
+<td><code>src/cluster_erp/modules/projects/schedules/services.py:78</code></td>
+<td><code>Only draft schedules can be updated</code></td>
+</tr>
+<tr>
+<td><code>PROJECT_ACTION_ALREADY_CLOSED</code></td>
+<td><code>src/cluster_erp/core/errors.py:135</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/projects/actions/services.py:161</code></td>
+<td><code>Action is already in terminal status '{action.status}'</code></td>
+</tr>
+<tr>
+<td><code>PROJECT_ACTIVITY_INVALID</code></td>
+<td><code>src/cluster_erp/core/errors.py:136</code></td>
+<td><code>404</code>, <code>422</code></td>
+<td>6</td>
+<td><code>src/cluster_erp/modules/projects/activities/services.py:100</code></td>
+<td><code>Schedule not found</code></td>
+</tr>
+<tr>
+<td><code>PROJECT_ACTIVITY_CYCLE</code></td>
+<td><code>src/cluster_erp/core/errors.py:137</code></td>
+<td><code>422</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/projects/activities/services.py:186</code></td>
+<td><code>An activity cannot depend on itself</code></td>
+</tr>
+<tr>
+<td><code>PROJECT_ACTION_INVALID_TRANSITION</code></td>
+<td><code>src/cluster_erp/core/errors.py:138</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/projects/actions/services.py:167</code></td>
+<td><code>Cannot transition from '{action.status}' to '{target}'</code></td>
+</tr>
+<tr>
+<td><code>PROJECT_FIXTURE_INVALID_TRANSITION</code></td>
+<td><code>src/cluster_erp/core/errors.py:139</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/projects/fixtures/services.py:139</code></td>
+<td><code>Cannot transition from '{fixture.status}' to '{target}'</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="ürün-ağacı">Ürün ağacı<a class="headerlink" href="#ürün-ağacı">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Kod</th>
+<th>Tanım yeri</th>
+<th>HTTP durumu</th>
+<th>Atma konumu</th>
+<th>İlk konum</th>
+<th>İlk konumdaki ileti</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BOM_INVALID_STATUS</code></td>
+<td><code>src/cluster_erp/core/errors.py:142</code></td>
+<td><code>400</code></td>
+<td>9</td>
+<td><code>src/cluster_erp/modules/bom/bom_versions/services.py:314</code></td>
+<td><code>Only draft versions can be deleted.</code></td>
+</tr>
+<tr>
+<td><code>BOM_ACTIVE_VERSION_EXISTS</code></td>
+<td><code>src/cluster_erp/core/errors.py:143</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/bom/bom_versions/services.py:439</code></td>
+<td><code>This BOM already has an active version. Supersede it before activating a new one.</code></td>
+</tr>
+<tr>
+<td><code>BOM_ACTIVE_VERSION_LOCKED</code></td>
+<td><code>src/cluster_erp/core/errors.py:144</code></td>
+<td><code>400</code></td>
+<td>3</td>
+<td><code>src/cluster_erp/modules/bom/bom_items/services.py:415</code></td>
+<td><code>BOM version is '{version.status}'. Only draft versions can be modified.</code></td>
+</tr>
+<tr>
+<td><code>BOM_LABOR_MISSING</code></td>
+<td><code>src/cluster_erp/core/errors.py:145</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>BOM_MAX_DEPTH_EXCEEDED</code></td>
+<td><code>src/cluster_erp/core/errors.py:146</code></td>
+<td><code>400</code></td>
+<td>8</td>
+<td><code>src/cluster_erp/modules/bom/bom_items/services.py:174</code></td>
+<td><code>Maximum BOM depth of {MAX_BOM_DEPTH} levels exceeded.</code></td>
+</tr>
+<tr>
+<td><code>BOM_INVALID_QTY</code></td>
+<td><code>src/cluster_erp/core/errors.py:147</code></td>
+<td><code>400</code></td>
+<td>4</td>
+<td><code>src/cluster_erp/modules/bom/bom_items/services.py:142</code></td>
+<td><code>BOM item quantity must be greater than zero.</code></td>
+</tr>
+<tr>
+<td><code>BOM_TEMPLATE_EMPTY</code></td>
+<td><code>src/cluster_erp/core/errors.py:148</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/bom/bom_versions/services.py:569</code></td>
+<td><code>The template has no items to copy.</code></td>
+</tr>
+<tr>
+<td><code>BOM_VERSION_EMPTY</code></td>
+<td><code>src/cluster_erp/core/errors.py:151</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/bom/bom_versions/services.py:664</code></td>
+<td><code>This BOM version has no items; add components before releasing it.</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="tasarım-ve-mühendislik">Tasarım ve mühendislik<a class="headerlink" href="#tasarım-ve-mühendislik">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Kod</th>
+<th>Tanım yeri</th>
+<th>HTTP durumu</th>
+<th>Atma konumu</th>
+<th>İlk konum</th>
+<th>İlk konumdaki ileti</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DESIGN_INVALID_STATUS</code></td>
+<td><code>src/cluster_erp/core/errors.py:154</code></td>
+<td><code>400</code></td>
+<td>3</td>
+<td><code>src/cluster_erp/modules/design_engineering/designs/services.py:230</code></td>
+<td><code>Only draft designs can be deleted.</code></td>
+</tr>
+<tr>
+<td><code>DESIGN_LOCKED_APPROVED</code></td>
+<td><code>src/cluster_erp/core/errors.py:155</code></td>
+<td><code>400</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/design_engineering/designs/services.py:191</code></td>
+<td><code>Approved designs cannot be edited. Use ECN for changes.</code></td>
+</tr>
+<tr>
+<td><code>DESIGN_CONCEPT_NO_APPROVAL</code></td>
+<td><code>src/cluster_erp/core/errors.py:156</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/design_engineering/designs/services.py:284</code></td>
+<td><code>Concept designs cannot be approved. They are for quotation phase only.</code></td>
+</tr>
+<tr>
+<td><code>DESIGN_NOT_APPROVED_FOR_BOM</code></td>
+<td><code>src/cluster_erp/core/errors.py:157</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>ECN_INVALID_STATUS</code></td>
+<td><code>src/cluster_erp/core/errors.py:158</code></td>
+<td><code>400</code></td>
+<td>4</td>
+<td><code>src/cluster_erp/modules/design_engineering/ecns/services.py:151</code></td>
+<td><code>Only proposed ECNs can be edited.</code></td>
+</tr>
+<tr>
+<td><code>ECN_DESIGN_NOT_APPROVED</code></td>
+<td><code>src/cluster_erp/core/errors.py:159</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/design_engineering/ecns/services.py:107</code></td>
+<td><code>ECN can only be created for approved designs.</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="ürünler-ve-malzemeler">Ürünler ve malzemeler<a class="headerlink" href="#ürünler-ve-malzemeler">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Kod</th>
+<th>Tanım yeri</th>
+<th>HTTP durumu</th>
+<th>Atma konumu</th>
+<th>İlk konum</th>
+<th>İlk konumdaki ileti</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PRODUCT_INVALID_MATERIAL_TYPE</code></td>
+<td><code>src/cluster_erp/core/errors.py:162</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PRODUCT_CAPABILITY_VIOLATION</code></td>
+<td><code>src/cluster_erp/core/errors.py:163</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/products_and_services/products/services.py:679</code></td>
+<td><code>Material type '{material_type}' requires {flag}={required}</code></td>
+</tr>
+<tr>
+<td><code>PRODUCT_NOT_PURCHASABLE</code></td>
+<td><code>src/cluster_erp/core/errors.py:164</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PRODUCT_NOT_SELLABLE</code></td>
+<td><code>src/cluster_erp/core/errors.py:165</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PRODUCT_NOT_MANUFACTURABLE</code></td>
+<td><code>src/cluster_erp/core/errors.py:166</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PRODUCT_NOT_STOCKABLE</code></td>
+<td><code>src/cluster_erp/core/errors.py:167</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PRODUCT_BLOCKED</code></td>
+<td><code>src/cluster_erp/core/errors.py:168</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PRODUCT_INVALID_STATUS</code></td>
+<td><code>src/cluster_erp/core/errors.py:169</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PRODUCT_IN_ACTIVE_BOM</code></td>
+<td><code>src/cluster_erp/core/errors.py:172</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/products_and_services/products/services.py:620</code></td>
+<td><code>The product is a component of an active BOM version; supersede or archive that BOM first.</code></td>
+</tr>
+<tr>
+<td><code>PRODUCT_MODEL_DEFAULT_PROTECTED</code></td>
+<td><code>src/cluster_erp/core/errors.py:176</code></td>
+<td><code>409</code></td>
+<td>4</td>
+<td><code>src/cluster_erp/modules/products_and_services/product_models/services.py:123</code></td>
+<td><code>The default model cannot be demoted; set another model as default instead</code></td>
+</tr>
+<tr>
+<td><code>PRODUCT_VERSION_DEFAULT_PROTECTED</code></td>
+<td><code>src/cluster_erp/core/errors.py:177</code></td>
+<td><code>409</code></td>
+<td>4</td>
+<td><code>src/cluster_erp/modules/products_and_services/product_versions/services.py:102</code></td>
+<td><code>The default version cannot be demoted; set another version as default instead</code></td>
+</tr>
+<tr>
+<td><code>PRODUCT_MODEL_PRODUCT_MISMATCH</code></td>
+<td><code>src/cluster_erp/core/errors.py:178</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PRODUCT_VERSION_MODEL_MISMATCH</code></td>
+<td><code>src/cluster_erp/core/errors.py:179</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="envanter">Envanter<a class="headerlink" href="#envanter">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Kod</th>
+<th>Tanım yeri</th>
+<th>HTTP durumu</th>
+<th>Atma konumu</th>
+<th>İlk konum</th>
+<th>İlk konumdaki ileti</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>INVENTORY_INSUFFICIENT_STOCK</code></td>
+<td><code>src/cluster_erp/core/errors.py:182</code></td>
+<td><code>400</code></td>
+<td>8</td>
+<td><code>src/cluster_erp/modules/inventory/stock/services.py:853</code></td>
+<td><code>Insufficient stock in the source segment</code></td>
+</tr>
+<tr>
+<td><code>INVENTORY_INVALID_MOVEMENT_TYPE</code></td>
+<td><code>src/cluster_erp/core/errors.py:183</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/inventory/stock/services.py:332</code></td>
+<td><code>Invalid movement type: {movement_type}</code></td>
+</tr>
+<tr>
+<td><code>INVENTORY_INVALID_MOVEMENT</code></td>
+<td><code>src/cluster_erp/core/errors.py:184</code></td>
+<td><code>409</code>, <code>422</code></td>
+<td>5</td>
+<td><code>src/cluster_erp/modules/inventory/stock/services.py:553</code></td>
+<td><code>Source and target stock ownership are the same</code></td>
+</tr>
+<tr>
+<td><code>INVENTORY_PROJECT_TRANSFER_DISABLED</code></td>
+<td><code>src/cluster_erp/core/errors.py:185</code></td>
+<td><code>403</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/inventory/stock/services.py:563</code></td>
+<td><code>Project-to-project stock transfer is disabled by configuration</code></td>
+</tr>
+<tr>
+<td><code>INVENTORY_BATCH_REQUIRED</code></td>
+<td><code>src/cluster_erp/core/errors.py:186</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/inventory/stock/services.py:2143</code></td>
+<td><code>Batch ID is required for batch-managed products</code></td>
+</tr>
+<tr>
+<td><code>INVENTORY_SERIAL_REQUIRED</code></td>
+<td><code>src/cluster_erp/core/errors.py:187</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/inventory/stock/services.py:2149</code></td>
+<td><code>Serial number is required for serial-tracked products</code></td>
+</tr>
+<tr>
+<td><code>INVENTORY_BATCH_EXPIRED</code></td>
+<td><code>src/cluster_erp/core/errors.py:188</code></td>
+<td><code>400</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/inventory/stock/services.py:2166</code></td>
+<td><code>Batch is blocked</code></td>
+</tr>
+<tr>
+<td><code>INVENTORY_SERIAL_ALREADY_USED</code></td>
+<td><code>src/cluster_erp/core/errors.py:189</code></td>
+<td><code>409</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/inventory/batches/services.py:349</code></td>
+<td><code>Serial number '{serial_number}' already exists</code></td>
+</tr>
+<tr>
+<td><code>INVENTORY_PRODUCT_NOT_STOCKABLE</code></td>
+<td><code>src/cluster_erp/core/errors.py:190</code></td>
+<td><code>400</code></td>
+<td>3</td>
+<td><code>src/cluster_erp/modules/inventory/batches/services.py:210</code></td>
+<td><code>Product is not stockable</code></td>
+</tr>
+<tr>
+<td><code>INVENTORY_MOVEMENT_ALREADY_REVERSED</code></td>
+<td><code>src/cluster_erp/core/errors.py:191</code></td>
+<td><code>400</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/inventory/stock/services.py:1742</code></td>
+<td><code>This movement has already been reversed</code></td>
+</tr>
+<tr>
+<td><code>INVENTORY_PO_RECEIPT_REQUIRES_PO_FLOW</code></td>
+<td><code>src/cluster_erp/core/errors.py:192</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/inventory/stock/routes.py:174</code></td>
+<td><code>Goods for a purchase order must be received via the purchase-order receive flow, not the r...</code></td>
+</tr>
+<tr>
+<td><code>INVENTORY_RESERVATION_NOT_FOUND</code></td>
+<td><code>src/cluster_erp/core/errors.py:193</code></td>
+<td><code>404</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/inventory/stock/services.py:1985</code></td>
+<td><code>Reservation not found</code></td>
+</tr>
+<tr>
+<td><code>INVENTORY_RESERVATION_ALREADY_CONSUMED</code></td>
+<td><code>src/cluster_erp/core/errors.py:194</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/inventory/stock/services.py:1992</code></td>
+<td><code>Reservation already consumed</code></td>
+</tr>
+<tr>
+<td><code>INVENTORY_RESERVATION_ALREADY_CANCELLED</code></td>
+<td><code>src/cluster_erp/core/errors.py:195</code></td>
+<td><code>400</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/inventory/stock/services.py:1998</code></td>
+<td><code>Reservation already cancelled</code></td>
+</tr>
+<tr>
+<td><code>INVENTORY_NEGATIVE_STOCK</code></td>
+<td><code>src/cluster_erp/core/errors.py:196</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>INVENTORY_INVALID_STOCK_CATEGORY</code></td>
+<td><code>src/cluster_erp/core/errors.py:197</code></td>
+<td><code>400</code></td>
+<td>4</td>
+<td><code>src/cluster_erp/modules/inventory/stock/services.py:1211</code></td>
+<td><code>Invalid source stock category: {data.from_category}</code></td>
+</tr>
+<tr>
+<td><code>INVENTORY_INVALID_CATEGORY_TRANSFER</code></td>
+<td><code>src/cluster_erp/core/errors.py:198</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/inventory/stock/services.py:1223</code></td>
+<td><code>Transfer from '{data.from_category}' to '{data.to_category}' is not permitted</code></td>
+</tr>
+<tr>
+<td><code>INVENTORY_INVALID_DECISION_CODE</code></td>
+<td><code>src/cluster_erp/core/errors.py:199</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/inventory/stock/services.py:1502</code></td>
+<td><code>Invalid decision code: {data.decision_code}</code></td>
+</tr>
+<tr>
+<td><code>INVENTORY_MOVEMENT_NOT_DECIDABLE</code></td>
+<td><code>src/cluster_erp/core/errors.py:200</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/inventory/stock/services.py:1515</code></td>
+<td><code>Only GR blocked or goods receipt movements can have usage decisions</code></td>
+</tr>
+<tr>
+<td><code>INVENTORY_DECISION_QTY_EXCEEDS</code></td>
+<td><code>src/cluster_erp/core/errors.py:201</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/inventory/stock/services.py:1527</code></td>
+<td><code>Decision quantity exceeds remaining undecided quantity</code></td>
+</tr>
+<tr>
+<td><code>INVENTORY_INVALID_ORIGIN_TYPE</code></td>
+<td><code>src/cluster_erp/core/errors.py:202</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/inventory/batches/services.py:189</code></td>
+<td><code>Invalid origin type: {origin_type}</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="üretim">Üretim<a class="headerlink" href="#üretim">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Kod</th>
+<th>Tanım yeri</th>
+<th>HTTP durumu</th>
+<th>Atma konumu</th>
+<th>İlk konum</th>
+<th>İlk konumdaki ileti</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PRODUCTION_ORDER_INVALID_STATUS</code></td>
+<td><code>src/cluster_erp/core/errors.py:205</code></td>
+<td><code>400</code>, <code>422</code></td>
+<td>11</td>
+<td><code>src/cluster_erp/modules/production/production_orders/services.py:450</code></td>
+<td><code>Production order can only be updated in planned or released status</code></td>
+</tr>
+<tr>
+<td><code>PRODUCTION_WORK_ORDER_INVALID_STATUS</code></td>
+<td><code>src/cluster_erp/core/errors.py:206</code></td>
+<td><code>422</code></td>
+<td>5</td>
+<td><code>src/cluster_erp/modules/production/scheduling/services.py:324</code></td>
+<td><code>Only pending work orders can be scheduled.</code></td>
+</tr>
+<tr>
+<td><code>PRODUCTION_WORK_ORDER_QTY_EXCEEDED</code></td>
+<td><code>src/cluster_erp/core/errors.py:207</code></td>
+<td><code>422</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/production/work_orders/services.py:372</code></td>
+<td><code>Completed + scrapped quantity cannot exceed the work order quantity.</code></td>
+</tr>
+<tr>
+<td><code>CRM_RFQ_LINE_NO_PRODUCT</code></td>
+<td><code>src/cluster_erp/core/errors.py:208</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/crm/rfq_line_materials/services.py:108</code></td>
+<td><code>The RFQ line is not linked to a product (via a customer part), so no BOM can be resolved.</code></td>
+</tr>
+<tr>
+<td><code>PROJECTS_ITEM_NO_PRODUCT</code></td>
+<td><code>src/cluster_erp/core/errors.py:209</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/projects/items/routes.py:119</code></td>
+<td><code>The project item needs a product (with its model/version breakdown) and a positive quantit...</code></td>
+</tr>
+<tr>
+<td><code>PRODUCTION_ORDER_EXISTS_FOR_PROJECT_PRODUCT</code></td>
+<td><code>src/cluster_erp/core/errors.py:210</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/production/module.py:675</code></td>
+<td><code>An open production order ({existing.order_no}) already exists for this project and product...</code></td>
+</tr>
+<tr>
+<td><code>CRM_RFQ_BOM_MATERIALS_EMPTY</code></td>
+<td><code>src/cluster_erp/core/errors.py:211</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/crm/rfq_line_materials/services.py:119</code></td>
+<td><code>The product has no active BOM or its BOM carries no material specifications.</code></td>
+</tr>
+<tr>
+<td><code>SALES_ORDER_LINE_NO_PRODUCT</code></td>
+<td><code>src/cluster_erp/core/errors.py:214</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/sales_orders/order_lines/routes.py:143</code></td>
+<td><code>The order line needs a catalogue product with its model/version breakdown before a bill of...</code></td>
+</tr>
+<tr>
+<td><code>PRODUCTION_PRODUCT_NOT_MANUFACTURABLE</code></td>
+<td><code>src/cluster_erp/core/errors.py:215</code></td>
+<td><code>400</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/production/production_orders/services.py:152</code></td>
+<td><code>Product is not manufacturable</code></td>
+</tr>
+<tr>
+<td><code>PRODUCTION_BOM_REQUIRED</code></td>
+<td><code>src/cluster_erp/core/errors.py:216</code></td>
+<td><code>422</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/production/routings/scaffold.py:199</code></td>
+<td><code>No active BOM version exists for this product breakdown.</code></td>
+</tr>
+<tr>
+<td><code>PRODUCTION_BOM_EMPTY</code></td>
+<td><code>src/cluster_erp/core/errors.py:219</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/production/routings/scaffold.py:207</code></td>
+<td><code>The active BOM version has no live items.</code></td>
+</tr>
+<tr>
+<td><code>PRODUCTION_WORK_CENTER_REQUIRED</code></td>
+<td><code>src/cluster_erp/core/errors.py:220</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PRODUCTION_OPERATION_NO_MATERIAL_IO</code></td>
+<td><code>src/cluster_erp/core/errors.py:221</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/production/component_allocations/services.py:513</code></td>
+<td><code>Operation type '{op_type.code}' is a process step and does not stage material inputs/outpu...</code></td>
+</tr>
+<tr>
+<td><code>PRODUCTION_ROUTING_REQUIRED</code></td>
+<td><code>src/cluster_erp/core/errors.py:222</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/production/routings/services.py:621</code></td>
+<td><code>Cannot transition routing from '{routing.status}' to '{new_status}'</code></td>
+</tr>
+<tr>
+<td><code>PRODUCTION_ORDER_NO_COMPONENTS</code></td>
+<td><code>src/cluster_erp/core/errors.py:223</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PRODUCTION_MATERIAL_CONSUMPTION_FAILED</code></td>
+<td><code>src/cluster_erp/core/errors.py:224</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/production/production_orders/services.py:798</code></td>
+<td><code>Failed to issue goods from inventory: {e}</code></td>
+</tr>
+<tr>
+<td><code>PRODUCTION_INSUFFICIENT_MATERIAL</code></td>
+<td><code>src/cluster_erp/core/errors.py:225</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/production/production_orders/services.py:763</code></td>
+<td><code>Consumption qty exceeds remaining requirement</code></td>
+</tr>
+<tr>
+<td><code>PRODUCTION_ROUTING_INCOMPLETE</code></td>
+<td><code>src/cluster_erp/core/errors.py:230</code></td>
+<td><code>422</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/production/routings/scaffold.py:1703</code></td>
+<td><code>The routing has no live operation to attach new inputs to.</code></td>
+</tr>
+<tr>
+<td><code>ROUTING_OP_NO_WORK_CENTER</code></td>
+<td><code>src/cluster_erp/core/errors.py:231</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>ROUTING_OP_NO_TYPE</code></td>
+<td><code>src/cluster_erp/core/errors.py:232</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>ROUTING_OP_NO_TIME</code></td>
+<td><code>src/cluster_erp/core/errors.py:233</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>ROUTING_PREP_NO_TYPE</code></td>
+<td><code>src/cluster_erp/core/errors.py:238</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>SCAFFOLD_PLAN_STALE</code></td>
+<td><code>src/cluster_erp/core/errors.py:244</code></td>
+<td><code>409</code></td>
+<td>3</td>
+<td><code>src/cluster_erp/modules/production/routings/scaffold.py:1065</code></td>
+<td><code>The BOM changed after this plan was prepared. Refresh the plan.</code></td>
+</tr>
+<tr>
+<td><code>SCAFFOLD_ANSWER_REQUIRED</code></td>
+<td><code>src/cluster_erp/core/errors.py:245</code></td>
+<td><code>422</code></td>
+<td>6</td>
+<td><code>src/cluster_erp/modules/production/routings/scaffold.py:1099</code></td>
+<td><code>A routing name is required to create the routing.</code></td>
+</tr>
+<tr>
+<td><code>SCAFFOLD_ROUTING_EXISTS</code></td>
+<td><code>src/cluster_erp/core/errors.py:246</code></td>
+<td><code>409</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/production/routings/scaffold.py:1144</code></td>
+<td><code>A live routing already exists for this product breakdown.</code></td>
+</tr>
+<tr>
+<td><code>SCAFFOLD_CHANGE_PROTECTED</code></td>
+<td><code>src/cluster_erp/core/errors.py:249</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/production/routings/scaffold.py:1806</code></td>
+<td><code>A user-touched row can only be flagged, never overwritten.</code></td>
+</tr>
+<tr>
+<td><code>SCAFFOLD_TEMPLATE_AMBIGUOUS</code></td>
+<td><code>src/cluster_erp/core/errors.py:254</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/production/routings/scaffold.py:522</code></td>
+<td><code>More than one routing template matches this product at the same specificity. Disambiguate ...</code></td>
+</tr>
+<tr>
+<td><code>SCAFFOLD_COPY_SAME_TARGET</code></td>
+<td><code>src/cluster_erp/core/errors.py:258</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/production/routings/scaffold.py:2124</code></td>
+<td><code>The copy target is the same product breakdown the source routing already builds.</code></td>
+</tr>
+<tr>
+<td><code>PRODUCTION_CUT_RULE_EXISTS</code></td>
+<td><code>src/cluster_erp/core/errors.py:261</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/production/routing_templates/services.py:268</code></td>
+<td><code>A live cut technology rule already exists for this material type and stock form.</code></td>
+</tr>
+<tr>
+<td><code>PRODUCTION_SCHEDULE_NO_SLOT</code></td>
+<td><code>src/cluster_erp/core/errors.py:262</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/production/scheduling/services.py:716</code></td>
+<td><code>No free working-time slot was found within the search horizon.</code></td>
+</tr>
+<tr>
+<td><code>PRODUCTION_SCHEDULE_INVALID_RANGE</code></td>
+<td><code>src/cluster_erp/core/errors.py:263</code></td>
+<td><code>422</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/production/scheduling/routes.py:58</code></td>
+<td><code>date_to must be after date_from.</code></td>
+</tr>
+<tr>
+<td><code>PRODUCTION_SCHEDULE_INVALID_TIMEZONE</code></td>
+<td><code>src/cluster_erp/core/errors.py:264</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="yerleşim">Yerleşim<a class="headerlink" href="#yerleşim">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Kod</th>
+<th>Tanım yeri</th>
+<th>HTTP durumu</th>
+<th>Atma konumu</th>
+<th>İlk konum</th>
+<th>İlk konumdaki ileti</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>NESTING_INVALID_STATUS</code></td>
+<td><code>src/cluster_erp/core/errors.py:267</code></td>
+<td><code>400</code></td>
+<td>11</td>
+<td><code>src/cluster_erp/modules/nesting/integration/services.py:179</code></td>
+<td><code>Cannot import results in '{job.status}' status</code></td>
+</tr>
+<tr>
+<td><code>NESTING_LOW_UTILIZATION</code></td>
+<td><code>src/cluster_erp/core/errors.py:268</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:333</code></td>
+<td><code>Utilization is {job.utilization_pct}%, below {self._low_util_threshold}% threshold. Acknow...</code></td>
+</tr>
+<tr>
+<td><code>NESTING_PART_TOO_LARGE</code></td>
+<td><code>src/cluster_erp/core/errors.py:269</code></td>
+<td><code>400</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/nesting/nesting_parts/services.py:100</code></td>
+<td><code>Part bounding box ({data.part_length_mm}x{data.part_width_mm}) exceeds usable sheet area (...</code></td>
+</tr>
+<tr>
+<td><code>NESTING_NO_PARTS</code></td>
+<td><code>src/cluster_erp/core/errors.py:270</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:692</code></td>
+<td><code>No source orders linked to this nesting job</code></td>
+</tr>
+<tr>
+<td><code>NESTING_NOT_COMPLETED</code></td>
+<td><code>src/cluster_erp/core/errors.py:271</code></td>
+<td><code>400</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:321</code></td>
+<td><code>Only completed jobs can be approved</code></td>
+</tr>
+<tr>
+<td><code>NESTING_ALREADY_APPROVED</code></td>
+<td><code>src/cluster_erp/core/errors.py:272</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:323</code></td>
+<td><code>Job is already approved</code></td>
+</tr>
+<tr>
+<td><code>NESTING_ORDER_MATERIAL_MISMATCH</code></td>
+<td><code>src/cluster_erp/core/errors.py:273</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:728</code></td>
+<td><code>Order {order_data.get('order_no', order_id)} material ({order_material}/{order_thickness}m...</code></td>
+</tr>
+<tr>
+<td><code>NESTING_IMPORT_INVALID_PARTS</code></td>
+<td><code>src/cluster_erp/core/errors.py:274</code></td>
+<td><code>400</code></td>
+<td>6</td>
+<td><code>src/cluster_erp/modules/nesting/integration/services.py:91</code></td>
+<td><code>Placed part {pl.nesting_part_id} extends outside the sheet</code></td>
+</tr>
+<tr>
+<td><code>NESTING_IMPORT_FAILED</code></td>
+<td><code>src/cluster_erp/core/errors.py:275</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/nesting/integration/services.py:345</code></td>
+<td><code>Failed to import nesting result: {exc}</code></td>
+</tr>
+<tr>
+<td><code>NESTING_REMNANT_INVALID_STATUS</code></td>
+<td><code>src/cluster_erp/core/errors.py:276</code></td>
+<td><code>400</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/nesting/nesting_remnants/services.py:189</code></td>
+<td><code>Cannot consume remnant in '{remnant.status}' status</code></td>
+</tr>
+<tr>
+<td><code>NESTING_MATERIAL_NOT_RESERVED</code></td>
+<td><code>src/cluster_erp/core/errors.py:277</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:478</code></td>
+<td><code>Material must be reserved before consuming</code></td>
+</tr>
+<tr>
+<td><code>NESTING_MATERIAL_ALREADY_RESERVED</code></td>
+<td><code>src/cluster_erp/core/errors.py:278</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:410</code></td>
+<td><code>Material is already reserved for this job</code></td>
+</tr>
+<tr>
+<td><code>NESTING_MATERIAL_ALREADY_CONSUMED</code></td>
+<td><code>src/cluster_erp/core/errors.py:279</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:476</code></td>
+<td><code>Material already consumed for this job</code></td>
+</tr>
+<tr>
+<td><code>NESTING_COST_MISSING_UNIT_PRICE</code></td>
+<td><code>src/cluster_erp/core/errors.py:280</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/nesting/nesting_jobs/services.py:588</code></td>
+<td><code>Cost per unit area is not set and could not be derived</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="maliyetlendirme">Maliyetlendirme<a class="headerlink" href="#maliyetlendirme">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Kod</th>
+<th>Tanım yeri</th>
+<th>HTTP durumu</th>
+<th>Atma konumu</th>
+<th>İlk konum</th>
+<th>İlk konumdaki ileti</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>COSTING_NOT_FOUND</code></td>
+<td><code>src/cluster_erp/core/errors.py:283</code></td>
+<td><code>404</code></td>
+<td>3</td>
+<td><code>src/cluster_erp/modules/costing/costing_analyses/services.py:103</code></td>
+<td><code>Costing analysis not found</code></td>
+</tr>
+<tr>
+<td><code>COSTING_INVALID_STATUS</code></td>
+<td><code>src/cluster_erp/core/errors.py:284</code></td>
+<td><code>400</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/costing/costing_analyses/services.py:113</code></td>
+<td><code>Cannot transition from '{current}' to '{target}'</code></td>
+</tr>
+<tr>
+<td><code>COSTING_BOM_NOT_FOUND</code></td>
+<td><code>src/cluster_erp/core/errors.py:285</code></td>
+<td><code>404</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/costing/costing_analyses/services.py:272</code></td>
+<td><code>BOM version not found or has no explosion data</code></td>
+</tr>
+<tr>
+<td><code>COSTING_BOM_NOT_ACTIVE</code></td>
+<td><code>src/cluster_erp/core/errors.py:286</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>COSTING_BOM_NO_ITEMS</code></td>
+<td><code>src/cluster_erp/core/errors.py:287</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/costing/costing_analyses/services.py:287</code></td>
+<td><code>BOM explosion returned no items to cost</code></td>
+</tr>
+<tr>
+<td><code>COSTING_CURRENCY_MISMATCH</code></td>
+<td><code>src/cluster_erp/core/errors.py:288</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/costing/costing_analyses/services.py:307</code></td>
+<td><code>Rate currency '{r_cur}' does not match the analysis currency '{analysis.currency}'.</code></td>
+</tr>
+<tr>
+<td><code>AUTH_SELF_APPROVAL_FORBIDDEN</code></td>
+<td><code>src/cluster_erp/core/errors.py:289</code></td>
+<td><code>403</code></td>
+<td>3</td>
+<td><code>src/cluster_erp/modules/auth/approvals/services.py:314</code></td>
+<td><code>You cannot decide your own approval request.</code></td>
+</tr>
+<tr>
+<td><code>COSTING_NOT_CALCULATED</code></td>
+<td><code>src/cluster_erp/core/errors.py:290</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>COSTING_FINAL_PRICE_REQUIRED</code></td>
+<td><code>src/cluster_erp/core/errors.py:291</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/costing/costing_analyses/services.py:751</code></td>
+<td><code>Either final_price or suggested_price must be set before submission</code></td>
+</tr>
+<tr>
+<td><code>COSTING_IMMUTABLE</code></td>
+<td><code>src/cluster_erp/core/errors.py:292</code></td>
+<td><code>400</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/costing/costing_analyses/services.py:120</code></td>
+<td><code>Analysis in '{analysis.status}' status cannot be modified</code></td>
+</tr>
+<tr>
+<td><code>COSTING_RATE_NOT_FOUND</code></td>
+<td><code>src/cluster_erp/core/errors.py:293</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>COSTING_RATE_OVERLAP</code></td>
+<td><code>src/cluster_erp/core/errors.py:294</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>COSTING_RATE_INVALID_DATES</code></td>
+<td><code>src/cluster_erp/core/errors.py:295</code></td>
+<td><code>400</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/costing/labor_rates/services.py:160</code></td>
+<td><code>valid_to must be on or after valid_from</code></td>
+</tr>
+<tr>
+<td><code>COSTING_COMPARE_MIN_ITEMS</code></td>
+<td><code>src/cluster_erp/core/errors.py:296</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/costing/costing_analyses/services.py:976</code></td>
+<td><code>At least 2 analyses required for comparison</code></td>
+</tr>
+<tr>
+<td><code>COSTING_COMPARE_MAX_ITEMS</code></td>
+<td><code>src/cluster_erp/core/errors.py:297</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/costing/costing_analyses/services.py:967</code></td>
+<td><code>Cannot compare more than 5 analyses</code></td>
+</tr>
+<tr>
+<td><code>COSTING_SCENARIO_SOURCE_INVALID</code></td>
+<td><code>src/cluster_erp/core/errors.py:298</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/costing/costing_analyses/services.py:1039</code></td>
+<td><code>Source analysis must be calculated or approved</code></td>
+</tr>
+<tr>
+<td><code>COSTING_SUPERSEDE_SAME_BOM</code></td>
+<td><code>src/cluster_erp/core/errors.py:299</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/costing/costing_analyses/services.py:874</code></td>
+<td><code>Superseding analysis must reference the same BOM</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="satın-alma">Satın alma<a class="headerlink" href="#satın-alma">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Kod</th>
+<th>Tanım yeri</th>
+<th>HTTP durumu</th>
+<th>Atma konumu</th>
+<th>İlk konum</th>
+<th>İlk konumdaki ileti</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PR_INVALID_STATUS</code></td>
+<td><code>src/cluster_erp/core/errors.py:302</code></td>
+<td><code>400</code></td>
+<td>7</td>
+<td><code>src/cluster_erp/modules/procurement/purchase_requests/services.py:115</code></td>
+<td><code>Cannot transition from '{current}' to '{target}'</code></td>
+</tr>
+<tr>
+<td><code>PR_NO_ITEMS</code></td>
+<td><code>src/cluster_erp/core/errors.py:303</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/procurement/purchase_requests/services.py:469</code></td>
+<td><code>Cannot remove the last item from a purchase request</code></td>
+</tr>
+<tr>
+<td><code>PR_APPROVAL_THRESHOLD</code></td>
+<td><code>src/cluster_erp/core/errors.py:304</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PO_INVALID_STATUS</code></td>
+<td><code>src/cluster_erp/core/errors.py:305</code></td>
+<td><code>400</code>, <code>409</code></td>
+<td>11</td>
+<td><code>src/cluster_erp/modules/procurement/purchase_orders/services.py:86</code></td>
+<td><code>Cannot transition from '{current}' to '{target}'</code></td>
+</tr>
+<tr>
+<td><code>PO_VENDOR_BLACKLISTED</code></td>
+<td><code>src/cluster_erp/core/errors.py:306</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/procurement/purchase_orders/services.py:233</code></td>
+<td><code>Vendor is blacklisted</code></td>
+</tr>
+<tr>
+<td><code>PO_NO_TECHNICAL_ATTACHMENT</code></td>
+<td><code>src/cluster_erp/core/errors.py:307</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/procurement/purchase_orders/services.py:637</code></td>
+<td><code>Purchase order requires a technical attachment before sending</code></td>
+</tr>
+<tr>
+<td><code>PO_NO_ORDER_DATE</code></td>
+<td><code>src/cluster_erp/core/errors.py:308</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/procurement/purchase_orders/services.py:630</code></td>
+<td><code>Purchase order requires an order date before sending</code></td>
+</tr>
+<tr>
+<td><code>PO_RECEIVE_QTY_EXCEEDS</code></td>
+<td><code>src/cluster_erp/core/errors.py:309</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/procurement/purchase_orders/services.py:743</code></td>
+<td><code>Received qty ({new_received}) exceeds ordered qty ({item.qty_ordered})</code></td>
+</tr>
+<tr>
+<td><code>PO_ITEM_ALREADY_RECEIVED</code></td>
+<td><code>src/cluster_erp/core/errors.py:310</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/procurement/purchase_orders/services.py:735</code></td>
+<td><code>Item has already been fully received</code></td>
+</tr>
+<tr>
+<td><code>PO_GOODS_RECEIPT_FAILED</code></td>
+<td><code>src/cluster_erp/core/errors.py:311</code></td>
+<td><code>400</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/procurement/purchase_orders/services.py:821</code></td>
+<td><code>Goods receipt posting failed</code></td>
+</tr>
+<tr>
+<td><code>MRP_RUN_FAILED</code></td>
+<td><code>src/cluster_erp/core/errors.py:312</code></td>
+<td><code>400</code>, <code>500</code></td>
+<td>4</td>
+<td><code>src/cluster_erp/modules/procurement/mrp/engine.py:3931</code></td>
+<td><code>Product has no default model/version breakdown; every product must carry one</code></td>
+</tr>
+<tr>
+<td><code>MRP_RUN_IN_PROGRESS</code></td>
+<td><code>src/cluster_erp/core/errors.py:313</code></td>
+<td><code>409</code></td>
+<td>3</td>
+<td><code>src/cluster_erp/modules/procurement/mrp/services.py:172</code></td>
+<td><code>An MRP run is already in progress</code></td>
+</tr>
+<tr>
+<td><code>MRP_RUN_NOT_COMPLETED</code></td>
+<td><code>src/cluster_erp/core/errors.py:314</code></td>
+<td><code>409</code></td>
+<td>5</td>
+<td><code>src/cluster_erp/modules/procurement/mrp/services.py:341</code></td>
+<td><code>Cannot create PR from run with status '{run.status}'</code></td>
+</tr>
+<tr>
+<td><code>MRP_NO_PRODUCTS_IN_SCOPE</code></td>
+<td><code>src/cluster_erp/core/errors.py:315</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>MRP_ITEMS_ALREADY_ACTIONED</code></td>
+<td><code>src/cluster_erp/core/errors.py:316</code></td>
+<td><code>409</code></td>
+<td>3</td>
+<td><code>src/cluster_erp/modules/procurement/mrp/services.py:370</code></td>
+<td><code>{len(actioned)} item(s) already have actions taken</code></td>
+</tr>
+<tr>
+<td><code>MRP_RUN_STALE</code></td>
+<td><code>src/cluster_erp/core/errors.py:317</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/procurement/mrp/services.py:347</code></td>
+<td><code>MRP run data is stale — re-run MRP before creating purchase requests</code></td>
+</tr>
+<tr>
+<td><code>MRP_ITEMS_ALREADY_FIRMED</code></td>
+<td><code>src/cluster_erp/core/errors.py:318</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/procurement/mrp/services.py:1314</code></td>
+<td><code>{len(already_firmed)} item(s) already firmed</code></td>
+</tr>
+<tr>
+<td><code>SUBSTITUTION_GROUP_DUPLICATE_PRODUCT</code></td>
+<td><code>src/cluster_erp/core/errors.py:319</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/procurement/substitution_groups/services.py:221</code></td>
+<td><code>Product already exists in this substitution group</code></td>
+</tr>
+<tr>
+<td><code>SUBSTITUTION_GROUP_SINGLE_MEMBER</code></td>
+<td><code>src/cluster_erp/core/errors.py:320</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/procurement/substitution_groups/services.py:317</code></td>
+<td><code>Cannot remove the last member from a substitution group</code></td>
+</tr>
+<tr>
+<td><code>CRITICAL_MATERIAL_ALREADY_EXISTS</code></td>
+<td><code>src/cluster_erp/core/errors.py:321</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/procurement/critical_materials/services.py:86</code></td>
+<td><code>Product is already registered as a critical material</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="i̇lgili-sayfalar">İlgili sayfalar<a class="headerlink" href="#i̇lgili-sayfalar">¶</a></h2>
+<ul>
+<li><a href="../errors.tr.html">Hatalar</a></li>
+<li><a href="../index.tr.html">API başvurusu</a></li>
+<li><a href="../../platform/errors-and-exceptions.tr.html">Hatalar ve istisnalar</a></li>
+</ul>
+<hr>
+<p>7793ff4 numaralı commit ile 2026-11-09 tarihinde doğrulandı.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Doğrulanan commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../../api/errors.tr.html"><span class="eyebrow">Önceki</span><span>Hatalar</span></a><a class="next" href="../../api/fleet.tr.html"><span class="eyebrow">Sonraki</span><span>Fleet API (fleet)</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">Bu sayfada</p><ul class="outline">
+<li class="lvl2"><a href="#i̇ş-alanına-göre-kodlar">İş alanına göre kodlar</a></li>
+<li class="lvl3"><a href="#crm">CRM</a></li>
+<li class="lvl3"><a href="#teklifler">Teklifler</a></li>
+<li class="lvl3"><a href="#satış-siparişleri">Satış siparişleri</a></li>
+<li class="lvl3"><a href="#projeler">Projeler</a></li>
+<li class="lvl3"><a href="#ürün-ağacı">Ürün ağacı</a></li>
+<li class="lvl3"><a href="#tasarım-ve-mühendislik">Tasarım ve mühendislik</a></li>
+<li class="lvl3"><a href="#ürünler-ve-malzemeler">Ürünler ve malzemeler</a></li>
+<li class="lvl3"><a href="#envanter">Envanter</a></li>
+<li class="lvl3"><a href="#üretim">Üretim</a></li>
+<li class="lvl3"><a href="#yerleşim">Yerleşim</a></li>
+<li class="lvl3"><a href="#maliyetlendirme">Maliyetlendirme</a></li>
+<li class="lvl3"><a href="#satın-alma">Satın alma</a></li>
+<li class="lvl2"><a href="#i̇lgili-sayfalar">İlgili sayfalar</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>docs/wiki altındaki Markdown kaynaklarından derlendi</span></footer>
+</body>
+</html>

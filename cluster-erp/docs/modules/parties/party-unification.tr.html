@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Taraf birleştirme · Cluster ERP Wiki</title>
+<meta name="description" content="Tek taraf kartının müşteri, tedarikçi, çalışan ve kuruluş rollerini EventBus ile güncel tutulan bölümler olarak nasıl taşıdığı.">
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="icon" href="../../assets/mark.svg" type="image/svg+xml">
+<script defer src="../../assets/mermaid.min.js"></script>
+<script defer src="../../assets/site.js" data-root="../../" data-lang="tr"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menü</button>
+  <a class="brand" href="/"><img src="../../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../../index.tr.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Wiki&#x27;de ara" aria-label="Wiki&#x27;de ara" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="Eşleşen sayfa yok."></div>
+  </div>
+  <a class="lang-switch" href="../../modules/parties/party-unification.html" lang="en" hreflang="en">English</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Ana sayfa</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../../README.tr.html">Cluster ERP wiki&#x27;si</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Genel bakış</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../../overview/index.tr.html">Genel bakış</a></li>
+<li class=""><a href="../../overview/architecture-overview.tr.html">Mimariye genel bakış</a></li>
+<li class=""><a href="../../overview/repository-map.tr.html">Depo haritası</a></li>
+<li class=""><a href="../../overview/what-is-cluster-erp.tr.html">Cluster ERP nedir</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../../platform/index.tr.html">Platform çekirdeği</a></li>
+<li class=""><a href="../../platform/attachments-notes-and-storage.tr.html">Ekler, notlar ve depolama</a></li>
+<li class=""><a href="../../platform/base-model-and-ids.tr.html">Temel model ve kimlikler</a></li>
+<li class=""><a href="../../platform/cache-and-asset-stamp.tr.html">Önbellek ve varlık damgası</a></li>
+<li class=""><a href="../../platform/change-history.tr.html">Değişiklik geçmişi</a></li>
+<li class=""><a href="../../platform/contracts-reference.tr.html">Sözleşmeler başvurusu</a></li>
+<li class=""><a href="../../platform/database-and-sessions.tr.html">Veritabanı ve oturumlar</a></li>
+<li class=""><a href="../../platform/errors-and-exceptions.tr.html">Hatalar ve istisnalar</a></li>
+<li class=""><a href="../../platform/event-bus.tr.html">Olay veri yolu</a></li>
+<li class=""><a href="../../platform/metadata-model.tr.html">Metadata modeli</a></li>
+<li class=""><a href="../../platform/module-lifecycle.tr.html">Modül yaşam döngüsü</a></li>
+<li class=""><a href="../../platform/money-and-decimal.tr.html">Para ve Decimal</a></li>
+<li class=""><a href="../../platform/pdf-and-system-mail.tr.html">PDF ve sistem postası</a></li>
+<li class=""><a href="../../platform/product-breakdown-and-stock-conversion.tr.html">Ürün kırılımı ve stok dönüşümü</a></li>
+<li class=""><a href="../../platform/reference-data-and-core-i18n.tr.html">Referans veriler ve çekirdek i18n</a></li>
+<li class=""><a href="../../platform/request-pipeline-and-middleware.tr.html">İstek hattı ve ara katmanlar</a></li>
+<li class=""><a href="../../platform/search-pagination-and-bulk.tr.html">Arama, sayfalama ve toplu işlemler</a></li>
+<li class=""><a href="../../platform/server-startup-and-app-factory.tr.html">Sunucu açılışı ve uygulama fabrikası</a></li>
+<li class=""><a href="../../platform/settings-reference.tr.html">Ayarlar başvurusu</a></li>
+<li class=""><a href="../../platform/shared-server-routes.tr.html">Ortak sunucu rotaları</a></li>
+<li class=""><a href="../../platform/soft-delete-and-deactivation.tr.html">Yumuşak silme ve kullanımdan kaldırma</a></li>
+<li class=""><a href="../../platform/tenant-fields.tr.html">Kiracı alanları</a></li>
+<li class=""><a href="../../platform/working-time.tr.html">Çalışma zamanı</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Kimlik ve erişim</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../../identity-access/index.tr.html">Kimlik, erişim, kiracılık, gizlilik ve lisans</a></li>
+<li class=""><a href="../../identity-access/abac-policies.tr.html">ABAC politikaları</a></li>
+<li class=""><a href="../../identity-access/app-store-licensing-and-entitlements.tr.html">Uygulama mağazası lisansları ve hakları</a></li>
+<li class=""><a href="../../identity-access/approvals-and-approval-chains.tr.html">Onaylar ve onay zincirleri</a></li>
+<li class=""><a href="../../identity-access/authentication-and-sessions.tr.html">Kimlik doğrulama ve oturumlar</a></li>
+<li class=""><a href="../../identity-access/field-and-row-access.tr.html">Alan ve satır erişimi</a></li>
+<li class=""><a href="../../identity-access/multi-tenancy.tr.html">Çok kiracılılık</a></li>
+<li class=""><a href="../../identity-access/notification-rules.tr.html">Bildirim kuralları</a></li>
+<li class=""><a href="../../identity-access/operator-console.tr.html">Operatör konsolu</a></li>
+<li class=""><a href="../../identity-access/privacy-and-data-subject-requests.tr.html">Gizlilik ve ilgili kişi başvuruları</a></li>
+<li class=""><a href="../../identity-access/roles-and-permissions.tr.html">Roller ve izinler</a></li>
+<li class=""><a href="../../identity-access/second-factor-and-secret-storage.tr.html">İkinci doğrulama adımı ve gizli değer saklama</a></li>
+<li class=""><a href="../../identity-access/signup.tr.html">Kayıt</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web uygulaması</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../../web-app/index.tr.html">Web uygulaması platformu</a></li>
+<li class=""><a href="../../web-app/actions-and-action-sheet.tr.html">Aksiyonlar ve aksiyon kartı</a></li>
+<li class=""><a href="../../web-app/assistant-and-chat-ui.tr.html">Asistan ve sohbet ekranları</a></li>
+<li class=""><a href="../../web-app/boot-session-and-api.tr.html">Açılış, oturum ve API çağrıları</a></li>
+<li class=""><a href="../../web-app/data-refresh-and-change-signals.tr.html">Veri tazeleme ve değişiklik sinyalleri</a></li>
+<li class=""><a href="../../web-app/device-classes.tr.html">Cihaz sınıfları</a></li>
+<li class=""><a href="../../web-app/gated-app-bundles.tr.html">Kapılı uygulama paketleri</a></li>
+<li class=""><a href="../../web-app/generic-detail.tr.html">Genel ayrıntı</a></li>
+<li class=""><a href="../../web-app/generic-form.tr.html">Genel form</a></li>
+<li class=""><a href="../../web-app/generic-list.tr.html">Genel liste</a></li>
+<li class=""><a href="../../web-app/generic-tree-and-settings.tr.html">Genel ağaç ve ayar ekranları</a></li>
+<li class=""><a href="../../web-app/home-dock-and-launcher.tr.html">Ana ekran, dock ve başlatıcı</a></li>
+<li class=""><a href="../../web-app/home-widgets.tr.html">Ana ekran bileşenleri</a></li>
+<li class=""><a href="../../web-app/how-to-add-a-language.tr.html">Web uygulamasına dil ekleyin</a></li>
+<li class=""><a href="../../web-app/how-to-add-a-screen-with-metadata.tr.html">Metadata ile ekran ekleyin</a></li>
+<li class=""><a href="../../web-app/i18n-and-languages.tr.html">Uluslararasılaştırma ve diller</a></li>
+<li class=""><a href="../../web-app/mail-and-profile-screens.tr.html">Mail ve profil ekranları</a></li>
+<li class=""><a href="../../web-app/metadata-rendering.tr.html">Metadata çizimi</a></li>
+<li class=""><a href="../../web-app/module-apps-and-app-scope.tr.html">Modül uygulamaları ve uygulama kapsamı</a></li>
+<li class=""><a href="../../web-app/overview.tr.html">Web uygulamasına genel bakış</a></li>
+<li class=""><a href="../../web-app/records-documents-viewer-and-share.tr.html">Kayıt belgeleri, görüntüleyici ve paylaşım</a></li>
+<li class=""><a href="../../web-app/search-and-command-palette.tr.html">Arama ve komut paleti</a></li>
+<li class=""><a href="../../web-app/themes-tokens-and-accessibility.tr.html">Temalar, belirteçler ve erişilebilirlik</a></li>
+<li class=""><a href="../../web-app/user-ui-state.tr.html">Kullanıcı arayüz durumu</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Masaüstü istemci</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../../desktop/index.tr.html">Masaüstü istemci</a></li>
+<li class=""><a href="../../desktop/api-client-and-workers.tr.html">API istemcisi ve çalışanlar</a></li>
+<li class=""><a href="../../desktop/chat-widget.tr.html">Sohbet bileşeni</a></li>
+<li class=""><a href="../../desktop/generic-widgets.tr.html">Genel bileşenler</a></li>
+<li class=""><a href="../../desktop/i18n-themes-and-accessibility.tr.html">Diller, temalar ve erişilebilirlik</a></li>
+<li class=""><a href="../../desktop/metadata-store-and-fk-cache.tr.html">Metadata deposu ve yabancı anahtar önbelleği</a></li>
+<li class=""><a href="../../desktop/module-screens.tr.html">Modül ekranları</a></li>
+<li class=""><a href="../../desktop/overview.tr.html">Masaüstü istemciye genel bakış</a></li>
+<li class=""><a href="../../desktop/run-the-desktop-client.tr.html">Masaüstü istemciyi çalıştırın</a></li>
+<li class=""><a href="../../desktop/signal-bus-and-watch-entity.tr.html">Sinyal veri yolu ve watch_entity</a></li>
+<li class=""><a href="../../desktop/tabs-panes-and-layout.tr.html">Sekmeler, bölmeler ve yerleşim</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">İş modülleri</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../../modules/index.tr.html">İş modülleri</a></li>
+<li class=""><a href="../../modules/analytics/index.tr.html">Analytics modülü (analytics)</a></li>
+<li class="sub"><a href="../../modules/analytics/analytics-facts.tr.html">Analitik olgular</a></li>
+<li class="sub"><a href="../../modules/analytics/forecasting-and-classification.tr.html">Analitik tahmin ve sınıflandırma</a></li>
+<li class="sub"><a href="../../modules/analytics/recipes-and-query-builder.tr.html">Analitik tarifleri ve sorgu kurucu</a></li>
+<li class="sub"><a href="../../modules/analytics/reports-summaries-and-cross.tr.html">Analitik raporları, özetleri ve çapraz</a></li>
+<li class="sub"><a href="../../modules/analytics/statistics-and-inference.tr.html">Analitik istatistik ve çıkarım</a></li>
+<li class=""><a href="../../modules/app_store.tr.html">App store modülü (app_store)</a></li>
+<li class=""><a href="../../modules/auth.tr.html">Auth modülü (auth)</a></li>
+<li class=""><a href="../../modules/bom.tr.html">BOM modülü (bom)</a></li>
+<li class=""><a href="../../modules/calendars.tr.html">Calendars modülü (calendars)</a></li>
+<li class=""><a href="../../modules/costing.tr.html">Costing modülü (costing)</a></li>
+<li class=""><a href="../../modules/crm/index.tr.html">CRM modülü (crm)</a></li>
+<li class="sub"><a href="../../modules/crm/customers-and-customer-parts.tr.html">Müşteriler ve müşteri parçaları</a></li>
+<li class="sub"><a href="../../modules/crm/inbox.tr.html">Teklif talebi gelen kutusu</a></li>
+<li class="sub"><a href="../../modules/crm/rfqs.tr.html">Müşteri teklif talepleri</a></li>
+<li class=""><a href="../../modules/currencies.tr.html">Currencies modülü (currencies)</a></li>
+<li class=""><a href="../../modules/design_engineering.tr.html">Design engineering modülü (design_engineering)</a></li>
+<li class=""><a href="../../modules/documents.tr.html">Documents modülü (documents)</a></li>
+<li class=""><a href="../../modules/fleet/index.tr.html">Fleet modülü (fleet)</a></li>
+<li class="sub"><a href="../../modules/fleet/assets.tr.html">Filo araçları</a></li>
+<li class="sub"><a href="../../modules/fleet/maintenance-and-work-orders.tr.html">Filo bakımı ve iş emirleri</a></li>
+<li class="sub"><a href="../../modules/fleet/meters-and-fuel.tr.html">Filo sayaçları ve yakıt</a></li>
+<li class="sub"><a href="../../modules/fleet/operations.tr.html">Filo operasyonları</a></li>
+<li class="sub"><a href="../../modules/fleet/tco-telematics-and-analytics.tr.html">Filo TCO, telematik ve analitik</a></li>
+<li class=""><a href="../../modules/intranet/index.tr.html">Intranet modülü (intranet)</a></li>
+<li class="sub"><a href="../../modules/intranet/access-audience-and-retention.tr.html">İntranet erişimi, hedef kitlesi ve saklama</a></li>
+<li class="sub"><a href="../../modules/intranet/content-and-feed.tr.html">İntranet içeriği ve akışı</a></li>
+<li class="sub"><a href="../../modules/intranet/directory.tr.html">İntranet rehberi</a></li>
+<li class="sub"><a href="../../modules/intranet/engagement.tr.html">İntranet katılımı</a></li>
+<li class="sub"><a href="../../modules/intranet/events.tr.html">İntranet etkinlikleri</a></li>
+<li class="sub"><a href="../../modules/intranet/leave.tr.html">İntranet izinleri</a></li>
+<li class="sub"><a href="../../modules/intranet/my-documents.tr.html">İntranet belgelerim</a></li>
+<li class="sub"><a href="../../modules/intranet/notifications-and-delivery.tr.html">İntranet bildirimleri ve tebligat</a></li>
+<li class="sub"><a href="../../modules/intranet/requests.tr.html">İntranet talepleri</a></li>
+<li class=""><a href="../../modules/inventory.tr.html">Inventory modülü (inventory)</a></li>
+<li class=""><a href="../../modules/logs.tr.html">Logs modülü (logs)</a></li>
+<li class=""><a href="../../modules/mail.tr.html">Mail modülü (mail)</a></li>
+<li class=""><a href="../../modules/nesting/index.tr.html">Nesting modülü (nesting)</a></li>
+<li class="sub"><a href="../../modules/nesting/engine.tr.html">Yerleşim motoru</a></li>
+<li class="sub"><a href="../../modules/nesting/integration-and-kpi.tr.html">Yerleşim entegrasyonu ve KPI</a></li>
+<li class="sub"><a href="../../modules/nesting/jobs-parts-and-remnants.tr.html">Yerleşim işleri, parçalar ve artıklar</a></li>
+<li class=""><a href="../../modules/owned_organisations.tr.html">Owned organisations modülü (owned_organisations)</a></li>
+<li class=""><a href="../../modules/parties/index.tr.html">Parties modülü (parties)</a></li>
+<li class="sub"><a href="../../modules/parties/addresses.tr.html">Adresler başvurusu</a></li>
+<li class="sub"><a href="../../modules/parties/communication-channels.tr.html">İletişim kanalları başvurusu</a></li>
+<li class="sub"><a href="../../modules/parties/parties.tr.html">Parties alt modülü başvurusu</a></li>
+<li class="current sub"><a href="../../modules/parties/party-unification.tr.html">Taraf birleştirme</a></li>
+<li class="sub"><a href="../../modules/parties/person-languages.tr.html">Kişi dilleri başvurusu</a></li>
+<li class="sub"><a href="../../modules/parties/settings-and-reference-data.tr.html">Parties ayarları ve başvuru verileri</a></li>
+<li class=""><a href="../../modules/privacy.tr.html">Privacy modülü (privacy)</a></li>
+<li class=""><a href="../../modules/procurement/index.tr.html">Procurement modülü (procurement)</a></li>
+<li class="sub"><a href="../../modules/procurement/critical-materials-and-substitution.tr.html">Kritik malzemeler ve ikame</a></li>
+<li class="sub"><a href="../../modules/procurement/mrp.tr.html">Malzeme ihtiyaç planlaması</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-contracts-and-info-records.tr.html">Satın alma sözleşmeleri ve info kayıtları</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-orders.tr.html">Satın alma siparişleri</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-requests.tr.html">Satın alma talepleri</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-rfqs.tr.html">Satın alma teklif talepleri</a></li>
+<li class="sub"><a href="../../modules/procurement/suppliers.tr.html">Tedarikçiler</a></li>
+<li class=""><a href="../../modules/production/index.tr.html">Production modülü (production)</a></li>
+<li class="sub"><a href="../../modules/production/production-orders-and-versions.tr.html">Üretim emirleri ve versiyonları</a></li>
+<li class="sub"><a href="../../modules/production/routings-and-operation-types.tr.html">Rotalar ve operasyon tipleri</a></li>
+<li class="sub"><a href="../../modules/production/scheduling.tr.html">Üretim çizelgeleme</a></li>
+<li class="sub"><a href="../../modules/production/work-centers-and-capacity.tr.html">İş merkezleri ve kapasite</a></li>
+<li class="sub"><a href="../../modules/production/work-orders.tr.html">İş emirleri</a></li>
+<li class=""><a href="../../modules/products_and_services.tr.html">Products and services modülü (products_and_services)</a></li>
+<li class=""><a href="../../modules/projects/index.tr.html">Projects modülü (projects)</a></li>
+<li class="sub"><a href="../../modules/projects/actions-activities-and-meetings.tr.html">Proje aksiyonları, aktiviteleri ve toplantıları</a></li>
+<li class="sub"><a href="../../modules/projects/board.tr.html">Proje panosu</a></li>
+<li class="sub"><a href="../../modules/projects/projects-and-items.tr.html">Projeler, kalemler ve fikstürler</a></li>
+<li class="sub"><a href="../../modules/projects/schedules.tr.html">Proje çizelgeleri</a></li>
+<li class=""><a href="../../modules/purchasing_quotations.tr.html">Purchasing quotations modülü (purchasing_quotations)</a></li>
+<li class=""><a href="../../modules/quotations.tr.html">Quotations modülü (quotations)</a></li>
+<li class=""><a href="../../modules/records.tr.html">Records modülü (records)</a></li>
+<li class=""><a href="../../modules/sales_orders/index.tr.html">Sales orders modülü (sales_orders)</a></li>
+<li class="sub"><a href="../../modules/sales_orders/orders-and-lines.tr.html">Satış siparişleri ve sipariş kalemleri</a></li>
+<li class="sub"><a href="../../modules/sales_orders/shipments.tr.html">Sevkiyatlar</a></li>
+<li class="sub"><a href="../../modules/sales_orders/trade-documents.tr.html">İhracat belgeleri</a></li>
+<li class="sub"><a href="../../modules/sales_orders/units-and-settings.tr.html">Satış siparişi birimleri ve ayarları</a></li>
+<li class=""><a href="../../modules/subscriptions.tr.html">Subscriptions modülü (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Asistan</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../../ai/index.tr.html">Niyet asistanı</a></li>
+<li class=""><a href="../../ai/intent-assistant.tr.html">Niyet asistanı nasıl çalışır</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API referansı</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../../api/index.tr.html">API başvurusu</a></li>
+<li class=""><a href="../../api/analytics.tr.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../../api/app_store.tr.html">App store API (app_store)</a></li>
+<li class=""><a href="../../api/auth.tr.html">Auth API (auth)</a></li>
+<li class=""><a href="../../api/authentication-and-headers.tr.html">Kimlik doğrulama ve başlıklar</a></li>
+<li class=""><a href="../../api/bom.tr.html">BOM API (bom)</a></li>
+<li class=""><a href="../../api/calendars.tr.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../../api/conventions.tr.html">API kuralları</a></li>
+<li class=""><a href="../../api/costing.tr.html">Costing API (costing)</a></li>
+<li class=""><a href="../../api/crm.tr.html">CRM API (crm)</a></li>
+<li class=""><a href="../../api/currencies.tr.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../../api/design_engineering.tr.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../../api/documents.tr.html">Documents API (documents)</a></li>
+<li class=""><a href="../../api/errors.tr.html">Hatalar</a></li>
+<li class="sub"><a href="../../api/errors/business-error-codes.tr.html">İş hata kodları</a></li>
+<li class=""><a href="../../api/fleet.tr.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../../api/intranet.tr.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../../api/inventory.tr.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../../api/logs.tr.html">Logs API (logs)</a></li>
+<li class=""><a href="../../api/mail.tr.html">Mail API (mail)</a></li>
+<li class=""><a href="../../api/nesting.tr.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../../api/overview.tr.html">API&#x27;ye genel bakış</a></li>
+<li class=""><a href="../../api/owned_organisations.tr.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../../api/parties.tr.html">Parties API (parties)</a></li>
+<li class=""><a href="../../api/privacy.tr.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../../api/procurement.tr.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../../api/procurement/critical_materials.tr.html">Procurement API: Kritik malzemeler uç noktaları (critical_materials)</a></li>
+<li class="sub"><a href="../../api/procurement/info_records.tr.html">Procurement API: Satın alma bilgi kayıtları uç noktaları (info_records)</a></li>
+<li class="sub"><a href="../../api/procurement/mrp.tr.html">Procurement API: MRP uç noktaları (mrp)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_contracts.tr.html">Procurement API: Satın alma sözleşmeleri uç noktaları (purchase_contracts)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_orders.tr.html">Procurement API: Satın alma siparişleri uç noktaları (purchase_orders)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_requests.tr.html">Procurement API: Satın alma talepleri uç noktaları (purchase_requests)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_rfqs.tr.html">Procurement API: Satın alma teklif talepleri uç noktaları (purchase_rfqs)</a></li>
+<li class="sub"><a href="../../api/procurement/substitution_groups.tr.html">Procurement API: İkame grupları uç noktaları (substitution_groups)</a></li>
+<li class="sub"><a href="../../api/procurement/suppliers.tr.html">Procurement API: Tedarikçiler uç noktaları (suppliers)</a></li>
+<li class=""><a href="../../api/production.tr.html">Production API (production)</a></li>
+<li class=""><a href="../../api/products_and_services.tr.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../../api/projects.tr.html">Projects API (projects)</a></li>
+<li class=""><a href="../../api/purchasing_quotations.tr.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../../api/quotations.tr.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../../api/records.tr.html">Records API (records)</a></li>
+<li class=""><a href="../../api/sales_orders.tr.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../../api/server-routes.tr.html">Paylaşılan sunucu yolları API</a></li>
+<li class=""><a href="../../api/subscriptions.tr.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../../api/system-endpoints.tr.html">Sistem uç noktaları API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">İşletme</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../../operations/index.tr.html">İşletim</a></li>
+<li class=""><a href="../../operations/backups-and-restore.tr.html">Yedekler ve geri yükleme</a></li>
+<li class=""><a href="../../operations/ci-pipeline-and-release.tr.html">CI hattı ve sürüm</a></li>
+<li class=""><a href="../../operations/configuration-reference.tr.html">Yapılandırma başvurusu</a></li>
+<li class=""><a href="../../operations/container-measurement.tr.html">Konteyner ölçümü</a></li>
+<li class=""><a href="../../operations/data-residency-check.tr.html">Veri ikameti denetimi</a></li>
+<li class=""><a href="../../operations/database-migrations.tr.html">Veritabanı göçleri</a></li>
+<li class=""><a href="../../operations/demo-and-staging-data.tr.html">Demo ve staging verisi</a></li>
+<li class=""><a href="../../operations/environments-and-promotion.tr.html">Ortamlar ve terfi</a></li>
+<li class=""><a href="../../operations/install-a-linux-node.tr.html">Bir Linux düğümü kurun</a></li>
+<li class=""><a href="../../operations/local-development-setup.tr.html">Yerel geliştirme kurulumu</a></li>
+<li class=""><a href="../../operations/postgresql-roles-and-tuning.tr.html">PostgreSQL rolleri ve ayarı</a></li>
+<li class=""><a href="../../operations/reverse-proxy.tr.html">Ters vekil sunucu</a></li>
+<li class=""><a href="../../operations/scheduled-jobs-and-retention.tr.html">Zamanlanmış işler ve saklama</a></li>
+<li class=""><a href="../../operations/security-txt-and-readiness.tr.html">Security.txt ve hazırlık</a></li>
+<li class=""><a href="../../operations/service-and-process-manager.tr.html">Servis ve süreç yöneticisi</a></li>
+<li class=""><a href="../../operations/tenant-lifecycle.tr.html">Kiracı yaşam döngüsü</a></li>
+<li class=""><a href="../../operations/windows-installer.tr.html">Windows kurucusu</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Katkı</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../../contributing/index.tr.html">Katkı</a></li>
+<li class=""><a href="../../contributing/architecture-boundaries.tr.html">Mimari sınırlar</a></li>
+<li class=""><a href="../../contributing/coding-rules.tr.html">Kodlama kuralları</a></li>
+<li class=""><a href="../../contributing/developer-tools-and-scripts.tr.html">Geliştirici araçları ve betikleri</a></li>
+<li class=""><a href="../../contributing/e2e-battery.tr.html">E2e bataryası</a></li>
+<li class=""><a href="../../contributing/e2e-suite-catalogue.tr.html">E2e süit kataloğu</a></li>
+<li class=""><a href="../../contributing/lint-and-type-check.tr.html">Lint ve tip denetimi</a></li>
+<li class=""><a href="../../contributing/python-tests.tr.html">Python testleri</a></li>
+<li class=""><a href="../../contributing/write-a-backend-module.tr.html">Bir arka uç modülü yazın</a></li>
+<li class=""><a href="../../contributing/writing-documentation.tr.html">Bir wiki sayfası yazın</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Karar kayıtları</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../../decisions/index.tr.html">Karar kayıtları</a></li>
+<li class=""><a href="../../decisions/data-driven-languages.tr.html">Veri güdümlü diller</a></li>
+<li class=""><a href="../../decisions/decimal-money.tr.html">Decimal para</a></li>
+<li class=""><a href="../../decisions/eventbus-only-inter-module-communication.tr.html">Yalnız EventBus ile modüller arası iletişim</a></li>
+<li class=""><a href="../../decisions/metadata-driven-ui.tr.html">Metadata güdümlü arayüz</a></li>
+<li class=""><a href="../../decisions/no-hard-delete.tr.html">Fiziksel silme yok</a></li>
+<li class=""><a href="../../decisions/party-unification.tr.html">Taraf birleşimi</a></li>
+<li class=""><a href="../../decisions/product-model-version-breakdown.tr.html">Ürün, model ve versiyon kırılımı</a></li>
+<li class=""><a href="../../decisions/server-side-ui-state.tr.html">Sunucu tarafı arayüz durumu</a></li>
+<li class=""><a href="../../decisions/ulid-primary-keys.tr.html">ULID birincil anahtarlar</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Başvuru</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../../reference/index.tr.html">Başvuru</a></li>
+<li class=""><a href="../../reference/glossary.tr.html">Sözlük</a></li>
+<li class=""><a href="../../reference/related-material.tr.html">İlgili belgeler</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../../index.tr.html">Ana sayfa</a> / İş modülleri</div>
+    <header class="page-head">
+      <p class="eyebrow">Açıklama</p>
+      <h1>Taraf birleştirme</h1>
+      <p class="lede">Tek taraf kartının müşteri, tedarikçi, çalışan ve kuruluş rollerini EventBus ile güncel tutulan bölümler olarak nasıl taşıdığı.</p>
+    </header>
+    <nav class="toc" aria-label="İçindekiler"><p class="eyebrow">İçindekiler</p><ul class="outline">
+<li class="lvl2"><a href="#kısaca">Kısaca</a></li>
+<li class="lvl2"><a href="#nasıl-çalışır">Nasıl çalışır</a></li>
+<li class="lvl3"><a href="#model">Model</a></li>
+<li class="lvl3"><a href="#kimlik-yönlendirmesi">Kimlik yönlendirmesi</a></li>
+<li class="lvl3"><a href="#taraf-kartındaki-rol-bölümleri">Taraf kartındaki rol bölümleri</a></li>
+<li class="lvl3"><a href="#rol-bayrakları">Rol bayrakları</a></li>
+<li class="lvl3"><a href="#rehberli-oluşturma">Rehberli oluşturma</a></li>
+<li class="lvl3"><a href="#sonradan-rol-ekleme">Sonradan rol ekleme</a></li>
+<li class="lvl3"><a href="#ad-ve-vergi-numarası-tarafı-izler">Ad ve vergi numarası tarafı izler</a></li>
+<li class="lvl3"><a href="#kullanımdan-kaldırma-tarafı-izler">Kullanımdan kaldırma tarafı izler</a></li>
+<li class="lvl3"><a href="#diğer-modüller-adına-oluşturulan-taraflar">Diğer modüller adına oluşturulan taraflar</a></li>
+<li class="lvl2"><a href="#neden-böyle-kurulmuştur">Neden böyle kurulmuştur</a></li>
+<li class="lvl2"><a href="#kurallar-ve-sınırlar">Kurallar ve sınırlar</a></li>
+<li class="lvl2"><a href="#diğer-parçalarla-etkileşim">Diğer parçalarla etkileşim</a></li>
+<li class="lvl2"><a href="#sınırlar-ve-açık-noktalar">Sınırlar ve açık noktalar</a></li>
+<li class="lvl2"><a href="#tanıtılan-terimler">Tanıtılan terimler</a></li>
+<li class="lvl2"><a href="#i̇lgili-sayfalar">İlgili sayfalar</a></li>
+</ul></nav>
+    <article class="prose">
+<p>Cluster ERP'de müşteri, tedarikçi, çalışan ve sahip olunan kuruluş ayrı kartlar değildir. Her biri kendi modülünde, <code>parties</code> modülünün tek bir tarafını (<code>Party</code>) gösteren bir rol kaydıdır ve web uygulaması hepsi için taraf kartını açar. Bu sayfa kimlik yönlendirmesini, taraf kartındaki rol bölümlerini, rol bayraklarını, rehberli oluşturmayı ve rol etkinleştirmeyi açıklar. Taraf alanlarının kendisi <a href="parties.tr.html">parties alt modülü</a> sayfasında listelenir.</p>
+<h2 id="kısaca">Kısaca<a class="headerlink" href="#kısaca">¶</a></h2>
+<ul>
+<li>Bir rol kaydı bir <code>party_id</code> taşır: CRM müşterisi, satın alma tedarikçisi, çalışan, görevlendirme ve sahip olunan kuruluş (<code>src/cluster_erp/modules/crm/customers/models.py:23</code>, <code>src/cluster_erp/modules/procurement/suppliers/models.py:42</code>, <code>src/cluster_erp/modules/owned_organisations/employees/models.py:43</code>, <code>src/cluster_erp/modules/owned_organisations/organisations/models.py:41</code>).</li>
+<li>Bir rol varlığındaki <code>IdentityMeta</code>, web uygulamasına ayrı bir rol kartı yerine taraf kartını açmasını söyler (<code>src/cluster_erp/core/metadata.py:304-313</code>).</li>
+<li>Taraf metadata'sındaki <code>FacetMeta</code> girdileri her rolün verisini taraf kartının bölümleri olarak gösterir (<code>src/cluster_erp/core/metadata.py:357-377</code>, <code>src/cluster_erp/modules/parties/parties/metadata.py:550-763</code>).</li>
+<li>Taraftaki <code>is_customer</code>, <code>is_supplier</code> ve <code>is_employee</code> bayrakları rol kayıtlarını <code>PartyRoleSet</code> olayı ve bir başlangıç uzlaştırmasıyla izler (<code>src/cluster_erp/modules/parties/module.py:168-195</code>, <code>src/cluster_erp/server/app.py:1002-1055</code>).</li>
+<li>Rollerle taraf oluşturmak ve sonradan rol eklemek, tek bir istek işleminde birkaç modül servisini çağıran sunucu katmanında çalışır (<code>src/cluster_erp/server/routes/party_composite.py:1-10</code>, <code>src/cluster_erp/server/routes/party_roles.py:1-15</code>).</li>
+</ul>
+<h2 id="nasıl-çalışır">Nasıl çalışır<a class="headerlink" href="#nasıl-çalışır">¶</a></h2>
+<h3 id="model">Model<a class="headerlink" href="#model">¶</a></h3>
+<p>Şema hangi rol kayıtlarının bir tarafı gösterdiğini ve her birinin hangi modüle ait olduğunu gösterir.</p>
+<figure class="diagram"><pre class="mermaid">flowchart LR
+ Party[&quot;Party (parties)&quot;]
+ Customer[&quot;Customer (crm)&quot;] --&gt;|party_id| Party
+ Supplier[&quot;Supplier (procurement)&quot;] --&gt;|party_id| Party
+ Employee[&quot;Employee (owned_organisations)&quot;] --&gt;|party_id| Party
+ Assignment[&quot;Assignment (owned_organisations)&quot;] --&gt;|party_id| Party
+ Org[&quot;OwnedOrganisation (owned_organisations)&quot;] --&gt;|party_id| Party
+ Assignment --&gt;|organisation_id| Org
+ Assignment --&gt;|employee_id| Employee</pre></figure>
+<p>Düz anlatımla: beş rol kaydı tarafı bir <code>party_id</code> sütunuyla gösterir. Bir görevlendirme ayrıca çalışan kaydını ve kişinin çalıştığı sahip olunan kuruluşu gösterir (<code>src/cluster_erp/modules/owned_organisations/employees/models.py:69-102</code>). Bu sütunların hiçbiri modüller arası bir veritabanı yabancı anahtarı değildir; çalışan modeli, modül sınırı temiz kalsın diye yönetici ve taraf kimliklerinin düz UUID olduğunu belirtir (<code>src/cluster_erp/modules/owned_organisations/employees/models.py:59-61</code>).</p>
+<h3 id="kimlik-yönlendirmesi">Kimlik yönlendirmesi<a class="headerlink" href="#kimlik-yönlendirmesi">¶</a></h3>
+<p><code>IdentityMeta(field, module, entity)</code>, taraf kimliğini tutan yerel sütunu adlandırır. Ayarlandığında web uygulaması rol kartı yerine taraf kartını açar (<code>src/cluster_erp/core/metadata.py:304-313</code>). Beş varlık bunu bildirir: <code>customer</code> (<code>src/cluster_erp/modules/crm/customers/metadata.py:30</code>), <code>supplier</code> (<code>src/cluster_erp/modules/procurement/suppliers/metadata.py:27</code>), <code>organisation</code>, <code>employee</code> ve <code>assignment</code> (<code>src/cluster_erp/modules/owned_organisations/organisations/metadata.py:53</code>, <code>src/cluster_erp/modules/owned_organisations/organisations/metadata.py:355</code>, <code>src/cluster_erp/modules/owned_organisations/organisations/metadata.py:590</code>). İntranet rehberi de bunu bildirir (<code>src/cluster_erp/modules/intranet/directory/metadata.py:30</code>).</p>
+<h3 id="taraf-kartındaki-rol-bölümleri">Taraf kartındaki rol bölümleri<a class="headerlink" href="#taraf-kartındaki-rol-bölümleri">¶</a></h3>
+<p><code>FacetMeta</code> bir tarafın oynayabileceği bir rolü tanımlar. Web uygulaması rol kayıtlarını, <code>link_field</code> taraf kimliğine eşit olacak şekilde süzülen düz bir liste sorgusuyla yükler ve bildirilen bölümleri işler (<code>src/cluster_erp/core/metadata.py:357-377</code>). Taraf metadata'sı beş rol bölümü bildirir:</p>
+<table>
+<thead>
+<tr>
+<th>Rol bölümü</th>
+<th>Bölümler</th>
+<th>Kapı</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>crm</code> / <code>customer</code></td>
+<td><strong>Ticari Bilgiler</strong> formu; <strong>Müşteri Parçaları</strong> tablosu; teklif talebi, teklif ve sipariş geçmişi tabloları</td>
+<td>yok</td>
+<td><code>src/cluster_erp/modules/parties/parties/metadata.py:551-628</code></td>
+</tr>
+<tr>
+<td><code>procurement</code> / <code>supplier</code></td>
+<td><strong>Tedarikçi Bilgileri</strong> formu; satın alma teklif talebi, teklif ve sipariş geçmişi tabloları</td>
+<td>yok</td>
+<td><code>src/cluster_erp/modules/parties/parties/metadata.py:629-679</code></td>
+</tr>
+<tr>
+<td><code>owned_organisations</code> / <code>organisation</code></td>
+<td><strong>Departmanlar</strong> ağacı; görevlendirmelerden oluşan <strong>Çalışanlar</strong> tablosu</td>
+<td>yok</td>
+<td><code>src/cluster_erp/modules/parties/parties/metadata.py:680-698</code></td>
+</tr>
+<tr>
+<td><code>owned_organisations</code> / <code>employee</code></td>
+<td><strong>İstihdam Bilgileri</strong> formu</td>
+<td>yok</td>
+<td><code>src/cluster_erp/modules/parties/parties/metadata.py:700-713</code></td>
+</tr>
+<tr>
+<td><code>owned_organisations</code> / <code>assignment</code></td>
+<td>Kuruluşlar boyunca <strong>Görevlendirmeler</strong> tablosu</td>
+<td><code>requires_flag="is_employee"</code></td>
+<td><code>src/cluster_erp/modules/parties/parties/metadata.py:718-762</code></td>
+</tr>
+</tbody>
+</table>
+<p>İşleme kuralları <a href="../../web-app/generic-detail.tr.html">genel ayrıntı</a> sayfasındadır.</p>
+<h3 id="rol-bayrakları">Rol bayrakları<a class="headerlink" href="#rol-bayrakları">¶</a></h3>
+<p>Taraf listesi taraftaki üç mantıksal değerle role göre süzer (<code>src/cluster_erp/modules/parties/parties/services.py:53-61</code>). Her rol modülü bir rol kaydını bağladığında veya bağını kaldırdığında <code>PartyRoleSet(party_id, role, active)</code> yayar (<code>src/cluster_erp/core/contracts.py:48-55</code>): müşteri servisi (<code>src/cluster_erp/modules/crm/customers/services.py:134-144</code>), tedarikçi servisi (<code>src/cluster_erp/modules/procurement/suppliers/services.py:136-145</code>) ve çalışan servisi (<code>src/cluster_erp/modules/owned_organisations/employees/services.py:88-101</code>, <code>src/cluster_erp/modules/owned_organisations/employees/services.py:125-140</code>). <code>parties</code> modülü abone olur ve eşleşen sütunu kendi oturumunda günceller (<code>src/cluster_erp/modules/parties/module.py:168-195</code>). Her başlangıçta <code>_sync_party_role_flags</code> üç bayrağı canlı rol kayıtlarından yeniden hesaplar ve yalnızca değişen satırları yazar (<code>src/cluster_erp/server/app.py:1002-1055</code>).</p>
+<h3 id="rehberli-oluşturma">Rehberli oluşturma<a class="headerlink" href="#rehberli-oluşturma">¶</a></h3>
+<p><code>POST /api/v1/parties/composite</code>, tarafı, rol listesini ve rol başına bir bloğu içeren tek bir yük alır (<code>src/cluster_erp/server/routes/party_composite.py:40-51</code>). Taraf metadata'sı oluşturma formunu <code>composite_create</code> ile bu uca yönlendirir (<code>src/cluster_erp/modules/parties/parties/metadata.py:319-329</code>).</p>
+<figure class="diagram"><pre class="mermaid">sequenceDiagram
+ participant C as İstemci formu
+ participant R as create_party_composite
+ participant P as PartyService
+ participant F as Rol servisleri
+ C-&gt;&gt;R: taraf, roller, rol blokları
+ R-&gt;&gt;P: create(party)
+ P--&gt;&gt;R: taraf
+ R-&gt;&gt;F: CustomerService / SupplierService / EmployeeService / AssignmentService .create
+ F--&gt;&gt;R: rol kimlikleri
+ R--&gt;&gt;C: party_id ve rol kimlikleri</pre></figure>
+<p>Düz anlatımla: uç önce tarafı oluşturur (<code>src/cluster_erp/server/routes/party_composite.py:80</code>). Seçilen her rol için <code>party_id</code> alanını doldurur, müşteri ve tedarikçi için <code>legal_name</code> ve <code>tax_no</code> değerlerini taraftan varsayılan olarak alır, bloğu doğrular ve rol servisini çağırır (<code>src/cluster_erp/server/routes/party_composite.py:84-126</code>). Bir çalışan için, izinle korunan alanlar o izne sahip olmayan bir çağıran için düşürülür (<code>src/cluster_erp/server/routes/party_composite.py:114-120</code>). İlk görevlendirme bloğu kuruluşu, pozisyonu, istihdam türünü ve başlangıç tarihini belirtmelidir; aksi halde çağrı <code>PARTY_ASSIGNMENT_INCOMPLETE</code> ile başarısız olur (<code>src/cluster_erp/server/routes/party_composite.py:127-145</code>). İstek oturumu her şeyi birlikte kaydeder veya her şeyi geri alır (<code>src/cluster_erp/server/routes/party_composite.py:4-9</code>).</p>
+<h3 id="sonradan-rol-ekleme">Sonradan rol ekleme<a class="headerlink" href="#sonradan-rol-ekleme">¶</a></h3>
+<p><code>POST /api/v1/parties/{party_id}/roles/customer</code>, <code>/roles/supplier</code> ve <code>/roles/employee</code> var olan bir tarafa rol ekler (<code>src/cluster_erp/server/routes/party_roles.py:58-123</code>). Taraf kartı bunları <strong>Müşteri Rolünü Etkinleştir</strong>, <strong>Tedarikçi Rolünü Etkinleştir</strong> ve <strong>Çalışan Rolünü Etkinleştir</strong> aksiyonları olarak sunar; her biri yalnızca eşleşen bayrak yanlışken görünür (<code>src/cluster_erp/modules/parties/parties/metadata.py:393-438</code>). Bir rolü kaldırmak rol kaydının kendi kullanımdan kaldırılmasıdır; taraf tarafından rol kaldıran bir uç yoktur (<code>src/cluster_erp/server/routes/party_roles.py:12-14</code>).</p>
+<h3 id="ad-ve-vergi-numarası-tarafı-izler">Ad ve vergi numarası tarafı izler<a class="headerlink" href="#ad-ve-vergi-numarası-tarafı-izler">¶</a></h3>
+<p>Bir tarafın görünen adı veya vergi numarası değiştiğinde <code>PartyUpdated</code> yeni değerleri taşır (<code>src/cluster_erp/modules/parties/parties/services.py:201-212</code>). <code>crm</code> modülü bunları müşterinin <code>legal_name</code> ve <code>tax_no</code> alanlarına kopyalar (<code>src/cluster_erp/modules/crm/module.py:115-135</code>); <code>procurement</code> modülü de aynı olaya abone olur (<code>src/cluster_erp/modules/procurement/module.py:122</code>).</p>
+<h3 id="kullanımdan-kaldırma-tarafı-izler">Kullanımdan kaldırma tarafı izler<a class="headerlink" href="#kullanımdan-kaldırma-tarafı-izler">¶</a></h3>
+<p>Bir taraf silindiğinde <code>PartyDeleted</code> yayılır (<code>src/cluster_erp/modules/parties/parties/services.py:216-233</code>). <code>owned_organisations</code> modülü kişinin çalışan kaydını <code>party_deactivated</code> nedeniyle geçici olarak siler ve taraf yeniden etkinleştirildiğinde tam olarak bu satırları geri getirir (<code>src/cluster_erp/modules/owned_organisations/module.py:348-420</code>). <code>crm</code> ve <code>procurement</code> modülleri de <code>PartyDeleted</code> olayına abone olur (<code>src/cluster_erp/modules/crm/module.py:96</code>, <code>src/cluster_erp/modules/procurement/module.py:125</code>).</p>
+<h3 id="diğer-modüller-adına-oluşturulan-taraflar">Diğer modüller adına oluşturulan taraflar<a class="headerlink" href="#diğer-modüller-adına-oluşturulan-taraflar">¶</a></h3>
+<ul>
+<li><code>party_id</code> olmadan oluşturulan sahip olunan bir kuruluş <code>EnsurePartyForOrganisation</code> sorar; <code>parties</code> modülü aynı görünen ada sahip canlı bir tarafı döndürür veya bir kuruluş tarafı oluşturur (<code>src/cluster_erp/modules/owned_organisations/organisations/services.py:74-94</code>, <code>src/cluster_erp/modules/parties/module.py:324-357</code>).</li>
+<li><code>CustomerCreated</code> olayında <code>parties</code> modülü müşterinin yasal adıyla bir kuruluş tarafı bulur veya oluşturur (<code>src/cluster_erp/modules/parties/module.py:445-487</code>).</li>
+<li>Başlangıçta <code>_sync_customers_to_parties</code>, tarafı olmayan her canlı müşteri için adla eşleştirerek bir taraf oluşturur ve bağlar (<code>src/cluster_erp/server/app.py:951-999</code>).</li>
+</ul>
+<h2 id="neden-böyle-kurulmuştur">Neden böyle kurulmuştur<a class="headerlink" href="#neden-böyle-kurulmuştur">¶</a></h2>
+<ul>
+<li>Projenin yazılı mühendislik kuralları her şeyin bir taraf olduğunu belirtir: müşteri, kuruluş, çalışan ve tedarikçi rol bölümleri olan tek bir taraf kartıdır, roller <code>FacetMeta</code> ve <code>PartyRoleSet</code> üzerinden yürür ve modüller taraf modülünü doğrudan içe aktarmaz.</li>
+<li>Bileşik ve rol uçları, modüller birbirini hiç içe aktarmasın diye sunucu düzeyinde bir düzenleme olduklarını belirtir (<code>src/cluster_erp/server/routes/party_composite.py:4-9</code>, <code>src/cluster_erp/server/routes/party_roles.py:4-10</code>).</li>
+<li>Başlangıç uzlaştırması, bir işleyicinin kaçırdığı her şeyi düzelttiğini belirtir; örneğin henüz kaydedilmemiş bir tarafa karşı oluşturulan bir rol kaydı (<code>src/cluster_erp/server/app.py:1003-1008</code>).</li>
+</ul>
+<h2 id="kurallar-ve-sınırlar">Kurallar ve sınırlar<a class="headerlink" href="#kurallar-ve-sınırlar">¶</a></h2>
+<ul>
+<li>Modüller taraflar hakkında yalnızca sözleşmelerle iletişim kurar. Bir test, <code>auth</code> modülünün izin korumaları dışında hiçbir modülün başka bir modülü içe aktarmadığını denetler (<code>tests/test_architecture_boundaries.py:1-11</code>, <code>tests/test_architecture_boundaries.py:46</code>). Rehberli oluşturma ve rol etkinleştirme sunucu uçları <code>modules/</code> dışında durur ve modül servislerini doğrudan içe aktarır (<code>src/cluster_erp/server/routes/party_composite.py:61-73</code>).</li>
+<li>Taraf başına bir canlı çalışan kaydı (<code>src/cluster_erp/modules/owned_organisations/employees/models.py:33-40</code>), taraf başına bir canlı sahip olunan kuruluş (<code>src/cluster_erp/modules/owned_organisations/organisations/models.py:28-35</code>) ve taraf başına bir canlı tedarikçi (<code>src/cluster_erp/modules/procurement/suppliers/models.py:34-36</code>).</li>
+<li>Görevlendirmeler bölümü yalnızca <code>is_employee</code> bayrağı doğru olan bir tarafta görünür (<code>src/cluster_erp/modules/parties/parties/metadata.py:722</code>).</li>
+</ul>
+<h2 id="diğer-parçalarla-etkileşim">Diğer parçalarla etkileşim<a class="headerlink" href="#diğer-parçalarla-etkileşim">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Modül</th>
+<th>Rol kaydı</th>
+<th>Kullanılan sözleşmeler</th>
+<th>Sayfa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>crm</code></td>
+<td><code>Customer</code></td>
+<td><code>PartyRoleSet</code>, <code>CustomerCreated</code> yayar; <code>PartyUpdated</code>, <code>PartyDeleted</code> olaylarına abone olur</td>
+<td><a href="../crm/index.tr.html">CRM modülü</a></td>
+</tr>
+<tr>
+<td><code>procurement</code></td>
+<td><code>Supplier</code></td>
+<td><code>PartyRoleSet</code> yayar; <code>PartyUpdated</code>, <code>PartyDeleted</code> olaylarına abone olur</td>
+<td><a href="../procurement/index.tr.html">Procurement modülü</a></td>
+</tr>
+<tr>
+<td><code>owned_organisations</code></td>
+<td><code>Employee</code>, <code>Assignment</code>, <code>OwnedOrganisation</code></td>
+<td><code>PartyRoleSet</code> yayar; <code>EnsurePartyForOrganisation</code> sorar; <code>PartyDeleted</code>, <code>RecordActivated</code> olaylarına abone olur</td>
+<td><a href="../owned_organisations.tr.html">Owned organisations modülü</a></td>
+</tr>
+</tbody>
+</table>
+<p>Tüm üreticiler ve tüketiciler <a href="../../platform/contracts-reference.tr.html">sözleşmeler başvurusu</a> sayfasındadır.</p>
+<h2 id="sınırlar-ve-açık-noktalar">Sınırlar ve açık noktalar<a class="headerlink" href="#sınırlar-ve-açık-noktalar">¶</a></h2>
+<ul>
+<li><code>EnsurePartyForOrganisation</code>, <code>CustomerCreated</code> ve başlangıç müşteri eşitlemesi var olan bir tarafı yalnızca görünen adla eşleştirir (<code>src/cluster_erp/modules/parties/module.py:338-347</code>, <code>src/cluster_erp/modules/parties/module.py:462-470</code>, <code>src/cluster_erp/server/app.py:969-976</code>).</li>
+<li><code>PartyUpdate</code> üç rol bayrağını kabul eder (<code>src/cluster_erp/modules/parties/parties/schemas.py:88-90</code>); bu yüzden doğrudan bir güncelleme rol kaydı olmadan bir bayrağı ayarlayabilir. Bir sonraki başlangıç uzlaştırması onu rol kayıtlarının durumuna geri getirir (<code>src/cluster_erp/server/app.py:1035-1051</code>).</li>
+<li><code>EmployeeService.bulk_delete</code> satırları <code>PartyRoleSet</code> yaymadan geçici olarak siler (<code>src/cluster_erp/modules/owned_organisations/employees/services.py:142-145</code>); bayrak bir sonraki başlangıç uzlaştırmasıyla düzelir.</li>
+</ul>
+<h2 id="tanıtılan-terimler">Tanıtılan terimler<a class="headerlink" href="#tanıtılan-terimler">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Terim</th>
+<th>Kod tanımlayıcısı</th>
+<th>Tanım</th>
+<th>Türkçe terim</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>facet</td>
+<td><code>FacetMeta</code></td>
+<td>Bir tarafın oynayabileceği, taraf kartında bir bölüm olarak gösterilen rol.</td>
+<td>rol bölümü</td>
+<td><code>src/cluster_erp/core/metadata.py:357</code></td>
+</tr>
+<tr>
+<td>identity redirect</td>
+<td><code>IdentityMeta</code></td>
+<td>Bir rol varlığının taraf kartını açmasını sağlayan metadata.</td>
+<td>Kimlik yönlendirmesi</td>
+<td><code>src/cluster_erp/core/metadata.py:304</code></td>
+</tr>
+<tr>
+<td>guided creation</td>
+<td><code>composite_create</code></td>
+<td>Bir tarafı ve seçilen rollerini tek istekte oluşturma.</td>
+<td>Rehberli oluşturma</td>
+<td><code>src/cluster_erp/modules/parties/parties/metadata.py:319</code></td>
+</tr>
+<tr>
+<td>role event</td>
+<td><code>PartyRoleSet</code></td>
+<td>Bir rol modülünün bir rol kaydını bağladığında veya bağını kaldırdığında yaydığı olay.</td>
+<td>Rol olayı</td>
+<td><code>src/cluster_erp/core/contracts.py:48</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="i̇lgili-sayfalar">İlgili sayfalar<a class="headerlink" href="#i̇lgili-sayfalar">¶</a></h2>
+<ul>
+<li><a href="index.tr.html">Parties modülü</a></li>
+<li><a href="parties.tr.html">Parties alt modülü</a></li>
+<li><a href="../owned_organisations.tr.html">Owned organisations modülü</a></li>
+<li><a href="../../decisions/party-unification.tr.html">Taraf birleştirme karar kaydı</a></li>
+<li><a href="../../platform/event-bus.tr.html">Olay veri yolu</a></li>
+<li><a href="../../web-app/generic-detail.tr.html">Genel ayrıntı</a></li>
+</ul>
+<hr>
+<p>7793ff4 numaralı commit ile 2026-11-09 tarihinde doğrulandı.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Doğrulanan commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../../modules/parties/parties.tr.html"><span class="eyebrow">Önceki</span><span>Parties alt modülü başvurusu</span></a><a class="next" href="../../modules/parties/person-languages.tr.html"><span class="eyebrow">Sonraki</span><span>Kişi dilleri başvurusu</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">Bu sayfada</p><ul class="outline">
+<li class="lvl2"><a href="#kısaca">Kısaca</a></li>
+<li class="lvl2"><a href="#nasıl-çalışır">Nasıl çalışır</a></li>
+<li class="lvl3"><a href="#model">Model</a></li>
+<li class="lvl3"><a href="#kimlik-yönlendirmesi">Kimlik yönlendirmesi</a></li>
+<li class="lvl3"><a href="#taraf-kartındaki-rol-bölümleri">Taraf kartındaki rol bölümleri</a></li>
+<li class="lvl3"><a href="#rol-bayrakları">Rol bayrakları</a></li>
+<li class="lvl3"><a href="#rehberli-oluşturma">Rehberli oluşturma</a></li>
+<li class="lvl3"><a href="#sonradan-rol-ekleme">Sonradan rol ekleme</a></li>
+<li class="lvl3"><a href="#ad-ve-vergi-numarası-tarafı-izler">Ad ve vergi numarası tarafı izler</a></li>
+<li class="lvl3"><a href="#kullanımdan-kaldırma-tarafı-izler">Kullanımdan kaldırma tarafı izler</a></li>
+<li class="lvl3"><a href="#diğer-modüller-adına-oluşturulan-taraflar">Diğer modüller adına oluşturulan taraflar</a></li>
+<li class="lvl2"><a href="#neden-böyle-kurulmuştur">Neden böyle kurulmuştur</a></li>
+<li class="lvl2"><a href="#kurallar-ve-sınırlar">Kurallar ve sınırlar</a></li>
+<li class="lvl2"><a href="#diğer-parçalarla-etkileşim">Diğer parçalarla etkileşim</a></li>
+<li class="lvl2"><a href="#sınırlar-ve-açık-noktalar">Sınırlar ve açık noktalar</a></li>
+<li class="lvl2"><a href="#tanıtılan-terimler">Tanıtılan terimler</a></li>
+<li class="lvl2"><a href="#i̇lgili-sayfalar">İlgili sayfalar</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>docs/wiki altındaki Markdown kaynaklarından derlendi</span></footer>
+</body>
+</html>

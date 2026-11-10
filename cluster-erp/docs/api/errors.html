@@ -1,0 +1,1608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Errors · Cluster ERP Wiki</title>
+<meta name="description" content="The JSON error body, the exception-to-code mapping, and every error code with its HTTP status, raise sites, and first message.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../api/errors.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.html">Overview</a></li>
+<li class=""><a href="../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.html">Platform core</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../platform/change-history.html">Change history</a></li>
+<li class=""><a href="../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../platform/event-bus.html">Event bus</a></li>
+<li class=""><a href="../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class=""><a href="../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../web-app/generic-form.html">Generic form</a></li>
+<li class=""><a href="../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class=""><a href="../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.html">Desktop client</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class=""><a href="../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.html">Business modules</a></li>
+<li class=""><a href="../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class=""><a href="../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../modules/auth.html">Auth module (auth)</a></li>
+<li class=""><a href="../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class=""><a href="../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class=""><a href="../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../modules/intranet/requests.html">Intranet requests</a></li>
+<li class=""><a href="../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../modules/mail.html">Mail module (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class=""><a href="../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../modules/production/work-orders.html">Work orders</a></li>
+<li class=""><a href="../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.html">API reference</a></li>
+<li class=""><a href="../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.html">Documents API (documents)</a></li>
+<li class="current"><a href="../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.html">API overview</a></li>
+<li class=""><a href="../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class=""><a href="../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.html">Operations</a></li>
+<li class=""><a href="../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class=""><a href="../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class=""><a href="../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.html">Reference</a></li>
+<li class=""><a href="../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.html">Home</a> / API reference</div>
+    <header class="page-head">
+      <p class="eyebrow">Reference</p>
+      <h1>Errors</h1>
+      <p class="lede">The JSON error body, the exception-to-code mapping, and every error code with its HTTP status, raise sites, and first message.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#error-body">Error body</a></li>
+<li class="lvl2"><a href="#exception-handlers">Exception handlers</a></li>
+<li class="lvl2"><a href="#codes-common-to-every-route">Codes common to every route</a></li>
+<li class="lvl2"><a href="#codes-defined-in-the-core-error-module">Codes defined in the core error module</a></li>
+<li class="lvl3"><a href="#auth">Auth</a></li>
+<li class="lvl3"><a href="#resource-crud">Resource CRUD</a></li>
+<li class="lvl3"><a href="#validation">Validation</a></li>
+<li class="lvl3"><a href="#business-logic">Business logic</a></li>
+<li class="lvl3"><a href="#currency">Currency</a></li>
+<li class="lvl3"><a href="#concurrency">Concurrency</a></li>
+<li class="lvl3"><a href="#external-services">External services</a></li>
+<li class="lvl3"><a href="#database">Database</a></li>
+<li class="lvl3"><a href="#serialization">Serialization</a></li>
+<li class="lvl3"><a href="#runtime">Runtime</a></li>
+<li class="lvl3"><a href="#server">Server</a></li>
+<li class="lvl2"><a href="#codes-defined-outside-the-core-error-module">Codes defined outside the core error module</a></li>
+<li class="lvl2"><a href="#generic-http-codes">Generic HTTP codes</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p>This page describes the error body that every failed API request returns and lists every error code found in code. It covers the 213 code constants in <code>src/cluster_erp/core/errors.py</code>, the codes that modules and server files define locally, and the codes that the exception handlers in <code>src/cluster_erp/server/error_handler.py</code> assign. The design of the error model is explained in <a href="../platform/errors-and-exceptions.html">Errors and exceptions</a>.</p>
+<h2 id="error-body">Error body<a class="headerlink" href="#error-body">¶</a></h2>
+<p>Every handler builds the body with <code>_build_body</code>. From <code>src/cluster_erp/server/error_handler.py:33-46</code>:</p>
+<div class="hl"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">_build_body</span><span class="p">(</span>
+    <span class="n">code</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">trace_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">details</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="n">body</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;code&quot;</span><span class="p">:</span> <span class="n">code</span><span class="p">,</span>
+        <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">message</span><span class="p">,</span>
+        <span class="s2">&quot;trace_id&quot;</span><span class="p">:</span> <span class="n">trace_id</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="n">details</span><span class="p">:</span>
+        <span class="n">body</span><span class="p">[</span><span class="s2">&quot;details&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">details</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="n">body</span><span class="p">}</span>
+</code></pre></div>
+
+<p>Illustrative response built from <code>_build_body</code> and the <code>RESOURCE_NOT_FOUND</code> factory <code>not_found</code> (<code>src/cluster_erp/core/errors.py:357-367</code>):</p>
+<div class="hl"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;RESOURCE_NOT_FOUND&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Warehouse (&lt;warehouse_id&gt;) not found&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;trace_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;yymmdd&gt;-&lt;seq&gt;&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;details&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Warehouse&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;warehouse_id&gt;&quot;</span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>code</code></td>
+<td>Machine-readable code. Clients map it to a localised message (<code>src/cluster_erp/core/errors.py:6-16</code>).</td>
+</tr>
+<tr>
+<td><code>message</code></td>
+<td>Developer-oriented English text (<code>src/cluster_erp/core/errors.py:10-11</code>).</td>
+</tr>
+<tr>
+<td><code>trace_id</code></td>
+<td>Date prefix <code>yymmdd</code> and a daily sequence from the <code>trace_sequence</code> table; a time-based fallback when the table write fails (<code>src/cluster_erp/server/error_handler.py:49-70</code>).</td>
+</tr>
+<tr>
+<td><code>details</code></td>
+<td>Present only when not empty (<code>src/cluster_erp/server/error_handler.py:45-46</code>).</td>
+</tr>
+<tr>
+<td><code>debug_message</code>, <code>exception_type</code></td>
+<td>Added for unhandled and mapped exceptions only when <code>debug</code> is on (<code>src/cluster_erp/server/error_handler.py:306-308</code>, <code>src/cluster_erp/server/error_handler.py:346-347</code>).</td>
+</tr>
+</tbody>
+</table>
+<aside class="adm adm-note" role="note"><p class="adm-title">Note</p><p>A request whose <code>Content-Length</code> exceeds <code>max_request_body_bytes</code> is refused with <code>413</code> and code <code>REQUEST_TOO_LARGE</code> before the body is read. That body carries <code>code</code> and <code>message</code> but no <code>trace_id</code> (<code>src/cluster_erp/server/app.py:1396-1411</code>).</p>
+</aside>
+<h2 id="exception-handlers">Exception handlers<a class="headerlink" href="#exception-handlers">¶</a></h2>
+<p><code>install_error_handlers</code> registers one handler per exception class (<code>src/cluster_erp/server/error_handler.py:200-398</code>). The table lists what each produces.</p>
+<table>
+<thead>
+<tr>
+<th>Exception</th>
+<th>Code</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AppError</code></td>
+<td>the error's <code>code</code></td>
+<td>the error's <code>status_code</code></td>
+<td><code>src/cluster_erp/server/error_handler.py:203-224</code></td>
+</tr>
+<tr>
+<td><code>RequestValidationError</code></td>
+<td><code>VALIDATION_ERROR</code>, <code>details.fields</code> lists <code>field</code> and <code>reason</code></td>
+<td><code>422</code></td>
+<td><code>src/cluster_erp/server/error_handler.py:226-246</code></td>
+</tr>
+<tr>
+<td><code>HTTPException</code></td>
+<td><code>HTTP_&lt;status&gt;</code>, or the <code>code</code> of a dict <code>detail</code></td>
+<td>the exception's status</td>
+<td><code>src/cluster_erp/server/error_handler.py:248-270</code></td>
+</tr>
+<tr>
+<td>SQLAlchemy <code>DisconnectionError</code></td>
+<td><code>DB_CONNECTION_ERROR</code></td>
+<td><code>503</code></td>
+<td><code>src/cluster_erp/server/error_handler.py:128</code></td>
+</tr>
+<tr>
+<td>SQLAlchemy <code>TimeoutError</code></td>
+<td><code>DB_TIMEOUT</code></td>
+<td><code>503</code></td>
+<td><code>src/cluster_erp/server/error_handler.py:131</code></td>
+</tr>
+<tr>
+<td>SQLAlchemy <code>IntegrityError</code></td>
+<td><code>DB_UNIQUE_VIOLATION</code> with <code>details.constraint</code> for a unique violation, else <code>DB_INTEGRITY_ERROR</code></td>
+<td><code>409</code></td>
+<td><code>src/cluster_erp/server/error_handler.py:132</code>, <code>src/cluster_erp/server/error_handler.py:355-392</code></td>
+</tr>
+<tr>
+<td>SQLAlchemy <code>DataError</code></td>
+<td><code>VALIDATION_ERROR</code></td>
+<td><code>422</code></td>
+<td><code>src/cluster_erp/server/error_handler.py:136</code></td>
+</tr>
+<tr>
+<td>SQLAlchemy <code>OperationalError</code></td>
+<td><code>DB_OPERATIONAL_ERROR</code></td>
+<td><code>500</code></td>
+<td><code>src/cluster_erp/server/error_handler.py:136</code></td>
+</tr>
+<tr>
+<td><code>decimal.InvalidOperation</code></td>
+<td><code>VALIDATION_ERROR</code></td>
+<td><code>422</code></td>
+<td><code>src/cluster_erp/server/error_handler.py:146-148</code></td>
+</tr>
+<tr>
+<td>Pydantic <code>ValidationError</code></td>
+<td><code>SERIALIZATION_ERROR</code></td>
+<td><code>500</code></td>
+<td><code>src/cluster_erp/server/error_handler.py:150-155</code></td>
+</tr>
+<tr>
+<td><code>TimeoutError</code>, <code>TypeError</code>, <code>ValueError</code></td>
+<td><code>TIMEOUT_ERROR</code>, <code>TYPE_ERROR</code>, <code>VALUE_ERROR</code></td>
+<td><code>504</code>, <code>500</code>, <code>500</code></td>
+<td><code>src/cluster_erp/server/error_handler.py:157-163</code></td>
+</tr>
+<tr>
+<td>any other <code>Exception</code></td>
+<td><code>INTERNAL_ERROR</code>, or the mapped code when the class is in <code>_EXCEPTION_MAP</code>; <code>Retry-After: 2</code> when the status is <code>503</code></td>
+<td><code>500</code></td>
+<td><code>src/cluster_erp/server/error_handler.py:272-310</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="codes-common-to-every-route">Codes common to every route<a class="headerlink" href="#codes-common-to-every-route">¶</a></h2>
+<p>Authentication, permission, and entitlement checks run before a handler and can answer any route. The entitlement gate raises <code>HTTPException</code> with a dict <code>detail</code>, so the code reaches the body as <code>code</code> (<code>src/cluster_erp/server/entitlements.py:233-257</code>, <code>src/cluster_erp/server/error_handler.py:252-262</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Status</th>
+<th>Cause</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AUTH_MISSING_HEADER</code></td>
+<td><code>401</code></td>
+<td>No Bearer header and no access cookie.</td>
+<td><code>src/cluster_erp/modules/auth/guards.py:101-105</code></td>
+</tr>
+<tr>
+<td><code>AUTH_CSRF_HEADER_MISSING</code></td>
+<td><code>403</code></td>
+<td>A cookie-authenticated write without the CSRF header.</td>
+<td><code>src/cluster_erp/modules/auth/session_cookies.py:112-121</code></td>
+</tr>
+<tr>
+<td><code>AUTH_TOKEN_EXPIRED</code></td>
+<td><code>401</code></td>
+<td>The access token has expired.</td>
+<td><code>src/cluster_erp/modules/auth/guards.py:112-113</code></td>
+</tr>
+<tr>
+<td><code>AUTH_TOKEN_INVALID</code></td>
+<td><code>401</code></td>
+<td>The token does not verify, has no <code>jti</code>, or was issued before the user's last sign-out.</td>
+<td><code>src/cluster_erp/modules/auth/guards.py:114-115</code>, <code>src/cluster_erp/modules/auth/guards.py:127</code>, <code>src/cluster_erp/modules/auth/guards.py:163-165</code></td>
+</tr>
+<tr>
+<td><code>AUTH_TOKEN_PAYLOAD_INVALID</code></td>
+<td><code>401</code></td>
+<td>The <code>sub</code> claim is missing or not a UUID.</td>
+<td><code>src/cluster_erp/modules/auth/guards.py:117-122</code></td>
+</tr>
+<tr>
+<td><code>AUTH_TOKEN_BLACKLISTED</code></td>
+<td><code>401</code></td>
+<td>The token's <code>jti</code> is in the blacklist.</td>
+<td><code>src/cluster_erp/modules/auth/guards.py:130-131</code></td>
+</tr>
+<tr>
+<td><code>AUTH_USER_INACTIVE</code></td>
+<td><code>401</code></td>
+<td>The user is missing, deactivated, or inactive.</td>
+<td><code>src/cluster_erp/modules/auth/guards.py:150-151</code></td>
+</tr>
+<tr>
+<td><code>AUTH_TENANT_UNRESOLVED</code></td>
+<td><code>401</code></td>
+<td>Multi-tenant mode: no active tenant could be resolved for the request.</td>
+<td><code>src/cluster_erp/server/dependencies.py:143-148</code></td>
+</tr>
+<tr>
+<td><code>AUTH_PERMISSION_DENIED</code></td>
+<td><code>403</code></td>
+<td>The caller lacks a required permission code, or an ABAC policy denies it; <code>details.required_permission</code> names the code.</td>
+<td><code>src/cluster_erp/core/errors.py:388-394</code></td>
+</tr>
+<tr>
+<td><code>entitlement.no_seat</code></td>
+<td><code>403</code></td>
+<td>The user holds no seat on an app that covers the module.</td>
+<td><code>src/cluster_erp/server/entitlements.py:236-240</code></td>
+</tr>
+<tr>
+<td><code>entitlement.module_not_installed</code></td>
+<td><code>403</code></td>
+<td>No installed app covers the module.</td>
+<td><code>src/cluster_erp/server/entitlements.py:241-245</code></td>
+</tr>
+<tr>
+<td><code>entitlement.app_not_licensed</code></td>
+<td><code>403</code></td>
+<td>The covering app is not licensed.</td>
+<td><code>src/cluster_erp/server/entitlements.py:246-250</code></td>
+</tr>
+<tr>
+<td><code>entitlement.license_read_only</code></td>
+<td><code>403</code></td>
+<td>The licence is in its read-only state and the method is not <code>GET</code>, <code>HEAD</code>, or <code>OPTIONS</code>.</td>
+<td><code>src/cluster_erp/server/entitlements.py:253-257</code></td>
+</tr>
+<tr>
+<td><code>VALIDATION_ERROR</code></td>
+<td><code>422</code></td>
+<td>The request does not match the route's parameters or schema.</td>
+<td><code>src/cluster_erp/server/error_handler.py:226-246</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="codes-defined-in-the-core-error-module">Codes defined in the core error module<a class="headerlink" href="#codes-defined-in-the-core-error-module">¶</a></h2>
+<p>One table per comment section of <code>src/cluster_erp/core/errors.py</code>. Status, raise-site count, and first site come from a syntax-tree scan of <code>src/cluster_erp/</code> for <code>AppError(...)</code>, the factories in <code>core/errors.py</code>, and <code>HTTPException(...)</code>. The message column quotes the English message at the first site; it is the cause as the code states it. A code with no raise site is defined but not raised by any scanned call. Codes the exception handlers assign show the handler instead.</p>
+<p>Codes of the business sections of the same file (CRM to procurement) are listed on <a href="errors/business-error-codes.html">Business error codes</a>.</p>
+<h3 id="auth">Auth<a class="headerlink" href="#auth">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Defined at</th>
+<th>HTTP status</th>
+<th>Raise sites</th>
+<th>First site</th>
+<th>Message at first site</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AUTH_MISSING_HEADER</code></td>
+<td><code>src/cluster_erp/core/errors.py:34</code></td>
+<td><code>401</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/auth/guards.py:103</code></td>
+<td><code>Missing or invalid authorization header</code></td>
+</tr>
+<tr>
+<td><code>AUTH_TOKEN_EXPIRED</code></td>
+<td><code>src/cluster_erp/core/errors.py:35</code></td>
+<td><code>401</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/auth/guards.py:113</code></td>
+<td><code>Token expired</code></td>
+</tr>
+<tr>
+<td><code>AUTH_TOKEN_INVALID</code></td>
+<td><code>src/cluster_erp/core/errors.py:36</code></td>
+<td><code>401</code></td>
+<td>3</td>
+<td><code>src/cluster_erp/modules/auth/guards.py:115</code></td>
+<td><code>Invalid token</code></td>
+</tr>
+<tr>
+<td><code>AUTH_TOKEN_PAYLOAD_INVALID</code></td>
+<td><code>src/cluster_erp/core/errors.py:37</code></td>
+<td><code>401</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/auth/guards.py:120</code></td>
+<td><code>Invalid token payload</code></td>
+</tr>
+<tr>
+<td><code>AUTH_INVALID_CREDENTIALS</code></td>
+<td><code>src/cluster_erp/core/errors.py:38</code></td>
+<td><code>401</code></td>
+<td>3</td>
+<td><code>src/cluster_erp/modules/auth/login/routes.py:143</code></td>
+<td><code>Account locked. Try again in {remaining // 60 + 1} minutes.</code></td>
+</tr>
+<tr>
+<td><code>AUTH_REFRESH_FAILED</code></td>
+<td><code>src/cluster_erp/core/errors.py:39</code></td>
+<td><code>401</code></td>
+<td>4</td>
+<td><code>src/cluster_erp/modules/auth/login/routes.py:269</code></td>
+<td><code>Missing refresh token</code></td>
+</tr>
+<tr>
+<td><code>AUTH_CSRF_HEADER_MISSING</code></td>
+<td><code>src/cluster_erp/core/errors.py:40</code></td>
+<td><code>403</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/auth/login/routes.py:271</code></td>
+<td><code>cookie-authenticated requests must carry X-Requested-With</code></td>
+</tr>
+<tr>
+<td><code>AUTH_USER_INACTIVE</code></td>
+<td><code>src/cluster_erp/core/errors.py:41</code></td>
+<td><code>401</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/auth/guards.py:151</code></td>
+<td><code>User not found or inactive</code></td>
+</tr>
+<tr>
+<td><code>AUTH_PERMISSION_DENIED</code></td>
+<td><code>src/cluster_erp/core/errors.py:42</code></td>
+<td><code>403</code></td>
+<td>16</td>
+<td><code>src/cluster_erp/modules/auth/approvals/services.py:364</code></td>
+<td><code>This approval step requires the '{step.role_code}' role.</code></td>
+</tr>
+<tr>
+<td><code>AUTH_TOKEN_BLACKLISTED</code></td>
+<td><code>src/cluster_erp/core/errors.py:43</code></td>
+<td><code>401</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/auth/guards.py:131</code></td>
+<td><code>Token has been revoked</code></td>
+</tr>
+<tr>
+<td><code>AUTH_TENANT_UNRESOLVED</code></td>
+<td><code>src/cluster_erp/core/errors.py:47</code></td>
+<td><code>401</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/server/dependencies.py:144</code></td>
+<td><code>Unable to resolve an active tenant for this request</code></td>
+</tr>
+<tr>
+<td><code>AUTH_PRIVILEGE_ESCALATION</code></td>
+<td><code>src/cluster_erp/core/errors.py:48</code></td>
+<td><code>403</code></td>
+<td>3</td>
+<td><code>src/cluster_erp/modules/auth/roles/services.py:163</code></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="resource-crud">Resource CRUD<a class="headerlink" href="#resource-crud">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Defined at</th>
+<th>HTTP status</th>
+<th>Raise sites</th>
+<th>First site</th>
+<th>Message at first site</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RESOURCE_NOT_FOUND</code></td>
+<td><code>src/cluster_erp/core/errors.py:51</code></td>
+<td><code>404</code>, <code>422</code></td>
+<td>695</td>
+<td><code>src/cluster_erp/core/tenant_fields.py:1214</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>RESOURCE_CONFLICT</code></td>
+<td><code>src/cluster_erp/core/errors.py:52</code></td>
+<td><code>400</code>, <code>409</code></td>
+<td>28</td>
+<td><code>src/cluster_erp/modules/auth/roles/routes.py:63</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>RESOURCE_PROTECTED</code></td>
+<td><code>src/cluster_erp/core/errors.py:53</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/auth/roles/routes.py:106</code></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="validation">Validation<a class="headerlink" href="#validation">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Defined at</th>
+<th>HTTP status</th>
+<th>Raise sites</th>
+<th>First site</th>
+<th>Message at first site</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>VALIDATION_ERROR</code></td>
+<td><code>src/cluster_erp/core/errors.py:56</code></td>
+<td><code>400</code>, <code>404</code>, <code>409</code>, <code>422</code>, <code>500</code>, <code>502</code></td>
+<td>79</td>
+<td><code>src/cluster_erp/core/product_breakdown.py:105</code></td>
+<td><code>A model/version cannot be set without a product</code></td>
+</tr>
+<tr>
+<td><code>PARTY_ASSIGNMENT_INCOMPLETE</code></td>
+<td><code>src/cluster_erp/core/errors.py:60</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/server/routes/party_composite.py:134</code></td>
+<td><code>assignment needs organisation, position, employment type and start date</code></td>
+</tr>
+<tr>
+<td><code>FIELD_DEFINITION_INVALID</code></td>
+<td><code>src/cluster_erp/core/errors.py:65</code></td>
+<td><code>409</code>, <code>422</code></td>
+<td>27</td>
+<td><code>src/cluster_erp/core/tenant_fields.py:974</code></td>
+<td><code>unknown bucket {bucket} for {spec.entity_type}</code></td>
+</tr>
+<tr>
+<td><code>FIELD_VALUE_INVALID</code></td>
+<td><code>src/cluster_erp/core/errors.py:66</code></td>
+<td><code>422</code></td>
+<td>4</td>
+<td><code>src/cluster_erp/core/tenant_fields.py:846</code></td>
+<td><code>{defn.key}: {message}</code></td>
+</tr>
+<tr>
+<td><code>FIELD_DEFINITION_DUPLICATE</code></td>
+<td><code>src/cluster_erp/core/errors.py:70</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/core/tenant_fields.py:1140</code></td>
+<td><code>{why}: {existing.code} ({label})</code></td>
+</tr>
+<tr>
+<td><code>MRP_ITEM_OUTSIDE_OPENING_PERIOD</code></td>
+<td><code>src/cluster_erp/core/errors.py:71</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/procurement/mrp/routes.py:399</code></td>
+<td><code>Planned order lies outside the opening period</code></td>
+</tr>
+<tr>
+<td><code>DELIVERY_ADDRESS_INVALID</code></td>
+<td><code>src/cluster_erp/core/errors.py:75</code></td>
+<td><code>422</code></td>
+<td>5</td>
+<td><code>src/cluster_erp/modules/procurement/delivery_address.py:97</code></td>
+<td><code>A delivery organisation is required when a delivery address is set</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="business-logic">Business logic<a class="headerlink" href="#business-logic">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Defined at</th>
+<th>HTTP status</th>
+<th>Raise sites</th>
+<th>First site</th>
+<th>Message at first site</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>UNIT_CONVERSION_FAILED</code></td>
+<td><code>src/cluster_erp/core/errors.py:78</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/products_and_services/settings/routes.py:214</code></td>
+<td><code>Cannot convert between these units</code></td>
+</tr>
+<tr>
+<td><code>APPROVAL_INVALID_STATE</code></td>
+<td><code>src/cluster_erp/core/errors.py:79</code></td>
+<td><code>400</code>, <code>409</code>, <code>422</code></td>
+<td>8</td>
+<td><code>src/cluster_erp/modules/auth/approval_chains/services.py:132</code></td>
+<td><code>This approval chain has in-flight requests; finish or cancel them before changing its step...</code></td>
+</tr>
+<tr>
+<td><code>DOCUMENT_VERSION_INVALID_STATUS</code></td>
+<td><code>src/cluster_erp/core/errors.py:80</code></td>
+<td><code>400</code>, <code>404</code></td>
+<td>6</td>
+<td><code>src/cluster_erp/modules/documents/documents/services.py:230</code></td>
+<td><code>Only draft versions can be edited</code></td>
+</tr>
+<tr>
+<td><code>DOCUMENT_VERSION_ALREADY_ACTIVE</code></td>
+<td><code>src/cluster_erp/core/errors.py:81</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>DOCUMENT_NO_ATTACHMENT</code></td>
+<td><code>src/cluster_erp/core/errors.py:82</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/documents/documents/services.py:270</code></td>
+<td><code>Version must have an attachment before activation</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="currency">Currency<a class="headerlink" href="#currency">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Defined at</th>
+<th>HTTP status</th>
+<th>Raise sites</th>
+<th>First site</th>
+<th>Message at first site</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TCMB_SYNC_FAILED</code></td>
+<td><code>src/cluster_erp/core/errors.py:85</code></td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="concurrency">Concurrency<a class="headerlink" href="#concurrency">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Defined at</th>
+<th>HTTP status</th>
+<th>Raise sites</th>
+<th>First site</th>
+<th>Message at first site</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CONCURRENCY_VERSION_CONFLICT</code></td>
+<td><code>src/cluster_erp/core/errors.py:324</code></td>
+<td><code>409</code></td>
+<td>60</td>
+<td><code>src/cluster_erp/core/tenant_fields.py:1216</code></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="external-services">External services<a class="headerlink" href="#external-services">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Defined at</th>
+<th>HTTP status</th>
+<th>Raise sites</th>
+<th>First site</th>
+<th>Message at first site</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SMTP_NOT_CONFIGURED</code></td>
+<td><code>src/cluster_erp/core/errors.py:327</code></td>
+<td><code>503</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/server/routes/email.py:134</code></td>
+<td><code>SMTP is not configured. Set CLUSTER_ERP_SMTP_* in .env</code></td>
+</tr>
+<tr>
+<td><code>SMTP_ERROR</code></td>
+<td><code>src/cluster_erp/core/errors.py:328</code></td>
+<td><code>502</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/server/routes/email.py:184</code></td>
+<td><code>SMTP error: {exc}</code></td>
+</tr>
+<tr>
+<td><code>FILE_NOT_FOUND_ON_DISK</code></td>
+<td><code>src/cluster_erp/core/errors.py:329</code></td>
+<td><code>404</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/server/routes/attachments.py:115</code></td>
+<td><code>File not found on disk</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="database">Database<a class="headerlink" href="#database">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Defined at</th>
+<th>HTTP status</th>
+<th>Raise sites</th>
+<th>First site</th>
+<th>Message at first site</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DB_CONNECTION_ERROR</code></td>
+<td><code>src/cluster_erp/core/errors.py:332</code></td>
+<td>see Exception handlers</td>
+<td>0</td>
+<td><code>src/cluster_erp/server/error_handler.py</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>DB_TIMEOUT</code></td>
+<td><code>src/cluster_erp/core/errors.py:333</code></td>
+<td>see Exception handlers</td>
+<td>0</td>
+<td><code>src/cluster_erp/server/error_handler.py</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>DB_INTEGRITY_ERROR</code></td>
+<td><code>src/cluster_erp/core/errors.py:334</code></td>
+<td>see Exception handlers</td>
+<td>0</td>
+<td><code>src/cluster_erp/server/error_handler.py</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>DB_UNIQUE_VIOLATION</code></td>
+<td><code>src/cluster_erp/core/errors.py:339</code></td>
+<td>see Exception handlers</td>
+<td>0</td>
+<td><code>src/cluster_erp/server/error_handler.py</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>DB_OPERATIONAL_ERROR</code></td>
+<td><code>src/cluster_erp/core/errors.py:340</code></td>
+<td>see Exception handlers</td>
+<td>0</td>
+<td><code>src/cluster_erp/server/error_handler.py</code></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="serialization">Serialization<a class="headerlink" href="#serialization">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Defined at</th>
+<th>HTTP status</th>
+<th>Raise sites</th>
+<th>First site</th>
+<th>Message at first site</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SERIALIZATION_ERROR</code></td>
+<td><code>src/cluster_erp/core/errors.py:343</code></td>
+<td>see Exception handlers</td>
+<td>0</td>
+<td><code>src/cluster_erp/server/error_handler.py</code></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="runtime">Runtime<a class="headerlink" href="#runtime">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Defined at</th>
+<th>HTTP status</th>
+<th>Raise sites</th>
+<th>First site</th>
+<th>Message at first site</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TYPE_ERROR</code></td>
+<td><code>src/cluster_erp/core/errors.py:346</code></td>
+<td>see Exception handlers</td>
+<td>0</td>
+<td><code>src/cluster_erp/server/error_handler.py</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>VALUE_ERROR</code></td>
+<td><code>src/cluster_erp/core/errors.py:347</code></td>
+<td>see Exception handlers</td>
+<td>0</td>
+<td><code>src/cluster_erp/server/error_handler.py</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>TIMEOUT_ERROR</code></td>
+<td><code>src/cluster_erp/core/errors.py:348</code></td>
+<td>see Exception handlers</td>
+<td>0</td>
+<td><code>src/cluster_erp/server/error_handler.py</code></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="server">Server<a class="headerlink" href="#server">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Defined at</th>
+<th>HTTP status</th>
+<th>Raise sites</th>
+<th>First site</th>
+<th>Message at first site</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>INTERNAL_ERROR</code></td>
+<td><code>src/cluster_erp/core/errors.py:351</code></td>
+<td>see Exception handlers</td>
+<td>0</td>
+<td><code>src/cluster_erp/server/error_handler.py</code></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h2 id="codes-defined-outside-the-core-error-module">Codes defined outside the core error module<a class="headerlink" href="#codes-defined-outside-the-core-error-module">¶</a></h2>
+<p>These codes are string constants or literals in a module or server file. Rows are grouped by the folder of the first raise site.</p>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Code</th>
+<th>HTTP status</th>
+<th>Raise sites</th>
+<th>First site</th>
+<th>Message at first site</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>auth</code></td>
+<td><code>ABAC_RESOURCE_RULES_UNSUPPORTED</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/auth/policies/services.py:81</code></td>
+<td><code>Permission '{permission_code}' does not enforce resource.* rules at the object level yet —...</code></td>
+</tr>
+<tr>
+<td><code>auth</code></td>
+<td><code>AUTH_TOO_MANY_ATTEMPTS</code></td>
+<td><code>429</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/auth/login/routes.py:93</code></td>
+<td><code>Too many sign-in attempts; try again shortly</code></td>
+</tr>
+<tr>
+<td><code>calendars</code></td>
+<td><code>CALENDAR_BASE_CYCLE</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/calendars/services.py:373</code></td>
+<td><code>Base calendar would create an inheritance cycle.</code></td>
+</tr>
+<tr>
+<td><code>calendars</code></td>
+<td><code>CALENDAR_INVALID_EXCEPTION</code></td>
+<td><code>400</code></td>
+<td>4</td>
+<td><code>src/cluster_erp/modules/calendars/services.py:447</code></td>
+<td><code>date_to must be on or after date_from.</code></td>
+</tr>
+<tr>
+<td><code>core</code></td>
+<td><code>CURRENCY_UNKNOWN</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/core/currencies.py:44</code></td>
+<td><code>Currency {code} is not an active currency in the reference data</code></td>
+</tr>
+<tr>
+<td><code>core</code></td>
+<td><code>UPLOAD_TYPE_REFUSED</code></td>
+<td><code>415</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/core/upload_policy.py:70</code></td>
+<td><code>file type '.{ext or '?'}' is not accepted</code></td>
+</tr>
+<tr>
+<td><code>fleet</code></td>
+<td><code>FLEET_ASSET_NOT_OPERABLE</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/fleet/meters/services.py:260</code></td>
+<td><code>readings cannot be recorded for a deactivated or disposed asset</code></td>
+</tr>
+<tr>
+<td><code>fleet</code></td>
+<td><code>FLEET_INVALID_CAMPAIGN</code></td>
+<td><code>400</code></td>
+<td>10</td>
+<td><code>src/cluster_erp/modules/fleet/tco/services.py:606</code></td>
+<td><code>a closed campaign is a sealed record</code></td>
+</tr>
+<tr>
+<td><code>fleet</code></td>
+<td><code>FLEET_INVALID_COMPLIANCE</code></td>
+<td><code>400</code></td>
+<td>8</td>
+<td><code>src/cluster_erp/modules/fleet/fuel/services.py:466</code></td>
+<td><code>a completed obligation is a sealed record</code></td>
+</tr>
+<tr>
+<td><code>fleet</code></td>
+<td><code>FLEET_INVALID_FUEL</code></td>
+<td><code>400</code></td>
+<td>5</td>
+<td><code>src/cluster_erp/modules/fleet/fuel/services.py:130</code></td>
+<td><code>fuel quantity must be positive</code></td>
+</tr>
+<tr>
+<td><code>fleet</code></td>
+<td><code>FLEET_INVALID_METER</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/fleet/meters/services.py:125</code></td>
+<td><code>meter kind already exists on this asset</code></td>
+</tr>
+<tr>
+<td><code>fleet</code></td>
+<td><code>FLEET_INVALID_OPERATION</code></td>
+<td><code>400</code></td>
+<td>36</td>
+<td><code>src/cluster_erp/modules/fleet/operations/services.py:74</code></td>
+<td><code>the referenced party does not exist</code></td>
+</tr>
+<tr>
+<td><code>fleet</code></td>
+<td><code>FLEET_INVALID_PLAN</code></td>
+<td><code>400</code></td>
+<td>7</td>
+<td><code>src/cluster_erp/modules/fleet/maintenance/services.py:102</code></td>
+<td><code>a plan targets exactly one of: a single asset OR a class</code></td>
+</tr>
+<tr>
+<td><code>fleet</code></td>
+<td><code>FLEET_INVALID_REMINDER</code></td>
+<td><code>400</code></td>
+<td>4</td>
+<td><code>src/cluster_erp/modules/fleet/maintenance/services.py:343</code></td>
+<td><code>snooze needs a future date</code></td>
+</tr>
+<tr>
+<td><code>fleet</code></td>
+<td><code>FLEET_INVALID_STATUS</code></td>
+<td><code>400</code></td>
+<td>3</td>
+<td><code>src/cluster_erp/modules/fleet/assets/services.py:283</code></td>
+<td><code>unknown action {action}</code></td>
+</tr>
+<tr>
+<td><code>fleet</code></td>
+<td><code>FLEET_INVALID_TIRE</code></td>
+<td><code>400</code></td>
+<td>8</td>
+<td><code>src/cluster_erp/modules/fleet/tco/services.py:428</code></td>
+<td><code>a scrapped tire is a sealed record</code></td>
+</tr>
+<tr>
+<td><code>fleet</code></td>
+<td><code>FLEET_INVALID_WO</code></td>
+<td><code>400</code></td>
+<td>19</td>
+<td><code>src/cluster_erp/modules/fleet/workorders/services.py:125</code></td>
+<td><code>a {row.status} work order is closed to editing</code></td>
+</tr>
+<tr>
+<td><code>fleet</code></td>
+<td><code>FLEET_READING_CHAIN_BLOCKED</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/fleet/meters/services.py:524</code></td>
+<td><code>a later reading depends on this document — mark the dependent reading incorrect first, the...</code></td>
+</tr>
+<tr>
+<td><code>fleet</code></td>
+<td><code>FLEET_READING_INVALID</code></td>
+<td><code>400</code></td>
+<td>9</td>
+<td><code>src/cluster_erp/modules/fleet/meters/services.py:266</code></td>
+<td><code>reading date is in the future</code></td>
+</tr>
+<tr>
+<td><code>fleet</code></td>
+<td><code>FLEET_READING_OUT_OF_ORDER</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/fleet/meters/services.py:280</code></td>
+<td><code>reading date must be after the meter's latest reading</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_ERROR</code></td>
+<td><code>400</code></td>
+<td>5</td>
+<td><code>src/cluster_erp/modules/intranet/content/services.py:1098</code></td>
+<td><code>content has not been published — nothing to acknowledge</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_EVENT_ENDS_BEFORE_START</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/events/services.py:377</code></td>
+<td><code>ends_at must not be before starts_at</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_EVENT_FULL</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/events/lifecycle.py:255</code></td>
+<td><code>the event is full and has no waiting list</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_EVENT_INVALID_STATUS</code></td>
+<td><code>422</code></td>
+<td>5</td>
+<td><code>src/cluster_erp/modules/intranet/events/lifecycle.py:108</code></td>
+<td><code>unknown event action {action}</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_EVENT_NOT_EDITABLE</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/events/lifecycle.py:139</code></td>
+<td><code>an event in status {current} cannot be edited; restore or uncancel it first</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_EVENT_REASON_REQUIRED</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/events/lifecycle.py:306</code></td>
+<td><code>a cancellation needs a reason the invitees can read</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_EVENT_RSVP_CLOSED</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/events/services.py:609</code></td>
+<td><code>this event does not take answers (not published or RSVP is off)</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_EVENT_UNCANCEL_EXPIRED</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/events/lifecycle.py:156</code></td>
+<td><code>the cancellation can be taken back within 24 hours only</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_INVALID_STATUS</code></td>
+<td><code>400</code></td>
+<td>9</td>
+<td><code>src/cluster_erp/modules/intranet/content/services.py:821</code></td>
+<td><code>unknown action {action}</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_LEAVE_DOCUMENT_REQUIRED</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/leave/services.py:515</code></td>
+<td><code>leave type {lt.code} requires a supporting document before submission</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_LEAVE_GENDER_RESTRICTED</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/leave/services.py:459</code></td>
+<td><code>leave type {lt.code} is restricted to gender {restriction}; the party's recorded gender is...</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_LEAVE_INSUFFICIENT_BALANCE</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/leave/services.py:539</code></td>
+<td><code>requested {days} day(s) in {year} but only {available} available (granted + carried over −...</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_LEAVE_NOTICE_TOO_SHORT</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/leave/services.py:490</code></td>
+<td><code>leave type {lt.code} requires {lt.min_notice_days} days notice; the start date is {notice}...</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_LEAVE_OVERLAP</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/leave/services.py:432</code></td>
+<td><code>the range overlaps open leave request {clash}</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_MEDIA_ENTITY</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/events/routes.py:317</code></td>
+<td><code>media can hang on {', '.join(_MEDIA_ENTITY_TYPES)} only</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_NO_PARTY</code></td>
+<td><code>400</code></td>
+<td>5</td>
+<td><code>src/cluster_erp/modules/intranet/content/routes.py:384</code></td>
+<td><code>no party to acknowledge as — pass party_id or sign in as an employee</code></td>
+</tr>
+<tr>
+<td><code>intranet</code></td>
+<td><code>INTRANET_PARTY_NOT_EMPLOYEE</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/intranet/access.py:139</code></td>
+<td><code>the named party does not exist or is not an active employee</code></td>
+</tr>
+<tr>
+<td><code>privacy</code></td>
+<td><code>PRIVACY_CONFIRMATION_MISMATCH</code></td>
+<td><code>400</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/privacy/requests/services.py:308</code></td>
+<td><code>the typed confirmation does not match the request code</code></td>
+</tr>
+<tr>
+<td><code>privacy</code></td>
+<td><code>PRIVACY_EXPORT_MISSING</code></td>
+<td><code>404</code></td>
+<td>2</td>
+<td><code>src/cluster_erp/modules/privacy/requests/services.py:279</code></td>
+<td><code>subject request {row.code} has no prepared data file</code></td>
+</tr>
+<tr>
+<td><code>privacy</code></td>
+<td><code>PRIVACY_INVALID_STATE</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/privacy/requests/services.py:86</code></td>
+<td><code>subject request {request.code} cannot '{step}' while {request.status} (type {request.reque...</code></td>
+</tr>
+<tr>
+<td><code>procurement</code></td>
+<td><code>INFO_RECORD_EXISTS</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/procurement/info_records/services.py:169</code></td>
+<td><code>An info record already exists for this vendor and product</code></td>
+</tr>
+<tr>
+<td><code>sales_orders</code></td>
+<td><code>SALES_DELIVERY_NON_WORKING</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/modules/sales_orders/orders/services.py:108</code></td>
+<td><code>Delivery date is a non-working day on the customer's calendar.</code></td>
+</tr>
+<tr>
+<td><code>server</code></td>
+<td><code>SIGNUP_CLOSED</code></td>
+<td><code>403</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/server/signup.py:230</code></td>
+<td><code>this node does not accept new memberships</code></td>
+</tr>
+<tr>
+<td><code>server</code></td>
+<td><code>SIGNUP_DOMAIN_TAKEN</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/server/signup.py:303</code></td>
+<td><code>this mail domain already has a membership</code></td>
+</tr>
+<tr>
+<td><code>server</code></td>
+<td><code>SIGNUP_INVALID</code></td>
+<td><code>402</code>, <code>422</code>, <code>500</code></td>
+<td>6</td>
+<td><code>src/cluster_erp/server/signup.py:166</code></td>
+<td><code>signup mail transport is not configured</code></td>
+</tr>
+<tr>
+<td><code>server</code></td>
+<td><code>SIGNUP_NOTICE_MISSING</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/server/signup.py:242</code></td>
+<td><code>this node has no privacy notice configured; signups are closed</code></td>
+</tr>
+<tr>
+<td><code>server</code></td>
+<td><code>SIGNUP_NOTICE_REQUIRED</code></td>
+<td><code>422</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/server/signup.py:248</code></td>
+<td><code>the current privacy notice must be accepted</code></td>
+</tr>
+<tr>
+<td><code>server/routes</code></td>
+<td><code>CONSOLE_BACKUP_DISABLED</code></td>
+<td><code>403</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/server/routes/vendor.py:697</code></td>
+<td><code>on-demand backups from the console are disabled on this node</code></td>
+</tr>
+<tr>
+<td><code>server/routes</code></td>
+<td><code>SIGNUP_ALREADY_PROVISIONED</code></td>
+<td><code>409</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/server/routes/signup.py:215</code></td>
+<td><code>this membership is already provisioned; contact the vendor</code></td>
+</tr>
+<tr>
+<td><code>server/routes</code></td>
+<td><code>SIGNUP_RATE_LIMITED</code></td>
+<td><code>429</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/server/routes/signup.py:81</code></td>
+<td><code>too many signup attempts; try again later</code></td>
+</tr>
+<tr>
+<td><code>server/routes</code></td>
+<td><code>SIGNUP_VERIFY_EXPIRED</code></td>
+<td><code>410</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/server/routes/signup.py:184</code></td>
+<td><code>this verification link has expired; request a fresh one from the signup page</code></td>
+</tr>
+<tr>
+<td><code>server/routes</code></td>
+<td><code>VENDOR_ACCOUNT_LOCKED</code></td>
+<td><code>401</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/server/routes/vendor.py:124</code></td>
+<td><code>Too many attempts; try later</code></td>
+</tr>
+<tr>
+<td><code>server/routes</code></td>
+<td><code>VENDOR_AUTH_REQUIRED</code></td>
+<td><code>401</code>, <code>403</code></td>
+<td>5</td>
+<td><code>src/cluster_erp/server/routes/vendor.py:53</code></td>
+<td><code>Operator console unavailable</code></td>
+</tr>
+<tr>
+<td><code>server/routes</code></td>
+<td><code>VENDOR_INVALID_CREDENTIALS</code></td>
+<td><code>401</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/server/routes/vendor.py:134</code></td>
+<td><code>Invalid credentials</code></td>
+</tr>
+<tr>
+<td><code>server/routes</code></td>
+<td><code>VENDOR_TOTP_NOT_ENROLLED</code></td>
+<td><code>403</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/server/routes/vendor.py:128</code></td>
+<td><code>Operator has no authenticator enrolled (operators totp-enroll)</code></td>
+</tr>
+<tr>
+<td><code>server/routes</code></td>
+<td><code>VENDOR_TOTP_REQUIRED</code></td>
+<td><code>401</code></td>
+<td>1</td>
+<td><code>src/cluster_erp/server/routes/vendor.py:126</code></td>
+<td><code>Authenticator code required</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="generic-http-codes">Generic HTTP codes<a class="headerlink" href="#generic-http-codes">¶</a></h2>
+<p>An <code>HTTPException</code> with a plain <code>detail</code> becomes <code>HTTP_&lt;status&gt;</code> (<code>src/cluster_erp/server/error_handler.py:251</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Raise sites</th>
+<th>First site</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>HTTP_404</code></td>
+<td>7</td>
+<td><code>src/cluster_erp/modules/app_store/routes.py:136</code></td>
+</tr>
+<tr>
+<td><code>HTTP_409</code></td>
+<td>3</td>
+<td><code>src/cluster_erp/modules/app_store/services.py:179</code></td>
+</tr>
+<tr>
+<td><code>HTTP_422</code></td>
+<td>4</td>
+<td><code>src/cluster_erp/modules/app_store/services.py:243</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="index.html">API reference</a></li>
+<li><a href="errors/business-error-codes.html">Business error codes</a></li>
+<li><a href="../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li><a href="authentication-and-headers.html">Authentication and headers</a></li>
+<li><a href="conventions.html">API conventions</a></li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../api/documents.html"><span class="eyebrow">Previous</span><span>Documents API (documents)</span></a><a class="next" href="../api/errors/business-error-codes.html"><span class="eyebrow">Next</span><span>Business error codes</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#error-body">Error body</a></li>
+<li class="lvl2"><a href="#exception-handlers">Exception handlers</a></li>
+<li class="lvl2"><a href="#codes-common-to-every-route">Codes common to every route</a></li>
+<li class="lvl2"><a href="#codes-defined-in-the-core-error-module">Codes defined in the core error module</a></li>
+<li class="lvl3"><a href="#auth">Auth</a></li>
+<li class="lvl3"><a href="#resource-crud">Resource CRUD</a></li>
+<li class="lvl3"><a href="#validation">Validation</a></li>
+<li class="lvl3"><a href="#business-logic">Business logic</a></li>
+<li class="lvl3"><a href="#currency">Currency</a></li>
+<li class="lvl3"><a href="#concurrency">Concurrency</a></li>
+<li class="lvl3"><a href="#external-services">External services</a></li>
+<li class="lvl3"><a href="#database">Database</a></li>
+<li class="lvl3"><a href="#serialization">Serialization</a></li>
+<li class="lvl3"><a href="#runtime">Runtime</a></li>
+<li class="lvl3"><a href="#server">Server</a></li>
+<li class="lvl2"><a href="#codes-defined-outside-the-core-error-module">Codes defined outside the core error module</a></li>
+<li class="lvl2"><a href="#generic-http-codes">Generic HTTP codes</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

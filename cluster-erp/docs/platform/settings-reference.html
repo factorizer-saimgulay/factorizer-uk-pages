@@ -1,0 +1,2284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Settings reference · Cluster ERP Wiki</title>
+<meta name="description" content="Every field of the Settings class in config/settings.py with its type, default, CLUSTER_ERP_ environment variable, reading code, and meaning.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../platform/settings-reference.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.html">Overview</a></li>
+<li class=""><a href="../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.html">Platform core</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../platform/change-history.html">Change history</a></li>
+<li class=""><a href="../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../platform/event-bus.html">Event bus</a></li>
+<li class=""><a href="../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class="current"><a href="../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../web-app/generic-form.html">Generic form</a></li>
+<li class=""><a href="../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class=""><a href="../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.html">Desktop client</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class=""><a href="../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.html">Business modules</a></li>
+<li class=""><a href="../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class=""><a href="../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../modules/auth.html">Auth module (auth)</a></li>
+<li class=""><a href="../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class=""><a href="../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class=""><a href="../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../modules/intranet/requests.html">Intranet requests</a></li>
+<li class=""><a href="../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../modules/mail.html">Mail module (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class=""><a href="../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../modules/production/work-orders.html">Work orders</a></li>
+<li class=""><a href="../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.html">API reference</a></li>
+<li class=""><a href="../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.html">Documents API (documents)</a></li>
+<li class=""><a href="../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.html">API overview</a></li>
+<li class=""><a href="../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class=""><a href="../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.html">Operations</a></li>
+<li class=""><a href="../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class=""><a href="../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class=""><a href="../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.html">Reference</a></li>
+<li class=""><a href="../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.html">Home</a> / Platform</div>
+    <header class="page-head">
+      <p class="eyebrow">Reference</p>
+      <h1>Settings reference</h1>
+      <p class="lede">Every field of the Settings class in config/settings.py with its type, default, CLUSTER_ERP_ environment variable, reading code, and meaning.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#scope-and-source">Scope and source</a></li>
+<li class="lvl2"><a href="#database-connection">Database connection</a></li>
+<li class="lvl2"><a href="#multi-tenancy-regions-and-residency">Multi-tenancy, regions, and residency</a></li>
+<li class="lvl2"><a href="#server-process">Server process</a></li>
+<li class="lvl2"><a href="#authentication-sessions-and-licensing">Authentication, sessions, and licensing</a></li>
+<li class="lvl2"><a href="#signup-and-public-endpoints">Signup and public endpoints</a></li>
+<li class="lvl2"><a href="#file-storage-and-backups">File storage and backups</a></li>
+<li class="lvl2"><a href="#mail">Mail</a></li>
+<li class="lvl2"><a href="#business-defaults">Business defaults</a></li>
+<li class="lvl2"><a href="#analytics">Analytics</a></li>
+<li class="lvl2"><a href="#mrp-and-ddmrp">MRP and DDMRP</a></li>
+<li class="lvl2"><a href="#logs-retention-and-privacy">Logs, retention, and privacy</a></li>
+<li class="lvl2"><a href="#derived-properties-and-helpers">Derived properties and helpers</a></li>
+<li class="lvl2"><a href="#constraints-and-validation">Constraints and validation</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p>This page lists every field of <code>Settings</code> in <code>src/cluster_erp/config/settings.py</code>, the validation rules that run when settings load, and the derived properties. It is a lookup table for developers and operators. Which variables a Linux node sets, and how, is in the <a href="../operations/configuration-reference.html">configuration reference</a>.</p>
+<h2 id="scope-and-source">Scope and source<a class="headerlink" href="#scope-and-source">¶</a></h2>
+<ul>
+<li>Defined in: <code>src/cluster_erp/config/settings.py</code> (<code>Settings</code>)</li>
+<li>Count: 183 fields, counted as the annotated class attributes between the <code>class Settings</code> line and the validator (<code>src/cluster_erp/config/settings.py:64-738</code>). The four annotated lines of the <code>RegionAddress</code> dataclass above it are not settings.</li>
+</ul>
+<p><code>Settings</code> is a Pydantic <code>BaseSettings</code> class. It reads environment variables with the prefix <code>CLUSTER_ERP_</code>, case-insensitively, and also reads a <code>.env</code> file in the working directory (<code>src/cluster_erp/config/settings.py:64-70</code>). The environment variable of a field is <code>CLUSTER_ERP_</code> followed by the field name in upper case.</p>
+<p>The columns are:</p>
+<ul>
+<li><strong>Default</strong>: the default in code. Values that are or could be secrets, host names, addresses, or paths on a node are shown as <code>&lt;value&gt;</code>, following the security disclosure policy of the documentation standard. Long lists say "see source".</li>
+<li><strong>Read in</strong>: the folders or modules whose code reads the field as <code>settings.&lt;name&gt;</code> or with <code>getattr(settings, "&lt;name&gt;")</code>, found with <code>grep</code> over <code>src/cluster_erp</code>. <code>config</code> means the field is read only inside <code>settings.py</code> itself, by a derived property. <code>-</code> means no reader was found by that method.</li>
+<li><strong>Meaning</strong>: one sentence from the comment above the field. "No description in code." means there is no comment.</li>
+</ul>
+<h2 id="database-connection">Database connection<a class="headerlink" href="#database-connection">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Type</th>
+<th>Default</th>
+<th>Environment variable</th>
+<th>Read in</th>
+<th>Meaning</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>db_host</code></td>
+<td><code>str</code></td>
+<td><code>"localhost"</code></td>
+<td><code>CLUSTER_ERP_DB_HOST</code></td>
+<td><code>config</code></td>
+<td>Host of the default PostgreSQL server.</td>
+<td><code>src/cluster_erp/config/settings.py:72</code></td>
+</tr>
+<tr>
+<td><code>db_port</code></td>
+<td><code>int</code></td>
+<td><code>5432</code></td>
+<td><code>CLUSTER_ERP_DB_PORT</code></td>
+<td><code>config</code></td>
+<td>Port of the default PostgreSQL server.</td>
+<td><code>src/cluster_erp/config/settings.py:73</code></td>
+</tr>
+<tr>
+<td><code>db_name</code></td>
+<td><code>str</code></td>
+<td><code>"cluster_erp"</code></td>
+<td><code>CLUSTER_ERP_DB_NAME</code></td>
+<td><code>server</code></td>
+<td>Name of the default database.</td>
+<td><code>src/cluster_erp/config/settings.py:74</code></td>
+</tr>
+<tr>
+<td><code>db_user</code></td>
+<td><code>str</code></td>
+<td><code>"cluster_erp"</code></td>
+<td><code>CLUSTER_ERP_DB_USER</code></td>
+<td><code>config</code></td>
+<td>Database role of the application.</td>
+<td><code>src/cluster_erp/config/settings.py:75</code></td>
+</tr>
+<tr>
+<td><code>db_password</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_DB_PASSWORD</code></td>
+<td><code>config</code></td>
+<td>Password of the database role.</td>
+<td><code>src/cluster_erp/config/settings.py:76</code></td>
+</tr>
+<tr>
+<td><code>sql_echo</code></td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+<td><code>CLUSTER_ERP_SQL_ECHO</code></td>
+<td><code>core</code></td>
+<td>Logs every SQL statement when on.</td>
+<td><code>src/cluster_erp/config/settings.py:181</code></td>
+</tr>
+<tr>
+<td><code>db_pool_size</code></td>
+<td><code>int</code></td>
+<td><code>20</code></td>
+<td><code>CLUSTER_ERP_DB_POOL_SIZE</code></td>
+<td><code>core</code>, <code>server</code></td>
+<td>Pool size of the default engine.</td>
+<td><code>src/cluster_erp/config/settings.py:243</code></td>
+</tr>
+<tr>
+<td><code>db_pool_max_overflow</code></td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+<td><code>CLUSTER_ERP_DB_POOL_MAX_OVERFLOW</code></td>
+<td><code>core</code>, <code>server</code></td>
+<td>Extra connections the default pool may open.</td>
+<td><code>src/cluster_erp/config/settings.py:244</code></td>
+</tr>
+<tr>
+<td><code>db_pool_timeout_seconds</code></td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+<td><code>CLUSTER_ERP_DB_POOL_TIMEOUT_SECONDS</code></td>
+<td><code>core</code></td>
+<td>Seconds a request waits for a pooled connection.</td>
+<td><code>src/cluster_erp/config/settings.py:248</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="multi-tenancy-regions-and-residency">Multi-tenancy, regions, and residency<a class="headerlink" href="#multi-tenancy-regions-and-residency">¶</a></h2>
+<p>These fields configure the multi-tenant mode and data residency, documented at mechanism level in <a href="../identity-access/multi-tenancy.html">multi-tenancy</a> and <a href="../operations/data-residency-check.html">data residency check</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Type</th>
+<th>Default</th>
+<th>Environment variable</th>
+<th>Read in</th>
+<th>Meaning</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>multi_tenant</code></td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+<td><code>CLUSTER_ERP_MULTI_TENANT</code></td>
+<td><code>core</code>, <code>server</code></td>
+<td>Turns on one database per tenant with a control-plane database.</td>
+<td><code>src/cluster_erp/config/settings.py:82</code></td>
+</tr>
+<tr>
+<td><code>control_db_name</code></td>
+<td><code>str</code></td>
+<td><code>"cluster_control"</code></td>
+<td><code>CLUSTER_ERP_CONTROL_DB_NAME</code></td>
+<td><code>core</code>, <code>server</code></td>
+<td>Name of the control-plane database.</td>
+<td><code>src/cluster_erp/config/settings.py:83</code></td>
+</tr>
+<tr>
+<td><code>tenant_db_prefix</code></td>
+<td><code>str</code></td>
+<td><code>"cluster_t_"</code></td>
+<td><code>CLUSTER_ERP_TENANT_DB_PREFIX</code></td>
+<td><code>core</code></td>
+<td>Prefix of tenant database names.</td>
+<td><code>src/cluster_erp/config/settings.py:84</code></td>
+</tr>
+<tr>
+<td><code>regions</code></td>
+<td><code>str</code></td>
+<td><code>"tr"</code></td>
+<td><code>CLUSTER_ERP_REGIONS</code></td>
+<td><code>server</code></td>
+<td>Comma list of region codes; the first is the default.</td>
+<td><code>src/cluster_erp/config/settings.py:93</code></td>
+</tr>
+<tr>
+<td><code>region_db_urls</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_REGION_DB_URLS</code></td>
+<td><code>server</code></td>
+<td>JSON object naming the database server of each non-default region.</td>
+<td><code>src/cluster_erp/config/settings.py:94</code></td>
+</tr>
+<tr>
+<td><code>node_country</code></td>
+<td><code>str</code></td>
+<td><code>""</code></td>
+<td><code>CLUSTER_ERP_NODE_COUNTRY</code></td>
+<td><code>server</code></td>
+<td>ISO 3166-1 alpha-2 country this node serves; empty means no residency policy.</td>
+<td><code>src/cluster_erp/config/settings.py:111</code></td>
+</tr>
+<tr>
+<td><code>country_nodes</code></td>
+<td><code>str</code></td>
+<td><code>""</code></td>
+<td><code>CLUSTER_ERP_COUNTRY_NODES</code></td>
+<td><code>server</code></td>
+<td>JSON object mapping countries to their node base URLs.</td>
+<td><code>src/cluster_erp/config/settings.py:114</code></td>
+</tr>
+<tr>
+<td><code>console_origins</code></td>
+<td><code>str</code></td>
+<td><code>""</code></td>
+<td><code>CLUSTER_ERP_CONSOLE_ORIGINS</code></td>
+<td><code>server</code></td>
+<td>Comma list of https origins allowed to read the fleet endpoint from a browser.</td>
+<td><code>src/cluster_erp/config/settings.py:122</code></td>
+</tr>
+<tr>
+<td><code>vendor_admin_username</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_VENDOR_ADMIN_USERNAME</code></td>
+<td><code>server</code></td>
+<td>First operator account created at boot when none exists.</td>
+<td><code>src/cluster_erp/config/settings.py:126</code></td>
+</tr>
+<tr>
+<td><code>vendor_admin_password</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_VENDOR_ADMIN_PASSWORD</code></td>
+<td><code>server</code></td>
+<td>Password of that first operator account.</td>
+<td><code>src/cluster_erp/config/settings.py:127</code></td>
+</tr>
+<tr>
+<td><code>vendor_require_totp</code></td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+<td><code>CLUSTER_ERP_VENDOR_REQUIRE_TOTP</code></td>
+<td><code>server</code></td>
+<td>Requires a second factor for every operator sign-in.</td>
+<td><code>src/cluster_erp/config/settings.py:131</code></td>
+</tr>
+<tr>
+<td><code>vendor_allowed_ips</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_VENDOR_ALLOWED_IPS</code></td>
+<td><code>server</code></td>
+<td>Addresses allowed to reach the operator console API.</td>
+<td><code>src/cluster_erp/config/settings.py:134</code></td>
+</tr>
+<tr>
+<td><code>tenant_pool_size</code></td>
+<td><code>int</code></td>
+<td><code>5</code></td>
+<td><code>CLUSTER_ERP_TENANT_POOL_SIZE</code></td>
+<td><code>core</code></td>
+<td>Pool size of each tenant engine.</td>
+<td><code>src/cluster_erp/config/settings.py:249</code></td>
+</tr>
+<tr>
+<td><code>tenant_pool_max_overflow</code></td>
+<td><code>int</code></td>
+<td><code>5</code></td>
+<td><code>CLUSTER_ERP_TENANT_POOL_MAX_OVERFLOW</code></td>
+<td><code>core</code></td>
+<td>Extra connections of each tenant pool.</td>
+<td><code>src/cluster_erp/config/settings.py:250</code></td>
+</tr>
+<tr>
+<td><code>tenant_max_engines</code></td>
+<td><code>int</code></td>
+<td><code>32</code></td>
+<td><code>CLUSTER_ERP_TENANT_MAX_ENGINES</code></td>
+<td><code>core</code></td>
+<td>Maximum number of cached tenant engines.</td>
+<td><code>src/cluster_erp/config/settings.py:251</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="server-process">Server process<a class="headerlink" href="#server-process">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Type</th>
+<th>Default</th>
+<th>Environment variable</th>
+<th>Read in</th>
+<th>Meaning</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>server_host</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_SERVER_HOST</code></td>
+<td><code>server</code></td>
+<td>Bind address of the development server; the default is the wildcard address.</td>
+<td><code>src/cluster_erp/config/settings.py:136</code></td>
+</tr>
+<tr>
+<td><code>server_port</code></td>
+<td><code>int</code></td>
+<td><code>8000</code></td>
+<td><code>CLUSTER_ERP_SERVER_PORT</code></td>
+<td><code>server</code></td>
+<td>Port of the development server.</td>
+<td><code>src/cluster_erp/config/settings.py:137</code></td>
+</tr>
+<tr>
+<td><code>server_workers</code></td>
+<td><code>int</code></td>
+<td><code>1</code></td>
+<td><code>CLUSTER_ERP_SERVER_WORKERS</code></td>
+<td><code>core</code>, <code>server</code></td>
+<td>Number of worker processes; clamped to 1 on Windows.</td>
+<td><code>src/cluster_erp/config/settings.py:149</code></td>
+</tr>
+<tr>
+<td><code>trust_proxy_headers</code></td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+<td><code>CLUSTER_ERP_TRUST_PROXY_HEADERS</code></td>
+<td><code>server</code></td>
+<td>Lets uvicorn interpret forwarded headers from trusted proxies.</td>
+<td><code>src/cluster_erp/config/settings.py:158</code></td>
+</tr>
+<tr>
+<td><code>trusted_proxy_ips</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_TRUSTED_PROXY_IPS</code></td>
+<td><code>server</code></td>
+<td>Proxies allowed to set forwarded headers; the default is the loopback address.</td>
+<td><code>src/cluster_erp/config/settings.py:162</code></td>
+</tr>
+<tr>
+<td><code>server_access_log</code></td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+<td><code>CLUSTER_ERP_SERVER_ACCESS_LOG</code></td>
+<td><code>server</code></td>
+<td>Turns on uvicorn's own access log.</td>
+<td><code>src/cluster_erp/config/settings.py:167</code></td>
+</tr>
+<tr>
+<td><code>server_keep_alive_seconds</code></td>
+<td><code>int</code></td>
+<td><code>5</code></td>
+<td><code>CLUSTER_ERP_SERVER_KEEP_ALIVE_SECONDS</code></td>
+<td><code>server</code></td>
+<td>Seconds an idle keep-alive connection stays open.</td>
+<td><code>src/cluster_erp/config/settings.py:175</code></td>
+</tr>
+<tr>
+<td><code>debug</code></td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+<td><code>CLUSTER_ERP_DEBUG</code></td>
+<td><code>server</code></td>
+<td>Debug mode: reload, API docs pages, verbose logs.</td>
+<td><code>src/cluster_erp/config/settings.py:176</code></td>
+</tr>
+<tr>
+<td><code>max_request_body_bytes</code></td>
+<td><code>int</code></td>
+<td><code>26_214_400</code></td>
+<td><code>CLUSTER_ERP_MAX_REQUEST_BODY_BYTES</code></td>
+<td><code>server</code></td>
+<td>Largest accepted request body; larger bodies get HTTP 413.</td>
+<td><code>src/cluster_erp/config/settings.py:345</code></td>
+</tr>
+<tr>
+<td><code>enabled_modules</code></td>
+<td><code>list[str]</code></td>
+<td>see source</td>
+<td><code>CLUSTER_ERP_ENABLED_MODULES</code></td>
+<td><code>server</code></td>
+<td>Modules to load, in order; the default lists all 28.</td>
+<td><code>src/cluster_erp/config/settings.py:535</code></td>
+</tr>
+<tr>
+<td><code>readiness_timeout_seconds</code></td>
+<td><code>float</code></td>
+<td><code>2.0</code></td>
+<td><code>CLUSTER_ERP_READINESS_TIMEOUT_SECONDS</code></td>
+<td><code>server</code></td>
+<td>Deadline of each check of GET /ready.</td>
+<td><code>src/cluster_erp/config/settings.py:647</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="authentication-sessions-and-licensing">Authentication, sessions, and licensing<a class="headerlink" href="#authentication-sessions-and-licensing">¶</a></h2>
+<p>These fields are read by the <code>auth</code> and <code>app_store</code> modules, documented in <a href="../identity-access/authentication-and-sessions.html">authentication and sessions</a> and <a href="../identity-access/app-store-licensing-and-entitlements.html">app store, licensing, and entitlements</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Type</th>
+<th>Default</th>
+<th>Environment variable</th>
+<th>Read in</th>
+<th>Meaning</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>secret_key</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_SECRET_KEY</code></td>
+<td><code>auth</code>, <code>core</code>, <code>mail</code>, <code>server</code></td>
+<td>Signing secret; must be set, at least 32 characters, and not weak outside debug mode.</td>
+<td><code>src/cluster_erp/config/settings.py:186</code></td>
+</tr>
+<tr>
+<td><code>bootstrap_admin_username</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_BOOTSTRAP_ADMIN_USERNAME</code></td>
+<td><code>server</code></td>
+<td>User name of the first administrator of a fresh install.</td>
+<td><code>src/cluster_erp/config/settings.py:195</code></td>
+</tr>
+<tr>
+<td><code>bootstrap_admin_email</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_BOOTSTRAP_ADMIN_EMAIL</code></td>
+<td><code>server</code></td>
+<td>E-mail of the first administrator.</td>
+<td><code>src/cluster_erp/config/settings.py:196</code></td>
+</tr>
+<tr>
+<td><code>bootstrap_admin_password</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_BOOTSTRAP_ADMIN_PASSWORD</code></td>
+<td><code>server</code></td>
+<td>Password of the first administrator; generated when empty.</td>
+<td><code>src/cluster_erp/config/settings.py:197</code></td>
+</tr>
+<tr>
+<td><code>bootstrap_admin_password_hash</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_BOOTSTRAP_ADMIN_PASSWORD_HASH</code></td>
+<td><code>server</code></td>
+<td>Pre-hashed password used by tenant provisioning.</td>
+<td><code>src/cluster_erp/config/settings.py:201</code></td>
+</tr>
+<tr>
+<td><code>bootstrap_password_file</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_BOOTSTRAP_PASSWORD_FILE</code></td>
+<td><code>server</code></td>
+<td>File that receives a generated first password.</td>
+<td><code>src/cluster_erp/config/settings.py:205</code></td>
+</tr>
+<tr>
+<td><code>bootstrap_admin_exclusive</code></td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+<td><code>CLUSTER_ERP_BOOTSTRAP_ADMIN_EXCLUSIVE</code></td>
+<td><code>server</code></td>
+<td>Deactivates seeded default accounts during self-service provisioning.</td>
+<td><code>src/cluster_erp/config/settings.py:258</code></td>
+</tr>
+<tr>
+<td><code>jwt_access_expire_minutes</code></td>
+<td><code>int</code></td>
+<td><code>30</code></td>
+<td><code>CLUSTER_ERP_JWT_ACCESS_EXPIRE_MINUTES</code></td>
+<td><code>auth</code></td>
+<td>Lifetime of an access token.</td>
+<td><code>src/cluster_erp/config/settings.py:307</code></td>
+</tr>
+<tr>
+<td><code>jwt_refresh_expire_days</code></td>
+<td><code>int</code></td>
+<td><code>7</code></td>
+<td><code>CLUSTER_ERP_JWT_REFRESH_EXPIRE_DAYS</code></td>
+<td><code>auth</code></td>
+<td>Lifetime of a refresh token with "remember me".</td>
+<td><code>src/cluster_erp/config/settings.py:308</code></td>
+</tr>
+<tr>
+<td><code>jwt_session_hours</code></td>
+<td><code>int</code></td>
+<td><code>12</code></td>
+<td><code>CLUSTER_ERP_JWT_SESSION_HOURS</code></td>
+<td><code>auth</code></td>
+<td>Lifetime of a refresh chain without "remember me".</td>
+<td><code>src/cluster_erp/config/settings.py:312</code></td>
+</tr>
+<tr>
+<td><code>login_rate_limit_per_minute</code></td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+<td><code>CLUSTER_ERP_LOGIN_RATE_LIMIT_PER_MINUTE</code></td>
+<td><code>auth</code></td>
+<td>Sign-in attempts per client per minute before HTTP 429.</td>
+<td><code>src/cluster_erp/config/settings.py:316</code></td>
+</tr>
+<tr>
+<td><code>auth_cache_seconds</code></td>
+<td><code>float</code></td>
+<td><code>5.0</code></td>
+<td><code>CLUSTER_ERP_AUTH_CACHE_SECONDS</code></td>
+<td><code>auth</code>, <code>server</code></td>
+<td>Seconds a request may reuse cached permissions and policies.</td>
+<td><code>src/cluster_erp/config/settings.py:320</code></td>
+</tr>
+<tr>
+<td><code>password_min_length</code></td>
+<td><code>int</code></td>
+<td><code>8</code></td>
+<td><code>CLUSTER_ERP_PASSWORD_MIN_LENGTH</code></td>
+<td>Omitted under the security disclosure policy.</td>
+<td>Minimum password length setting.</td>
+<td><code>src/cluster_erp/config/settings.py:327</code></td>
+</tr>
+<tr>
+<td><code>jwt_refresh_reuse_grace_seconds</code></td>
+<td><code>int</code></td>
+<td><code>15</code></td>
+<td><code>CLUSTER_ERP_JWT_REFRESH_REUSE_GRACE_SECONDS</code></td>
+<td><code>auth</code></td>
+<td>Seconds a rotated refresh token stays accepted.</td>
+<td><code>src/cluster_erp/config/settings.py:332</code></td>
+</tr>
+<tr>
+<td><code>abac_strict_permission_codes</code></td>
+<td><code>str</code></td>
+<td><code>""</code></td>
+<td><code>CLUSTER_ERP_ABAC_STRICT_PERMISSION_CODES</code></td>
+<td><code>auth</code></td>
+<td>Permission codes that require a satisfied attribute policy.</td>
+<td><code>src/cluster_erp/config/settings.py:339</code></td>
+</tr>
+<tr>
+<td><code>license_public_key</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_LICENSE_PUBLIC_KEY</code></td>
+<td><code>app_store</code>, <code>server</code></td>
+<td>Public key that license files must be signed with; empty disables licensing.</td>
+<td><code>src/cluster_erp/config/settings.py:569</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="signup-and-public-endpoints">Signup and public endpoints<a class="headerlink" href="#signup-and-public-endpoints">¶</a></h2>
+<p>The signup fields apply only in multi-tenant mode, where the signup routes are mounted (<code>src/cluster_erp/server/app.py:1440-1450</code>). See <a href="../identity-access/signup.html">signup</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Type</th>
+<th>Default</th>
+<th>Environment variable</th>
+<th>Read in</th>
+<th>Meaning</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>signup_payment_provider</code></td>
+<td><code>str</code></td>
+<td><code>"offline"</code></td>
+<td><code>CLUSTER_ERP_SIGNUP_PAYMENT_PROVIDER</code></td>
+<td><code>server</code></td>
+<td>Payment port of self-service signup.</td>
+<td><code>src/cluster_erp/config/settings.py:263</code></td>
+</tr>
+<tr>
+<td><code>signup_trial_days</code></td>
+<td><code>int</code></td>
+<td><code>30</code></td>
+<td><code>CLUSTER_ERP_SIGNUP_TRIAL_DAYS</code></td>
+<td><code>server</code></td>
+<td>Trial window of a new signup.</td>
+<td><code>src/cluster_erp/config/settings.py:264</code></td>
+</tr>
+<tr>
+<td><code>signup_enabled</code></td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+<td><code>CLUSTER_ERP_SIGNUP_ENABLED</code></td>
+<td><code>server</code></td>
+<td>Opens or closes self-service signup on a multi-tenant node.</td>
+<td><code>src/cluster_erp/config/settings.py:271</code></td>
+</tr>
+<tr>
+<td><code>signup_rate_limit_per_hour</code></td>
+<td><code>int</code></td>
+<td><code>5</code></td>
+<td><code>CLUSTER_ERP_SIGNUP_RATE_LIMIT_PER_HOUR</code></td>
+<td><code>server</code></td>
+<td>Signup requests per client address per hour.</td>
+<td><code>src/cluster_erp/config/settings.py:272</code></td>
+</tr>
+<tr>
+<td><code>signup_verify_email</code></td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+<td><code>CLUSTER_ERP_SIGNUP_VERIFY_EMAIL</code></td>
+<td><code>server</code></td>
+<td>Requires domain verification by e-mail before provisioning.</td>
+<td><code>src/cluster_erp/config/settings.py:277</code></td>
+</tr>
+<tr>
+<td><code>signup_verify_ttl_hours</code></td>
+<td><code>int</code></td>
+<td><code>48</code></td>
+<td><code>CLUSTER_ERP_SIGNUP_VERIFY_TTL_HOURS</code></td>
+<td><code>server</code></td>
+<td>Lifetime of a verification link.</td>
+<td><code>src/cluster_erp/config/settings.py:279</code></td>
+</tr>
+<tr>
+<td><code>signup_mail_transport</code></td>
+<td><code>str</code></td>
+<td><code>"spool"</code></td>
+<td><code>CLUSTER_ERP_SIGNUP_MAIL_TRANSPORT</code></td>
+<td><code>server</code></td>
+<td>Transport of verification mail: smtp or spool.</td>
+<td><code>src/cluster_erp/config/settings.py:283</code></td>
+</tr>
+<tr>
+<td><code>signup_mail_spool_dir</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_SIGNUP_MAIL_SPOOL_DIR</code></td>
+<td><code>server</code></td>
+<td>Folder of spooled verification mails.</td>
+<td><code>src/cluster_erp/config/settings.py:284</code></td>
+</tr>
+<tr>
+<td><code>signup_smtp_host</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_SIGNUP_SMTP_HOST</code></td>
+<td><code>server</code></td>
+<td>SMTP host for verification mail.</td>
+<td><code>src/cluster_erp/config/settings.py:285</code></td>
+</tr>
+<tr>
+<td><code>signup_smtp_port</code></td>
+<td><code>int</code></td>
+<td><code>587</code></td>
+<td><code>CLUSTER_ERP_SIGNUP_SMTP_PORT</code></td>
+<td><code>server</code></td>
+<td>SMTP port for verification mail.</td>
+<td><code>src/cluster_erp/config/settings.py:286</code></td>
+</tr>
+<tr>
+<td><code>signup_smtp_user</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_SIGNUP_SMTP_USER</code></td>
+<td><code>server</code></td>
+<td>SMTP user for verification mail.</td>
+<td><code>src/cluster_erp/config/settings.py:287</code></td>
+</tr>
+<tr>
+<td><code>signup_smtp_password</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_SIGNUP_SMTP_PASSWORD</code></td>
+<td><code>server</code></td>
+<td>SMTP password for verification mail.</td>
+<td><code>src/cluster_erp/config/settings.py:288</code></td>
+</tr>
+<tr>
+<td><code>signup_mail_from</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_SIGNUP_MAIL_FROM</code></td>
+<td><code>server</code></td>
+<td>Sender of verification mail.</td>
+<td><code>src/cluster_erp/config/settings.py:289</code></td>
+</tr>
+<tr>
+<td><code>public_base_url</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_PUBLIC_BASE_URL</code></td>
+<td><code>server</code></td>
+<td>Absolute base URL used in verification links; empty means relative links.</td>
+<td><code>src/cluster_erp/config/settings.py:292</code></td>
+</tr>
+<tr>
+<td><code>security_contact</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_SECURITY_CONTACT</code></td>
+<td><code>server</code></td>
+<td>Contact of /.well-known/security.txt; empty answers 404.</td>
+<td><code>src/cluster_erp/config/settings.py:296</code></td>
+</tr>
+<tr>
+<td><code>security_policy_url</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_SECURITY_POLICY_URL</code></td>
+<td><code>server</code></td>
+<td>Policy URL in security.txt.</td>
+<td><code>src/cluster_erp/config/settings.py:297</code></td>
+</tr>
+<tr>
+<td><code>security_expires_days</code></td>
+<td><code>int</code></td>
+<td><code>180</code></td>
+<td><code>CLUSTER_ERP_SECURITY_EXPIRES_DAYS</code></td>
+<td><code>server</code></td>
+<td>Days until the Expires field of security.txt.</td>
+<td><code>src/cluster_erp/config/settings.py:298</code></td>
+</tr>
+<tr>
+<td><code>signup_notice_dir</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_SIGNUP_NOTICE_DIR</code></td>
+<td><code>server</code></td>
+<td>Folder of the privacy notice shown before signup.</td>
+<td><code>src/cluster_erp/config/settings.py:305</code></td>
+</tr>
+<tr>
+<td><code>signup_notice_version</code></td>
+<td><code>str</code></td>
+<td><code>""</code></td>
+<td><code>CLUSTER_ERP_SIGNUP_NOTICE_VERSION</code></td>
+<td><code>server</code></td>
+<td>Version recorded with every notice acceptance.</td>
+<td><code>src/cluster_erp/config/settings.py:306</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="file-storage-and-backups">File storage and backups<a class="headerlink" href="#file-storage-and-backups">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Type</th>
+<th>Default</th>
+<th>Environment variable</th>
+<th>Read in</th>
+<th>Meaning</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>backup_db_user</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_BACKUP_DB_USER</code></td>
+<td><code>server</code></td>
+<td>Database role of the backup runner.</td>
+<td><code>src/cluster_erp/config/settings.py:216</code></td>
+</tr>
+<tr>
+<td><code>backup_db_password</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_BACKUP_DB_PASSWORD</code></td>
+<td><code>server</code></td>
+<td>Password of the backup role.</td>
+<td><code>src/cluster_erp/config/settings.py:217</code></td>
+</tr>
+<tr>
+<td><code>backup_db_password_file</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_BACKUP_DB_PASSWORD_FILE</code></td>
+<td><code>server</code></td>
+<td>File holding the backup role's password.</td>
+<td><code>src/cluster_erp/config/settings.py:222</code></td>
+</tr>
+<tr>
+<td><code>console_backup_enabled</code></td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+<td><code>CLUSTER_ERP_CONSOLE_BACKUP_ENABLED</code></td>
+<td><code>server</code></td>
+<td>Allows on-demand backups from the operator console.</td>
+<td><code>src/cluster_erp/config/settings.py:225</code></td>
+</tr>
+<tr>
+<td><code>backup_dir</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_BACKUP_DIR</code></td>
+<td><code>core</code>, <code>server</code></td>
+<td>Folder of database dumps.</td>
+<td><code>src/cluster_erp/config/settings.py:226</code></td>
+</tr>
+<tr>
+<td><code>backup_keep</code></td>
+<td><code>int</code></td>
+<td><code>14</code></td>
+<td><code>CLUSTER_ERP_BACKUP_KEEP</code></td>
+<td><code>server</code></td>
+<td>Newest dumps kept per database.</td>
+<td><code>src/cluster_erp/config/settings.py:227</code></td>
+</tr>
+<tr>
+<td><code>backup_keep_days</code></td>
+<td><code>int</code></td>
+<td><code>0</code></td>
+<td><code>CLUSTER_ERP_BACKUP_KEEP_DAYS</code></td>
+<td><code>server</code></td>
+<td>Age guard for pruning dumps; 0 is off.</td>
+<td><code>src/cluster_erp/config/settings.py:233</code></td>
+</tr>
+<tr>
+<td><code>pg_bin_dir</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_PG_BIN_DIR</code></td>
+<td><code>server</code></td>
+<td>Folder of pg_dump and pg_restore.</td>
+<td><code>src/cluster_erp/config/settings.py:234</code></td>
+</tr>
+<tr>
+<td><code>storage_backend</code></td>
+<td><code>str</code></td>
+<td><code>"local"</code></td>
+<td><code>CLUSTER_ERP_STORAGE_BACKEND</code></td>
+<td><code>server</code></td>
+<td>File storage: local or s3.</td>
+<td><code>src/cluster_erp/config/settings.py:347</code></td>
+</tr>
+<tr>
+<td><code>storage_path</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_STORAGE_PATH</code></td>
+<td><code>server</code></td>
+<td>Folder of the local storage backend.</td>
+<td><code>src/cluster_erp/config/settings.py:348</code></td>
+</tr>
+<tr>
+<td><code>s3_bucket</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_S3_BUCKET</code></td>
+<td><code>server</code></td>
+<td>S3 bucket; required when storage_backend is s3.</td>
+<td><code>src/cluster_erp/config/settings.py:349</code></td>
+</tr>
+<tr>
+<td><code>s3_region</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_S3_REGION</code></td>
+<td><code>server</code></td>
+<td>S3 region.</td>
+<td><code>src/cluster_erp/config/settings.py:350</code></td>
+</tr>
+<tr>
+<td><code>s3_access_key</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_S3_ACCESS_KEY</code></td>
+<td><code>server</code></td>
+<td>S3 access key.</td>
+<td><code>src/cluster_erp/config/settings.py:351</code></td>
+</tr>
+<tr>
+<td><code>s3_secret_key</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_S3_SECRET_KEY</code></td>
+<td><code>server</code></td>
+<td>S3 secret key.</td>
+<td><code>src/cluster_erp/config/settings.py:352</code></td>
+</tr>
+<tr>
+<td><code>s3_endpoint_url</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_S3_ENDPOINT_URL</code></td>
+<td><code>server</code></td>
+<td>S3 endpoint for S3-compatible stores.</td>
+<td><code>src/cluster_erp/config/settings.py:353</code></td>
+</tr>
+<tr>
+<td><code>s3_prefix</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_S3_PREFIX</code></td>
+<td><code>server</code></td>
+<td>Key prefix inside the bucket.</td>
+<td><code>src/cluster_erp/config/settings.py:354</code></td>
+</tr>
+<tr>
+<td><code>storage_encryption_key</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_STORAGE_ENCRYPTION_KEY</code></td>
+<td><code>server</code></td>
+<td>Key for encryption at rest of stored files; 64 hex characters; required in multi-tenant mode.</td>
+<td><code>src/cluster_erp/config/settings.py:359</code></td>
+</tr>
+<tr>
+<td><code>control_encryption_key</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_CONTROL_ENCRYPTION_KEY</code></td>
+<td><code>core</code></td>
+<td>Seals control-plane secrets that must be read back.</td>
+<td><code>src/cluster_erp/config/settings.py:362</code></td>
+</tr>
+<tr>
+<td><code>attachment_allowed_extensions</code></td>
+<td><code>list[str]</code></td>
+<td>see source</td>
+<td><code>CLUSTER_ERP_ATTACHMENT_ALLOWED_EXTENSIONS</code></td>
+<td><code>core</code>, <code>server</code></td>
+<td>File extensions the generic uploader accepts.</td>
+<td><code>src/cluster_erp/config/settings.py:368</code></td>
+</tr>
+<tr>
+<td><code>backup_encryption_key</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_BACKUP_ENCRYPTION_KEY</code></td>
+<td><code>core</code>, <code>server</code></td>
+<td>Key for encrypted dumps; required in multi-tenant mode.</td>
+<td><code>src/cluster_erp/config/settings.py:377</code></td>
+</tr>
+<tr>
+<td><code>wal_archive_dir</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_WAL_ARCHIVE_DIR</code></td>
+<td><code>server</code></td>
+<td>Folder of the optional WAL archive.</td>
+<td><code>src/cluster_erp/config/settings.py:392</code></td>
+</tr>
+<tr>
+<td><code>cold_storage_dir</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_COLD_STORAGE_DIR</code></td>
+<td><code>server</code></td>
+<td>Folder of the optional cold CSV export.</td>
+<td><code>src/cluster_erp/config/settings.py:393</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="mail">Mail<a class="headerlink" href="#mail">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Type</th>
+<th>Default</th>
+<th>Environment variable</th>
+<th>Read in</th>
+<th>Meaning</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mail_relay_none</code></td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+<td><code>CLUSTER_ERP_MAIL_RELAY_NONE</code></td>
+<td><code>server</code></td>
+<td>Declares that the node sends no system mail.</td>
+<td><code>src/cluster_erp/config/settings.py:384</code></td>
+</tr>
+<tr>
+<td><code>mail_relay_country</code></td>
+<td><code>str</code></td>
+<td><code>""</code></td>
+<td><code>CLUSTER_ERP_MAIL_RELAY_COUNTRY</code></td>
+<td><code>server</code></td>
+<td>Country of the system mail relay.</td>
+<td><code>src/cluster_erp/config/settings.py:388</code></td>
+</tr>
+<tr>
+<td><code>smtp_host</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_SMTP_HOST</code></td>
+<td><code>core</code>, <code>server</code></td>
+<td>SMTP host of the system mailbox; empty means not configured.</td>
+<td><code>src/cluster_erp/config/settings.py:394</code></td>
+</tr>
+<tr>
+<td><code>smtp_port</code></td>
+<td><code>int</code></td>
+<td><code>587</code></td>
+<td><code>CLUSTER_ERP_SMTP_PORT</code></td>
+<td><code>core</code></td>
+<td>SMTP port of the system mailbox.</td>
+<td><code>src/cluster_erp/config/settings.py:395</code></td>
+</tr>
+<tr>
+<td><code>smtp_user</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_SMTP_USER</code></td>
+<td><code>core</code></td>
+<td>SMTP user of the system mailbox.</td>
+<td><code>src/cluster_erp/config/settings.py:396</code></td>
+</tr>
+<tr>
+<td><code>smtp_password</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_SMTP_PASSWORD</code></td>
+<td><code>core</code></td>
+<td>SMTP password of the system mailbox.</td>
+<td><code>src/cluster_erp/config/settings.py:397</code></td>
+</tr>
+<tr>
+<td><code>smtp_use_tls</code></td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+<td><code>CLUSTER_ERP_SMTP_USE_TLS</code></td>
+<td><code>core</code></td>
+<td>Uses STARTTLS for the system mailbox.</td>
+<td><code>src/cluster_erp/config/settings.py:398</code></td>
+</tr>
+<tr>
+<td><code>smtp_from_email</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_SMTP_FROM_EMAIL</code></td>
+<td><code>core</code></td>
+<td>Sender address; required when smtp_host is set.</td>
+<td><code>src/cluster_erp/config/settings.py:399</code></td>
+</tr>
+<tr>
+<td><code>smtp_from_name</code></td>
+<td><code>str</code></td>
+<td><code>"Cluster ERP"</code></td>
+<td><code>CLUSTER_ERP_SMTP_FROM_NAME</code></td>
+<td><code>core</code></td>
+<td>Sender display name.</td>
+<td><code>src/cluster_erp/config/settings.py:400</code></td>
+</tr>
+<tr>
+<td><code>mail_encryption_key</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_MAIL_ENCRYPTION_KEY</code></td>
+<td><code>mail</code></td>
+<td>Key that seals stored mail account secrets; required in multi-tenant mode.</td>
+<td><code>src/cluster_erp/config/settings.py:408</code></td>
+</tr>
+<tr>
+<td><code>mail_attachment_max_bytes</code></td>
+<td><code>int</code></td>
+<td><code>10 * 1024 * 1024</code></td>
+<td><code>CLUSTER_ERP_MAIL_ATTACHMENT_MAX_BYTES</code></td>
+<td><code>mail</code></td>
+<td>Largest attachment the mail composer accepts.</td>
+<td><code>src/cluster_erp/config/settings.py:412</code></td>
+</tr>
+<tr>
+<td><code>mail_sync_limit</code></td>
+<td><code>int</code></td>
+<td><code>30</code></td>
+<td><code>CLUSTER_ERP_MAIL_SYNC_LIMIT</code></td>
+<td><code>mail</code></td>
+<td>Recent inbox messages pulled per sync.</td>
+<td><code>src/cluster_erp/config/settings.py:414</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="business-defaults">Business defaults<a class="headerlink" href="#business-defaults">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Type</th>
+<th>Default</th>
+<th>Environment variable</th>
+<th>Read in</th>
+<th>Meaning</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>allow_project_to_project_stock_transfer</code></td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+<td><code>CLUSTER_ERP_ALLOW_PROJECT_TO_PROJECT_STOCK_TRANSFER</code></td>
+<td><code>inventory</code></td>
+<td>Allows direct stock ownership transfer between projects.</td>
+<td><code>src/cluster_erp/config/settings.py:184</code></td>
+</tr>
+<tr>
+<td><code>list_count_cap</code></td>
+<td><code>int</code></td>
+<td><code>10_000</code></td>
+<td><code>CLUSTER_ERP_LIST_COUNT_CAP</code></td>
+<td><code>core</code>, <code>server</code></td>
+<td>Lists count matching rows up to this cap; 0 means exact counts.</td>
+<td><code>src/cluster_erp/config/settings.py:324</code></td>
+</tr>
+<tr>
+<td><code>rfq_portal_token_days</code></td>
+<td><code>int</code></td>
+<td><code>30</code></td>
+<td><code>CLUSTER_ERP_RFQ_PORTAL_TOKEN_DAYS</code></td>
+<td><code>procurement</code></td>
+<td>Lifetime of supplier-portal invitation links.</td>
+<td><code>src/cluster_erp/config/settings.py:364</code></td>
+</tr>
+<tr>
+<td><code>tcmb_url</code></td>
+<td><code>str</code></td>
+<td><code>&lt;value&gt;</code></td>
+<td><code>CLUSTER_ERP_TCMB_URL</code></td>
+<td><code>currencies</code></td>
+<td>Source of daily exchange rates; the default is the public daily XML of the Central Bank of the Republic of Türkiye.</td>
+<td><code>src/cluster_erp/config/settings.py:416</code></td>
+</tr>
+<tr>
+<td><code>tcmb_sync_on_startup</code></td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+<td><code>CLUSTER_ERP_TCMB_SYNC_ON_STARTUP</code></td>
+<td>-</td>
+<td>Exchange-rate sync at start-up.</td>
+<td><code>src/cluster_erp/config/settings.py:417</code></td>
+</tr>
+<tr>
+<td><code>tcmb_timeout_seconds</code></td>
+<td><code>int</code></td>
+<td><code>15</code></td>
+<td><code>CLUSTER_ERP_TCMB_TIMEOUT_SECONDS</code></td>
+<td><code>currencies</code></td>
+<td>Timeout of the exchange-rate fetch.</td>
+<td><code>src/cluster_erp/config/settings.py:418</code></td>
+</tr>
+<tr>
+<td><code>nesting_low_utilization_threshold</code></td>
+<td><code>int</code></td>
+<td><code>60</code></td>
+<td><code>CLUSTER_ERP_NESTING_LOW_UTILIZATION_THRESHOLD</code></td>
+<td><code>nesting</code></td>
+<td>Utilisation percentage below which nesting raises a low-utilisation alert.</td>
+<td><code>src/cluster_erp/config/settings.py:420</code></td>
+</tr>
+<tr>
+<td><code>default_currency</code></td>
+<td><code>str</code></td>
+<td><code>"USD"</code></td>
+<td><code>CLUSTER_ERP_DEFAULT_CURRENCY</code></td>
+<td><code>procurement</code></td>
+<td>Default currency code.</td>
+<td><code>src/cluster_erp/config/settings.py:622</code></td>
+</tr>
+<tr>
+<td><code>pr_approval_threshold_amount</code></td>
+<td><code>int</code></td>
+<td><code>50000</code></td>
+<td><code>CLUSTER_ERP_PR_APPROVAL_THRESHOLD_AMOUNT</code></td>
+<td>-</td>
+<td>Purchase request approval threshold amount.</td>
+<td><code>src/cluster_erp/config/settings.py:623</code></td>
+</tr>
+<tr>
+<td><code>pr_approval_threshold_currency</code></td>
+<td><code>str</code></td>
+<td><code>"TRY"</code></td>
+<td><code>CLUSTER_ERP_PR_APPROVAL_THRESHOLD_CURRENCY</code></td>
+<td>-</td>
+<td>Currency of that threshold.</td>
+<td><code>src/cluster_erp/config/settings.py:624</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="analytics">Analytics<a class="headerlink" href="#analytics">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Type</th>
+<th>Default</th>
+<th>Environment variable</th>
+<th>Read in</th>
+<th>Meaning</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>analytics_quantile_type</code></td>
+<td><code>int</code></td>
+<td><code>1</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_QUANTILE_TYPE</code></td>
+<td><code>analytics</code></td>
+<td>Quantile definition used everywhere: 1 (no interpolation) or 7 (linear).</td>
+<td><code>src/cluster_erp/config/settings.py:439</code></td>
+</tr>
+<tr>
+<td><code>analytics_trimmed_mean_pct</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("10")</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_TRIMMED_MEAN_PCT</code></td>
+<td><code>analytics</code></td>
+<td>Percentage cut from each tail for the trimmed mean.</td>
+<td><code>src/cluster_erp/config/settings.py:442</code></td>
+</tr>
+<tr>
+<td><code>analytics_mad_sigma_constant</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("1.4826")</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_MAD_SIGMA_CONSTANT</code></td>
+<td><code>analytics</code></td>
+<td>MAD to sigma consistency constant.</td>
+<td><code>src/cluster_erp/config/settings.py:446</code></td>
+</tr>
+<tr>
+<td><code>analytics_min_n_for_zscore</code></td>
+<td><code>int</code></td>
+<td><code>11</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_MIN_N_FOR_ZSCORE</code></td>
+<td><code>analytics</code></td>
+<td>Minimum observations for a z-score screen.</td>
+<td><code>src/cluster_erp/config/settings.py:451</code></td>
+</tr>
+<tr>
+<td><code>analytics_min_iqr_for_fence</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("0")</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_MIN_IQR_FOR_FENCE</code></td>
+<td><code>analytics</code></td>
+<td>Minimum interquartile range for an IQR fence.</td>
+<td><code>src/cluster_erp/config/settings.py:454</code></td>
+</tr>
+<tr>
+<td><code>analytics_abc_cutoff_a_pct</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("80")</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_ABC_CUTOFF_A_PCT</code></td>
+<td><code>analytics</code></td>
+<td>Cumulative value share that ends class A.</td>
+<td><code>src/cluster_erp/config/settings.py:460</code></td>
+</tr>
+<tr>
+<td><code>analytics_abc_cutoff_b_pct</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("95")</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_ABC_CUTOFF_B_PCT</code></td>
+<td><code>analytics</code></td>
+<td>Cumulative value share that ends class B.</td>
+<td><code>src/cluster_erp/config/settings.py:461</code></td>
+</tr>
+<tr>
+<td><code>analytics_abc_hysteresis_pct</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("2")</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_ABC_HYSTERESIS_PCT</code></td>
+<td><code>analytics</code></td>
+<td>Margin an item must cross before it changes ABC class.</td>
+<td><code>src/cluster_erp/config/settings.py:468</code></td>
+</tr>
+<tr>
+<td><code>analytics_abc_min_periods</code></td>
+<td><code>int</code></td>
+<td><code>3</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_ABC_MIN_PERIODS</code></td>
+<td><code>analytics</code></td>
+<td>Minimum periods with demand before ABC classification.</td>
+<td><code>src/cluster_erp/config/settings.py:473</code></td>
+</tr>
+<tr>
+<td><code>analytics_sbc_adi_threshold</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("1.32")</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_SBC_ADI_THRESHOLD</code></td>
+<td><code>analytics</code></td>
+<td>ADI threshold of SBC demand classification.</td>
+<td><code>src/cluster_erp/config/settings.py:478</code></td>
+</tr>
+<tr>
+<td><code>analytics_sbc_cv2_threshold</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("0.49")</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_SBC_CV2_THRESHOLD</code></td>
+<td><code>analytics</code></td>
+<td>CV squared threshold of SBC demand classification.</td>
+<td><code>src/cluster_erp/config/settings.py:479</code></td>
+</tr>
+<tr>
+<td><code>analytics_sbc_min_occurrences</code></td>
+<td><code>int</code></td>
+<td><code>3</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_SBC_MIN_OCCURRENCES</code></td>
+<td><code>analytics</code></td>
+<td>Minimum non-zero demand occurrences for SBC.</td>
+<td><code>src/cluster_erp/config/settings.py:481</code></td>
+</tr>
+<tr>
+<td><code>analytics_profile_exact_max_rows</code></td>
+<td><code>int</code></td>
+<td><code>200_000</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_PROFILE_EXACT_MAX_ROWS</code></td>
+<td><code>analytics</code></td>
+<td>Row count above which a profile uses a sample.</td>
+<td><code>src/cluster_erp/config/settings.py:487</code></td>
+</tr>
+<tr>
+<td><code>analytics_profile_sample_rows</code></td>
+<td><code>int</code></td>
+<td><code>50_000</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_PROFILE_SAMPLE_ROWS</code></td>
+<td><code>analytics</code></td>
+<td>Sample size of a sampled profile.</td>
+<td><code>src/cluster_erp/config/settings.py:488</code></td>
+</tr>
+<tr>
+<td><code>analytics_profile_top_values</code></td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_PROFILE_TOP_VALUES</code></td>
+<td><code>analytics</code></td>
+<td>Most frequent values returned per column profile.</td>
+<td><code>src/cluster_erp/config/settings.py:490</code></td>
+</tr>
+<tr>
+<td><code>analytics_profile_sentinels</code></td>
+<td><code>list[str]</code></td>
+<td>see source</td>
+<td><code>CLUSTER_ERP_ANALYTICS_PROFILE_SENTINELS</code></td>
+<td><code>analytics</code></td>
+<td>Values treated as hidden missing values.</td>
+<td><code>src/cluster_erp/config/settings.py:495</code></td>
+</tr>
+<tr>
+<td><code>analytics_inference_max_rows</code></td>
+<td><code>int</code></td>
+<td><code>100_000</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_INFERENCE_MAX_ROWS</code></td>
+<td><code>analytics</code></td>
+<td>Largest sample a hypothesis test may pull.</td>
+<td><code>src/cluster_erp/config/settings.py:524</code></td>
+</tr>
+<tr>
+<td><code>analytics_summary_refresh_seconds</code></td>
+<td><code>int</code></td>
+<td><code>60</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_SUMMARY_REFRESH_SECONDS</code></td>
+<td><code>server</code></td>
+<td>Interval of the summary-cell refresh; 0 turns it off.</td>
+<td><code>src/cluster_erp/config/settings.py:530</code></td>
+</tr>
+<tr>
+<td><code>analytics_summary_rebuild_minutes</code></td>
+<td><code>int</code></td>
+<td><code>60</code></td>
+<td><code>CLUSTER_ERP_ANALYTICS_SUMMARY_REBUILD_MINUTES</code></td>
+<td><code>analytics</code></td>
+<td>Interval of a full summary-cell rebuild.</td>
+<td><code>src/cluster_erp/config/settings.py:533</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="mrp-and-ddmrp">MRP and DDMRP<a class="headerlink" href="#mrp-and-ddmrp">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Type</th>
+<th>Default</th>
+<th>Environment variable</th>
+<th>Read in</th>
+<th>Meaning</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mrp_default_planning_horizon_days</code></td>
+<td><code>int</code></td>
+<td><code>90</code></td>
+<td><code>CLUSTER_ERP_MRP_DEFAULT_PLANNING_HORIZON_DAYS</code></td>
+<td><code>procurement</code></td>
+<td>No description in code.</td>
+<td><code>src/cluster_erp/config/settings.py:571</code></td>
+</tr>
+<tr>
+<td><code>mrp_safety_stock_method</code></td>
+<td><code>str</code></td>
+<td><code>"fixed"</code></td>
+<td><code>CLUSTER_ERP_MRP_SAFETY_STOCK_METHOD</code></td>
+<td><code>procurement</code></td>
+<td>No description in code.</td>
+<td><code>src/cluster_erp/config/settings.py:572</code></td>
+</tr>
+<tr>
+<td><code>mrp_lot_sizing_default</code></td>
+<td><code>str</code></td>
+<td><code>"lot_for_lot"</code></td>
+<td><code>CLUSTER_ERP_MRP_LOT_SIZING_DEFAULT</code></td>
+<td><code>procurement</code></td>
+<td>No description in code.</td>
+<td><code>src/cluster_erp/config/settings.py:573</code></td>
+</tr>
+<tr>
+<td><code>mrp_reschedule_threshold_days</code></td>
+<td><code>int</code></td>
+<td><code>3</code></td>
+<td><code>CLUSTER_ERP_MRP_RESCHEDULE_THRESHOLD_DAYS</code></td>
+<td><code>procurement</code></td>
+<td>No description in code.</td>
+<td><code>src/cluster_erp/config/settings.py:574</code></td>
+</tr>
+<tr>
+<td><code>mrp_max_bom_depth</code></td>
+<td><code>int</code></td>
+<td><code>20</code></td>
+<td><code>CLUSTER_ERP_MRP_MAX_BOM_DEPTH</code></td>
+<td><code>procurement</code></td>
+<td>No description in code.</td>
+<td><code>src/cluster_erp/config/settings.py:575</code></td>
+</tr>
+<tr>
+<td><code>mrp_excess_receipt_tolerance_pct</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("10")</code></td>
+<td><code>CLUSTER_ERP_MRP_EXCESS_RECEIPT_TOLERANCE_PCT</code></td>
+<td><code>procurement</code></td>
+<td>Percentage above planned need at which a receipt raises a decrease exception.</td>
+<td><code>src/cluster_erp/config/settings.py:582</code></td>
+</tr>
+<tr>
+<td><code>mrp_opening_period_days</code></td>
+<td><code>int</code></td>
+<td><code>21</code></td>
+<td><code>CLUSTER_ERP_MRP_OPENING_PERIOD_DAYS</code></td>
+<td><code>procurement</code></td>
+<td>Window in which a planned order may be converted to a production order.</td>
+<td><code>src/cluster_erp/config/settings.py:591</code></td>
+</tr>
+<tr>
+<td><code>mrp_damping_delay_days</code></td>
+<td><code>int</code></td>
+<td><code>3</code></td>
+<td><code>CLUSTER_ERP_MRP_DAMPING_DELAY_DAYS</code></td>
+<td><code>procurement</code></td>
+<td>Lateness tolerated before an action message.</td>
+<td><code>src/cluster_erp/config/settings.py:592</code></td>
+</tr>
+<tr>
+<td><code>mrp_damping_advance_days</code></td>
+<td><code>int</code></td>
+<td><code>3</code></td>
+<td><code>CLUSTER_ERP_MRP_DAMPING_ADVANCE_DAYS</code></td>
+<td><code>procurement</code></td>
+<td>Earliness tolerated before an action message.</td>
+<td><code>src/cluster_erp/config/settings.py:593</code></td>
+</tr>
+<tr>
+<td><code>mrp_consumption_backward_days</code></td>
+<td><code>int</code></td>
+<td><code>30</code></td>
+<td><code>CLUSTER_ERP_MRP_CONSUMPTION_BACKWARD_DAYS</code></td>
+<td><code>procurement</code></td>
+<td>Backward consumption window in working days.</td>
+<td><code>src/cluster_erp/config/settings.py:594</code></td>
+</tr>
+<tr>
+<td><code>mrp_consumption_forward_days</code></td>
+<td><code>int</code></td>
+<td><code>15</code></td>
+<td><code>CLUSTER_ERP_MRP_CONSUMPTION_FORWARD_DAYS</code></td>
+<td><code>procurement</code></td>
+<td>Forward consumption window in working days.</td>
+<td><code>src/cluster_erp/config/settings.py:595</code></td>
+</tr>
+<tr>
+<td><code>mrp_default_cut_kerf_mm</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("3")</code></td>
+<td><code>CLUSTER_ERP_MRP_DEFAULT_CUT_KERF_MM</code></td>
+<td><code>bom</code>, <code>procurement</code>, <code>production</code></td>
+<td>Default cut allowance in millimetres for stock conversion.</td>
+<td><code>src/cluster_erp/config/settings.py:596</code></td>
+</tr>
+<tr>
+<td><code>mrp_sheet_part_gap_mm</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("5")</code></td>
+<td><code>CLUSTER_ERP_MRP_SHEET_PART_GAP_MM</code></td>
+<td><code>bom</code>, <code>procurement</code>, <code>production</code></td>
+<td>Gap between parts on a sheet in millimetres.</td>
+<td><code>src/cluster_erp/config/settings.py:597</code></td>
+</tr>
+<tr>
+<td><code>mrp_sheet_edge_margin_mm</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("10")</code></td>
+<td><code>CLUSTER_ERP_MRP_SHEET_EDGE_MARGIN_MM</code></td>
+<td><code>bom</code>, <code>procurement</code>, <code>production</code></td>
+<td>Edge margin of a sheet in millimetres.</td>
+<td><code>src/cluster_erp/config/settings.py:598</code></td>
+</tr>
+<tr>
+<td><code>mrp_abc_a_lot_sizing</code></td>
+<td><code>str</code></td>
+<td><code>"lot_for_lot"</code></td>
+<td><code>CLUSTER_ERP_MRP_ABC_A_LOT_SIZING</code></td>
+<td><code>procurement</code></td>
+<td>No description in code.</td>
+<td><code>src/cluster_erp/config/settings.py:599</code></td>
+</tr>
+<tr>
+<td><code>mrp_abc_b_lot_sizing</code></td>
+<td><code>str</code></td>
+<td><code>"period_order"</code></td>
+<td><code>CLUSTER_ERP_MRP_ABC_B_LOT_SIZING</code></td>
+<td><code>procurement</code></td>
+<td>No description in code.</td>
+<td><code>src/cluster_erp/config/settings.py:600</code></td>
+</tr>
+<tr>
+<td><code>mrp_abc_c_lot_sizing</code></td>
+<td><code>str</code></td>
+<td><code>"fixed_order"</code></td>
+<td><code>CLUSTER_ERP_MRP_ABC_C_LOT_SIZING</code></td>
+<td><code>procurement</code></td>
+<td>No description in code.</td>
+<td><code>src/cluster_erp/config/settings.py:601</code></td>
+</tr>
+<tr>
+<td><code>mrp_period_order_days</code></td>
+<td><code>int</code></td>
+<td><code>7</code></td>
+<td><code>CLUSTER_ERP_MRP_PERIOD_ORDER_DAYS</code></td>
+<td><code>procurement</code></td>
+<td>No description in code.</td>
+<td><code>src/cluster_erp/config/settings.py:602</code></td>
+</tr>
+<tr>
+<td><code>mrp_eoq_ordering_cost</code></td>
+<td><code>str</code></td>
+<td><code>"250.00"</code></td>
+<td><code>CLUSTER_ERP_MRP_EOQ_ORDERING_COST</code></td>
+<td><code>procurement</code></td>
+<td>No description in code.</td>
+<td><code>src/cluster_erp/config/settings.py:603</code></td>
+</tr>
+<tr>
+<td><code>mrp_eoq_holding_cost_rate</code></td>
+<td><code>str</code></td>
+<td><code>"0.25"</code></td>
+<td><code>CLUSTER_ERP_MRP_EOQ_HOLDING_COST_RATE</code></td>
+<td><code>procurement</code></td>
+<td>No description in code.</td>
+<td><code>src/cluster_erp/config/settings.py:604</code></td>
+</tr>
+<tr>
+<td><code>mrp_bucket_days</code></td>
+<td><code>int</code></td>
+<td><code>7</code></td>
+<td><code>CLUSTER_ERP_MRP_BUCKET_DAYS</code></td>
+<td><code>procurement</code></td>
+<td>No description in code.</td>
+<td><code>src/cluster_erp/config/settings.py:605</code></td>
+</tr>
+<tr>
+<td><code>mrp_flush_chunk</code></td>
+<td><code>int</code></td>
+<td><code>500</code></td>
+<td><code>CLUSTER_ERP_MRP_FLUSH_CHUNK</code></td>
+<td><code>procurement</code></td>
+<td>No description in code.</td>
+<td><code>src/cluster_erp/config/settings.py:606</code></td>
+</tr>
+<tr>
+<td><code>mrp_background_timeout_seconds</code></td>
+<td><code>int</code></td>
+<td><code>600</code></td>
+<td><code>CLUSTER_ERP_MRP_BACKGROUND_TIMEOUT_SECONDS</code></td>
+<td><code>procurement</code></td>
+<td>No description in code.</td>
+<td><code>src/cluster_erp/config/settings.py:607</code></td>
+</tr>
+<tr>
+<td><code>mrp_xyz_x_cov</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("0.5")</code></td>
+<td><code>CLUSTER_ERP_MRP_XYZ_X_COV</code></td>
+<td><code>procurement</code></td>
+<td>Coefficient of variation below which an item is class X.</td>
+<td><code>src/cluster_erp/config/settings.py:609</code></td>
+</tr>
+<tr>
+<td><code>mrp_xyz_y_cov</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("1.0")</code></td>
+<td><code>CLUSTER_ERP_MRP_XYZ_Y_COV</code></td>
+<td><code>procurement</code></td>
+<td>Coefficient of variation below which an item is class Y.</td>
+<td><code>src/cluster_erp/config/settings.py:610</code></td>
+</tr>
+<tr>
+<td><code>mrp_xyz_default_horizon_days</code></td>
+<td><code>int</code></td>
+<td><code>180</code></td>
+<td><code>CLUSTER_ERP_MRP_XYZ_DEFAULT_HORIZON_DAYS</code></td>
+<td><code>procurement</code></td>
+<td>No description in code.</td>
+<td><code>src/cluster_erp/config/settings.py:611</code></td>
+</tr>
+<tr>
+<td><code>mrp_leadtime_tolerance_days</code></td>
+<td><code>int</code></td>
+<td><code>2</code></td>
+<td><code>CLUSTER_ERP_MRP_LEADTIME_TOLERANCE_DAYS</code></td>
+<td><code>procurement</code></td>
+<td>Tolerance of the actual lead-time suggestion.</td>
+<td><code>src/cluster_erp/config/settings.py:613</code></td>
+</tr>
+<tr>
+<td><code>mrp_leadtime_max_samples</code></td>
+<td><code>int</code></td>
+<td><code>12</code></td>
+<td><code>CLUSTER_ERP_MRP_LEADTIME_MAX_SAMPLES</code></td>
+<td><code>procurement</code></td>
+<td>Sample size of the actual lead-time suggestion.</td>
+<td><code>src/cluster_erp/config/settings.py:614</code></td>
+</tr>
+<tr>
+<td><code>ddmrp_adu_horizon_days</code></td>
+<td><code>int</code></td>
+<td><code>90</code></td>
+<td><code>CLUSTER_ERP_DDMRP_ADU_HORIZON_DAYS</code></td>
+<td><code>procurement</code></td>
+<td>DDMRP average daily usage horizon.</td>
+<td><code>src/cluster_erp/config/settings.py:617</code></td>
+</tr>
+<tr>
+<td><code>ddmrp_spike_threshold_pct</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("50")</code></td>
+<td><code>CLUSTER_ERP_DDMRP_SPIKE_THRESHOLD_PCT</code></td>
+<td><code>procurement</code></td>
+<td>DDMRP spike threshold as a percentage of red.</td>
+<td><code>src/cluster_erp/config/settings.py:618</code></td>
+</tr>
+<tr>
+<td><code>ddmrp_default_lt_factor</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("0.5")</code></td>
+<td><code>CLUSTER_ERP_DDMRP_DEFAULT_LT_FACTOR</code></td>
+<td><code>procurement</code></td>
+<td>Default buffer lead-time factor.</td>
+<td><code>src/cluster_erp/config/settings.py:619</code></td>
+</tr>
+<tr>
+<td><code>ddmrp_default_variability_factor</code></td>
+<td><code>Decimal</code></td>
+<td><code>Decimal("0.5")</code></td>
+<td><code>CLUSTER_ERP_DDMRP_DEFAULT_VARIABILITY_FACTOR</code></td>
+<td><code>procurement</code></td>
+<td>Default buffer variability factor.</td>
+<td><code>src/cluster_erp/config/settings.py:620</code></td>
+</tr>
+<tr>
+<td><code>ddmrp_default_order_cycle_days</code></td>
+<td><code>int</code></td>
+<td><code>7</code></td>
+<td><code>CLUSTER_ERP_DDMRP_DEFAULT_ORDER_CYCLE_DAYS</code></td>
+<td><code>procurement</code></td>
+<td>Default buffer order cycle.</td>
+<td><code>src/cluster_erp/config/settings.py:621</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="logs-retention-and-privacy">Logs, retention, and privacy<a class="headerlink" href="#logs-retention-and-privacy">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Type</th>
+<th>Default</th>
+<th>Environment variable</th>
+<th>Read in</th>
+<th>Meaning</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>activity_log_enabled</code></td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+<td><code>CLUSTER_ERP_ACTIVITY_LOG_ENABLED</code></td>
+<td><code>server</code></td>
+<td>Turns the request activity log on or off.</td>
+<td><code>src/cluster_erp/config/settings.py:628</code></td>
+</tr>
+<tr>
+<td><code>activity_log_skip_paths</code></td>
+<td><code>list[str]</code></td>
+<td>see source</td>
+<td><code>CLUSTER_ERP_ACTIVITY_LOG_SKIP_PATHS</code></td>
+<td><code>server</code></td>
+<td>Paths that are not logged.</td>
+<td><code>src/cluster_erp/config/settings.py:630</code></td>
+</tr>
+<tr>
+<td><code>activity_log_retention_days</code></td>
+<td><code>int</code></td>
+<td><code>90</code></td>
+<td><code>CLUSTER_ERP_ACTIVITY_LOG_RETENTION_DAYS</code></td>
+<td><code>server</code></td>
+<td>Days activity-log rows are kept.</td>
+<td><code>src/cluster_erp/config/settings.py:640</code></td>
+</tr>
+<tr>
+<td><code>error_log_retention_days</code></td>
+<td><code>int</code></td>
+<td><code>365</code></td>
+<td><code>CLUSTER_ERP_ERROR_LOG_RETENTION_DAYS</code></td>
+<td><code>server</code></td>
+<td>Days error-log rows are kept.</td>
+<td><code>src/cluster_erp/config/settings.py:641</code></td>
+</tr>
+<tr>
+<td><code>log_purge_batch_rows</code></td>
+<td><code>int</code></td>
+<td><code>10_000</code></td>
+<td><code>CLUSTER_ERP_LOG_PURGE_BATCH_ROWS</code></td>
+<td><code>server</code></td>
+<td>Rows deleted per statement by the log purge.</td>
+<td><code>src/cluster_erp/config/settings.py:644</code></td>
+</tr>
+<tr>
+<td><code>log_sanitize_keys</code></td>
+<td><code>list[str]</code></td>
+<td>see source</td>
+<td><code>CLUSTER_ERP_LOG_SANITIZE_KEYS</code></td>
+<td><code>server</code></td>
+<td>Body keys whose values are masked in log summaries.</td>
+<td><code>src/cluster_erp/config/settings.py:653</code></td>
+</tr>
+<tr>
+<td><code>log_sanitize_path_keys</code></td>
+<td><code>dict[str, list[str]]</code></td>
+<td>see source</td>
+<td><code>CLUSTER_ERP_LOG_SANITIZE_PATH_KEYS</code></td>
+<td><code>server</code></td>
+<td>Body keys masked only on matching paths.</td>
+<td><code>src/cluster_erp/config/settings.py:695</code></td>
+</tr>
+<tr>
+<td><code>log_body_max_bytes</code></td>
+<td><code>int</code></td>
+<td><code>2048</code></td>
+<td><code>CLUSTER_ERP_LOG_BODY_MAX_BYTES</code></td>
+<td><code>server</code></td>
+<td>Maximum size of a stored body summary.</td>
+<td><code>src/cluster_erp/config/settings.py:700</code></td>
+</tr>
+<tr>
+<td><code>log_redact_path_tokens</code></td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+<td><code>CLUSTER_ERP_LOG_REDACT_PATH_TOKENS</code></td>
+<td><code>server</code></td>
+<td>Replaces token-like path segments with *** in the log.</td>
+<td><code>src/cluster_erp/config/settings.py:704</code></td>
+</tr>
+<tr>
+<td><code>log_username_cache_seconds</code></td>
+<td><code>int</code></td>
+<td><code>300</code></td>
+<td><code>CLUSTER_ERP_LOG_USERNAME_CACHE_SECONDS</code></td>
+<td><code>server</code></td>
+<td>Seconds a resolved user name is reused by the log.</td>
+<td><code>src/cluster_erp/config/settings.py:707</code></td>
+</tr>
+<tr>
+<td><code>change_history_redact_columns</code></td>
+<td><code>list[str]</code></td>
+<td><code>[]</code></td>
+<td><code>CLUSTER_ERP_CHANGE_HISTORY_REDACT_COLUMNS</code></td>
+<td><code>core</code>, <code>server</code></td>
+<td>Extra columns whose values the change history redacts.</td>
+<td><code>src/cluster_erp/config/settings.py:711</code></td>
+</tr>
+<tr>
+<td><code>control_signup_retention_days</code></td>
+<td><code>int</code></td>
+<td><code>30</code></td>
+<td><code>CLUSTER_ERP_CONTROL_SIGNUP_RETENTION_DAYS</code></td>
+<td><code>server</code></td>
+<td>Days an unfinished signup is kept on the control plane.</td>
+<td><code>src/cluster_erp/config/settings.py:718</code></td>
+</tr>
+<tr>
+<td><code>control_rate_limit_retention_hours</code></td>
+<td><code>int</code></td>
+<td><code>24</code></td>
+<td><code>CLUSTER_ERP_CONTROL_RATE_LIMIT_RETENTION_HOURS</code></td>
+<td><code>server</code></td>
+<td>Hours rate-limit rows are kept.</td>
+<td><code>src/cluster_erp/config/settings.py:721</code></td>
+</tr>
+<tr>
+<td><code>control_actions_retention_years</code></td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+<td><code>CLUSTER_ERP_CONTROL_ACTIONS_RETENTION_YEARS</code></td>
+<td><code>server</code></td>
+<td>Years operator action records are kept.</td>
+<td><code>src/cluster_erp/config/settings.py:724</code></td>
+</tr>
+<tr>
+<td><code>signup_mail_spool_retention_days</code></td>
+<td><code>int</code></td>
+<td><code>7</code></td>
+<td><code>CLUSTER_ERP_SIGNUP_MAIL_SPOOL_RETENTION_DAYS</code></td>
+<td><code>server</code></td>
+<td>Days spooled verification mails are kept.</td>
+<td><code>src/cluster_erp/config/settings.py:727</code></td>
+</tr>
+<tr>
+<td><code>privacy_response_days</code></td>
+<td><code>int</code></td>
+<td><code>30</code></td>
+<td><code>CLUSTER_ERP_PRIVACY_RESPONSE_DAYS</code></td>
+<td><code>privacy</code></td>
+<td>Days within which a data-subject request must be answered.</td>
+<td><code>src/cluster_erp/config/settings.py:733</code></td>
+</tr>
+<tr>
+<td><code>privacy_anonymised_marker</code></td>
+<td><code>str</code></td>
+<td><code>"[anonymised]"</code></td>
+<td><code>CLUSTER_ERP_PRIVACY_ANONYMISED_MARKER</code></td>
+<td><code>privacy</code></td>
+<td>Value written over identifying fields on anonymisation.</td>
+<td><code>src/cluster_erp/config/settings.py:737</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="derived-properties-and-helpers">Derived properties and helpers<a class="headerlink" href="#derived-properties-and-helpers">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Returns</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>database_url</code></td>
+<td>The async URL <code>postgresql+asyncpg://...</code> of the default database</td>
+<td><code>src/cluster_erp/config/settings.py:838-843</code></td>
+</tr>
+<tr>
+<td><code>database_url_sync</code></td>
+<td>The same URL with the plain <code>postgresql://</code> scheme</td>
+<td><code>src/cluster_erp/config/settings.py:845-850</code></td>
+</tr>
+<tr>
+<td><code>control_database_url</code></td>
+<td>The async URL of the control-plane database</td>
+<td><code>src/cluster_erp/config/settings.py:852-857</code></td>
+</tr>
+<tr>
+<td><code>node_country_code</code></td>
+<td><code>node_country</code> stripped and in upper case</td>
+<td><code>src/cluster_erp/config/settings.py:860-863</code></td>
+</tr>
+<tr>
+<td><code>console_origin_list()</code></td>
+<td>The parsed <code>console_origins</code>; every origin must start with <code>https://</code></td>
+<td><code>src/cluster_erp/config/settings.py:865-875</code></td>
+</tr>
+<tr>
+<td><code>country_node_map()</code></td>
+<td>The parsed <code>country_nodes</code>; two-letter keys and <code>https://</code> addresses</td>
+<td><code>src/cluster_erp/config/settings.py:877-896</code></td>
+</tr>
+<tr>
+<td><code>region_codes()</code> and <code>default_region</code></td>
+<td>The parsed <code>regions</code>; the first is the default</td>
+<td><code>src/cluster_erp/config/settings.py:899-905</code></td>
+</tr>
+<tr>
+<td><code>region_address(region)</code> and <code>region_url(region, db_name, sync=False)</code></td>
+<td>The server and URL of a region's database</td>
+<td><code>src/cluster_erp/config/settings.py:915-944</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="constraints-and-validation">Constraints and validation<a class="headerlink" href="#constraints-and-validation">¶</a></h2>
+<p>The validator <code>_validate_settings</code> runs after the fields load (<code>src/cluster_erp/config/settings.py:739-836</code>). Loading fails with a <code>ValueError</code> when:</p>
+<ul>
+<li>A region code is not 2 to 8 characters of lower-case letters, digits, or hyphens; <code>region_db_urls</code> names an unknown region; or a non-default region has no server (<code>src/cluster_erp/config/settings.py:746-753</code>).</li>
+<li><code>node_country</code> is set and is not a two-letter code, or <code>country_nodes</code> does not list this node's own country (<code>src/cluster_erp/config/settings.py:754-765</code>).</li>
+<li><code>multi_tenant</code> and <code>debug</code> are both on (<code>src/cluster_erp/config/settings.py:766-770</code>).</li>
+<li><code>secret_key</code> keeps its shipped default outside debug mode, is shorter than 32 characters, or is weak outside debug mode. In debug mode a default key is replaced by a generated one and a weak key only logs a warning (<code>src/cluster_erp/config/settings.py:771-804</code>).</li>
+<li>In multi-tenant mode, <code>storage_encryption_key</code>, <code>backup_encryption_key</code>, or <code>mail_encryption_key</code> is empty (<code>src/cluster_erp/config/settings.py:805-821</code>).</li>
+<li><code>storage_encryption_key</code> or <code>backup_encryption_key</code> is set but is not 32 bytes of hex (<code>src/cluster_erp/config/settings.py:822-827</code>).</li>
+<li><code>storage_backend</code> is <code>s3</code> and <code>s3_bucket</code> is empty (<code>src/cluster_erp/config/settings.py:828-831</code>).</li>
+<li><code>smtp_host</code> is set and <code>smtp_from_email</code> is empty (<code>src/cluster_erp/config/settings.py:832-835</code>).</li>
+</ul>
+<h2 id="terms-introduced">Terms introduced<a class="headerlink" href="#terms-introduced">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Code identifier</th>
+<th>Definition</th>
+<th>Turkish term</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>settings</td>
+<td><code>Settings</code></td>
+<td>The Pydantic class that loads configuration from <code>CLUSTER_ERP_</code> environment variables and <code>.env</code>.</td>
+<td>ayarlar</td>
+<td><code>src/cluster_erp/config/settings.py:64</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="index.html">Platform core</a></li>
+<li><a href="../operations/configuration-reference.html">Configuration reference</a></li>
+<li><a href="server-startup-and-app-factory.html">Server startup and app factory</a></li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../platform/server-startup-and-app-factory.html"><span class="eyebrow">Previous</span><span>Server startup and app factory</span></a><a class="next" href="../platform/shared-server-routes.html"><span class="eyebrow">Next</span><span>Shared server routes</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#scope-and-source">Scope and source</a></li>
+<li class="lvl2"><a href="#database-connection">Database connection</a></li>
+<li class="lvl2"><a href="#multi-tenancy-regions-and-residency">Multi-tenancy, regions, and residency</a></li>
+<li class="lvl2"><a href="#server-process">Server process</a></li>
+<li class="lvl2"><a href="#authentication-sessions-and-licensing">Authentication, sessions, and licensing</a></li>
+<li class="lvl2"><a href="#signup-and-public-endpoints">Signup and public endpoints</a></li>
+<li class="lvl2"><a href="#file-storage-and-backups">File storage and backups</a></li>
+<li class="lvl2"><a href="#mail">Mail</a></li>
+<li class="lvl2"><a href="#business-defaults">Business defaults</a></li>
+<li class="lvl2"><a href="#analytics">Analytics</a></li>
+<li class="lvl2"><a href="#mrp-and-ddmrp">MRP and DDMRP</a></li>
+<li class="lvl2"><a href="#logs-retention-and-privacy">Logs, retention, and privacy</a></li>
+<li class="lvl2"><a href="#derived-properties-and-helpers">Derived properties and helpers</a></li>
+<li class="lvl2"><a href="#constraints-and-validation">Constraints and validation</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

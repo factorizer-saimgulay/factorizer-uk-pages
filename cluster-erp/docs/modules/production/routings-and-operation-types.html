@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Routings and operation types · Cluster ERP Wiki</title>
+<meta name="description" content="Reference for routings, operation types, routing templates, cut technology rules, and component allocations in production, with the eBOM scaffold that derives routings from the BOM.">
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="icon" href="../../assets/mark.svg" type="image/svg+xml">
+<script defer src="../../assets/mermaid.min.js"></script>
+<script defer src="../../assets/site.js" data-root="../../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../../modules/production/routings-and-operation-types.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../../overview/index.html">Overview</a></li>
+<li class=""><a href="../../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../../platform/index.html">Platform core</a></li>
+<li class=""><a href="../../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../../platform/change-history.html">Change history</a></li>
+<li class=""><a href="../../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../../platform/event-bus.html">Event bus</a></li>
+<li class=""><a href="../../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class=""><a href="../../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class=""><a href="../../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class=""><a href="../../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class=""><a href="../../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../../web-app/generic-form.html">Generic form</a></li>
+<li class=""><a href="../../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class=""><a href="../../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../../desktop/index.html">Desktop client</a></li>
+<li class=""><a href="../../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class=""><a href="../../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class=""><a href="../../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../../modules/index.html">Business modules</a></li>
+<li class=""><a href="../../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="sub"><a href="../../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class=""><a href="../../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../../modules/auth.html">Auth module (auth)</a></li>
+<li class=""><a href="../../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class=""><a href="../../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="sub"><a href="../../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="sub"><a href="../../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class=""><a href="../../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="sub"><a href="../../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../../modules/intranet/requests.html">Intranet requests</a></li>
+<li class=""><a href="../../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../../modules/mail.html">Mail module (mail)</a></li>
+<li class=""><a href="../../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class=""><a href="../../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="sub"><a href="../../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="current sub"><a href="../../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../../modules/production/work-orders.html">Work orders</a></li>
+<li class=""><a href="../../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class=""><a href="../../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../../api/index.html">API reference</a></li>
+<li class=""><a href="../../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../../api/documents.html">Documents API (documents)</a></li>
+<li class=""><a href="../../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../../api/overview.html">API overview</a></li>
+<li class=""><a href="../../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class=""><a href="../../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../../api/records.html">Records API (records)</a></li>
+<li class=""><a href="../../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../../operations/index.html">Operations</a></li>
+<li class=""><a href="../../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class=""><a href="../../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class=""><a href="../../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../../reference/index.html">Reference</a></li>
+<li class=""><a href="../../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../../index.html">Home</a> / Business modules</div>
+    <header class="page-head">
+      <p class="eyebrow">Reference</p>
+      <h1>Routings and operation types</h1>
+      <p class="lede">Reference for routings, operation types, routing templates, cut technology rules, and component allocations in production, with the eBOM scaffold that derives routings from the BOM.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#scope-and-source">Scope and source</a></li>
+<li class="lvl2"><a href="#routing-fields">Routing fields</a></li>
+<li class="lvl2"><a href="#routing-statuses">Routing statuses</a></li>
+<li class="lvl2"><a href="#ebom-scaffold">eBOM scaffold</a></li>
+<li class="lvl2"><a href="#routes">Routes</a></li>
+<li class="lvl2"><a href="#constraints-and-validation">Constraints and validation</a></li>
+<li class="lvl2"><a href="#discrepancies">Discrepancies</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p>This page describes the sub-modules of <code>src/cluster_erp/modules/production/</code> that define how a product is made: <code>routings/</code> (with the scaffold in <code>routings/scaffold.py</code>), <code>operation_types/</code>, <code>routing_templates/</code> (with cut technology rules), and <code>component_allocations/</code>. A routing (<code>Routing</code>) is the operation sequence of one product breakdown. Its component allocations tie BOM items and other inputs to operations; together they form the operation BOM (eBOM). The BOM side is on the <a href="../bom.html">BOM module</a>.</p>
+<h2 id="scope-and-source">Scope and source<a class="headerlink" href="#scope-and-source">¶</a></h2>
+<ul>
+<li>Defined in: the <code>models.py</code>, <code>schemas.py</code>, <code>services.py</code>, and <code>routes.py</code> of the four sub-modules, <code>routings/scaffold.py</code> (<code>RoutingScaffolder</code>), and <code>routing_templates/metadata.py</code>.</li>
+<li>Count: 9 tables; 28 routing routes, 8 operation type routes, 16 routing template and rule routes, and 6 allocation routes (<code>@router.</code> and <code>@rules_router.</code> decorators).</li>
+</ul>
+<h2 id="routing-fields">Routing fields<a class="headerlink" href="#routing-fields">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Entity</th>
+<th>Table</th>
+<th>Key fields</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Routing</code></td>
+<td><code>production_routings</code></td>
+<td><code>product_id</code>, <code>product_model_id</code>, <code>product_version_id</code>, <code>code</code>, <code>name</code>, <code>status</code> (default <code>draft</code>), <code>valid_from</code>, <code>scaffold_bom_version_id</code>, <code>is_stale</code></td>
+<td><code>src/cluster_erp/modules/production/routings/models.py:15-68</code></td>
+</tr>
+<tr>
+<td><code>RoutingOperation</code></td>
+<td><code>production_routing_operations</code></td>
+<td><code>operation_no</code>, <code>work_center_id</code>, <code>operation_type_code</code>, <code>description</code>, <code>setup_time_min</code>, <code>run_time_per_unit_min</code>, <code>scrap_pct</code>, <code>output_description</code>, <code>output_product_id</code> with model and version, <code>source</code>, <code>source_fields</code></td>
+<td><code>src/cluster_erp/modules/production/routings/models.py:71-140</code></td>
+</tr>
+<tr>
+<td><code>PrepOperation</code></td>
+<td><code>production_prep_operations</code></td>
+<td><code>routing_id</code>, <code>bom_item_id</code>, <code>seq</code>, <code>operation_type_code</code>, <code>work_center_id</code>, <code>setup_time_min</code>, <code>run_time_per_unit_min</code>, <code>note</code>, <code>source</code></td>
+<td><code>src/cluster_erp/modules/production/routings/models.py:143-202</code></td>
+</tr>
+<tr>
+<td><code>ComponentAllocation</code></td>
+<td><code>production_component_allocations</code></td>
+<td><code>routing_operation_id</code>, <code>input_kind</code> (<code>bom_item</code>, <code>operation_output</code>, or <code>product</code>), <code>bom_item_id</code>, <code>bom_version_id</code>, <code>source_operation_id</code>, product breakdown, <code>qty</code></td>
+<td><code>src/cluster_erp/modules/production/component_allocations/models.py:14-117</code></td>
+</tr>
+<tr>
+<td><code>OperationType</code></td>
+<td><code>production_operation_types</code></td>
+<td><code>code</code>, <code>name</code>, <code>numeric_code</code>, <code>op_group</code>, <code>has_material_io</code>, <code>default_setup_min</code>, <code>translations</code>, <code>is_active</code></td>
+<td><code>src/cluster_erp/modules/production/operation_types/models.py:13-57</code></td>
+</tr>
+<tr>
+<td><code>RoutingTemplate</code>, <code>RoutingTemplateOp</code></td>
+<td><code>production_routing_templates</code>, <code>production_routing_template_ops</code></td>
+<td><code>code</code>, <code>name</code>, <code>product_category_id</code>, <code>material_type</code>; ops with <code>seq</code>, <code>operation_type_code</code>, default times</td>
+<td><code>src/cluster_erp/modules/production/routing_templates/models.py:20-104</code></td>
+</tr>
+<tr>
+<td><code>CutTechnologyRule</code></td>
+<td><code>production_cut_technology_rules</code></td>
+<td><code>material_type</code>, <code>stock_form</code> (<code>length</code> or <code>sheet</code>), <code>operation_type_code</code></td>
+<td><code>src/cluster_erp/modules/production/routing_templates/models.py:107-146</code>, <code>src/cluster_erp/modules/production/routing_templates/schemas.py:104</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="routing-statuses">Routing statuses<a class="headerlink" href="#routing-statuses">¶</a></h2>
+<p>A routing moves from <code>draft</code> to <code>active</code> to <code>obsolete</code> (<code>src/cluster_erp/modules/production/routings/services.py:44-48</code>). Activation is refused while blockers remain: an operation without a work center, without an operation type, or with zero run time per unit, or a prep operation without an operation type (<code>src/cluster_erp/modules/production/routings/services.py:541-599</code>, <code>src/cluster_erp/modules/production/routings/services.py:610-649</code>). <code>GET /routings/{routing_id}/readiness</code> returns these blockers (<code>src/cluster_erp/modules/production/routings/routes.py:319</code>). When a new BOM version becomes active, live routings of the same breakdown are marked stale (<code>src/cluster_erp/modules/production/module.py:195-224</code>).</p>
+<h2 id="ebom-scaffold">eBOM scaffold<a class="headerlink" href="#ebom-scaffold">¶</a></h2>
+<p>The scaffold derives a routing from the BOM of one product breakdown. The diagram shows the plan and apply path.</p>
+<figure class="diagram"><pre class="mermaid">flowchart TD
+ P[&quot;POST /routings/scaffold-plan with product, model, version&quot;] --&gt; T[&quot;load_tree: GetBomScaffoldTree&quot;]
+ T --&gt; F[&quot;flatten_inputs: phantom children lifted, qty multiplied&quot;]
+ F --&gt; J[&quot;final joining operation with material inputs&quot;]
+ F --&gt; C[&quot;cut prep for make_from_stock items&quot;]
+ J --&gt; TP[&quot;resolve_template: RoutingTemplate by category and material type&quot;]
+ C --&gt; CR[&quot;cut_rules: CutTechnologyRule by material and stock form&quot;]
+ TP --&gt; WC[&quot;wc_candidates from work center capabilities&quot;]
+ CR --&gt; WC
+ WC --&gt; Q[&quot;plan with questions and plan_hash&quot;]
+ Q --&gt; A[&quot;POST /routings/scaffold-apply with answers&quot;]
+ A --&gt; H[&quot;plan_hash recomputed from current BOM&quot;]
+ H --&gt; M[&quot;Routing, RoutingOperation, PrepOperation, ComponentAllocation rows&quot;]
+ M --&gt; I[&quot;CreateScaffoldIntermediate for operation outputs&quot;]</pre></figure>
+<p>In prose: <code>scaffold-plan</code> is a dry run that needs the full product breakdown (<code>src/cluster_erp/modules/production/routings/routes.py:155-206</code>). The scaffolder reads the BOM tree with <code>GetBomScaffoldTree</code> (<code>src/cluster_erp/modules/production/routings/scaffold.py:177-217</code>). Non-phantom items become material inputs of one final joining operation; phantom items are never inputs, and their children are lifted with the phantom's quantity multiplied (<code>src/cluster_erp/modules/production/routings/scaffold.py:8-12</code>, <code>src/cluster_erp/modules/production/routings/scaffold.py:247-335</code>). A make-from-stock item with length stock and a cut length gets a mandatory cut prep step; sheet stock gets a 2D cut candidate (<code>src/cluster_erp/modules/production/routings/scaffold.py:13-15</code>, <code>src/cluster_erp/modules/production/routings/scaffold.py:336-348</code>). A routing template that matches the product's category and material type supplies the operation sequence; two equally specific templates are refused (<code>src/cluster_erp/modules/production/routings/scaffold.py:22-28</code>, <code>src/cluster_erp/modules/production/routings/scaffold.py:470-540</code>). A cut technology rule answers the cut question (<code>src/cluster_erp/modules/production/routings/scaffold.py:29-31</code>, <code>src/cluster_erp/modules/production/routings/scaffold.py:589-622</code>). Work centers come only from declared capabilities (<code>src/cluster_erp/modules/production/routings/scaffold.py:16-21</code>, <code>src/cluster_erp/modules/production/routings/scaffold.py:388-469</code>). Process operations are never created automatically unless a template declares them (<code>src/cluster_erp/modules/production/routings/scaffold.py:22-24</code>). The plan carries a <code>plan_hash</code> over the breakdown, BOM version, and item quantities (<code>src/cluster_erp/modules/production/routings/scaffold.py:41-43</code>, <code>src/cluster_erp/modules/production/routings/scaffold.py:218-246</code>).</p>
+<p><code>scaffold-apply</code> writes the plan in one transaction. A changed BOM gives a 409, a missing required answer a 422, and an existing live routing on the breakdown a 409 (<code>src/cluster_erp/modules/production/routings/routes.py:207-262</code>, <code>src/cluster_erp/modules/production/routings/scaffold.py:1038-1354</code>). When an operation has an output, the scaffolder asks <code>products_and_services</code> to create or reuse an intermediate product with <code>CreateScaffoldIntermediate</code> (<code>src/cluster_erp/modules/production/routings/scaffold.py:2234</code>). Tree mode plans and applies sub-assemblies all or nothing (<code>src/cluster_erp/modules/production/routings/scaffold.py:962-1037</code>, <code>src/cluster_erp/modules/production/routings/scaffold.py:1355-1425</code>). <code>copy-to</code> deep-copies a routing onto another breakdown and re-binds allocations to the target's active BOM; unmatched rows are reported (<code>src/cluster_erp/modules/production/routings/scaffold.py:35-39</code>, <code>src/cluster_erp/modules/production/routings/scaffold.py:2077-2460</code>).</p>
+<h2 id="routes">Routes<a class="headerlink" href="#routes">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Method and path</th>
+<th>Permission</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code>, <code>POST /routings/</code>; <code>GET</code>, <code>PUT</code>, <code>DELETE /routings/{routing_id}</code>; <code>POST /routings/bulk-delete</code>; <code>POST /routings/{routing_id}/status</code></td>
+<td><code>routing.read</code>, <code>.create</code>, <code>.update</code>, <code>.delete</code>, <code>.bulk_delete</code></td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:46-398</code></td>
+</tr>
+<tr>
+<td><code>POST /routings/scaffold-from-bom</code>, <code>/scaffold-tree-from-bom</code>, <code>/scaffold-plan</code>, <code>/scaffold-apply</code>, <code>/{routing_id}/copy-to</code></td>
+<td><code>routing.create</code></td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:86-263</code></td>
+</tr>
+<tr>
+<td><code>GET /routings/for-product/{product_id}</code>, <code>/{routing_id}/readiness</code>, <code>/{routing_id}/full</code></td>
+<td><code>routing.read</code></td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:298-333</code></td>
+</tr>
+<tr>
+<td>Operations, operation inputs, and prep operations under <code>/routings</code></td>
+<td><code>routing.read</code>, <code>routing.update</code></td>
+<td><code>src/cluster_erp/modules/production/routings/routes.py:415-672</code></td>
+</tr>
+<tr>
+<td><code>/operation-types</code> routes, including <code>POST /operation-types/seed-defaults</code></td>
+<td><code>routing.*</code></td>
+<td><code>src/cluster_erp/modules/production/operation_types/routes.py:26-121</code></td>
+</tr>
+<tr>
+<td><code>/routing-templates</code>, template ops, and cut technology rules</td>
+<td><code>routing_template.*</code>, <code>routing_template_op.*</code>, <code>cut_technology_rule.*</code></td>
+<td><code>src/cluster_erp/modules/production/routing_templates/routes.py:42-261</code></td>
+</tr>
+<tr>
+<td>Component allocations</td>
+<td><code>routing.read</code>, <code>routing.update</code>, <code>routing.bulk_delete</code></td>
+<td><code>src/cluster_erp/modules/production/component_allocations/routes.py:29-114</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="constraints-and-validation">Constraints and validation<a class="headerlink" href="#constraints-and-validation">¶</a></h2>
+<ul>
+<li>A component allocation is unique per BOM item and operation, per operation and source operation, and per operation and product, among live rows (<code>src/cluster_erp/modules/production/component_allocations/models.py:27-56</code>).</li>
+<li>The <code>bom</code> module reads allocations through <code>GetComponentAllocations</code> to fill operation type and work center in its explosion (<code>src/cluster_erp/modules/production/module.py:145-147</code>).</li>
+</ul>
+<h2 id="discrepancies">Discrepancies<a class="headerlink" href="#discrepancies">¶</a></h2>
+<aside class="adm adm-warning" role="note"><p class="adm-title">Warning</p><p>Discrepancy. The project's written engineering rules forbid a silent fallback from model and version to the product. The legacy routes <code>scaffold-from-bom</code> and <code>scaffold-tree-from-bom</code> take the product's default model and version from <code>GetProductDefaultBreakdown</code> when the body has no pair; the code comment limits this to the legacy endpoints (<code>src/cluster_erp/modules/production/routings/services.py:146-177</code>). This page documents the code.</p>
+</aside>
+<h2 id="terms-introduced">Terms introduced<a class="headerlink" href="#terms-introduced">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Code identifier</th>
+<th>Definition</th>
+<th>Turkish term</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>routing</td>
+<td><code>Routing</code></td>
+<td>The operation sequence that makes one product breakdown.</td>
+<td>Rota</td>
+<td><code>src/cluster_erp/modules/production/routings/models.py:15</code></td>
+</tr>
+<tr>
+<td>prep operation</td>
+<td><code>PrepOperation</code></td>
+<td>A preparation step for one BOM item, such as a cut.</td>
+<td>Hazırlık operasyonu</td>
+<td><code>src/cluster_erp/modules/production/routings/models.py:143</code></td>
+</tr>
+<tr>
+<td>component allocation</td>
+<td><code>ComponentAllocation</code></td>
+<td>An input edge saying which operation consumes which item, output, or product.</td>
+<td>Bileşen ataması</td>
+<td><code>src/cluster_erp/modules/production/component_allocations/models.py:14</code></td>
+</tr>
+<tr>
+<td>routing scaffold</td>
+<td><code>RoutingScaffolder</code></td>
+<td>The wizard that derives a routing from the BOM and asks for missing facts.</td>
+<td>Rota iskeleti</td>
+<td><code>src/cluster_erp/modules/production/routings/scaffold.py:167</code></td>
+</tr>
+<tr>
+<td>cut technology rule</td>
+<td><code>CutTechnologyRule</code></td>
+<td>A rule that maps material type and stock form to a cut operation type.</td>
+<td>Kesim teknolojisi kuralı</td>
+<td><code>src/cluster_erp/modules/production/routing_templates/models.py:107</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="index.html">Production module</a></li>
+<li><a href="../bom.html">BOM module</a></li>
+<li><a href="work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li><a href="production-orders-and-versions.html">Production orders and versions</a></li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../../modules/production/production-orders-and-versions.html"><span class="eyebrow">Previous</span><span>Production orders and versions</span></a><a class="next" href="../../modules/production/scheduling.html"><span class="eyebrow">Next</span><span>Production scheduling</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#scope-and-source">Scope and source</a></li>
+<li class="lvl2"><a href="#routing-fields">Routing fields</a></li>
+<li class="lvl2"><a href="#routing-statuses">Routing statuses</a></li>
+<li class="lvl2"><a href="#ebom-scaffold">eBOM scaffold</a></li>
+<li class="lvl2"><a href="#routes">Routes</a></li>
+<li class="lvl2"><a href="#constraints-and-validation">Constraints and validation</a></li>
+<li class="lvl2"><a href="#discrepancies">Discrepancies</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

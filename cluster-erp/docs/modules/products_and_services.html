@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Products and services module (products_and_services) · Cluster ERP Wiki</title>
+<meta name="description" content="Module page for products_and_services, the material master with products, models, versions, categories, vendor sources, and units of measure.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../modules/products_and_services.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.html">Overview</a></li>
+<li class=""><a href="../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.html">Platform core</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../platform/change-history.html">Change history</a></li>
+<li class=""><a href="../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../platform/event-bus.html">Event bus</a></li>
+<li class=""><a href="../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class=""><a href="../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../web-app/generic-form.html">Generic form</a></li>
+<li class=""><a href="../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class=""><a href="../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.html">Desktop client</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class=""><a href="../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.html">Business modules</a></li>
+<li class=""><a href="../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class=""><a href="../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../modules/auth.html">Auth module (auth)</a></li>
+<li class=""><a href="../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class=""><a href="../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class=""><a href="../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../modules/intranet/requests.html">Intranet requests</a></li>
+<li class=""><a href="../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../modules/mail.html">Mail module (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class=""><a href="../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../modules/production/work-orders.html">Work orders</a></li>
+<li class="current"><a href="../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.html">API reference</a></li>
+<li class=""><a href="../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.html">Documents API (documents)</a></li>
+<li class=""><a href="../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.html">API overview</a></li>
+<li class=""><a href="../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class=""><a href="../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.html">Operations</a></li>
+<li class=""><a href="../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class=""><a href="../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class=""><a href="../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.html">Reference</a></li>
+<li class=""><a href="../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.html">Home</a> / Business modules</div>
+    <header class="page-head">
+      <p class="eyebrow">Module</p>
+      <h1>Products and services module (products_and_services)</h1>
+      <p class="lede">Module page for products_and_services, the material master with products, models, versions, categories, vendor sources, and units of measure.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#at-a-glance">At a glance</a></li>
+<li class="lvl2"><a href="#what-the-module-does">What the module does</a></li>
+<li class="lvl2"><a href="#sub-modules">Sub-modules</a></li>
+<li class="lvl2"><a href="#data-model">Data model</a></li>
+<li class="lvl3"><a href="#the-product-model-and-version-breakdown">The product, model, and version breakdown</a></li>
+<li class="lvl3"><a href="#entities">Entities</a></li>
+<li class="lvl2"><a href="#screens-and-metadata">Screens and metadata</a></li>
+<li class="lvl2"><a href="#status-and-actions">Status and actions</a></li>
+<li class="lvl2"><a href="#business-rules">Business rules</a></li>
+<li class="lvl2"><a href="#events-and-queries">Events and queries</a></li>
+<li class="lvl2"><a href="#permissions">Permissions</a></li>
+<li class="lvl2"><a href="#privacy-retention-and-history">Privacy, retention, and history</a></li>
+<li class="lvl2"><a href="#analytics-facts">Analytics facts</a></li>
+<li class="lvl2"><a href="#settings-and-reference-data">Settings and reference data</a></li>
+<li class="lvl2"><a href="#tests">Tests</a></li>
+<li class="lvl2"><a href="#discrepancies">Discrepancies</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p>The <code>products_and_services</code> module in <code>src/cluster_erp/modules/products_and_services/</code> is the material master. It holds products and services with their planning, stock-size, and costing fields, the mandatory product, model, and version breakdown, a category tree, vendor sources per breakdown, and the units of measure. Every other module that names a product asks this module over the EventBus. The shared breakdown rule is explained on <a href="../platform/product-breakdown-and-stock-conversion.html">product breakdown and stock conversion</a>.</p>
+<h2 id="at-a-glance">At a glance<a class="headerlink" href="#at-a-glance">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Value</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Package</td>
+<td><code>src/cluster_erp/modules/products_and_services/</code></td>
+<td>folder</td>
+</tr>
+<tr>
+<td>Module class</td>
+<td><code>Module</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/module.py:18</code></td>
+</tr>
+<tr>
+<td><code>name</code> / <code>version</code></td>
+<td><code>products_and_services</code> / <code>0.1.0</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/module.py:19-25</code></td>
+</tr>
+<tr>
+<td>API prefix</td>
+<td><code>/api/v1/products_and_services</code> (<code>ModuleBase.api_prefix</code>)</td>
+<td><code>src/cluster_erp/core/module_base.py:37-38</code></td>
+</tr>
+<tr>
+<td>Sub-modules</td>
+<td>6: <code>products</code>, <code>product_models</code>, <code>product_versions</code>, <code>categories</code>, <code>vendors</code>, <code>settings</code></td>
+<td>folder listing</td>
+</tr>
+<tr>
+<td>Tables</td>
+<td>9 (<code>__tablename__</code> count in the package)</td>
+<td><code>src/cluster_erp/modules/products_and_services/models.py</code></td>
+</tr>
+<tr>
+<td>Entities in metadata</td>
+<td>7: <code>product</code>, <code>product_model</code>, <code>product_version</code>, <code>product_vendor</code>, <code>category</code>, <code>unit_category</code>, <code>unit</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/module.py:998-1006</code></td>
+</tr>
+<tr>
+<td>Routes</td>
+<td>55 route decorators in the package</td>
+<td><code>grep</code> for <code>@router.</code></td>
+</tr>
+<tr>
+<td>Web app presence</td>
+<td>Catalogue app <code>products</code></td>
+<td><code>src/cluster_erp/modules/app_store/catalog.json</code> (entry <code>products</code>)</td>
+</tr>
+<tr>
+<td>Desktop presence</td>
+<td>Generic widgets only; no folder in <code>src/cluster_erp/desktop/modules/</code></td>
+<td>folder</td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-the-module-does">What the module does<a class="headerlink" href="#what-the-module-does">¶</a></h2>
+<ul>
+<li>Keeps products and services with a material type, four capability flags, a status, units, physical data, stock-size and make-or-buy data, planning parameters, costing fields, and trade data (<code>src/cluster_erp/modules/products_and_services/products/models.py:20-351</code>).</li>
+<li>Gives every product at least one model and every model at least one version, so that stock and documents can always post against a full breakdown (<code>src/cluster_erp/modules/products_and_services/product_versions/models.py:16-19</code>).</li>
+<li>Links a product to several categories of a category tree (<code>src/cluster_erp/modules/products_and_services/products/models.py:395-417</code>, <code>src/cluster_erp/modules/products_and_services/categories/models.py:11-30</code>).</li>
+<li>Records vendor sources per product, model, version, and vendor party (<code>src/cluster_erp/modules/products_and_services/vendors/models.py:14-63</code>).</li>
+<li>Holds unit categories and units with conversion factors and seeds a default set at start-up (<code>src/cluster_erp/modules/products_and_services/module.py:31-50</code>).</li>
+</ul>
+<h2 id="sub-modules">Sub-modules<a class="headerlink" href="#sub-modules">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Sub-module</th>
+<th>Purpose</th>
+<th>Main entities</th>
+<th>Router</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>products</code></td>
+<td>Products and services, category links, service facet, photo</td>
+<td><code>Product</code>, <code>ProductServiceAttributes</code>, <code>ProductCategoryLink</code></td>
+<td><code>/products</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/products/routes.py:32</code></td>
+</tr>
+<tr>
+<td><code>product_models</code></td>
+<td>Models of a product, photo</td>
+<td><code>ProductModel</code></td>
+<td><code>/models</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/product_models/routes.py:25</code></td>
+</tr>
+<tr>
+<td><code>product_versions</code></td>
+<td>Versions of a model</td>
+<td><code>ProductVersion</code></td>
+<td><code>/versions</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/product_versions/routes.py:22</code></td>
+</tr>
+<tr>
+<td><code>categories</code></td>
+<td>Category tree</td>
+<td><code>ProductCategory</code></td>
+<td><code>/categories</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/categories/routes.py:22</code></td>
+</tr>
+<tr>
+<td><code>vendors</code></td>
+<td>Vendor sources</td>
+<td><code>ProductVendor</code></td>
+<td><code>/vendors</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/vendors/routes.py:24</code></td>
+</tr>
+<tr>
+<td><code>settings</code></td>
+<td>Unit categories and units</td>
+<td><code>UnitCategory</code>, <code>UnitOfMeasure</code></td>
+<td><code>/settings</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/settings/routes.py:29</code></td>
+</tr>
+</tbody>
+</table>
+<p>Router paths are relative to the module prefix; all six routers sit under one module router that depends on the app entitlement (<code>src/cluster_erp/modules/products_and_services/module.py:75-83</code>).</p>
+<h2 id="data-model">Data model<a class="headerlink" href="#data-model">¶</a></h2>
+<h3 id="the-product-model-and-version-breakdown">The product, model, and version breakdown<a class="headerlink" href="#the-product-model-and-version-breakdown">¶</a></h3>
+<p>The diagram shows the breakdown tables and the rows that point at them.</p>
+<figure class="diagram"><pre class="mermaid">erDiagram
+ Product ||--|{ ProductModel : &quot;product_id&quot;
+ ProductModel ||--|{ ProductVersion : &quot;product_model_id&quot;
+ Product ||--o{ ProductCategoryLink : &quot;product_id&quot;
+ ProductCategory ||--o{ ProductCategoryLink : &quot;category_id&quot;
+ Product ||--o| ProductServiceAttributes : &quot;product_id&quot;
+ ProductVersion ||--o{ ProductVendor : &quot;product_version_id&quot;
+ UnitCategory ||--|{ UnitOfMeasure : &quot;category_id&quot;
+ UnitOfMeasure ||--o{ Product : &quot;base_unit_id&quot;</pre></figure>
+<p>In prose: a product has one or more models and a model has one or more versions. Exactly one live model per product and exactly one live version per model carry <code>is_default</code>, enforced by partial unique indexes (<code>src/cluster_erp/modules/products_and_services/product_models/models.py:32-38</code>, <code>src/cluster_erp/modules/products_and_services/product_versions/models.py:35-41</code>). A version name is unique within its model (<code>src/cluster_erp/modules/products_and_services/product_versions/models.py:42-49</code>). A product has category links and, when it is a service, one service facet row. A vendor source names a product, a model, a version, and a vendor party (<code>src/cluster_erp/modules/products_and_services/vendors/models.py:16-49</code>). Units belong to a unit category, and a product points at its base, purchase, sales, weight, volume, and dimension units (<code>src/cluster_erp/modules/products_and_services/products/models.py:103-138</code>).</p>
+<h3 id="entities">Entities<a class="headerlink" href="#entities">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Entity</th>
+<th>Table</th>
+<th>Key fields</th>
+<th>Notes</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Product</code></td>
+<td><code>products_products</code></td>
+<td><code>code</code>, <code>name</code>, <code>sku</code>, <code>barcode</code>, <code>material_type</code>, <code>category_id</code>, <code>is_purchasable</code>, <code>is_sellable</code>, <code>is_manufacturable</code>, <code>is_stockable</code>, <code>status</code>, <code>stock_form</code>, <code>sourcing_preference</code>, <code>standard_cost</code>, <code>extra</code></td>
+<td><code>sku</code> and <code>barcode</code> unique among live rows</td>
+<td><code>src/cluster_erp/modules/products_and_services/products/models.py:20-351</code></td>
+</tr>
+<tr>
+<td><code>ProductServiceAttributes</code></td>
+<td><code>products_service_attributes</code></td>
+<td><code>product_id</code>, <code>billing_method</code>, <code>rate_basis</code>, <code>standard_rate</code>, <code>currency_code</code>, <code>duration_value</code>, <code>is_billable</code></td>
+<td>one live row per product</td>
+<td><code>src/cluster_erp/modules/products_and_services/products/models.py:353-392</code></td>
+</tr>
+<tr>
+<td><code>ProductCategoryLink</code></td>
+<td><code>products_product_category_links</code></td>
+<td><code>product_id</code>, <code>category_id</code></td>
+<td>unique pair among live rows</td>
+<td><code>src/cluster_erp/modules/products_and_services/products/models.py:395-417</code></td>
+</tr>
+<tr>
+<td><code>ProductModel</code></td>
+<td><code>products_models</code></td>
+<td><code>code</code>, <code>product_id</code>, <code>name</code>, <code>sku</code>, <code>barcode</code>, <code>attributes</code>, <code>is_default</code>, <code>photo_attachment_id</code></td>
+<td>one live default per product</td>
+<td><code>src/cluster_erp/modules/products_and_services/product_models/models.py:17-66</code></td>
+</tr>
+<tr>
+<td><code>ProductVersion</code></td>
+<td><code>products_model_versions</code></td>
+<td><code>code</code>, <code>product_model_id</code>, <code>name</code>, <code>sku</code>, <code>barcode</code>, <code>attributes</code>, <code>is_default</code></td>
+<td>one live default per model</td>
+<td><code>src/cluster_erp/modules/products_and_services/product_versions/models.py:16-63</code></td>
+</tr>
+<tr>
+<td><code>ProductCategory</code></td>
+<td><code>products_categories</code></td>
+<td><code>code</code>, <code>name</code>, <code>parent_id</code>, <code>sort_order</code></td>
+<td>self-referencing tree</td>
+<td><code>src/cluster_erp/modules/products_and_services/categories/models.py:11-30</code></td>
+</tr>
+<tr>
+<td><code>ProductVendor</code></td>
+<td><code>products_product_vendors</code></td>
+<td><code>product_id</code>, <code>product_model_id</code>, <code>product_version_id</code>, <code>party_id</code>, <code>vendor_part_number</code>, <code>lead_time_days</code>, <code>unit_price</code>, <code>currency</code>, <code>is_preferred</code>, <code>valid_from</code>, <code>valid_to</code></td>
+<td>unique per breakdown and party among live rows</td>
+<td><code>src/cluster_erp/modules/products_and_services/vendors/models.py:14-63</code></td>
+</tr>
+<tr>
+<td><code>UnitCategory</code></td>
+<td><code>products_unit_categories</code></td>
+<td><code>code</code>, <code>name</code>, <code>translations</code></td>
+<td>code and name unique among live rows</td>
+<td><code>src/cluster_erp/modules/products_and_services/settings/models.py:13-39</code></td>
+</tr>
+<tr>
+<td><code>UnitOfMeasure</code></td>
+<td><code>products_units_of_measure</code></td>
+<td><code>code</code>, <code>category_id</code>, <code>name</code>, <code>symbol</code>, <code>is_base_unit</code>, <code>conversion_factor</code>, <code>sort_order</code></td>
+<td><code>symbol</code> unique among live rows; factor <code>Numeric(24, 6)</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/settings/models.py:42-79</code></td>
+</tr>
+</tbody>
+</table>
+<p>Money and quantity columns are <code>Numeric</code>; costs and vendor prices use <code>Numeric(18, 4)</code> (<code>src/cluster_erp/modules/products_and_services/products/models.py:313-314</code>, <code>src/cluster_erp/modules/products_and_services/vendors/models.py:56</code>). Decimal values are serialised as strings (<code>src/cluster_erp/modules/products_and_services/products/schemas.py:149-151</code>, <code>src/cluster_erp/modules/products_and_services/products/schemas.py:478-481</code>). See <a href="../platform/money-and-decimal.html">money and Decimal</a>.</p>
+<h2 id="screens-and-metadata">Screens and metadata<a class="headerlink" href="#screens-and-metadata">¶</a></h2>
+<p><code>get_metadata</code> declares a sidebar group <strong>Products &amp; Services</strong> (Turkish <strong>Ürünler ve Hizmetler</strong>) with three sections: <strong>Products</strong> (a list), <strong>Categories</strong> (a tree), and <strong>Settings</strong> with the tabs <code>unit_category</code> and <code>unit</code> (<code>src/cluster_erp/modules/products_and_services/module.py:954-997</code>). The product detail has the tabs <strong>General</strong>, <strong>Service</strong>, <strong>Physical Properties</strong>, <strong>Inventory &amp; Planning</strong>, <strong>Production &amp; Costing</strong>, <strong>Vendors</strong>, <strong>Models</strong>, <strong>Bill of Materials</strong>, and <strong>Stock</strong> (<code>src/cluster_erp/modules/products_and_services/products/metadata.py:222-295</code>). The <strong>Service</strong> tab shows only for the material type <code>service</code>, and the physical, inventory, production, and stock tabs hide for it. The <strong>Bill of Materials</strong> tab shows only for manufacturable products and reads the <code>bom</code> module's list, and <strong>Stock</strong> reads the <code>inventory</code> module's list (<code>src/cluster_erp/modules/products_and_services/products/metadata.py:230-294</code>). The create form collects the first model's name, SKU, and barcode and the first version's name (<code>src/cluster_erp/modules/products_and_services/products/metadata.py:381-424</code>). Products and models have photos (<code>src/cluster_erp/modules/products_and_services/products/metadata.py:118</code>, <code>src/cluster_erp/modules/products_and_services/products/metadata.py:1328</code>). The category tree uses <code>GET /categories/tree</code> (<code>src/cluster_erp/modules/products_and_services/categories/metadata.py:26-32</code>).</p>
+<h2 id="status-and-actions">Status and actions<a class="headerlink" href="#status-and-actions">¶</a></h2>
+<p>Product statuses are <code>draft</code>, <code>active</code>, <code>blocked</code>, and <code>obsolete</code> (<code>src/cluster_erp/modules/products_and_services/products/schemas.py:24-28</code>). The status is a form field, and a change emits <code>ProductStatusChanged</code> (<code>src/cluster_erp/modules/products_and_services/products/services.py:590-598</code>). The module declares one <code>ActionMeta</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Label</th>
+<th>Condition</th>
+<th>Endpoint</th>
+<th>Permission</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>seed_defaults</code> (unit category)</td>
+<td><strong>Seed Defaults</strong></td>
+<td>none (global)</td>
+<td><code>POST /settings/unit-categories/seed-defaults</code></td>
+<td><code>unit_category.seed</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/settings/metadata.py:29-37</code>, <code>src/cluster_erp/modules/products_and_services/settings/routes.py:84-91</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="business-rules">Business rules<a class="headerlink" href="#business-rules">¶</a></h2>
+<ul>
+<li>Each material type has default capability flags, used when the payload leaves a flag out (<code>src/cluster_erp/modules/products_and_services/products/schemas.py:34-89</code>, <code>src/cluster_erp/modules/products_and_services/products/services.py:296-312</code>).</li>
+<li>Hard constraints: a service is neither stockable nor manufacturable, a consumable is not stockable, and a raw material is not manufacturable; a violation answers <code>PRODUCT_CAPABILITY_VIOLATION</code> (<code>src/cluster_erp/modules/products_and_services/products/schemas.py:91-95</code>, <code>src/cluster_erp/modules/products_and_services/products/services.py:671-683</code>).</li>
+<li>A product that is not stockable has its batch, serial, shelf-life, safety-stock, and reorder-point fields cleared (<code>src/cluster_erp/modules/products_and_services/products/services.py:48-55</code>, <code>src/cluster_erp/modules/products_and_services/products/services.py:316-318</code>).</li>
+<li>SKU and barcode must be free among live products (<code>src/cluster_erp/modules/products_and_services/products/services.py:272-292</code>).</li>
+<li>Creating a product creates its default model, named after the product when no name is given, and the model creates its default version, named <code>1</code> by default (<code>src/cluster_erp/modules/products_and_services/products/services.py:376-395</code>, <code>src/cluster_erp/modules/products_and_services/product_models/services.py:103-112</code>, <code>src/cluster_erp/modules/products_and_services/product_models/schemas.py:22</code>).</li>
+<li>The first model of a product and the first version of a model become the default; a new default takes the flag from the old one (<code>src/cluster_erp/modules/products_and_services/product_models/services.py:78-99</code>, <code>src/cluster_erp/modules/products_and_services/product_versions/services.py:72-90</code>).</li>
+<li>The default model or version cannot be demoted, deactivated, or deleted; the answer is <code>PRODUCT_MODEL_DEFAULT_PROTECTED</code> or <code>PRODUCT_VERSION_DEFAULT_PROTECTED</code> with HTTP 409 (<code>src/cluster_erp/modules/products_and_services/product_models/services.py:115-160</code>, <code>src/cluster_erp/modules/products_and_services/product_versions/services.py:92-140</code>).</li>
+<li>A product that is a live component of an active BOM version cannot be deleted; the module asks the <code>bom</code> module with <code>GetPartUsageCounts</code> and answers <code>PRODUCT_IN_ACTIVE_BOM</code> (<code>src/cluster_erp/modules/products_and_services/products/services.py:604-626</code>).</li>
+<li>Deleting a product also soft-deletes its category links and service facet with the same timestamp; reactivating it restores them (<code>src/cluster_erp/modules/products_and_services/products/services.py:628-660</code>, <code>src/cluster_erp/modules/products_and_services/module.py:165-236</code>).</li>
+<li>Every category named on a product must be live; the first one becomes the denormalised <code>category_id</code> (<code>src/cluster_erp/modules/products_and_services/products/services.py:151-206</code>).</li>
+<li>A vendor source checks that the product and the party exist, validates the breakdown, and refuses a second live source for the same breakdown and party with HTTP 409 (<code>src/cluster_erp/modules/products_and_services/vendors/services.py:94-143</code>).</li>
+<li>Unit conversion works only within one unit category: value times the source factor, divided by the target factor (<code>src/cluster_erp/modules/products_and_services/settings/services.py:237-247</code>). The seed has 13 unit categories (<code>src/cluster_erp/modules/products_and_services/settings/seed_data.py</code>, entries with a <code>code</code> key).</li>
+<li>Codes come from the yearly sequences <code>product</code>, <code>product_model</code>, <code>product_version</code>, <code>product_category</code>, and <code>unit_of_measure</code> (<code>src/cluster_erp/modules/products_and_services/products/services.py:325</code>, <code>src/cluster_erp/modules/products_and_services/product_models/services.py:79</code>, <code>src/cluster_erp/modules/products_and_services/product_versions/services.py:73</code>).</li>
+</ul>
+<h2 id="events-and-queries">Events and queries<a class="headerlink" href="#events-and-queries">¶</a></h2>
+<p>The module consumes 19 contracts and produces 8, counted as on the <a href="parties/index.html">parties module</a> page. The full list of producers and consumers is on the <a href="../platform/contracts-reference.html">contracts reference</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Direction</th>
+<th>Contract class</th>
+<th>Handler or emitter</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>emits</td>
+<td><code>ProductCreated</code>, <code>ServiceCreated</code></td>
+<td><code>ProductService.create</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/products/services.py:407-424</code></td>
+</tr>
+<tr>
+<td>emits</td>
+<td><code>ProductUpdated</code>, <code>ProductStatusChanged</code></td>
+<td><code>ProductService.update</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/products/services.py:582-598</code></td>
+</tr>
+<tr>
+<td>emits</td>
+<td><code>ProductDeleted</code></td>
+<td><code>ProductService.delete</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/products/services.py:652-659</code></td>
+</tr>
+<tr>
+<td>queries</td>
+<td><code>GetPartUsageCounts</code>, <code>GetProductById</code>, <code>GetPartyById</code></td>
+<td>product delete; vendor create</td>
+<td><code>src/cluster_erp/modules/products_and_services/products/services.py:609-616</code>, <code>src/cluster_erp/modules/products_and_services/vendors/services.py:96-111</code></td>
+</tr>
+<tr>
+<td>answers query</td>
+<td><code>ValidateProductBreakdown</code>, <code>GetProductDefaultBreakdown</code>, <code>GetBulkProductDefaultBreakdowns</code></td>
+<td><code>_handle_validate_breakdown</code>, <code>_handle_default_breakdown</code>, <code>_handle_bulk_default_breakdowns</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/module.py:131-138</code>, <code>src/cluster_erp/modules/products_and_services/module.py:759-916</code></td>
+</tr>
+<tr>
+<td>answers query</td>
+<td><code>GetProductById</code></td>
+<td><code>_handle_get_product</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/module.py:108</code>, <code>src/cluster_erp/modules/products_and_services/module.py:238-317</code></td>
+</tr>
+<tr>
+<td>answers query</td>
+<td><code>ConvertQuantity</code>, <code>GetUnitOfMeasure</code>, <code>FindUnitOfMeasure</code></td>
+<td>unit handlers</td>
+<td><code>src/cluster_erp/modules/products_and_services/module.py:109-115</code></td>
+</tr>
+<tr>
+<td>answers query</td>
+<td><code>IsProductManufacturable</code>, <code>IsProductPurchasable</code>, <code>IsProductSellable</code>, <code>GetProductsByMaterialType</code></td>
+<td>flag handlers</td>
+<td><code>src/cluster_erp/modules/products_and_services/module.py:116-119</code></td>
+</tr>
+<tr>
+<td>answers query</td>
+<td><code>GetProductVendors</code>, <code>GetBulkProductVendors</code>, <code>GetProductPlanningData</code>, <code>SetProductPlanningClassification</code>, <code>ApplyProductBufferZones</code></td>
+<td>planning handlers</td>
+<td><code>src/cluster_erp/modules/products_and_services/module.py:120-130</code></td>
+</tr>
+<tr>
+<td>answers query</td>
+<td><code>CreateScaffoldIntermediate</code></td>
+<td><code>_handle_create_scaffold_intermediate</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/module.py:133-135</code>, <code>src/cluster_erp/modules/products_and_services/module.py:806-875</code></td>
+</tr>
+<tr>
+<td>subscribes</td>
+<td><code>RecordActivated</code>, <code>DescribeAnalyticsFacts</code></td>
+<td><code>_on_record_activated</code>, <code>describe_analytics_facts</code></td>
+<td><code>src/cluster_erp/modules/products_and_services/module.py:107</code>, <code>src/cluster_erp/modules/products_and_services/module.py:142-147</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>CreateScaffoldIntermediate</code> creates, or reuses by SKU, a stockable semi-finished product that is not manufacturable, for the output of a routing operation (<code>src/cluster_erp/modules/products_and_services/module.py:806-875</code>). It is used by the routing scaffold described on the <a href="bom.html">BOM module</a> page.</p>
+<h2 id="permissions">Permissions<a class="headerlink" href="#permissions">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Permission key</th>
+<th>Used by</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>product.read</code>, <code>.create</code>, <code>.update</code>, <code>.delete</code>, <code>.bulk_delete</code></td>
+<td>product and photo routes</td>
+<td><code>src/cluster_erp/modules/products_and_services/products/routes.py:55-266</code></td>
+</tr>
+<tr>
+<td><code>product_model.read</code>, <code>.create</code>, <code>.update</code>, <code>.delete</code>, <code>.bulk_delete</code></td>
+<td>model and photo routes</td>
+<td><code>src/cluster_erp/modules/products_and_services/product_models/routes.py:32-199</code></td>
+</tr>
+<tr>
+<td><code>product_version.read</code>, <code>.create</code>, <code>.update</code>, <code>.delete</code>, <code>.bulk_delete</code></td>
+<td>version routes</td>
+<td><code>src/cluster_erp/modules/products_and_services/product_versions/routes.py:29-101</code></td>
+</tr>
+<tr>
+<td><code>category.read</code>, <code>.create</code>, <code>.update</code>, <code>.delete</code>, <code>.bulk_delete</code></td>
+<td>category routes</td>
+<td><code>src/cluster_erp/modules/products_and_services/categories/routes.py:28-97</code></td>
+</tr>
+<tr>
+<td><code>product_vendor.read</code>, <code>.create</code>, <code>.update</code>, <code>.delete</code>, <code>.bulk_delete</code></td>
+<td>vendor routes</td>
+<td><code>src/cluster_erp/modules/products_and_services/vendors/routes.py:34-127</code></td>
+</tr>
+<tr>
+<td><code>unit_category.*</code>, <code>unit.*</code></td>
+<td>unit routes</td>
+<td><code>src/cluster_erp/modules/products_and_services/settings/routes.py:59-265</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="privacy-retention-and-history">Privacy, retention, and history<a class="headerlink" href="#privacy-retention-and-history">¶</a></h2>
+<p>The module stores no personal data of its own and has no <code>privacy_handlers.py</code>. A vendor source keeps the vendor party's display name in <code>vendor_name_cache</code> (<code>src/cluster_erp/modules/products_and_services/vendors/models.py:51</code>, <code>src/cluster_erp/modules/products_and_services/vendors/services.py:145-148</code>). Changes are captured by <a href="../platform/change-history.html">change history</a>.</p>
+<h2 id="analytics-facts">Analytics facts<a class="headerlink" href="#analytics-facts">¶</a></h2>
+<p><code>analytics_facts.py</code> declares one fact set, <code>product</code>, over <code>products_products</code>, with the dimensions material type, status, stock form, sourcing preference, ABC indicator, active, and created date, and the measures <code>product_count</code> and <code>average_lead_time_days</code> (<code>src/cluster_erp/modules/products_and_services/analytics_facts.py:21-87</code>).</p>
+<h2 id="settings-and-reference-data">Settings and reference data<a class="headerlink" href="#settings-and-reference-data">¶</a></h2>
+<p>Unit categories and units are reference data in the database. At every start the module seeds the default set from <code>UNIT_SEED_DATA</code> (<code>src/cluster_erp/modules/products_and_services/module.py:37-50</code>, <code>src/cluster_erp/modules/products_and_services/settings/services.py:86-150</code>). The <strong>Seed Defaults</strong> action runs the same seeding on demand.</p>
+<h2 id="tests">Tests<a class="headerlink" href="#tests">¶</a></h2>
+<p>Found by a <code>grep</code> for <code>modules.products_and_services</code> in <code>tests/</code> and by file name in <code>web-client/</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Kind</th>
+<th>File</th>
+<th>Covers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pytest</td>
+<td><code>tests/test_bom_bugfix_batch_2026_10_08.py</code></td>
+<td>product metadata, unit seed data, and unit pickers used by the BOM forms (10 tests)</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_products.mjs</code></td>
+<td>the products app: list, category tree, detail, settings</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_products_service.mjs</code></td>
+<td>the service facet, multiple categories, and the type-aware form</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_product_model_versions.mjs</code></td>
+<td>the product, model, and version chain in the web app</td>
+</tr>
+<tr>
+<td>e2e</td>
+<td><code>web-client/_e2e_make_or_buy_stock.mjs</code></td>
+<td>stock size, make-or-buy, and the stock material breakdown</td>
+</tr>
+</tbody>
+</table>
+<h2 id="discrepancies">Discrepancies<a class="headerlink" href="#discrepancies">¶</a></h2>
+<aside class="adm adm-warning" role="note"><p class="adm-title">Warning</p><p>Discrepancy. The project's written engineering rules forbid a silent fallback when a model or version is missing. When an update names a stock material or a follow-up product without model and version, <code>ProductService</code> fills them with that product's default model and version, and answers 422 only when no default exists (<code>src/cluster_erp/modules/products_and_services/products/services.py:427-500</code>, <code>src/cluster_erp/modules/products_and_services/products/services.py:556-562</code>). The stored row always carries all three ids. This page documents the code.</p>
+<p><strong>Warning:</strong> Discrepancy. The project's written engineering rules list a desktop folder <code>desktop/modules/products_and_services/</code>. The folder <code>src/cluster_erp/desktop/modules/</code> has no such folder. This page documents the code.</p>
+</aside>
+<h2 id="terms-introduced">Terms introduced<a class="headerlink" href="#terms-introduced">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Code identifier</th>
+<th>Definition</th>
+<th>Turkish term</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>product</td>
+<td><code>Product</code></td>
+<td>An item or service of the material master.</td>
+<td>Ürün</td>
+<td><code>src/cluster_erp/modules/products_and_services/products/models.py:20</code></td>
+</tr>
+<tr>
+<td>product model</td>
+<td><code>ProductModel</code></td>
+<td>A variant of a product; every product has a default one.</td>
+<td>Ürün modeli</td>
+<td><code>src/cluster_erp/modules/products_and_services/product_models/models.py:17</code></td>
+</tr>
+<tr>
+<td>product version</td>
+<td><code>ProductVersion</code></td>
+<td>A version of a model; stock is kept per product, model, and version.</td>
+<td>Ürün versiyonu</td>
+<td><code>src/cluster_erp/modules/products_and_services/product_versions/models.py:16</code></td>
+</tr>
+<tr>
+<td>material type</td>
+<td><code>material_type</code></td>
+<td>The kind of product, which sets default capability flags.</td>
+<td>Malzeme türü</td>
+<td><code>src/cluster_erp/modules/products_and_services/products/schemas.py:12-21</code></td>
+</tr>
+<tr>
+<td>vendor source</td>
+<td><code>ProductVendor</code></td>
+<td>A vendor party that supplies one product breakdown, with price and lead time.</td>
+<td>Tedarikçi kaynağı</td>
+<td><code>src/cluster_erp/modules/products_and_services/vendors/models.py:14</code></td>
+</tr>
+<tr>
+<td>unit of measure</td>
+<td><code>UnitOfMeasure</code></td>
+<td>A unit with a conversion factor inside its unit category.</td>
+<td>Ölçü birimi</td>
+<td><code>src/cluster_erp/modules/products_and_services/settings/models.py:42</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="index.html">Modules index</a></li>
+<li><a href="../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li><a href="../decisions/product-model-version-breakdown.html">Decision record on the product, model, and version breakdown</a></li>
+<li><a href="bom.html">BOM module</a></li>
+<li><a href="inventory.html">Inventory module</a></li>
+<li><a href="../api/products_and_services.html">API reference for this module</a></li>
+<li>Related material, historical, not verified: the in-tree note <code>src/cluster_erp/modules/products_and_services/docs/how-to.md</code>. It does not mention product versions and uses a field <code>default_unit_id</code>, which the product model does not have (<code>src/cluster_erp/modules/products_and_services/products/models.py:103-116</code>).</li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../modules/production/work-orders.html"><span class="eyebrow">Previous</span><span>Work orders</span></a><a class="next" href="../modules/projects/index.html"><span class="eyebrow">Next</span><span>Projects module (projects)</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#at-a-glance">At a glance</a></li>
+<li class="lvl2"><a href="#what-the-module-does">What the module does</a></li>
+<li class="lvl2"><a href="#sub-modules">Sub-modules</a></li>
+<li class="lvl2"><a href="#data-model">Data model</a></li>
+<li class="lvl3"><a href="#the-product-model-and-version-breakdown">The product, model, and version breakdown</a></li>
+<li class="lvl3"><a href="#entities">Entities</a></li>
+<li class="lvl2"><a href="#screens-and-metadata">Screens and metadata</a></li>
+<li class="lvl2"><a href="#status-and-actions">Status and actions</a></li>
+<li class="lvl2"><a href="#business-rules">Business rules</a></li>
+<li class="lvl2"><a href="#events-and-queries">Events and queries</a></li>
+<li class="lvl2"><a href="#permissions">Permissions</a></li>
+<li class="lvl2"><a href="#privacy-retention-and-history">Privacy, retention, and history</a></li>
+<li class="lvl2"><a href="#analytics-facts">Analytics facts</a></li>
+<li class="lvl2"><a href="#settings-and-reference-data">Settings and reference data</a></li>
+<li class="lvl2"><a href="#tests">Tests</a></li>
+<li class="lvl2"><a href="#discrepancies">Discrepancies</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

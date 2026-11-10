@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Customer RFQs · Cluster ERP Wiki</title>
+<meta name="description" content="Reference for rfqs, rfq_line_items, and rfq_line_materials in crm, with RFQ fields, the status machine, completeness check, line items, materials, and packages.">
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="icon" href="../../assets/mark.svg" type="image/svg+xml">
+<script defer src="../../assets/mermaid.min.js"></script>
+<script defer src="../../assets/site.js" data-root="../../" data-lang="en"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  <a class="brand" href="/"><img src="../../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../../index.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="No pages match."></div>
+  </div>
+  <a class="lang-switch" href="../../modules/crm/rfqs.tr.html" lang="tr" hreflang="tr">Türkçe</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Home</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../../README.html">Cluster ERP wiki</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Overview</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../../overview/index.html">Overview</a></li>
+<li class=""><a href="../../overview/architecture-overview.html">Architecture overview</a></li>
+<li class=""><a href="../../overview/repository-map.html">Repository map</a></li>
+<li class=""><a href="../../overview/what-is-cluster-erp.html">What is Cluster ERP</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../../platform/index.html">Platform core</a></li>
+<li class=""><a href="../../platform/attachments-notes-and-storage.html">Attachments, notes, and storage</a></li>
+<li class=""><a href="../../platform/base-model-and-ids.html">Base model and ids</a></li>
+<li class=""><a href="../../platform/cache-and-asset-stamp.html">Cache and asset stamp</a></li>
+<li class=""><a href="../../platform/change-history.html">Change history</a></li>
+<li class=""><a href="../../platform/contracts-reference.html">Contracts reference</a></li>
+<li class=""><a href="../../platform/database-and-sessions.html">Database and sessions</a></li>
+<li class=""><a href="../../platform/errors-and-exceptions.html">Errors and exceptions</a></li>
+<li class=""><a href="../../platform/event-bus.html">Event bus</a></li>
+<li class=""><a href="../../platform/metadata-model.html">Metadata model</a></li>
+<li class=""><a href="../../platform/module-lifecycle.html">Module lifecycle</a></li>
+<li class=""><a href="../../platform/money-and-decimal.html">Money and Decimal</a></li>
+<li class=""><a href="../../platform/pdf-and-system-mail.html">PDF and system mail</a></li>
+<li class=""><a href="../../platform/product-breakdown-and-stock-conversion.html">Product breakdown and stock conversion</a></li>
+<li class=""><a href="../../platform/reference-data-and-core-i18n.html">Reference data and core i18n</a></li>
+<li class=""><a href="../../platform/request-pipeline-and-middleware.html">Request pipeline and middleware</a></li>
+<li class=""><a href="../../platform/search-pagination-and-bulk.html">Search, pagination, and bulk operations</a></li>
+<li class=""><a href="../../platform/server-startup-and-app-factory.html">Server startup and app factory</a></li>
+<li class=""><a href="../../platform/settings-reference.html">Settings reference</a></li>
+<li class=""><a href="../../platform/shared-server-routes.html">Shared server routes</a></li>
+<li class=""><a href="../../platform/soft-delete-and-deactivation.html">Soft delete and deactivation</a></li>
+<li class=""><a href="../../platform/tenant-fields.html">Tenant fields</a></li>
+<li class=""><a href="../../platform/working-time.html">Working time</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Identity and access</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../../identity-access/index.html">Identity, access, tenancy, privacy, and licensing</a></li>
+<li class=""><a href="../../identity-access/abac-policies.html">ABAC policies</a></li>
+<li class=""><a href="../../identity-access/app-store-licensing-and-entitlements.html">App store licensing and entitlements</a></li>
+<li class=""><a href="../../identity-access/approvals-and-approval-chains.html">Approvals and approval chains</a></li>
+<li class=""><a href="../../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
+<li class=""><a href="../../identity-access/field-and-row-access.html">Field and row access</a></li>
+<li class=""><a href="../../identity-access/multi-tenancy.html">Multi-tenancy</a></li>
+<li class=""><a href="../../identity-access/notification-rules.html">Notification rules</a></li>
+<li class=""><a href="../../identity-access/operator-console.html">Operator console</a></li>
+<li class=""><a href="../../identity-access/privacy-and-data-subject-requests.html">Privacy and data-subject requests</a></li>
+<li class=""><a href="../../identity-access/roles-and-permissions.html">Roles and permissions</a></li>
+<li class=""><a href="../../identity-access/second-factor-and-secret-storage.html">Second factor and secret storage</a></li>
+<li class=""><a href="../../identity-access/signup.html">Signup</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web app</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../../web-app/index.html">Web app platform</a></li>
+<li class=""><a href="../../web-app/actions-and-action-sheet.html">Actions and action sheet</a></li>
+<li class=""><a href="../../web-app/assistant-and-chat-ui.html">Assistant and chat screens</a></li>
+<li class=""><a href="../../web-app/boot-session-and-api.html">Boot, session, and API calls</a></li>
+<li class=""><a href="../../web-app/data-refresh-and-change-signals.html">Data refresh and change signals</a></li>
+<li class=""><a href="../../web-app/device-classes.html">Device classes</a></li>
+<li class=""><a href="../../web-app/gated-app-bundles.html">Gated app bundles</a></li>
+<li class=""><a href="../../web-app/generic-detail.html">Generic detail</a></li>
+<li class=""><a href="../../web-app/generic-form.html">Generic form</a></li>
+<li class=""><a href="../../web-app/generic-list.html">Generic list</a></li>
+<li class=""><a href="../../web-app/generic-tree-and-settings.html">Generic tree and settings screens</a></li>
+<li class=""><a href="../../web-app/home-dock-and-launcher.html">Home screen, dock, and launcher</a></li>
+<li class=""><a href="../../web-app/home-widgets.html">Home widgets</a></li>
+<li class=""><a href="../../web-app/how-to-add-a-language.html">Add a language to the web app</a></li>
+<li class=""><a href="../../web-app/how-to-add-a-screen-with-metadata.html">Add a screen with metadata</a></li>
+<li class=""><a href="../../web-app/i18n-and-languages.html">Internationalisation and languages</a></li>
+<li class=""><a href="../../web-app/mail-and-profile-screens.html">Mail and profile screens</a></li>
+<li class=""><a href="../../web-app/metadata-rendering.html">Metadata rendering</a></li>
+<li class=""><a href="../../web-app/module-apps-and-app-scope.html">Module apps and app scope</a></li>
+<li class=""><a href="../../web-app/overview.html">Web app overview</a></li>
+<li class=""><a href="../../web-app/records-documents-viewer-and-share.html">Record documents, viewer, and share</a></li>
+<li class=""><a href="../../web-app/search-and-command-palette.html">Search and command palette</a></li>
+<li class=""><a href="../../web-app/themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
+<li class=""><a href="../../web-app/user-ui-state.html">User UI state</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Desktop client</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../../desktop/index.html">Desktop client</a></li>
+<li class=""><a href="../../desktop/api-client-and-workers.html">API client and workers</a></li>
+<li class=""><a href="../../desktop/chat-widget.html">Chat widget</a></li>
+<li class=""><a href="../../desktop/generic-widgets.html">Generic widgets</a></li>
+<li class=""><a href="../../desktop/i18n-themes-and-accessibility.html">Languages, themes, and accessibility</a></li>
+<li class=""><a href="../../desktop/metadata-store-and-fk-cache.html">Metadata store and foreign-key cache</a></li>
+<li class=""><a href="../../desktop/module-screens.html">Module screens</a></li>
+<li class=""><a href="../../desktop/overview.html">Desktop client overview</a></li>
+<li class=""><a href="../../desktop/run-the-desktop-client.html">Run the desktop client</a></li>
+<li class=""><a href="../../desktop/signal-bus-and-watch-entity.html">Signal bus and watch_entity</a></li>
+<li class=""><a href="../../desktop/tabs-panes-and-layout.html">Tabs, panes, and layout</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Business modules</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../../modules/index.html">Business modules</a></li>
+<li class=""><a href="../../modules/analytics/index.html">Analytics module (analytics)</a></li>
+<li class="sub"><a href="../../modules/analytics/analytics-facts.html">Analytics facts</a></li>
+<li class="sub"><a href="../../modules/analytics/forecasting-and-classification.html">Analytics forecasting and classification</a></li>
+<li class="sub"><a href="../../modules/analytics/recipes-and-query-builder.html">Analytics recipes and query builder</a></li>
+<li class="sub"><a href="../../modules/analytics/reports-summaries-and-cross.html">Analytics reports, summaries, and cross</a></li>
+<li class="sub"><a href="../../modules/analytics/statistics-and-inference.html">Analytics statistics and inference</a></li>
+<li class=""><a href="../../modules/app_store.html">App store module (app_store)</a></li>
+<li class=""><a href="../../modules/auth.html">Auth module (auth)</a></li>
+<li class=""><a href="../../modules/bom.html">BOM module (bom)</a></li>
+<li class=""><a href="../../modules/calendars.html">Calendars module (calendars)</a></li>
+<li class=""><a href="../../modules/costing.html">Costing module (costing)</a></li>
+<li class=""><a href="../../modules/crm/index.html">CRM module (crm)</a></li>
+<li class="sub"><a href="../../modules/crm/customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li class="sub"><a href="../../modules/crm/inbox.html">RFQ inbox</a></li>
+<li class="current sub"><a href="../../modules/crm/rfqs.html">Customer RFQs</a></li>
+<li class=""><a href="../../modules/currencies.html">Currencies module (currencies)</a></li>
+<li class=""><a href="../../modules/design_engineering.html">Design engineering module (design_engineering)</a></li>
+<li class=""><a href="../../modules/documents.html">Documents module (documents)</a></li>
+<li class=""><a href="../../modules/fleet/index.html">Fleet module (fleet)</a></li>
+<li class="sub"><a href="../../modules/fleet/assets.html">Fleet assets</a></li>
+<li class="sub"><a href="../../modules/fleet/maintenance-and-work-orders.html">Fleet maintenance and work orders</a></li>
+<li class="sub"><a href="../../modules/fleet/meters-and-fuel.html">Fleet meters and fuel</a></li>
+<li class="sub"><a href="../../modules/fleet/operations.html">Fleet operations</a></li>
+<li class="sub"><a href="../../modules/fleet/tco-telematics-and-analytics.html">Fleet TCO, telematics, and analytics</a></li>
+<li class=""><a href="../../modules/intranet/index.html">Intranet module (intranet)</a></li>
+<li class="sub"><a href="../../modules/intranet/access-audience-and-retention.html">Intranet access, audience, and retention</a></li>
+<li class="sub"><a href="../../modules/intranet/content-and-feed.html">Intranet content and feed</a></li>
+<li class="sub"><a href="../../modules/intranet/directory.html">Intranet directory</a></li>
+<li class="sub"><a href="../../modules/intranet/engagement.html">Intranet engagement</a></li>
+<li class="sub"><a href="../../modules/intranet/events.html">Intranet events</a></li>
+<li class="sub"><a href="../../modules/intranet/leave.html">Intranet leave</a></li>
+<li class="sub"><a href="../../modules/intranet/my-documents.html">Intranet my documents</a></li>
+<li class="sub"><a href="../../modules/intranet/notifications-and-delivery.html">Intranet notifications and delivery</a></li>
+<li class="sub"><a href="../../modules/intranet/requests.html">Intranet requests</a></li>
+<li class=""><a href="../../modules/inventory.html">Inventory module (inventory)</a></li>
+<li class=""><a href="../../modules/logs.html">Logs module (logs)</a></li>
+<li class=""><a href="../../modules/mail.html">Mail module (mail)</a></li>
+<li class=""><a href="../../modules/nesting/index.html">Nesting module (nesting)</a></li>
+<li class="sub"><a href="../../modules/nesting/engine.html">Nesting engine</a></li>
+<li class="sub"><a href="../../modules/nesting/integration-and-kpi.html">Nesting integration and KPI</a></li>
+<li class="sub"><a href="../../modules/nesting/jobs-parts-and-remnants.html">Nesting jobs, parts, and remnants</a></li>
+<li class=""><a href="../../modules/owned_organisations.html">Owned organisations module (owned_organisations)</a></li>
+<li class=""><a href="../../modules/parties/index.html">Parties module (parties)</a></li>
+<li class="sub"><a href="../../modules/parties/addresses.html">Addresses reference</a></li>
+<li class="sub"><a href="../../modules/parties/communication-channels.html">Communication channels reference</a></li>
+<li class="sub"><a href="../../modules/parties/parties.html">Parties sub-module reference</a></li>
+<li class="sub"><a href="../../modules/parties/party-unification.html">Party unification</a></li>
+<li class="sub"><a href="../../modules/parties/person-languages.html">Person languages reference</a></li>
+<li class="sub"><a href="../../modules/parties/settings-and-reference-data.html">Parties settings and reference data</a></li>
+<li class=""><a href="../../modules/privacy.html">Privacy module (privacy)</a></li>
+<li class=""><a href="../../modules/procurement/index.html">Procurement module (procurement)</a></li>
+<li class="sub"><a href="../../modules/procurement/critical-materials-and-substitution.html">Critical materials and substitution</a></li>
+<li class="sub"><a href="../../modules/procurement/mrp.html">Material requirements planning</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-contracts-and-info-records.html">Purchase contracts and info records</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-orders.html">Purchase orders</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-requests.html">Purchase requests</a></li>
+<li class="sub"><a href="../../modules/procurement/purchase-rfqs.html">Purchasing RFQs</a></li>
+<li class="sub"><a href="../../modules/procurement/suppliers.html">Suppliers</a></li>
+<li class=""><a href="../../modules/production/index.html">Production module (production)</a></li>
+<li class="sub"><a href="../../modules/production/production-orders-and-versions.html">Production orders and versions</a></li>
+<li class="sub"><a href="../../modules/production/routings-and-operation-types.html">Routings and operation types</a></li>
+<li class="sub"><a href="../../modules/production/scheduling.html">Production scheduling</a></li>
+<li class="sub"><a href="../../modules/production/work-centers-and-capacity.html">Work centers and capacity</a></li>
+<li class="sub"><a href="../../modules/production/work-orders.html">Work orders</a></li>
+<li class=""><a href="../../modules/products_and_services.html">Products and services module (products_and_services)</a></li>
+<li class=""><a href="../../modules/projects/index.html">Projects module (projects)</a></li>
+<li class="sub"><a href="../../modules/projects/actions-activities-and-meetings.html">Project actions, activities, and meetings</a></li>
+<li class="sub"><a href="../../modules/projects/board.html">Project board</a></li>
+<li class="sub"><a href="../../modules/projects/projects-and-items.html">Projects, items, and fixtures</a></li>
+<li class="sub"><a href="../../modules/projects/schedules.html">Project schedules</a></li>
+<li class=""><a href="../../modules/purchasing_quotations.html">Purchasing quotations module (purchasing_quotations)</a></li>
+<li class=""><a href="../../modules/quotations.html">Quotations module (quotations)</a></li>
+<li class=""><a href="../../modules/records.html">Records module (records)</a></li>
+<li class=""><a href="../../modules/sales_orders/index.html">Sales orders module (sales_orders)</a></li>
+<li class="sub"><a href="../../modules/sales_orders/orders-and-lines.html">Sales orders and order lines</a></li>
+<li class="sub"><a href="../../modules/sales_orders/shipments.html">Shipments</a></li>
+<li class="sub"><a href="../../modules/sales_orders/trade-documents.html">Trade documents</a></li>
+<li class="sub"><a href="../../modules/sales_orders/units-and-settings.html">Sales order units and settings</a></li>
+<li class=""><a href="../../modules/subscriptions.html">Subscriptions module (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Assistant</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../../ai/index.html">Intent assistant</a></li>
+<li class=""><a href="../../ai/intent-assistant.html">How the intent assistant works</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API reference</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../../api/index.html">API reference</a></li>
+<li class=""><a href="../../api/analytics.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../../api/app_store.html">App store API (app_store)</a></li>
+<li class=""><a href="../../api/auth.html">Auth API (auth)</a></li>
+<li class=""><a href="../../api/authentication-and-headers.html">Authentication and headers</a></li>
+<li class=""><a href="../../api/bom.html">BOM API (bom)</a></li>
+<li class=""><a href="../../api/calendars.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../../api/conventions.html">API conventions</a></li>
+<li class=""><a href="../../api/costing.html">Costing API (costing)</a></li>
+<li class=""><a href="../../api/crm.html">CRM API (crm)</a></li>
+<li class=""><a href="../../api/currencies.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../../api/design_engineering.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../../api/documents.html">Documents API (documents)</a></li>
+<li class=""><a href="../../api/errors.html">Errors</a></li>
+<li class="sub"><a href="../../api/errors/business-error-codes.html">Business error codes</a></li>
+<li class=""><a href="../../api/fleet.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../../api/intranet.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../../api/inventory.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../../api/logs.html">Logs API (logs)</a></li>
+<li class=""><a href="../../api/mail.html">Mail API (mail)</a></li>
+<li class=""><a href="../../api/nesting.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../../api/overview.html">API overview</a></li>
+<li class=""><a href="../../api/owned_organisations.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../../api/parties.html">Parties API (parties)</a></li>
+<li class=""><a href="../../api/privacy.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../../api/procurement.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../../api/procurement/critical_materials.html">Procurement API: Critical materials endpoints (critical_materials)</a></li>
+<li class="sub"><a href="../../api/procurement/info_records.html">Procurement API: Purchasing info records endpoints (info_records)</a></li>
+<li class="sub"><a href="../../api/procurement/mrp.html">Procurement API: MRP endpoints (mrp)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_contracts.html">Procurement API: Purchase contracts endpoints (purchase_contracts)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_orders.html">Procurement API: Purchase orders endpoints (purchase_orders)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_requests.html">Procurement API: Purchase requests endpoints (purchase_requests)</a></li>
+<li class="sub"><a href="../../api/procurement/purchase_rfqs.html">Procurement API: Purchase RFQs endpoints (purchase_rfqs)</a></li>
+<li class="sub"><a href="../../api/procurement/substitution_groups.html">Procurement API: Substitution groups endpoints (substitution_groups)</a></li>
+<li class="sub"><a href="../../api/procurement/suppliers.html">Procurement API: Suppliers endpoints (suppliers)</a></li>
+<li class=""><a href="../../api/production.html">Production API (production)</a></li>
+<li class=""><a href="../../api/products_and_services.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../../api/projects.html">Projects API (projects)</a></li>
+<li class=""><a href="../../api/purchasing_quotations.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../../api/quotations.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../../api/records.html">Records API (records)</a></li>
+<li class=""><a href="../../api/sales_orders.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../../api/server-routes.html">Shared server routes API</a></li>
+<li class=""><a href="../../api/subscriptions.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../../api/system-endpoints.html">System endpoints API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Operations</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../../operations/index.html">Operations</a></li>
+<li class=""><a href="../../operations/backups-and-restore.html">Backups and restore</a></li>
+<li class=""><a href="../../operations/ci-pipeline-and-release.html">CI pipeline and release</a></li>
+<li class=""><a href="../../operations/configuration-reference.html">Configuration reference</a></li>
+<li class=""><a href="../../operations/container-measurement.html">Container measurement</a></li>
+<li class=""><a href="../../operations/data-residency-check.html">Data residency check</a></li>
+<li class=""><a href="../../operations/database-migrations.html">Database migrations</a></li>
+<li class=""><a href="../../operations/demo-and-staging-data.html">Demo and staging data</a></li>
+<li class=""><a href="../../operations/environments-and-promotion.html">Environments and promotion</a></li>
+<li class=""><a href="../../operations/install-a-linux-node.html">Install a Linux node</a></li>
+<li class=""><a href="../../operations/local-development-setup.html">Local development setup</a></li>
+<li class=""><a href="../../operations/postgresql-roles-and-tuning.html">PostgreSQL roles and tuning</a></li>
+<li class=""><a href="../../operations/reverse-proxy.html">Reverse proxy</a></li>
+<li class=""><a href="../../operations/scheduled-jobs-and-retention.html">Scheduled jobs and retention</a></li>
+<li class=""><a href="../../operations/security-txt-and-readiness.html">Security.txt and readiness</a></li>
+<li class=""><a href="../../operations/service-and-process-manager.html">Service and process manager</a></li>
+<li class=""><a href="../../operations/tenant-lifecycle.html">Tenant lifecycle</a></li>
+<li class=""><a href="../../operations/windows-installer.html">Windows installer</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Contributing</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../../contributing/index.html">Contributing</a></li>
+<li class=""><a href="../../contributing/architecture-boundaries.html">Architecture boundaries</a></li>
+<li class=""><a href="../../contributing/coding-rules.html">Coding rules</a></li>
+<li class=""><a href="../../contributing/developer-tools-and-scripts.html">Developer tools and scripts</a></li>
+<li class=""><a href="../../contributing/e2e-battery.html">E2e battery</a></li>
+<li class=""><a href="../../contributing/e2e-suite-catalogue.html">E2e suite catalogue</a></li>
+<li class=""><a href="../../contributing/lint-and-type-check.html">Lint and type check</a></li>
+<li class=""><a href="../../contributing/python-tests.html">Python tests</a></li>
+<li class=""><a href="../../contributing/write-a-backend-module.html">Write a backend module</a></li>
+<li class=""><a href="../../contributing/writing-documentation.html">Write a wiki page</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Decision records</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../../decisions/index.html">Decision records</a></li>
+<li class=""><a href="../../decisions/data-driven-languages.html">Data-driven languages</a></li>
+<li class=""><a href="../../decisions/decimal-money.html">Decimal money</a></li>
+<li class=""><a href="../../decisions/eventbus-only-inter-module-communication.html">EventBus-only inter-module communication</a></li>
+<li class=""><a href="../../decisions/metadata-driven-ui.html">Metadata-driven UI</a></li>
+<li class=""><a href="../../decisions/no-hard-delete.html">No hard delete</a></li>
+<li class=""><a href="../../decisions/party-unification.html">Party unification</a></li>
+<li class=""><a href="../../decisions/product-model-version-breakdown.html">Product, model, and version breakdown</a></li>
+<li class=""><a href="../../decisions/server-side-ui-state.html">Server-side UI state</a></li>
+<li class=""><a href="../../decisions/ulid-primary-keys.html">ULID primary keys</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Reference</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../../reference/index.html">Reference</a></li>
+<li class=""><a href="../../reference/glossary.html">Glossary</a></li>
+<li class=""><a href="../../reference/related-material.html">Related material</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../../index.html">Home</a> / Business modules</div>
+    <header class="page-head">
+      <p class="eyebrow">Reference</p>
+      <h1>Customer RFQs</h1>
+      <p class="lede">Reference for rfqs, rfq_line_items, and rfq_line_materials in crm, with RFQ fields, the status machine, completeness check, line items, materials, and packages.</p>
+    </header>
+    <nav class="toc" aria-label="Contents"><p class="eyebrow">Contents</p><ul class="outline">
+<li class="lvl2"><a href="#scope-and-source">Scope and source</a></li>
+<li class="lvl2"><a href="#rfq-fields">RFQ fields</a></li>
+<li class="lvl2"><a href="#child-records">Child records</a></li>
+<li class="lvl2"><a href="#statuses-and-actions">Statuses and actions</a></li>
+<li class="lvl2"><a href="#routes">Routes</a></li>
+<li class="lvl2"><a href="#constraints-and-validation">Constraints and validation</a></li>
+<li class="lvl2"><a href="#discrepancies">Discrepancies</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul></nav>
+    <article class="prose">
+<p>This page describes three sub-modules of <code>src/cluster_erp/modules/crm/</code>: <code>rfqs/</code>, <code>rfq_line_items/</code>, and <code>rfq_line_materials/</code>. A customer RFQ (<code>Rfq</code>) records what a customer asks the company to quote: its lines, the materials of each line, and a package of drawings and files. A quote in the <code>quotations</code> module answers it. The purchasing RFQ that the company sends to its own vendors is a different record; see <a href="../procurement/purchase-rfqs.html">purchasing RFQs</a>.</p>
+<h2 id="scope-and-source">Scope and source<a class="headerlink" href="#scope-and-source">¶</a></h2>
+<ul>
+<li>Defined in: <code>rfqs/models.py</code> (<code>Rfq</code>, <code>RfqPackage</code>), <code>rfqs/services.py</code> (<code>RfqService</code>, <code>_ACTION_RULES</code>), the same files of <code>rfq_line_items</code> and <code>rfq_line_materials</code>, and their <code>routes.py</code> and <code>metadata.py</code>.</li>
+<li>Count: 4 tables; 18 RFQ routes, 6 line item routes, and 6 material routes (<code>@router.</code> decorators); 8 <code>ActionMeta</code> entries.</li>
+</ul>
+<h2 id="rfq-fields">RFQ fields<a class="headerlink" href="#rfq-fields">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Group</th>
+<th>Fields</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Identity</td>
+<td><code>code</code> (yearly sequence <code>request_for_quotation</code>), <code>customer_id</code>, <code>subject</code>, <code>source</code> (default <code>manual</code>)</td>
+<td><code>src/cluster_erp/modules/crm/rfqs/models.py:21-34</code>, <code>src/cluster_erp/modules/crm/rfqs/services.py:173</code></td>
+</tr>
+<tr>
+<td>Timing</td>
+<td><code>received_at</code>, <code>due_date</code>, <code>priority</code> (default <code>normal</code>)</td>
+<td><code>src/cluster_erp/modules/crm/rfqs/models.py:35-48</code></td>
+</tr>
+<tr>
+<td>Status</td>
+<td><code>status</code> (default <code>new</code>)</td>
+<td><code>src/cluster_erp/modules/crm/rfqs/models.py:49-55</code></td>
+</tr>
+<tr>
+<td>Lifecycle record</td>
+<td><code>assigned_to</code>, <code>assigned_at</code>, <code>assigned_by</code>, <code>quoted_at</code>, <code>quoted_by</code>, <code>won_at</code>, <code>won_by</code>, <code>lost_at</code>, <code>lost_by</code>, <code>lost_reason</code>, <code>expired_at</code>, <code>expired_by</code>, <code>declined_reason</code>, <code>declined_at</code>, <code>declined_by</code></td>
+<td><code>src/cluster_erp/modules/crm/rfqs/models.py:56-80</code></td>
+</tr>
+<tr>
+<td>Portal reference</td>
+<td><code>ariba_event_id</code></td>
+<td><code>src/cluster_erp/modules/crm/rfqs/models.py:81</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="child-records">Child records<a class="headerlink" href="#child-records">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Entity</th>
+<th>Table</th>
+<th>Key fields</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RfqPackage</code></td>
+<td><code>crm_rfq_packages</code></td>
+<td><code>code</code> (yearly sequence <code>rfq_package</code>), <code>rfq_id</code>, <code>name</code>, <code>folder_path</code>, <code>package_complete</code></td>
+<td><code>src/cluster_erp/modules/crm/rfqs/models.py:87-104</code>, <code>src/cluster_erp/modules/crm/rfqs/services.py:583</code></td>
+</tr>
+<tr>
+<td><code>RfqLineItem</code></td>
+<td><code>crm_rfq_line_items</code></td>
+<td><code>rfq_id</code>, <code>line_no</code>, <code>part_no_customer</code>, <code>customer_part_id</code>, <code>description</code>, <code>qty</code> (integer), <code>uom</code>, <code>material_spec</code>, <code>drawing_attachment_id</code>, <code>notes</code></td>
+<td><code>src/cluster_erp/modules/crm/rfq_line_items/models.py:12-42</code></td>
+</tr>
+<tr>
+<td><code>RfqLineMaterial</code></td>
+<td><code>crm_rfq_line_materials</code></td>
+<td><code>rfq_line_item_id</code>, <code>seq</code>, <code>component_description</code>, <code>material_spec</code>, <code>notes</code></td>
+<td><code>src/cluster_erp/modules/crm/rfq_line_materials/models.py:12-30</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="statuses-and-actions">Statuses and actions<a class="headerlink" href="#statuses-and-actions">¶</a></h2>
+<p><code>_ACTION_RULES</code> names, for each action, the target status, the allowed source statuses, and whether a reason is required (<code>src/cluster_erp/modules/crm/rfqs/services.py:60-72</code>).</p>
+<figure class="diagram"><pre class="mermaid">stateDiagram-v2
+ [*] --&gt; new
+ new --&gt; in_review: assign
+ in_review --&gt; in_review: assign
+ in_review --&gt; quoted: quote
+ new --&gt; declined: decline
+ in_review --&gt; declined: decline
+ new --&gt; expired: expire
+ in_review --&gt; expired: expire
+ quoted --&gt; expired: expire
+ quoted --&gt; won: win
+ quoted --&gt; lost: lose
+ declined --&gt; in_review: reopen
+ expired --&gt; in_review: reopen
+ lost --&gt; in_review: reopen</pre></figure>
+<p>In prose: a new RFQ is assigned and reviewed, then marked quoted. A quoted RFQ is won, lost, or expires. A new or reviewed RFQ can be declined or expire. A declined, expired, or lost RFQ can be reopened. <code>decline</code> and <code>lose</code> need a reason. Every transition checks the record version (<code>src/cluster_erp/modules/crm/rfqs/services.py:278-304</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Label</th>
+<th>Condition</th>
+<th>Endpoint</th>
+<th>Permission</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>assign</code></td>
+<td><strong>Assign</strong></td>
+<td><code>status</code> is <code>new</code> or <code>in_review</code></td>
+<td><code>POST /rfqs/{id}/assign</code></td>
+<td><code>rfq.assign</code></td>
+<td><code>src/cluster_erp/modules/crm/rfqs/metadata.py:80-103</code>, <code>src/cluster_erp/modules/crm/rfqs/routes.py:170</code></td>
+</tr>
+<tr>
+<td><code>quote</code></td>
+<td><strong>Mark as Quoted</strong></td>
+<td><code>status</code> is <code>in_review</code></td>
+<td><code>POST /rfqs/{id}/quote</code></td>
+<td><code>rfq.quote</code></td>
+<td><code>src/cluster_erp/modules/crm/rfqs/metadata.py:104-114</code>, <code>src/cluster_erp/modules/crm/rfqs/routes.py:188</code></td>
+</tr>
+<tr>
+<td><code>decline</code></td>
+<td><strong>Decline</strong></td>
+<td><code>status</code> is <code>new</code> or <code>in_review</code></td>
+<td><code>POST /rfqs/{id}/decline</code></td>
+<td><code>rfq.decline</code></td>
+<td><code>src/cluster_erp/modules/crm/rfqs/metadata.py:115-134</code>, <code>src/cluster_erp/modules/crm/rfqs/routes.py:201</code></td>
+</tr>
+<tr>
+<td><code>expire</code></td>
+<td><strong>Mark as Expired</strong></td>
+<td><code>status</code> is <code>new</code>, <code>in_review</code>, or <code>quoted</code></td>
+<td><code>POST /rfqs/{id}/expire</code></td>
+<td><code>rfq.expire</code></td>
+<td><code>src/cluster_erp/modules/crm/rfqs/metadata.py:135-145</code>, <code>src/cluster_erp/modules/crm/rfqs/routes.py:214</code></td>
+</tr>
+<tr>
+<td><code>win</code></td>
+<td><strong>Mark as Won</strong></td>
+<td><code>status</code> is <code>quoted</code></td>
+<td><code>POST /rfqs/{id}/win</code></td>
+<td><code>rfq.win</code></td>
+<td><code>src/cluster_erp/modules/crm/rfqs/metadata.py:146-156</code>, <code>src/cluster_erp/modules/crm/rfqs/routes.py:227</code></td>
+</tr>
+<tr>
+<td><code>lose</code></td>
+<td><strong>Mark as Lost</strong></td>
+<td><code>status</code> is <code>quoted</code></td>
+<td><code>POST /rfqs/{id}/lose</code></td>
+<td><code>rfq.lose</code></td>
+<td><code>src/cluster_erp/modules/crm/rfqs/metadata.py:157-176</code>, <code>src/cluster_erp/modules/crm/rfqs/routes.py:240</code></td>
+</tr>
+<tr>
+<td><code>reopen</code></td>
+<td><strong>Reopen</strong></td>
+<td><code>status</code> is <code>declined</code>, <code>expired</code>, or <code>lost</code></td>
+<td><code>POST /rfqs/{id}/reopen</code></td>
+<td><code>rfq.reopen</code></td>
+<td><code>src/cluster_erp/modules/crm/rfqs/metadata.py:177-187</code>, <code>src/cluster_erp/modules/crm/rfqs/routes.py:253</code></td>
+</tr>
+<tr>
+<td><code>from_bom</code> (material)</td>
+<td><strong>Fetch from BOM</strong></td>
+<td>on a line item</td>
+<td><code>POST /line-items/{parent_id}/materials/from-bom</code></td>
+<td><code>rfq_line_material.create</code></td>
+<td><code>src/cluster_erp/modules/crm/rfq_line_materials/metadata.py:43-52</code>, <code>src/cluster_erp/modules/crm/rfq_line_materials/routes.py:65</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="routes">Routes<a class="headerlink" href="#routes">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Method and path</th>
+<th>Permission</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code>, <code>POST /rfqs/</code>; <code>GET</code>, <code>PUT</code>, <code>DELETE /rfqs/{rfq_id}</code>; <code>POST /rfqs/bulk-delete</code></td>
+<td><code>rfq.read</code>, <code>.create</code>, <code>.update</code>, <code>.delete</code>, <code>.bulk_delete</code></td>
+<td><code>src/cluster_erp/modules/crm/rfqs/routes.py:51-138</code></td>
+</tr>
+<tr>
+<td><code>GET /rfqs/{rfq_id}/completeness</code></td>
+<td><code>rfq.read</code></td>
+<td><code>src/cluster_erp/modules/crm/rfqs/routes.py:153</code></td>
+</tr>
+<tr>
+<td><code>GET</code>, <code>POST /rfqs/{rfq_id}/rfq-package</code>; <code>PUT</code>, <code>DELETE /rfq-packages/{package_id}</code></td>
+<td><code>rfq_package.read</code>, <code>.create</code>, <code>.update</code>, <code>.delete</code></td>
+<td><code>src/cluster_erp/modules/crm/rfqs/routes.py:269-318</code></td>
+</tr>
+<tr>
+<td><code>GET</code>, <code>POST /rfqs/{rfq_id}/line-items</code>; <code>GET</code>, <code>PUT</code>, <code>DELETE /line-items/{line_item_id}</code>; <code>POST /line-items/bulk-delete</code></td>
+<td><code>rfq_line_item.read</code>, <code>.create</code>, <code>.update</code>, <code>.delete</code>, <code>.bulk_delete</code></td>
+<td><code>src/cluster_erp/modules/crm/rfq_line_items/routes.py:23-103</code></td>
+</tr>
+<tr>
+<td><code>GET</code>, <code>POST /line-items/{line_item_id}/materials</code>; <code>PUT</code>, <code>DELETE /line-materials/{material_id}</code>; <code>POST /line-materials/bulk-delete</code></td>
+<td><code>rfq_line_material.read</code>, <code>.create</code>, <code>.update</code>, <code>.delete</code></td>
+<td><code>src/cluster_erp/modules/crm/rfq_line_materials/routes.py:29-123</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="constraints-and-validation">Constraints and validation<a class="headerlink" href="#constraints-and-validation">¶</a></h2>
+<ul>
+<li>Create needs an existing customer. An RFQ with the same subject for the same customer within 7 days is refused (<code>src/cluster_erp/modules/crm/rfqs/services.py:147-160</code>, <code>src/cluster_erp/modules/crm/rfqs/services.py:506-527</code>).</li>
+<li>A <code>normal</code> RFQ due within <code>PRIORITY_THRESHOLD_HOURS</code> (48) becomes <code>high</code> (<code>src/cluster_erp/modules/crm/rfqs/services.py:82</code>, <code>src/cluster_erp/modules/crm/rfqs/services.py:165-172</code>).</li>
+<li><code>quote</code> is blocked while the completeness log has unmet items: a due date, at least one line item, and an e-mail or communication channel of the customer, counted with <code>CountPartyChannels</code> (<code>src/cluster_erp/modules/crm/rfqs/services.py:326-417</code>).</li>
+<li>When a package becomes complete, <code>RfqPackageCompleted</code> is emitted (<code>src/cluster_erp/modules/crm/rfqs/services.py:593-620</code>).</li>
+<li><code>from-bom</code> takes the product of the line's customer part and asks <code>GetBomMaterials</code> for the distinct leaf materials (<code>src/cluster_erp/modules/crm/rfq_line_materials/services.py:95-130</code>).</li>
+<li>Events: <code>RfqReceived</code>, <code>RfqUpdated</code>, <code>RfqAssigned</code>, <code>RfqDeclined</code>, <code>RfqExpired</code>, <code>RfqWon</code>, <code>RfqLost</code> (<code>src/cluster_erp/modules/crm/rfqs/services.py:193</code>, <code>src/cluster_erp/modules/crm/rfqs/services.py:254</code>, <code>src/cluster_erp/modules/crm/rfqs/services.py:322</code>, <code>src/cluster_erp/modules/crm/rfqs/services.py:434</code>, <code>src/cluster_erp/modules/crm/rfqs/services.py:468</code>, <code>src/cluster_erp/modules/crm/rfqs/services.py:487</code>).</li>
+<li>Delete sets <code>deleted_at</code> (<code>src/cluster_erp/modules/crm/rfqs/services.py:263-269</code>).</li>
+</ul>
+<h2 id="discrepancies">Discrepancies<a class="headerlink" href="#discrepancies">¶</a></h2>
+<aside class="adm adm-warning" role="note"><p class="adm-title">Warning</p><p>Discrepancy. The project's written engineering rules forbid a silent fallback from model and version to the product. <code>from-bom</code> passes only the customer part's <code>part_id</code> to <code>GetBomMaterials</code>, and the handler takes the newest active BOM version of any breakdown of that product (<code>src/cluster_erp/modules/crm/rfq_line_materials/services.py:116</code>, <code>src/cluster_erp/modules/bom/module.py:544-558</code>). This page documents the code.</p>
+<p><strong>Warning:</strong> Discrepancy. The project's written engineering rules forbid fixed values in code. The duplicate-subject window is a default parameter of 7 days (<code>src/cluster_erp/modules/crm/rfqs/services.py:506-512</code>). This page documents the code.</p>
+</aside>
+<h2 id="terms-introduced">Terms introduced<a class="headerlink" href="#terms-introduced">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Code identifier</th>
+<th>Definition</th>
+<th>Turkish term</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RFQ package</td>
+<td><code>RfqPackage</code></td>
+<td>The folder of drawings and files that comes with a customer RFQ.</td>
+<td>Teklif talebi paketi</td>
+<td><code>src/cluster_erp/modules/crm/rfqs/models.py:87</code></td>
+</tr>
+<tr>
+<td>RFQ line material</td>
+<td><code>RfqLineMaterial</code></td>
+<td>A material component listed for one RFQ line.</td>
+<td>Teklif talebi kalem malzemesi</td>
+<td><code>src/cluster_erp/modules/crm/rfq_line_materials/models.py:12</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
+<ul>
+<li><a href="index.html">CRM module</a></li>
+<li><a href="customers-and-customer-parts.html">Customers and customer parts</a></li>
+<li><a href="inbox.html">Inbox</a></li>
+<li><a href="../quotations.html">Quotations module</a></li>
+</ul>
+<hr>
+<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../../modules/crm/inbox.html"><span class="eyebrow">Previous</span><span>RFQ inbox</span></a><a class="next" href="../../modules/currencies.html"><span class="eyebrow">Next</span><span>Currencies module (currencies)</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">On this page</p><ul class="outline">
+<li class="lvl2"><a href="#scope-and-source">Scope and source</a></li>
+<li class="lvl2"><a href="#rfq-fields">RFQ fields</a></li>
+<li class="lvl2"><a href="#child-records">Child records</a></li>
+<li class="lvl2"><a href="#statuses-and-actions">Statuses and actions</a></li>
+<li class="lvl2"><a href="#routes">Routes</a></li>
+<li class="lvl2"><a href="#constraints-and-validation">Constraints and validation</a></li>
+<li class="lvl2"><a href="#discrepancies">Discrepancies</a></li>
+<li class="lvl2"><a href="#terms-introduced">Terms introduced</a></li>
+<li class="lvl2"><a href="#related-pages">Related pages</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+</body>
+</html>

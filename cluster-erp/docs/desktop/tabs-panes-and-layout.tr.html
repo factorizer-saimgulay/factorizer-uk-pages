@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sekmeler, bölmeler ve yerleşim · Cluster ERP Wiki</title>
+<meta name="description" content="Masaüstü ana penceresi, kenar çubuğu, bölmeler, sekme yöneticisi ve bölme denetleyicisinin ekranları açması, izlemesi ve saklaması.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<script defer src="../assets/mermaid.min.js"></script>
+<script defer src="../assets/site.js" data-root="../" data-lang="tr"></script>
+</head>
+<body class="grid-canvas">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sidebar">Menü</button>
+  <a class="brand" href="/"><img src="../assets/mark.svg" alt="" width="20" height="20"><span class="brand-name">Factorizer</span></a><span class="brand-sep">/</span><a class="brand brand-wiki" href="../index.tr.html"><span class="brand-site">Cluster ERP Wiki</span></a><a class="site-link" href="/cluster-erp/">Cluster ERP</a>
+  <div class="search" role="search">
+    <input id="search-input" type="search" placeholder="Wiki&#x27;de ara" aria-label="Wiki&#x27;de ara" autocomplete="off">
+    <div id="search-results" class="search-results" hidden data-empty="Eşleşen sayfa yok."></div>
+  </div>
+  <a class="lang-switch" href="../desktop/tabs-panes-and-layout.html" lang="en" hreflang="en">English</a>
+</header>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <nav class="sidenav" aria-label="Wiki">
+<details class="navsec"><summary><span class="eyebrow">Ana sayfa</span><span class="count">1</span></summary><ul>
+<li class=""><a href="../README.tr.html">Cluster ERP wiki&#x27;si</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Genel bakış</span><span class="count">4</span></summary><ul>
+<li class=""><a href="../overview/index.tr.html">Genel bakış</a></li>
+<li class=""><a href="../overview/architecture-overview.tr.html">Mimariye genel bakış</a></li>
+<li class=""><a href="../overview/repository-map.tr.html">Depo haritası</a></li>
+<li class=""><a href="../overview/what-is-cluster-erp.tr.html">Cluster ERP nedir</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Platform</span><span class="count">23</span></summary><ul>
+<li class=""><a href="../platform/index.tr.html">Platform çekirdeği</a></li>
+<li class=""><a href="../platform/attachments-notes-and-storage.tr.html">Ekler, notlar ve depolama</a></li>
+<li class=""><a href="../platform/base-model-and-ids.tr.html">Temel model ve kimlikler</a></li>
+<li class=""><a href="../platform/cache-and-asset-stamp.tr.html">Önbellek ve varlık damgası</a></li>
+<li class=""><a href="../platform/change-history.tr.html">Değişiklik geçmişi</a></li>
+<li class=""><a href="../platform/contracts-reference.tr.html">Sözleşmeler başvurusu</a></li>
+<li class=""><a href="../platform/database-and-sessions.tr.html">Veritabanı ve oturumlar</a></li>
+<li class=""><a href="../platform/errors-and-exceptions.tr.html">Hatalar ve istisnalar</a></li>
+<li class=""><a href="../platform/event-bus.tr.html">Olay veri yolu</a></li>
+<li class=""><a href="../platform/metadata-model.tr.html">Metadata modeli</a></li>
+<li class=""><a href="../platform/module-lifecycle.tr.html">Modül yaşam döngüsü</a></li>
+<li class=""><a href="../platform/money-and-decimal.tr.html">Para ve Decimal</a></li>
+<li class=""><a href="../platform/pdf-and-system-mail.tr.html">PDF ve sistem postası</a></li>
+<li class=""><a href="../platform/product-breakdown-and-stock-conversion.tr.html">Ürün kırılımı ve stok dönüşümü</a></li>
+<li class=""><a href="../platform/reference-data-and-core-i18n.tr.html">Referans veriler ve çekirdek i18n</a></li>
+<li class=""><a href="../platform/request-pipeline-and-middleware.tr.html">İstek hattı ve ara katmanlar</a></li>
+<li class=""><a href="../platform/search-pagination-and-bulk.tr.html">Arama, sayfalama ve toplu işlemler</a></li>
+<li class=""><a href="../platform/server-startup-and-app-factory.tr.html">Sunucu açılışı ve uygulama fabrikası</a></li>
+<li class=""><a href="../platform/settings-reference.tr.html">Ayarlar başvurusu</a></li>
+<li class=""><a href="../platform/shared-server-routes.tr.html">Ortak sunucu rotaları</a></li>
+<li class=""><a href="../platform/soft-delete-and-deactivation.tr.html">Yumuşak silme ve kullanımdan kaldırma</a></li>
+<li class=""><a href="../platform/tenant-fields.tr.html">Kiracı alanları</a></li>
+<li class=""><a href="../platform/working-time.tr.html">Çalışma zamanı</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Kimlik ve erişim</span><span class="count">13</span></summary><ul>
+<li class=""><a href="../identity-access/index.tr.html">Kimlik, erişim, kiracılık, gizlilik ve lisans</a></li>
+<li class=""><a href="../identity-access/abac-policies.tr.html">ABAC politikaları</a></li>
+<li class=""><a href="../identity-access/app-store-licensing-and-entitlements.tr.html">Uygulama mağazası lisansları ve hakları</a></li>
+<li class=""><a href="../identity-access/approvals-and-approval-chains.tr.html">Onaylar ve onay zincirleri</a></li>
+<li class=""><a href="../identity-access/authentication-and-sessions.tr.html">Kimlik doğrulama ve oturumlar</a></li>
+<li class=""><a href="../identity-access/field-and-row-access.tr.html">Alan ve satır erişimi</a></li>
+<li class=""><a href="../identity-access/multi-tenancy.tr.html">Çok kiracılılık</a></li>
+<li class=""><a href="../identity-access/notification-rules.tr.html">Bildirim kuralları</a></li>
+<li class=""><a href="../identity-access/operator-console.tr.html">Operatör konsolu</a></li>
+<li class=""><a href="../identity-access/privacy-and-data-subject-requests.tr.html">Gizlilik ve ilgili kişi başvuruları</a></li>
+<li class=""><a href="../identity-access/roles-and-permissions.tr.html">Roller ve izinler</a></li>
+<li class=""><a href="../identity-access/second-factor-and-secret-storage.tr.html">İkinci doğrulama adımı ve gizli değer saklama</a></li>
+<li class=""><a href="../identity-access/signup.tr.html">Kayıt</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Web uygulaması</span><span class="count">24</span></summary><ul>
+<li class=""><a href="../web-app/index.tr.html">Web uygulaması platformu</a></li>
+<li class=""><a href="../web-app/actions-and-action-sheet.tr.html">Aksiyonlar ve aksiyon kartı</a></li>
+<li class=""><a href="../web-app/assistant-and-chat-ui.tr.html">Asistan ve sohbet ekranları</a></li>
+<li class=""><a href="../web-app/boot-session-and-api.tr.html">Açılış, oturum ve API çağrıları</a></li>
+<li class=""><a href="../web-app/data-refresh-and-change-signals.tr.html">Veri tazeleme ve değişiklik sinyalleri</a></li>
+<li class=""><a href="../web-app/device-classes.tr.html">Cihaz sınıfları</a></li>
+<li class=""><a href="../web-app/gated-app-bundles.tr.html">Kapılı uygulama paketleri</a></li>
+<li class=""><a href="../web-app/generic-detail.tr.html">Genel ayrıntı</a></li>
+<li class=""><a href="../web-app/generic-form.tr.html">Genel form</a></li>
+<li class=""><a href="../web-app/generic-list.tr.html">Genel liste</a></li>
+<li class=""><a href="../web-app/generic-tree-and-settings.tr.html">Genel ağaç ve ayar ekranları</a></li>
+<li class=""><a href="../web-app/home-dock-and-launcher.tr.html">Ana ekran, dock ve başlatıcı</a></li>
+<li class=""><a href="../web-app/home-widgets.tr.html">Ana ekran bileşenleri</a></li>
+<li class=""><a href="../web-app/how-to-add-a-language.tr.html">Web uygulamasına dil ekleyin</a></li>
+<li class=""><a href="../web-app/how-to-add-a-screen-with-metadata.tr.html">Metadata ile ekran ekleyin</a></li>
+<li class=""><a href="../web-app/i18n-and-languages.tr.html">Uluslararasılaştırma ve diller</a></li>
+<li class=""><a href="../web-app/mail-and-profile-screens.tr.html">Mail ve profil ekranları</a></li>
+<li class=""><a href="../web-app/metadata-rendering.tr.html">Metadata çizimi</a></li>
+<li class=""><a href="../web-app/module-apps-and-app-scope.tr.html">Modül uygulamaları ve uygulama kapsamı</a></li>
+<li class=""><a href="../web-app/overview.tr.html">Web uygulamasına genel bakış</a></li>
+<li class=""><a href="../web-app/records-documents-viewer-and-share.tr.html">Kayıt belgeleri, görüntüleyici ve paylaşım</a></li>
+<li class=""><a href="../web-app/search-and-command-palette.tr.html">Arama ve komut paleti</a></li>
+<li class=""><a href="../web-app/themes-tokens-and-accessibility.tr.html">Temalar, belirteçler ve erişilebilirlik</a></li>
+<li class=""><a href="../web-app/user-ui-state.tr.html">Kullanıcı arayüz durumu</a></li>
+</ul></details>
+<details class="navsec" open><summary><span class="eyebrow">Masaüstü istemci</span><span class="count">11</span></summary><ul>
+<li class=""><a href="../desktop/index.tr.html">Masaüstü istemci</a></li>
+<li class=""><a href="../desktop/api-client-and-workers.tr.html">API istemcisi ve çalışanlar</a></li>
+<li class=""><a href="../desktop/chat-widget.tr.html">Sohbet bileşeni</a></li>
+<li class=""><a href="../desktop/generic-widgets.tr.html">Genel bileşenler</a></li>
+<li class=""><a href="../desktop/i18n-themes-and-accessibility.tr.html">Diller, temalar ve erişilebilirlik</a></li>
+<li class=""><a href="../desktop/metadata-store-and-fk-cache.tr.html">Metadata deposu ve yabancı anahtar önbelleği</a></li>
+<li class=""><a href="../desktop/module-screens.tr.html">Modül ekranları</a></li>
+<li class=""><a href="../desktop/overview.tr.html">Masaüstü istemciye genel bakış</a></li>
+<li class=""><a href="../desktop/run-the-desktop-client.tr.html">Masaüstü istemciyi çalıştırın</a></li>
+<li class=""><a href="../desktop/signal-bus-and-watch-entity.tr.html">Sinyal veri yolu ve watch_entity</a></li>
+<li class="current"><a href="../desktop/tabs-panes-and-layout.tr.html">Sekmeler, bölmeler ve yerleşim</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">İş modülleri</span><span class="count">80</span></summary><ul>
+<li class=""><a href="../modules/index.tr.html">İş modülleri</a></li>
+<li class=""><a href="../modules/analytics/index.tr.html">Analytics modülü (analytics)</a></li>
+<li class="sub"><a href="../modules/analytics/analytics-facts.tr.html">Analitik olgular</a></li>
+<li class="sub"><a href="../modules/analytics/forecasting-and-classification.tr.html">Analitik tahmin ve sınıflandırma</a></li>
+<li class="sub"><a href="../modules/analytics/recipes-and-query-builder.tr.html">Analitik tarifleri ve sorgu kurucu</a></li>
+<li class="sub"><a href="../modules/analytics/reports-summaries-and-cross.tr.html">Analitik raporları, özetleri ve çapraz</a></li>
+<li class="sub"><a href="../modules/analytics/statistics-and-inference.tr.html">Analitik istatistik ve çıkarım</a></li>
+<li class=""><a href="../modules/app_store.tr.html">App store modülü (app_store)</a></li>
+<li class=""><a href="../modules/auth.tr.html">Auth modülü (auth)</a></li>
+<li class=""><a href="../modules/bom.tr.html">BOM modülü (bom)</a></li>
+<li class=""><a href="../modules/calendars.tr.html">Calendars modülü (calendars)</a></li>
+<li class=""><a href="../modules/costing.tr.html">Costing modülü (costing)</a></li>
+<li class=""><a href="../modules/crm/index.tr.html">CRM modülü (crm)</a></li>
+<li class="sub"><a href="../modules/crm/customers-and-customer-parts.tr.html">Müşteriler ve müşteri parçaları</a></li>
+<li class="sub"><a href="../modules/crm/inbox.tr.html">Teklif talebi gelen kutusu</a></li>
+<li class="sub"><a href="../modules/crm/rfqs.tr.html">Müşteri teklif talepleri</a></li>
+<li class=""><a href="../modules/currencies.tr.html">Currencies modülü (currencies)</a></li>
+<li class=""><a href="../modules/design_engineering.tr.html">Design engineering modülü (design_engineering)</a></li>
+<li class=""><a href="../modules/documents.tr.html">Documents modülü (documents)</a></li>
+<li class=""><a href="../modules/fleet/index.tr.html">Fleet modülü (fleet)</a></li>
+<li class="sub"><a href="../modules/fleet/assets.tr.html">Filo araçları</a></li>
+<li class="sub"><a href="../modules/fleet/maintenance-and-work-orders.tr.html">Filo bakımı ve iş emirleri</a></li>
+<li class="sub"><a href="../modules/fleet/meters-and-fuel.tr.html">Filo sayaçları ve yakıt</a></li>
+<li class="sub"><a href="../modules/fleet/operations.tr.html">Filo operasyonları</a></li>
+<li class="sub"><a href="../modules/fleet/tco-telematics-and-analytics.tr.html">Filo TCO, telematik ve analitik</a></li>
+<li class=""><a href="../modules/intranet/index.tr.html">Intranet modülü (intranet)</a></li>
+<li class="sub"><a href="../modules/intranet/access-audience-and-retention.tr.html">İntranet erişimi, hedef kitlesi ve saklama</a></li>
+<li class="sub"><a href="../modules/intranet/content-and-feed.tr.html">İntranet içeriği ve akışı</a></li>
+<li class="sub"><a href="../modules/intranet/directory.tr.html">İntranet rehberi</a></li>
+<li class="sub"><a href="../modules/intranet/engagement.tr.html">İntranet katılımı</a></li>
+<li class="sub"><a href="../modules/intranet/events.tr.html">İntranet etkinlikleri</a></li>
+<li class="sub"><a href="../modules/intranet/leave.tr.html">İntranet izinleri</a></li>
+<li class="sub"><a href="../modules/intranet/my-documents.tr.html">İntranet belgelerim</a></li>
+<li class="sub"><a href="../modules/intranet/notifications-and-delivery.tr.html">İntranet bildirimleri ve tebligat</a></li>
+<li class="sub"><a href="../modules/intranet/requests.tr.html">İntranet talepleri</a></li>
+<li class=""><a href="../modules/inventory.tr.html">Inventory modülü (inventory)</a></li>
+<li class=""><a href="../modules/logs.tr.html">Logs modülü (logs)</a></li>
+<li class=""><a href="../modules/mail.tr.html">Mail modülü (mail)</a></li>
+<li class=""><a href="../modules/nesting/index.tr.html">Nesting modülü (nesting)</a></li>
+<li class="sub"><a href="../modules/nesting/engine.tr.html">Yerleşim motoru</a></li>
+<li class="sub"><a href="../modules/nesting/integration-and-kpi.tr.html">Yerleşim entegrasyonu ve KPI</a></li>
+<li class="sub"><a href="../modules/nesting/jobs-parts-and-remnants.tr.html">Yerleşim işleri, parçalar ve artıklar</a></li>
+<li class=""><a href="../modules/owned_organisations.tr.html">Owned organisations modülü (owned_organisations)</a></li>
+<li class=""><a href="../modules/parties/index.tr.html">Parties modülü (parties)</a></li>
+<li class="sub"><a href="../modules/parties/addresses.tr.html">Adresler başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/communication-channels.tr.html">İletişim kanalları başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/parties.tr.html">Parties alt modülü başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/party-unification.tr.html">Taraf birleştirme</a></li>
+<li class="sub"><a href="../modules/parties/person-languages.tr.html">Kişi dilleri başvurusu</a></li>
+<li class="sub"><a href="../modules/parties/settings-and-reference-data.tr.html">Parties ayarları ve başvuru verileri</a></li>
+<li class=""><a href="../modules/privacy.tr.html">Privacy modülü (privacy)</a></li>
+<li class=""><a href="../modules/procurement/index.tr.html">Procurement modülü (procurement)</a></li>
+<li class="sub"><a href="../modules/procurement/critical-materials-and-substitution.tr.html">Kritik malzemeler ve ikame</a></li>
+<li class="sub"><a href="../modules/procurement/mrp.tr.html">Malzeme ihtiyaç planlaması</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-contracts-and-info-records.tr.html">Satın alma sözleşmeleri ve info kayıtları</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-orders.tr.html">Satın alma siparişleri</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-requests.tr.html">Satın alma talepleri</a></li>
+<li class="sub"><a href="../modules/procurement/purchase-rfqs.tr.html">Satın alma teklif talepleri</a></li>
+<li class="sub"><a href="../modules/procurement/suppliers.tr.html">Tedarikçiler</a></li>
+<li class=""><a href="../modules/production/index.tr.html">Production modülü (production)</a></li>
+<li class="sub"><a href="../modules/production/production-orders-and-versions.tr.html">Üretim emirleri ve versiyonları</a></li>
+<li class="sub"><a href="../modules/production/routings-and-operation-types.tr.html">Rotalar ve operasyon tipleri</a></li>
+<li class="sub"><a href="../modules/production/scheduling.tr.html">Üretim çizelgeleme</a></li>
+<li class="sub"><a href="../modules/production/work-centers-and-capacity.tr.html">İş merkezleri ve kapasite</a></li>
+<li class="sub"><a href="../modules/production/work-orders.tr.html">İş emirleri</a></li>
+<li class=""><a href="../modules/products_and_services.tr.html">Products and services modülü (products_and_services)</a></li>
+<li class=""><a href="../modules/projects/index.tr.html">Projects modülü (projects)</a></li>
+<li class="sub"><a href="../modules/projects/actions-activities-and-meetings.tr.html">Proje aksiyonları, aktiviteleri ve toplantıları</a></li>
+<li class="sub"><a href="../modules/projects/board.tr.html">Proje panosu</a></li>
+<li class="sub"><a href="../modules/projects/projects-and-items.tr.html">Projeler, kalemler ve fikstürler</a></li>
+<li class="sub"><a href="../modules/projects/schedules.tr.html">Proje çizelgeleri</a></li>
+<li class=""><a href="../modules/purchasing_quotations.tr.html">Purchasing quotations modülü (purchasing_quotations)</a></li>
+<li class=""><a href="../modules/quotations.tr.html">Quotations modülü (quotations)</a></li>
+<li class=""><a href="../modules/records.tr.html">Records modülü (records)</a></li>
+<li class=""><a href="../modules/sales_orders/index.tr.html">Sales orders modülü (sales_orders)</a></li>
+<li class="sub"><a href="../modules/sales_orders/orders-and-lines.tr.html">Satış siparişleri ve sipariş kalemleri</a></li>
+<li class="sub"><a href="../modules/sales_orders/shipments.tr.html">Sevkiyatlar</a></li>
+<li class="sub"><a href="../modules/sales_orders/trade-documents.tr.html">İhracat belgeleri</a></li>
+<li class="sub"><a href="../modules/sales_orders/units-and-settings.tr.html">Satış siparişi birimleri ve ayarları</a></li>
+<li class=""><a href="../modules/subscriptions.tr.html">Subscriptions modülü (subscriptions)</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Asistan</span><span class="count">2</span></summary><ul>
+<li class=""><a href="../ai/index.tr.html">Niyet asistanı</a></li>
+<li class=""><a href="../ai/intent-assistant.tr.html">Niyet asistanı nasıl çalışır</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">API referansı</span><span class="count">45</span></summary><ul>
+<li class=""><a href="../api/index.tr.html">API başvurusu</a></li>
+<li class=""><a href="../api/analytics.tr.html">Analytics API (analytics)</a></li>
+<li class=""><a href="../api/app_store.tr.html">App store API (app_store)</a></li>
+<li class=""><a href="../api/auth.tr.html">Auth API (auth)</a></li>
+<li class=""><a href="../api/authentication-and-headers.tr.html">Kimlik doğrulama ve başlıklar</a></li>
+<li class=""><a href="../api/bom.tr.html">BOM API (bom)</a></li>
+<li class=""><a href="../api/calendars.tr.html">Calendars API (calendars)</a></li>
+<li class=""><a href="../api/conventions.tr.html">API kuralları</a></li>
+<li class=""><a href="../api/costing.tr.html">Costing API (costing)</a></li>
+<li class=""><a href="../api/crm.tr.html">CRM API (crm)</a></li>
+<li class=""><a href="../api/currencies.tr.html">Currencies API (currencies)</a></li>
+<li class=""><a href="../api/design_engineering.tr.html">Design engineering API (design_engineering)</a></li>
+<li class=""><a href="../api/documents.tr.html">Documents API (documents)</a></li>
+<li class=""><a href="../api/errors.tr.html">Hatalar</a></li>
+<li class="sub"><a href="../api/errors/business-error-codes.tr.html">İş hata kodları</a></li>
+<li class=""><a href="../api/fleet.tr.html">Fleet API (fleet)</a></li>
+<li class=""><a href="../api/intranet.tr.html">Intranet API (intranet)</a></li>
+<li class=""><a href="../api/inventory.tr.html">Inventory API (inventory)</a></li>
+<li class=""><a href="../api/logs.tr.html">Logs API (logs)</a></li>
+<li class=""><a href="../api/mail.tr.html">Mail API (mail)</a></li>
+<li class=""><a href="../api/nesting.tr.html">Nesting API (nesting)</a></li>
+<li class=""><a href="../api/overview.tr.html">API&#x27;ye genel bakış</a></li>
+<li class=""><a href="../api/owned_organisations.tr.html">Owned organisations API (owned_organisations)</a></li>
+<li class=""><a href="../api/parties.tr.html">Parties API (parties)</a></li>
+<li class=""><a href="../api/privacy.tr.html">Privacy API (privacy)</a></li>
+<li class=""><a href="../api/procurement.tr.html">Procurement API (procurement)</a></li>
+<li class="sub"><a href="../api/procurement/critical_materials.tr.html">Procurement API: Kritik malzemeler uç noktaları (critical_materials)</a></li>
+<li class="sub"><a href="../api/procurement/info_records.tr.html">Procurement API: Satın alma bilgi kayıtları uç noktaları (info_records)</a></li>
+<li class="sub"><a href="../api/procurement/mrp.tr.html">Procurement API: MRP uç noktaları (mrp)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_contracts.tr.html">Procurement API: Satın alma sözleşmeleri uç noktaları (purchase_contracts)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_orders.tr.html">Procurement API: Satın alma siparişleri uç noktaları (purchase_orders)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_requests.tr.html">Procurement API: Satın alma talepleri uç noktaları (purchase_requests)</a></li>
+<li class="sub"><a href="../api/procurement/purchase_rfqs.tr.html">Procurement API: Satın alma teklif talepleri uç noktaları (purchase_rfqs)</a></li>
+<li class="sub"><a href="../api/procurement/substitution_groups.tr.html">Procurement API: İkame grupları uç noktaları (substitution_groups)</a></li>
+<li class="sub"><a href="../api/procurement/suppliers.tr.html">Procurement API: Tedarikçiler uç noktaları (suppliers)</a></li>
+<li class=""><a href="../api/production.tr.html">Production API (production)</a></li>
+<li class=""><a href="../api/products_and_services.tr.html">Products and services API (products_and_services)</a></li>
+<li class=""><a href="../api/projects.tr.html">Projects API (projects)</a></li>
+<li class=""><a href="../api/purchasing_quotations.tr.html">Purchasing quotations API (purchasing_quotations)</a></li>
+<li class=""><a href="../api/quotations.tr.html">Quotations API (quotations)</a></li>
+<li class=""><a href="../api/records.tr.html">Records API (records)</a></li>
+<li class=""><a href="../api/sales_orders.tr.html">Sales orders API (sales_orders)</a></li>
+<li class=""><a href="../api/server-routes.tr.html">Paylaşılan sunucu yolları API</a></li>
+<li class=""><a href="../api/subscriptions.tr.html">Subscriptions API (subscriptions)</a></li>
+<li class=""><a href="../api/system-endpoints.tr.html">Sistem uç noktaları API</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">İşletme</span><span class="count">18</span></summary><ul>
+<li class=""><a href="../operations/index.tr.html">İşletim</a></li>
+<li class=""><a href="../operations/backups-and-restore.tr.html">Yedekler ve geri yükleme</a></li>
+<li class=""><a href="../operations/ci-pipeline-and-release.tr.html">CI hattı ve sürüm</a></li>
+<li class=""><a href="../operations/configuration-reference.tr.html">Yapılandırma başvurusu</a></li>
+<li class=""><a href="../operations/container-measurement.tr.html">Konteyner ölçümü</a></li>
+<li class=""><a href="../operations/data-residency-check.tr.html">Veri ikameti denetimi</a></li>
+<li class=""><a href="../operations/database-migrations.tr.html">Veritabanı göçleri</a></li>
+<li class=""><a href="../operations/demo-and-staging-data.tr.html">Demo ve staging verisi</a></li>
+<li class=""><a href="../operations/environments-and-promotion.tr.html">Ortamlar ve terfi</a></li>
+<li class=""><a href="../operations/install-a-linux-node.tr.html">Bir Linux düğümü kurun</a></li>
+<li class=""><a href="../operations/local-development-setup.tr.html">Yerel geliştirme kurulumu</a></li>
+<li class=""><a href="../operations/postgresql-roles-and-tuning.tr.html">PostgreSQL rolleri ve ayarı</a></li>
+<li class=""><a href="../operations/reverse-proxy.tr.html">Ters vekil sunucu</a></li>
+<li class=""><a href="../operations/scheduled-jobs-and-retention.tr.html">Zamanlanmış işler ve saklama</a></li>
+<li class=""><a href="../operations/security-txt-and-readiness.tr.html">Security.txt ve hazırlık</a></li>
+<li class=""><a href="../operations/service-and-process-manager.tr.html">Servis ve süreç yöneticisi</a></li>
+<li class=""><a href="../operations/tenant-lifecycle.tr.html">Kiracı yaşam döngüsü</a></li>
+<li class=""><a href="../operations/windows-installer.tr.html">Windows kurucusu</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Katkı</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../contributing/index.tr.html">Katkı</a></li>
+<li class=""><a href="../contributing/architecture-boundaries.tr.html">Mimari sınırlar</a></li>
+<li class=""><a href="../contributing/coding-rules.tr.html">Kodlama kuralları</a></li>
+<li class=""><a href="../contributing/developer-tools-and-scripts.tr.html">Geliştirici araçları ve betikleri</a></li>
+<li class=""><a href="../contributing/e2e-battery.tr.html">E2e bataryası</a></li>
+<li class=""><a href="../contributing/e2e-suite-catalogue.tr.html">E2e süit kataloğu</a></li>
+<li class=""><a href="../contributing/lint-and-type-check.tr.html">Lint ve tip denetimi</a></li>
+<li class=""><a href="../contributing/python-tests.tr.html">Python testleri</a></li>
+<li class=""><a href="../contributing/write-a-backend-module.tr.html">Bir arka uç modülü yazın</a></li>
+<li class=""><a href="../contributing/writing-documentation.tr.html">Bir wiki sayfası yazın</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Karar kayıtları</span><span class="count">10</span></summary><ul>
+<li class=""><a href="../decisions/index.tr.html">Karar kayıtları</a></li>
+<li class=""><a href="../decisions/data-driven-languages.tr.html">Veri güdümlü diller</a></li>
+<li class=""><a href="../decisions/decimal-money.tr.html">Decimal para</a></li>
+<li class=""><a href="../decisions/eventbus-only-inter-module-communication.tr.html">Yalnız EventBus ile modüller arası iletişim</a></li>
+<li class=""><a href="../decisions/metadata-driven-ui.tr.html">Metadata güdümlü arayüz</a></li>
+<li class=""><a href="../decisions/no-hard-delete.tr.html">Fiziksel silme yok</a></li>
+<li class=""><a href="../decisions/party-unification.tr.html">Taraf birleşimi</a></li>
+<li class=""><a href="../decisions/product-model-version-breakdown.tr.html">Ürün, model ve versiyon kırılımı</a></li>
+<li class=""><a href="../decisions/server-side-ui-state.tr.html">Sunucu tarafı arayüz durumu</a></li>
+<li class=""><a href="../decisions/ulid-primary-keys.tr.html">ULID birincil anahtarlar</a></li>
+</ul></details>
+<details class="navsec"><summary><span class="eyebrow">Başvuru</span><span class="count">3</span></summary><ul>
+<li class=""><a href="../reference/index.tr.html">Başvuru</a></li>
+<li class=""><a href="../reference/glossary.tr.html">Sözlük</a></li>
+<li class=""><a href="../reference/related-material.tr.html">İlgili belgeler</a></li>
+</ul></details>
+</nav>
+  </aside>
+  <main id="content" class="content">
+    <div class="crumbs eyebrow"><a href="../index.tr.html">Ana sayfa</a> / Masaüstü istemci</div>
+    <header class="page-head">
+      <p class="eyebrow">Açıklama</p>
+      <h1>Sekmeler, bölmeler ve yerleşim</h1>
+      <p class="lede">Masaüstü ana penceresi, kenar çubuğu, bölmeler, sekme yöneticisi ve bölme denetleyicisinin ekranları açması, izlemesi ve saklaması.</p>
+    </header>
+    <nav class="toc" aria-label="İçindekiler"><p class="eyebrow">İçindekiler</p><ul class="outline">
+<li class="lvl2"><a href="#kısaca">Kısaca</a></li>
+<li class="lvl2"><a href="#nasıl-çalışır">Nasıl çalışır</a></li>
+<li class="lvl3"><a href="#ana-pencere">Ana pencere</a></li>
+<li class="lvl3"><a href="#bir-bölüm-ekranının-kurulması">Bir bölüm ekranının kurulması</a></li>
+<li class="lvl3"><a href="#kenar-çubuğu">Kenar çubuğu</a></li>
+<li class="lvl3"><a href="#sekme-yaşam-döngüsü">Sekme yaşam döngüsü</a></li>
+<li class="lvl3"><a href="#kayıt-sekmeleri">Kayıt sekmeleri</a></li>
+<li class="lvl3"><a href="#bölmeler">Bölmeler</a></li>
+<li class="lvl3"><a href="#yerleşimin-saklanması">Yerleşimin saklanması</a></li>
+<li class="lvl3"><a href="#bölme-denetleyicisi">Bölme denetleyicisi</a></li>
+<li class="lvl2"><a href="#neden-böyle-kurulmuştur">Neden böyle kurulmuştur</a></li>
+<li class="lvl2"><a href="#kurallar-ve-sınırlar">Kurallar ve sınırlar</a></li>
+<li class="lvl2"><a href="#diğer-parçalarla-etkileşim">Diğer parçalarla etkileşim</a></li>
+<li class="lvl2"><a href="#sınırlar-ve-açık-noktalar">Sınırlar ve açık noktalar</a></li>
+<li class="lvl2"><a href="#tanıtılan-terimler">Tanıtılan terimler</a></li>
+<li class="lvl2"><a href="#i̇lgili-sayfalar">İlgili sayfalar</a></li>
+</ul></nav>
+    <article class="prose">
+<p>Masaüstü ana penceresi yan yana bir kenar çubuğu, bölünebilen bir bölme alanı ve bir sohbet panelinden oluşur. Her bölme sekmeler tutar ve her sekme bir ekran tutar. Bu sayfa <code>src/cluster_erp/desktop/</code> altındaki <code>widgets/main_window.py</code>, <code>widgets/sidebar.py</code>, <code>widgets/pane_container.py</code>, <code>widgets/pane_widget.py</code>, <code>core/tab_manager.py</code> ve <code>core/pane_controller.py</code> dosyalarını açıklar. Sekmelerin içindeki ekranlar <a href="generic-widgets.tr.html">genel bileşenler</a> ve <a href="module-screens.tr.html">modül ekranları</a> sayfalarında açıklanır.</p>
+<h2 id="kısaca">Kısaca<a class="headerlink" href="#kısaca">¶</a></h2>
+<ul>
+<li><code>MainWindow</code>; <code>Sidebar</code>, <code>PaneContainer</code> ve <code>ChatWidget</code> bileşenlerini tek bir yatay ayırıcıya, altına da <code>StatusBarWidget</code> yerleştirir (<code>src/cluster_erp/desktop/widgets/main_window.py:69-137</code>).</li>
+<li>Kenar çubuğuna tıklamak bir bölüm sekmesi açar. Aynı bölüm herhangi bir bölmede zaten açıksa onun yerine o sekme etkinleştirilir (<code>src/cluster_erp/desktop/widgets/main_window.py:314-343</code>).</li>
+<li><code>TabManager</code> her sekme için bir <code>TabDescriptor</code> tutar, aynı modül, bölüm ve kayıttan ikincisini reddeder ve kaydedilmemiş değişikliği olan bir sekmeyi kapatmadan önce sorar (<code>src/cluster_erp/desktop/core/tab_manager.py:17-24</code>, <code>src/cluster_erp/desktop/core/tab_manager.py:87-161</code>).</li>
+<li><code>PaneContainer</code> bölmeleri iç içe <code>QSplitter</code> bileşenlerinde böler ve yerleşimi, açık bölüm sekmeleriyle birlikte, yerel <code>panes/layout</code> ayarına kaydeder (<code>src/cluster_erp/desktop/widgets/pane_container.py:28</code>, <code>src/cluster_erp/desktop/widgets/pane_container.py:261-272</code>).</li>
+<li><code>PaneController</code> aynı bölme ve sekme işlemlerini metin kimlikleri ve düz sözlüklerle sunar (<code>src/cluster_erp/desktop/core/pane_controller.py:23-30</code>).</li>
+</ul>
+<h2 id="nasıl-çalışır">Nasıl çalışır<a class="headerlink" href="#nasıl-çalışır">¶</a></h2>
+<h3 id="ana-pencere">Ana pencere<a class="headerlink" href="#ana-pencere">¶</a></h3>
+<p><code>_setup_ui</code> pencereyi soldan sağa kurar (<code>src/cluster_erp/desktop/widgets/main_window.py:69-137</code>):</p>
+<ol>
+<li>Bu istemcinin kurabildiği özel bölüm anahtarları kümesiyle oluşturulan <code>Sidebar</code> (<code>src/cluster_erp/desktop/widgets/main_window.py:79-86</code>).</li>
+<li>Tek bölmeli <code>PaneContainer</code>; bu bölme <code>app</code> modül adı ve <code>welcome</code> bölümü altında bir karşılama sekmesi alır (<code>src/cluster_erp/desktop/widgets/main_window.py:88-101</code>).</li>
+<li>Gösterilip gizlenebilen <code>ChatWidget</code> (<code>src/cluster_erp/desktop/widgets/main_window.py:103-112</code>, <code>src/cluster_erp/desktop/widgets/main_window.py:217-229</code>).</li>
+<li><code>StatusBarWidget</code> ve <code>PaneController</code> (<code>src/cluster_erp/desktop/widgets/main_window.py:126-137</code>).</li>
+</ol>
+<p><code>_on_navigate</code>, <code>app</code> modülünün dört ayrılmış bölümünü işler: <code>settings</code> tercihler iletişim kutusunu, <code>accessibility</code> erişilebilirlik iletişim kutusunu açar, <code>chat</code> sohbet panelini açıp kapatır ve <code>logout</code> onaydan sonra oturumu kapatır. Diğer her istek bir modül sekmesi açar (<code>src/cluster_erp/desktop/widgets/main_window.py:188-201</code>, <code>src/cluster_erp/desktop/widgets/main_window.py:231-242</code>).</p>
+<h3 id="bir-bölüm-ekranının-kurulması">Bir bölüm ekranının kurulması<a class="headerlink" href="#bir-bölüm-ekranının-kurulması">¶</a></h3>
+<p><code>_create_module_widget</code> bölümü modülün kenar çubuğu metadata'sında bulur ve ekranı <code>view_type</code> değerine göre seçer (<code>src/cluster_erp/desktop/widgets/main_window.py:347-381</code>):</p>
+<table>
+<thead>
+<tr>
+<th><code>view_type</code></th>
+<th>Ekran</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>list</code></td>
+<td>Bölümün varlığı için isteğe bağlı <code>list_endpoint</code> ile <code>GenericListView</code></td>
+<td><code>src/cluster_erp/desktop/widgets/main_window.py:399-429</code></td>
+</tr>
+<tr>
+<td><code>tree</code></td>
+<td><code>GenericTreeView</code></td>
+<td><code>src/cluster_erp/desktop/widgets/main_window.py:431-454</code></td>
+</tr>
+<tr>
+<td><code>settings</code></td>
+<td><code>tabs</code> içindeki her varlık anahtarı için bir sekmeyle <code>GenericSettingsView</code></td>
+<td><code>src/cluster_erp/desktop/widgets/main_window.py:479-499</code></td>
+</tr>
+<tr>
+<td><code>tabbed_list</code></td>
+<td><code>entity_tabs</code> üzerinden kurulan <code>GenericTabbedListView</code></td>
+<td><code>src/cluster_erp/desktop/widgets/main_window.py:456-477</code></td>
+</tr>
+<tr>
+<td><code>custom</code></td>
+<td><code>_CUSTOM_WIDGET_REGISTRY</code> içinden <code>&lt;module&gt;.&lt;custom_widget&gt;</code> olarak aranan ve ilk kullanımda içe aktarılan bir sınıf</td>
+<td><code>src/cluster_erp/desktop/widgets/main_window.py:501-553</code></td>
+</tr>
+</tbody>
+</table>
+<p>Metadata'nın bildirmediği bir bölüm <code>app.section_missing</code> metniyle bir yer tutucu verir. Bildirilmiş ama kurulabilir ekranı olmayan bir bölüm <code>app.not_implemented</code> metnini verir (<code>src/cluster_erp/desktop/widgets/main_window.py:353-357</code>, <code>src/cluster_erp/desktop/widgets/main_window.py:555-576</code>). Bölüm metadata'sında bir <code>description</code> varsa, onu taşıyan bir satır ekranın üstüne eklenir (<code>src/cluster_erp/desktop/widgets/main_window.py:383-397</code>). Sekme başlığı geçerli dildeki bölüm etiketidir (<code>src/cluster_erp/desktop/widgets/main_window.py:595-604</code>).</p>
+<h3 id="kenar-çubuğu">Kenar çubuğu<a class="headerlink" href="#kenar-çubuğu">¶</a></h3>
+<p><code>Sidebar</code> 200 piksel genişliğindedir (<code>src/cluster_erp/desktop/widgets/sidebar.py:54</code>). Görünen her modülün erişilebilir her bölümü için modül <code>order</code> sırasıyla bir düğme, gruplar arasında da bir ayırıcı listeler (<code>src/cluster_erp/desktop/widgets/sidebar.py:159-215</code>). Bir bölüm üç durumda gizlenir (<code>src/cluster_erp/desktop/widgets/sidebar.py:217-240</code>):</p>
+<ul>
+<li>Bu istemcinin kuramadığı bir <code>custom</code> bölümdür.</li>
+<li>Kullanıcının sahip olmadığı bir <code>required_permission</code> adlandırır.</li>
+<li>Kullanıcının <code>&lt;entity&gt;.read</code> izni olmayan bir <code>list</code> bölümüdür ya da hiçbir sekme için <code>&lt;tab&gt;.read</code> izni olmayan bir <code>settings</code> bölümüdür.</li>
+</ul>
+<p>İzin listesi boş olduğunda her bölüm gösterilir (<code>src/cluster_erp/desktop/widgets/sidebar.py:224-227</code>). Uygulama kapsamının gizlediği modüller kenar çubuğuna hiç ulaşmaz; bkz. <a href="metadata-store-and-fk-cache.tr.html">metadata deposu ve yabancı anahtar önbelleği</a>. Sabit bir alt alan sohbet, <strong>Erişilebilirlik</strong>, <strong>Tercihler</strong> (anahtar <code>sidebar.settings</code>) ve <strong>Çıkış</strong> (anahtar <code>auth.logout</code>) düğmelerini tutar (<code>src/cluster_erp/desktop/widgets/sidebar.py:112-151</code>).</p>
+<h3 id="sekme-yaşam-döngüsü">Sekme yaşam döngüsü<a class="headerlink" href="#sekme-yaşam-döngüsü">¶</a></h3>
+<p>Durum diyagramı bir sekmeyi açılıştan kapanışa kadar gösterir.</p>
+<figure class="diagram"><pre class="mermaid">stateDiagram-v2
+  [*] --&gt; Built: çağıran bileşeni kurar
+  Built --&gt; Activated: find_existing aynı module, section, entity_id bulur
+  Activated --&gt; [*]: yeni bileşen deleteLater ile silinir
+  Built --&gt; Open: addTab, TabDescriptor saklanır
+  Open --&gt; Dirty: mark_dirty(True)
+  Dirty --&gt; Open: kaydetmeden sonra mark_dirty(False)
+  Open --&gt; Closed: close_tab
+  Dirty --&gt; Closed: close_tab ve kullanıcı onaylar
+  Dirty --&gt; Dirty: close_tab ve kullanıcı reddeder
+  Closed --&gt; [*]: removeTab, deleteLater, tanımlayıcı silinir</pre></figure>
+<p>Sözcüklerle:</p>
+<ol>
+<li>Çağıran ekran bileşenini kurar ve <code>open_tab</code> işlevini modül, bölüm, başlık ve isteğe bağlı kayıt kimliğiyle çağırır (<code>src/cluster_erp/desktop/core/tab_manager.py:87-94</code>).</li>
+<li><code>find_existing</code> aynı modül, bölüm ve kayıt kimliğine sahip bir sekme arar. Varsa o sekme etkinleştirilir ve yeni bileşen silinir; böylece sinyal abonelikleri ve çalışanları sona erer (<code>src/cluster_erp/desktop/core/tab_manager.py:95-108</code>, <code>src/cluster_erp/desktop/core/tab_manager.py:173-179</code>).</li>
+<li>Yoksa bir <code>TabDescriptor</code> saklanır, sekme eklenir ve etkinleştirilir, bileşen <code>tab_id</code> özelliğini alır ve sekmeye özel bir kapatma düğmesi yerleştirilir (<code>src/cluster_erp/desktop/core/tab_manager.py:110-125</code>).</li>
+<li>Kaydedilmemiş düzenlemesi olan bir ekran <code>mark_dirty</code> çağırır; bu, sekme metninin başına bir madde imi ekler (<code>src/cluster_erp/desktop/core/tab_manager.py:181-189</code>). <code>GenericDetailView</code> bunu formu değiştiğinde yapar ve kaydetmeden sonra temizler (<code>src/cluster_erp/desktop/widgets/generic/generic_detail_view.py:571-588</code>).</li>
+<li>Kirli bir sekmede <code>close_tab</code>, <code>common.unsaved_changes</code> ile sorar. Zorlanmış kapatma soruyu atlar (<code>src/cluster_erp/desktop/core/tab_manager.py:139-161</code>). <code>close_all_tabs</code>, <code>tabs.close_all_unsaved</code> ile bir kez sorar (<code>src/cluster_erp/desktop/core/tab_manager.py:195-211</code>).</li>
+</ol>
+<p>Sekme çubuğunun sağ tık menüsü <strong>Tüm Sekmeleri Kapat</strong> (anahtar <code>tabs.close_all</code>) sunar (<code>src/cluster_erp/desktop/widgets/pane_widget.py:211-220</code>).</p>
+<h3 id="kayıt-sekmeleri">Kayıt sekmeleri<a class="headerlink" href="#kayıt-sekmeleri">¶</a></h3>
+<p>Kayıt kartları, bölümü varlık türü olan ve kayıt kimliği ayarlı sekmeler olarak açılır. Bir liste görünümü çift tıklamada bir tane açar (<code>src/cluster_erp/desktop/widgets/generic/generic_list_view.py:395-431</code>). <code>MainWindow._on_open_entity</code>, <code>open_entity</code> sinyali için etkin bölmede bir tane açar; gönderenin verdiği başlığı ya da varlık etiketini kullanır (<code>src/cluster_erp/desktop/widgets/main_window.py:270-312</code>). <code>_on_navigate_to</code> bir bölüm açar ve parametreleri, varsa ekranın <code>apply_navigation</code> yöntemine verir (<code>src/cluster_erp/desktop/widgets/main_window.py:203-215</code>).</p>
+<h3 id="bölmeler">Bölmeler<a class="headerlink" href="#bölmeler">¶</a></h3>
+<p>Her <code>PaneWidget</code> 2 piksellik bir etkinlik göstergesine, bölme, büyütme ve kapatma düğmeleri olan bir <code>PaneBar</code> bileşenine ve kendi <code>TabManager</code> nesnesinin yönettiği taşınabilir sekmeli bir <code>QTabWidget</code> bileşenine sahiptir (<code>src/cluster_erp/desktop/widgets/pane_widget.py:105-167</code>). Etkin olmayan bir bölmede fare basışı onu etkin yapar (<code>src/cluster_erp/desktop/widgets/pane_widget.py:206-225</code>). Odağın bir bölmeye geçmesi de onu etkin yapar (<code>src/cluster_erp/desktop/widgets/pane_container.py:369-380</code>).</p>
+<p><code>split_pane</code>, yön eşleşiyorsa yeni bölmeyi aynı ayırıcıda eskisinin yanına ekler, eşleşmiyorsa eski bölmeyi yeni bir ayırıcıya sarar ve ilk bölmede bir kök ayırıcı oluşturur. İki bölme eski boyutu eşit paylaşır (<code>src/cluster_erp/desktop/widgets/pane_container.py:88-152</code>). <code>close_pane</code> son bölmeyi kapatmayı reddeder, bölmede kaydedilmemiş sekme varsa sorar ve tek çocuğu kalan ayırıcıları kaldırır (<code>src/cluster_erp/desktop/widgets/pane_container.py:154-188</code>, <code>src/cluster_erp/desktop/widgets/pane_container.py:323-346</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Kısayol</th>
+<th>Eylem</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Alt+[</code></td>
+<td>Etkin bölmeyi sola ve sağa böl</td>
+<td><code>src/cluster_erp/desktop/widgets/pane_container.py:387-391</code></td>
+</tr>
+<tr>
+<td><code>Alt+]</code></td>
+<td>Etkin bölmeyi üste ve alta böl</td>
+<td><code>src/cluster_erp/desktop/widgets/pane_container.py:393-397</code></td>
+</tr>
+<tr>
+<td><code>Alt+Z</code></td>
+<td>Etkin bölmeyi kapat</td>
+<td><code>src/cluster_erp/desktop/widgets/pane_container.py:399-401</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="yerleşimin-saklanması">Yerleşimin saklanması<a class="headerlink" href="#yerleşimin-saklanması">¶</a></h3>
+<p><code>MainWindow.closeEvent</code>, herhangi bir bölmede kaydedilmemiş sekme varsa bir kez sorar. Ardından bölme yerleşimini, pencere geometrisini ve pencere durumunu kaydeder ve API istemcisini kapatır (<code>src/cluster_erp/desktop/widgets/main_window.py:684-701</code>). <code>_serialize</code> bölmeleri ve ayırıcıları yön ve boyutlarıyla iç içe sözlükler olarak yazar. Yalnızca bölüm sekmelerini tutar; kayıt sekmeleri atlanır (<code>src/cluster_erp/desktop/widgets/pane_container.py:417-447</code>). Açılışta <code>restore_pane_layout</code> ağacı yeniden kurar ve kayıtlı her bölümü aynı bileşen fabrikasıyla yeniden açar (<code>src/cluster_erp/desktop/widgets/main_window.py:669-682</code>, <code>src/cluster_erp/desktop/widgets/pane_container.py:449-509</code>). Eksik ya da bozuk bir kayıtlı yerleşim tek bir boş bölme bırakır (<code>src/cluster_erp/desktop/widgets/pane_container.py:274-285</code>, <code>src/cluster_erp/desktop/widgets/pane_container.py:466-472</code>).</p>
+<h3 id="bölme-denetleyicisi">Bölme denetleyicisi<a class="headerlink" href="#bölme-denetleyicisi">¶</a></h3>
+<p><code>PaneController</code> kapsayıcıyı metin kimlikleriyle sarar. Bölmeleri ve sekmeleri listeler; bölmeleri böler, kapatır, büyütür, geri getirir ve etkinleştirir; sekmeleri açar, kapatır ve etkinleştirir ve yerleşimi kaydeder (<code>src/cluster_erp/desktop/core/pane_controller.py:54-230</code>). Belge dizgesi, bir asistanın ya da başka bir otomasyon katmanının çalışma alanını bu yolla bileşen başvurusu tutmadan yönetebileceğini belirtir (<code>src/cluster_erp/desktop/core/pane_controller.py:24-30</code>). <code>MainWindow</code> onu oluşturur ve <code>pane_controller</code> özelliği olarak sunar (<code>src/cluster_erp/desktop/widgets/main_window.py:134-137</code>, <code>src/cluster_erp/desktop/widgets/main_window.py:182-184</code>). <code>src/cluster_erp/desktop/</code> içinde başka hiçbir kod onu çağırmaz.</p>
+<h2 id="neden-böyle-kurulmuştur">Neden böyle kurulmuştur<a class="headerlink" href="#neden-böyle-kurulmuştur">¶</a></h2>
+<ul>
+<li>Yineleme algılamanın yeni bileşeni silmesi: <code>src/cluster_erp/desktop/core/tab_manager.py:100-105</code> içindeki yorum, sahipsiz bileşenin aksi halde sinyal kaydını ve çalışanlarını görünmez bir görünüm olarak canlı tutacağını belirtir.</li>
+<li>Eksik bölüm metadata'sının arıza olarak okunması: <code>src/cluster_erp/desktop/widgets/main_window.py:355-356</code> içindeki yorum, sunucunun göndermediği bir bölümün yapılmamış bir özellik değil bir arıza olduğunu belirtir.</li>
+<li>Özel bölümlerin kenar çubuğunda süzülmesi: <code>src/cluster_erp/desktop/widgets/sidebar.py:41-43</code> içindeki yorum, kenar çubuğunun asla bir yer tutucuya götürmediğini belirtir.</li>
+<li><code>open_entity</code> sinyalini pencerenin işlemesi: <code>src/cluster_erp/desktop/widgets/main_window.py:273-280</code> içindeki belge dizgesi, özel bir bileşenin sekme yöneticisi olmadığını ve bölmelerin sahibinin pencere olduğunu belirtir.</li>
+</ul>
+<h2 id="kurallar-ve-sınırlar">Kurallar ve sınırlar<a class="headerlink" href="#kurallar-ve-sınırlar">¶</a></h2>
+<ul>
+<li>Projenin yazılı mühendislik kuralları yineleme algılamayı, kirli durum uyarılarını ve <code>tab_id</code>, <code>module</code>, <code>section</code>, <code>entity_id</code>, <code>title</code>, <code>widget</code> ve <code>is_dirty</code> alanlı bir tanımlayıcıyı ister. <code>TabDescriptor</code> tam olarak bu alanlara sahiptir (<code>src/cluster_erp/desktop/core/tab_manager.py:16-24</code>).</li>
+<li>Her zaman bir bölme vardır: liste boşsa <code>active_pane</code> bir tane oluşturur (<code>src/cluster_erp/desktop/widgets/pane_container.py:75-83</code>).</li>
+</ul>
+<aside class="adm adm-warning" role="note"><p class="adm-title">Uyarı</p><p>Tutarsızlık. Projenin yazılı mühendislik kuralları kullanıcının arayüz yerleşiminin sunucuda tutulduğunu belirtir. Masaüstü istemci bölme yerleşimini yerel <code>panes/layout</code> ayarında, pencere geometrisini ve durumunu <code>window/geometry</code> ve <code>window/state</code> ayarlarında tutar (<code>src/cluster_erp/desktop/widgets/pane_container.py:28</code>, <code>src/cluster_erp/desktop/widgets/pane_container.py:261-272</code>, <code>src/cluster_erp/desktop/widgets/main_window.py:652-658</code>, <code>src/cluster_erp/desktop/widgets/main_window.py:697-699</code>). Bu sayfa kodu belgeler.</p>
+</aside>
+<h2 id="diğer-parçalarla-etkileşim">Diğer parçalarla etkileşim<a class="headerlink" href="#diğer-parçalarla-etkileşim">¶</a></h2>
+<ul>
+<li>Ekranlar sekme sistemine yalnızca aldıkları <code>TabManager</code> üzerinden ya da <code>navigate_to</code> ve <code>open_entity</code> sinyalleriyle ulaşır; bkz. <a href="signal-bus-and-watch-entity.tr.html">sinyal veri yolu ve watch_entity</a>.</li>
+<li>Web istemcisinde bölüm sekmelerinin karşılığı <a href="../web-app/module-apps-and-app-scope.tr.html">modül uygulamaları ve uygulama kapsamı</a> sayfasında açıklanır. Sunucu tarafındaki yerleşim deposu <a href="../web-app/user-ui-state.tr.html">kullanıcı arayüz durumu</a> sayfasında açıklanır.</li>
+</ul>
+<h2 id="sınırlar-ve-açık-noktalar">Sınırlar ve açık noktalar<a class="headerlink" href="#sınırlar-ve-açık-noktalar">¶</a></h2>
+<ul>
+<li>Kayıt sekmeleri kaydedilmez, bu yüzden yeniden başlatmadan sonra yeniden açılmaz (<code>src/cluster_erp/desktop/widgets/pane_container.py:421-422</code>).</li>
+<li><code>_retranslate_ui</code> dil değişikliğinden sonra bölüm sekmelerini yeniden adlandırır ve kayıt sekmelerini değiştirmez (<code>src/cluster_erp/desktop/widgets/main_window.py:636-648</code>).</li>
+<li><code>PaneWidget</code> sekme bileşenini kapatılabilir yapar; hemen ardından oluşturulan <code>TabManager</code> onu kapatılamaz yapar ve kendi düğmesini ekler (<code>src/cluster_erp/desktop/widgets/pane_widget.py:154</code>, <code>src/cluster_erp/desktop/core/tab_manager.py:84</code>, <code>src/cluster_erp/desktop/core/tab_manager.py:122-123</code>).</li>
+<li>Kenar çubuğunun başlık düğmesi bir emeği geçenler iletişim kutusu açar (<code>src/cluster_erp/desktop/widgets/sidebar.py:70-74</code>).</li>
+</ul>
+<h2 id="tanıtılan-terimler">Tanıtılan terimler<a class="headerlink" href="#tanıtılan-terimler">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Terim</th>
+<th>Kod tanımlayıcısı</th>
+<th>Tanım</th>
+<th>Türkçe terim</th>
+<th>Kaynak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tab descriptor</td>
+<td><code>TabDescriptor</code></td>
+<td>Sekme yöneticisinin açık bir sekme için tuttuğu kayıt.</td>
+<td>sekme tanımlayıcı</td>
+<td><code>src/cluster_erp/desktop/core/tab_manager.py:17</code></td>
+</tr>
+<tr>
+<td>tab manager</td>
+<td><code>TabManager</code></td>
+<td>Bir bölmenin sekmelerini açan, yinelemeyi önleyen, işaretleyen ve kapatan nesne.</td>
+<td>sekme yöneticisi</td>
+<td><code>src/cluster_erp/desktop/core/tab_manager.py:73</code></td>
+</tr>
+<tr>
+<td>pane</td>
+<td><code>PaneWidget</code></td>
+<td>Kendi sekme çubuğu ve sekme yöneticisi olan çalışma alanı parçası.</td>
+<td>bölme</td>
+<td><code>src/cluster_erp/desktop/widgets/pane_widget.py:99</code></td>
+</tr>
+<tr>
+<td>pane controller</td>
+<td><code>PaneController</code></td>
+<td>Bölme ve sekme işlemleri için metin kimlikli arayüz.</td>
+<td>bölme denetleyicisi</td>
+<td><code>src/cluster_erp/desktop/core/pane_controller.py:23</code></td>
+</tr>
+<tr>
+<td>custom widget registry</td>
+<td><code>_CUSTOM_WIDGET_REGISTRY</code></td>
+<td><code>module.custom_widget</code> anahtarlarından elle yazılmış ekran sınıflarına eşlem.</td>
+<td>özel bileşen kaydı</td>
+<td><code>src/cluster_erp/desktop/widgets/main_window.py:501</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="i̇lgili-sayfalar">İlgili sayfalar<a class="headerlink" href="#i̇lgili-sayfalar">¶</a></h2>
+<ul>
+<li><a href="index.tr.html">Masaüstü istemci</a></li>
+<li><a href="generic-widgets.tr.html">Genel bileşenler</a></li>
+<li><a href="module-screens.tr.html">Modül ekranları</a></li>
+<li><a href="signal-bus-and-watch-entity.tr.html">Sinyal veri yolu ve watch_entity</a></li>
+<li><a href="../web-app/user-ui-state.tr.html">Kullanıcı arayüz durumu</a></li>
+</ul>
+<hr>
+<p>7793ff4 numaralı commit ile 2026-11-09 tarihinde doğrulandı.</p>
+    </article>
+    <footer class="page-foot"><span class="verified">Doğrulanan commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <nav class="pager" aria-label="Pager"><a class="prev" href="../desktop/signal-bus-and-watch-entity.tr.html"><span class="eyebrow">Önceki</span><span>Sinyal veri yolu ve watch_entity</span></a><a class="next" href="../modules/index.tr.html"><span class="eyebrow">Sonraki</span><span>İş modülleri</span></a></nav>
+  </main>
+  <aside class="rail">
+    <p class="eyebrow">Bu sayfada</p><ul class="outline">
+<li class="lvl2"><a href="#kısaca">Kısaca</a></li>
+<li class="lvl2"><a href="#nasıl-çalışır">Nasıl çalışır</a></li>
+<li class="lvl3"><a href="#ana-pencere">Ana pencere</a></li>
+<li class="lvl3"><a href="#bir-bölüm-ekranının-kurulması">Bir bölüm ekranının kurulması</a></li>
+<li class="lvl3"><a href="#kenar-çubuğu">Kenar çubuğu</a></li>
+<li class="lvl3"><a href="#sekme-yaşam-döngüsü">Sekme yaşam döngüsü</a></li>
+<li class="lvl3"><a href="#kayıt-sekmeleri">Kayıt sekmeleri</a></li>
+<li class="lvl3"><a href="#bölmeler">Bölmeler</a></li>
+<li class="lvl3"><a href="#yerleşimin-saklanması">Yerleşimin saklanması</a></li>
+<li class="lvl3"><a href="#bölme-denetleyicisi">Bölme denetleyicisi</a></li>
+<li class="lvl2"><a href="#neden-böyle-kurulmuştur">Neden böyle kurulmuştur</a></li>
+<li class="lvl2"><a href="#kurallar-ve-sınırlar">Kurallar ve sınırlar</a></li>
+<li class="lvl2"><a href="#diğer-parçalarla-etkileşim">Diğer parçalarla etkileşim</a></li>
+<li class="lvl2"><a href="#sınırlar-ve-açık-noktalar">Sınırlar ve açık noktalar</a></li>
+<li class="lvl2"><a href="#tanıtılan-terimler">Tanıtılan terimler</a></li>
+<li class="lvl2"><a href="#i̇lgili-sayfalar">İlgili sayfalar</a></li>
+</ul>
+  </aside>
+</div>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span>docs/wiki altındaki Markdown kaynaklarından derlendi</span></footer>
+</body>
+</html>
