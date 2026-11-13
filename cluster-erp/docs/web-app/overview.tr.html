@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="doc-version" content="v0.1.37"><meta name="doc-date" content="2026-11-10">
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="doc-version" content="v0.1.37"><meta name="doc-date" content="2026-11-13">
 <title>Web uygulamasına genel bakış · Cluster ERP Wiki</title>
 <meta name="description" content="webapp klasörünün yapısı, sunucunun onu /app altında içerik damgasıyla nasıl sunduğu ve her ekranı biçimlendiren metadata güdümlü kural.">
 <link rel="stylesheet" href="../assets/site.css">
@@ -323,7 +323,7 @@
 <ul>
 <li>Web uygulaması derleme adımı olmayan düz ES modülleridir: <code>index.html</code> tek bir modül betiği yükler, <code>js/main.js</code> (<code>webapp/index.html:406</code>).</li>
 <li><code>webapp/js/</code> 51 JavaScript dosyası ve <code>vendor/</code> klasörünü içerir (<code>ls webapp/js</code> ile sayıldı: 52 girdi).</li>
-<li>Sunucu klasörü iki kez bağlar: her yüklemede yeniden doğrulanan <code>/app</code> ve değişmez dosyalar olarak <code>/app/v/&lt;stamp&gt;/</code> (7793ff4 commit'inde <code>src/cluster_erp/server/app.py:1633-1644</code>).</li>
+<li>Sunucu klasörü iki kez bağlar: her yüklemede yeniden doğrulanan <code>/app</code> ve değişmez dosyalar olarak <code>/app/v/&lt;stamp&gt;/</code> (92f8051 commit'inde <code>src/cluster_erp/server/app.py:1633-1644</code>).</li>
 <li>Her liste, form, kart, aksiyon ve modül sekmesi <code>GET /api/v1/_meta</code> yanıtından kurulur (<code>webapp/js/meta.js:16-47</code>). Projenin yazılı mühendislik kuralları web uygulamasını tamamen metadata güdümlü yapar.</li>
 </ul>
 <h2 id="nasıl-çalışır">Nasıl çalışır<a class="headerlink" href="#nasıl-çalışır">¶</a></h2>
@@ -436,13 +436,13 @@
 </table>
 <p>Gruplama her dosyanın başlık yorumunu izler. Bu bir okuma kolaylığıdır, koddaki bir yapı değildir.</p>
 <h3 id="sunum-ve-varlık-damgası">Sunum ve varlık damgası<a class="headerlink" href="#sunum-ve-varlık-damgası">¶</a></h3>
-<p><code>webapp/index.html</code> her stil sayfasını, modülü ve yazı tipini <code>./v/__ASSET_STAMP__/</code> altında bağlar (<code>webapp/index.html:13-74</code>). Sunucu <code>index.html</code> döndürürken yer tutucuyu klasördeki her dosya üzerinden hesaplanan bir özet olan <code>asset_stamp(webapp_dir)</code> ile değiştirir ve <code>Cache-Control: no-cache</code> ile bir ETag gönderir (7793ff4 commit'inde <code>src/cluster_erp/server/app.py:1616-1625</code>). Geçerli damga altında istenen bir dosya <code>public, max-age=31536000, immutable</code> ile gönderilir. Eski bir damga altındaki dosya <code>no-cache</code> ile gönderilir (<code>src/cluster_erp/server/app.py:1599-1614</code>). Bu yüzden her dağıtım yeni bir URL kümesi üretir. Damga işlevi <a href="../platform/cache-and-asset-stamp.tr.html">önbellek ve varlık damgası</a> sayfasında belgelenir.</p>
+<p><code>webapp/index.html</code> her stil sayfasını, modülü ve yazı tipini <code>./v/__ASSET_STAMP__/</code> altında bağlar (<code>webapp/index.html:13-74</code>). Sunucu <code>index.html</code> döndürürken yer tutucuyu klasördeki her dosya üzerinden hesaplanan bir özet olan <code>asset_stamp(webapp_dir)</code> ile değiştirir ve <code>Cache-Control: no-cache</code> ile bir ETag gönderir (92f8051 commit'inde <code>src/cluster_erp/server/app.py:1616-1625</code>). Geçerli damga altında istenen bir dosya <code>public, max-age=31536000, immutable</code> ile gönderilir. Eski bir damga altındaki dosya <code>no-cache</code> ile gönderilir (<code>src/cluster_erp/server/app.py:1599-1614</code>). Bu yüzden her dağıtım yeni bir URL kümesi üretir. Damga işlevi <a href="../platform/cache-and-asset-stamp.tr.html">önbellek ve varlık damgası</a> sayfasında belgelenir.</p>
 <p><code>index.html</code> içindeki <code>modulepreload</code> listesi <code>web-client/_gen_modulepreload.mjs</code> tarafından üretilir ve elle düzenlenmemesi işaretlenmiştir (<code>webapp/index.html:24</code>).</p>
 <h3 id="i̇stemciyi-biçimlendiren-güvenlik-başlıkları">İstemciyi biçimlendiren güvenlik başlıkları<a class="headerlink" href="#i̇stemciyi-biçimlendiren-güvenlik-başlıkları">¶</a></h3>
-<p>Sunucu her yanıtla bir içerik güvenlik ilkesi gönderir. Betikler yalnız aynı kökenden ve <code>blob:</code> URL'lerinden yüklenebilir. Yorum, <code>blob:</code> izninin kapılı uygulama modülü içe aktarımı ve nesne URL'li önizlemeler için gerektiğini belirtir (7793ff4 commit'inde <code>src/cluster_erp/server/app.py:1325-1352</code>). Çerçeveleme aynı kökenle sınırlıdır; çoğaltılmış ana ekran kutuları buna ihtiyaç duyar (<code>src/cluster_erp/server/app.py:1348-1351</code>). Bkz. <a href="gated-app-bundles.tr.html">kapılı uygulama paketleri</a> ve <a href="home-dock-and-launcher.tr.html">ana ekran, dock ve başlatıcı</a>.</p>
+<p>Sunucu her yanıtla bir içerik güvenlik ilkesi gönderir. Betikler yalnız aynı kökenden ve <code>blob:</code> URL'lerinden yüklenebilir. Yorum, <code>blob:</code> izninin kapılı uygulama modülü içe aktarımı ve nesne URL'li önizlemeler için gerektiğini belirtir (92f8051 commit'inde <code>src/cluster_erp/server/app.py:1325-1352</code>). Çerçeveleme aynı kökenle sınırlıdır; çoğaltılmış ana ekran kutuları buna ihtiyaç duyar (<code>src/cluster_erp/server/app.py:1348-1351</code>). Bkz. <a href="gated-app-bundles.tr.html">kapılı uygulama paketleri</a> ve <a href="home-dock-and-launcher.tr.html">ana ekran, dock ve başlatıcı</a>.</p>
 <h2 id="neden-böyle-kurulu">Neden böyle kurulu<a class="headerlink" href="#neden-böyle-kurulu">¶</a></h2>
 <ul>
-<li>Aynı kökenden sunum: 7793ff4 commit'inde <code>src/cluster_erp/server/app.py:1574-1576</code> içindeki yorum, ön yüzün API sunucusundan sunulmasının tarayıcının API'ye CORS olmadan ulaşmasını sağladığını belirtir.</li>
+<li>Aynı kökenden sunum: 92f8051 commit'inde <code>src/cluster_erp/server/app.py:1574-1576</code> içindeki yorum, ön yüzün API sunucusundan sunulmasının tarayıcının API'ye CORS olmadan ulaşmasını sağladığını belirtir.</li>
 <li>İki bağlama: <code>src/cluster_erp/server/app.py:1578-1588</code> içindeki yorum, bir yenilemenin önceden 62 yeniden doğrulama gidiş dönüşüne mal olduğunu ve sürümlü URL'lerin bunu kaldırırken <code>index.html</code> dosyasının bir dağıtımı hemen almaya devam ettiğini belirtir.</li>
 <li>Metadata güdümlü ekranlar: projenin yazılı mühendislik kuralları ekran, form, liste ve aksiyon davranışının metadata'dan gelmesini ister ve arayüze özgü gömülü kuralları yasaklar. Bkz. <a href="../decisions/metadata-driven-ui.tr.html">metadata güdümlü arayüz</a>.</li>
 </ul>
@@ -510,9 +510,9 @@
 <li><a href="../platform/request-pipeline-and-middleware.tr.html">İstek hattı ve ara katman</a></li>
 </ul>
 <hr>
-<p>7793ff4 numaralı commit ile 2026-11-09 tarihinde doğrulandı.</p>
+<p>92f8051 numaralı commit ile 2026-11-13 tarihinde doğrulandı.</p>
     </article>
-    <footer class="page-foot"><span class="verified">Doğrulanan commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <footer class="page-foot"><span class="verified">Doğrulanan commit <code>92f8051</code> · 2026-11-13</span></footer>
     <nav class="pager" aria-label="Pager"><a class="prev" href="../web-app/module-apps-and-app-scope.tr.html"><span class="eyebrow">Önceki</span><span>Modül uygulamaları ve uygulama kapsamı</span></a><a class="next" href="../web-app/records-documents-viewer-and-share.tr.html"><span class="eyebrow">Sonraki</span><span>Kayıt belgeleri, görüntüleyici ve paylaşım</span></a></nav>
   </main>
   <aside class="rail">
@@ -532,6 +532,6 @@
 </ul>
   </aside>
 </div>
-<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span class="stamp">Cluster ERP v0.1.37 · Dokümantasyon 2026-11-10</span><span>docs/wiki altındaki Markdown kaynaklarından derlendi</span></footer>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span class="stamp">Cluster ERP v0.1.37 · Dokümantasyon 2026-11-13</span><span>docs/wiki altındaki Markdown kaynaklarından derlendi</span></footer>
 </body>
 </html>

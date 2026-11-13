@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="doc-version" content="v0.1.37"><meta name="doc-date" content="2026-11-10">
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="doc-version" content="v0.1.37"><meta name="doc-date" content="2026-11-13">
 <title>Kapılı uygulama paketleri · Cluster ERP Wiki</title>
 <meta name="description" content="Lisanslı uygulamaların özel ekranlarının gated_apps paketleri olarak nasıl geldiği, tarayıcıya nasıl ulaştığı ve bileşen kaydettiği.">
 <link rel="stylesheet" href="../assets/site.css">
@@ -411,7 +411,7 @@
 <p>Her paket oturum başına bir kez yüklenir; eşzamanlı çağıranlar tek bir yüklemeyi paylaşır (<code>webapp/js/custom-widgets.js:123</code>, <code>webapp/js/custom-widgets.js:137-156</code>). Çıkış yüklenenler kümesini temizler; böylece sonraki giriş yeni dağıtılan kodu getirir (<code>webapp/js/custom-widgets.js:125-132</code>).</p>
 <h3 id="sunucu-rotası">Sunucu rotası<a class="headerlink" href="#sunucu-rotası">¶</a></h3>
 <p>Varlık rotası oturum açmış bir kullanıcı ister. Dosyayı yalnız uygulama kuruluysa, şirket için lisanslıysa veya sistem uygulaması olarak işaretliyse ve kullanıcının rollerinden birine atanmışsa sunar; aksi hâlde <code>entitlement.asset_denied</code> koduyla 403 yanıt verir (<code>src/cluster_erp/modules/app_store/routes.py:103-130</code>). Yalnız <code>gated_apps</code> klasörü içindeki düz dosya adlarını sunar ve diğer her şey için 404 yanıt verir (<code>src/cluster_erp/modules/app_store/routes.py:131-144</code>). Yanıtlar <code>Cache-Control: no-cache</code> ve bir ETag taşır; böylece hak denetimi her istekte çalışır ve değişmemiş bir paket bir 304'e mal olur (<code>src/cluster_erp/modules/app_store/routes.py:145-155</code>).</p>
-<p>İçerik güvenlik ilkesi bu içe aktarım için <code>blob:</code> kaynaklı betiklere izin verir (7793ff4 commit'inde <code>src/cluster_erp/server/app.py:1325-1338</code>).</p>
+<p>İçerik güvenlik ilkesi bu içe aktarım için <code>blob:</code> kaynaklı betiklere izin verir (92f8051 commit'inde <code>src/cluster_erp/server/app.py:1325-1338</code>).</p>
 <h3 id="platform-bağlamı">Platform bağlamı<a class="headerlink" href="#platform-bağlamı">¶</a></h3>
 <p><code>PLATFORM_CTX</code> bir paketin kullanabileceği yüzeyin tamamıdır. Yorum, onun bilinçli olarak genişletildiğini ve sözleşmenin belgesi işlevi de gördüğünü belirtir (<code>webapp/js/custom-widgets.js:50-51</code>).</p>
 <table>
@@ -523,9 +523,9 @@
 <li><a href="../modules/app_store.tr.html">Uygulama mağazası modülü</a></li>
 </ul>
 <hr>
-<p>7793ff4 numaralı commit ile 2026-11-09 tarihinde doğrulandı.</p>
+<p>92f8051 numaralı commit ile 2026-11-13 tarihinde doğrulandı.</p>
     </article>
-    <footer class="page-foot"><span class="verified">Doğrulanan commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <footer class="page-foot"><span class="verified">Doğrulanan commit <code>92f8051</code> · 2026-11-13</span></footer>
     <nav class="pager" aria-label="Pager"><a class="prev" href="../web-app/device-classes.tr.html"><span class="eyebrow">Önceki</span><span>Cihaz sınıfları</span></a><a class="next" href="../web-app/generic-detail.tr.html"><span class="eyebrow">Sonraki</span><span>Genel ayrıntı</span></a></nav>
   </main>
   <aside class="rail">
@@ -545,6 +545,6 @@
 </ul>
   </aside>
 </div>
-<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span class="stamp">Cluster ERP v0.1.37 · Dokümantasyon 2026-11-10</span><span>docs/wiki altındaki Markdown kaynaklarından derlendi</span></footer>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span class="stamp">Cluster ERP v0.1.37 · Dokümantasyon 2026-11-13</span><span>docs/wiki altındaki Markdown kaynaklarından derlendi</span></footer>
 </body>
 </html>

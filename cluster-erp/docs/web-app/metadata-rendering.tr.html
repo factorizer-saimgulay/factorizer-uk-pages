@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="doc-version" content="v0.1.37"><meta name="doc-date" content="2026-11-10">
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="doc-version" content="v0.1.37"><meta name="doc-date" content="2026-11-13">
 <title>Metadata çizimi · Cluster ERP Wiki</title>
 <meta name="description" content="Web uygulamasının sunucu metadata belgesini modül sekmelerine, listelere, formlara, kartlara ve aksiyonlara nasıl dönüştürdüğü.">
 <link rel="stylesheet" href="../assets/site.css">
@@ -478,12 +478,12 @@
 <ul>
 <li>Projenin yazılı mühendislik kuralları ekran, form, liste ve aksiyon davranışının metadata'dan gelmesini ister. Bkz. <a href="../decisions/metadata-driven-ui.tr.html">metadata güdümlü arayüz</a>.</li>
 <li><code>webapp/js/meta.js:31-35</code> içindeki yorum, 3 MB belgenin bir kopyası bir masaüstünde yaklaşık 100 ms tuttuğu için tabanın açılışta kopyalanmak yerine gerektiğinde yeniden kurulduğunu belirtir.</li>
-<li>Sunucu <code>None</code> değerlerini belgeden çıkarır. 7793ff4 commit'inde <code>src/cluster_erp/server/app.py:1534-1537</code> içindeki yorum, null değerlerin belgenin yarısı olduğunu ve her istemcinin eksik bir anahtarı ayarlanmamış saydığını belirtir.</li>
+<li>Sunucu <code>None</code> değerlerini belgeden çıkarır. 92f8051 commit'inde <code>src/cluster_erp/server/app.py:1534-1537</code> içindeki yorum, null değerlerin belgenin yarısı olduğunu ve her istemcinin eksik bir anahtarı ayarlanmamış saydığını belirtir.</li>
 </ul>
 <h2 id="kurallar-ve-sınırlar">Kurallar ve sınırlar<a class="headerlink" href="#kurallar-ve-sınırlar">¶</a></h2>
 <ul>
 <li>Genel motorlar hiçbir iş modülünü adlandırmaz. <code>tests/test_architecture_boundaries.py:75</code> <code>gen-list.js</code>, <code>gen-detail.js</code>, <code>gen-form.js</code>, <code>entity.js</code> ve <code>gen-settings.js</code> dosyalarını tarar.</li>
-<li>Sunucu açılışta bir <code>sub_entity_table</code> sekmesinin sütunları olan bir varlığı gösterdiğini denetler (7793ff4 commit'inde <code>src/cluster_erp/server/app.py:547-589</code>).</li>
+<li>Sunucu açılışta bir <code>sub_entity_table</code> sekmesinin sütunları olan bir varlığı gösterdiğini denetler (92f8051 commit'inde <code>src/cluster_erp/server/app.py:547-589</code>).</li>
 <li>Metadata belgesi sunucu süreci başına bir kez kurulur. Bir metadata değişikliği yeniden başlatmadan sonra etkili olur (<code>src/cluster_erp/server/app.py:1530-1543</code>).</li>
 </ul>
 <h2 id="diğer-parçalarla-etkileşim">Diğer parçalarla etkileşim<a class="headerlink" href="#diğer-parçalarla-etkileşim">¶</a></h2>
@@ -540,9 +540,9 @@
 <li><a href="../decisions/metadata-driven-ui.tr.html">Metadata güdümlü arayüz</a></li>
 </ul>
 <hr>
-<p>7793ff4 numaralı commit ile 2026-11-09 tarihinde doğrulandı.</p>
+<p>92f8051 numaralı commit ile 2026-11-13 tarihinde doğrulandı.</p>
     </article>
-    <footer class="page-foot"><span class="verified">Doğrulanan commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <footer class="page-foot"><span class="verified">Doğrulanan commit <code>92f8051</code> · 2026-11-13</span></footer>
     <nav class="pager" aria-label="Pager"><a class="prev" href="../web-app/mail-and-profile-screens.tr.html"><span class="eyebrow">Önceki</span><span>Mail ve profil ekranları</span></a><a class="next" href="../web-app/module-apps-and-app-scope.tr.html"><span class="eyebrow">Sonraki</span><span>Modül uygulamaları ve uygulama kapsamı</span></a></nav>
   </main>
   <aside class="rail">
@@ -564,6 +564,6 @@
 </ul>
   </aside>
 </div>
-<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span class="stamp">Cluster ERP v0.1.37 · Dokümantasyon 2026-11-10</span><span>docs/wiki altındaki Markdown kaynaklarından derlendi</span></footer>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span class="stamp">Cluster ERP v0.1.37 · Dokümantasyon 2026-11-13</span><span>docs/wiki altındaki Markdown kaynaklarından derlendi</span></footer>
 </body>
 </html>

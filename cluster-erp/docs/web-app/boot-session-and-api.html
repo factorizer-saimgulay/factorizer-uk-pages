@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="doc-version" content="v0.1.37"><meta name="doc-date" content="2026-11-10">
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="doc-version" content="v0.1.37"><meta name="doc-date" content="2026-11-13">
 <title>Boot, session, and API calls · Cluster ERP Wiki</title>
 <meta name="description" content="How the web app starts in main.js, proves the session, loads the app catalogue and metadata, and calls the API through api.js and gen-api.js.">
 <link rel="stylesheet" href="../assets/site.css">
@@ -352,7 +352,7 @@
   M-&gt;&gt;B: data-app-ready = 1</pre></figure>
 <p>In words:</p>
 <ol>
-<li>The server returns <code>index.html</code> with the asset stamp filled in (<code>src/cluster_erp/server/app.py:1616-1625</code> at commit 7793ff4). The page loads <code>js/main.js</code> as a module (<code>webapp/index.html:406</code>).</li>
+<li>The server returns <code>index.html</code> with the asset stamp filled in (<code>src/cluster_erp/server/app.py:1616-1625</code> at commit 92f8051). The page loads <code>js/main.js</code> as a module (<code>webapp/index.html:406</code>).</li>
 <li><code>boot()</code> calls <code>initPrefs()</code> for theme and density and <code>initA11y()</code> for accessibility settings, both before first paint (<code>webapp/js/main.js:212-213</code>).</li>
 <li><code>initI18n()</code> reads <code>i18n/languages.json</code>, picks a language, and loads its dictionary. <code>apply()</code> translates the static markup (<code>webapp/js/main.js:218-221</code>). See <a href="i18n-and-languages.html">internationalisation and languages</a>.</li>
 <li>Boot installs the offline banner, the sign-in form, the signup entry, the logout handler, the home duplication button, the custom select upgrade, and the table header alignment (<code>webapp/js/main.js:222-231</code>).</li>
@@ -450,7 +450,7 @@
 </ul>
 <h2 id="interaction-with-other-parts">Interaction with other parts<a class="headerlink" href="#interaction-with-other-parts">¶</a></h2>
 <ul>
-<li><code>GET /api/v1/_meta</code> and <code>GET /api/v1/_switches</code> are served by <code>src/cluster_erp/server/app.py:1518-1572</code> (at commit 7793ff4). <code>GET /api/v1/_overlay</code> is served by <code>src/cluster_erp/server/routes/tenant_fields.py:446</code>.</li>
+<li><code>GET /api/v1/_meta</code> and <code>GET /api/v1/_switches</code> are served by <code>src/cluster_erp/server/app.py:1518-1572</code> (at commit 92f8051). <code>GET /api/v1/_overlay</code> is served by <code>src/cluster_erp/server/routes/tenant_fields.py:446</code>.</li>
 <li><code>GET /api/v1/app_store/registry</code> is served by <code>src/cluster_erp/modules/app_store/routes.py:18-40</code>. See <a href="../modules/app_store.html">app store module</a>.</li>
 <li>The records endpoints used for labels, inactive lists, and reactivation belong to the <code>records</code> module; see <a href="../modules/records.html">records module</a>.</li>
 </ul>
@@ -503,9 +503,9 @@
 <li><a href="../identity-access/authentication-and-sessions.html">Authentication and sessions</a></li>
 </ul>
 <hr>
-<p>Verified against commit 7793ff4 on 2026-11-09.</p>
+<p>Verified against commit 92f8051 on 2026-11-13.</p>
     </article>
-    <footer class="page-foot"><span class="verified">Verified against commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>92f8051</code> · 2026-11-13</span></footer>
     <nav class="pager" aria-label="Pager"><a class="prev" href="../web-app/assistant-and-chat-ui.html"><span class="eyebrow">Previous</span><span>Assistant and chat screens</span></a><a class="next" href="../web-app/data-refresh-and-change-signals.html"><span class="eyebrow">Next</span><span>Data refresh and change signals</span></a></nav>
   </main>
   <aside class="rail">
@@ -528,6 +528,6 @@
 </ul>
   </aside>
 </div>
-<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span class="stamp">Cluster ERP v0.1.37 · Documentation 2026-11-10</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span class="stamp">Cluster ERP v0.1.37 · Documentation 2026-11-13</span><span>Built from the Markdown sources in docs/wiki</span></footer>
 </body>
 </html>

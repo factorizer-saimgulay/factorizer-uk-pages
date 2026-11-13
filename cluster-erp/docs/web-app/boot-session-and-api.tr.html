@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="doc-version" content="v0.1.37"><meta name="doc-date" content="2026-11-10">
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="doc-version" content="v0.1.37"><meta name="doc-date" content="2026-11-13">
 <title>Açılış, oturum ve API çağrıları · Cluster ERP Wiki</title>
 <meta name="description" content="Web uygulamasının main.js ile nasıl başladığı, oturumu nasıl kanıtladığı, metadata yüklediği ve API çağrılarını nasıl yaptığı.">
 <link rel="stylesheet" href="../assets/site.css">
@@ -352,7 +352,7 @@
   M-&gt;&gt;B: data-app-ready = 1</pre></figure>
 <p>Sözle:</p>
 <ol>
-<li>Sunucu <code>index.html</code> dosyasını varlık damgası doldurulmuş olarak döndürür (7793ff4 commit'inde <code>src/cluster_erp/server/app.py:1616-1625</code>). Sayfa <code>js/main.js</code> dosyasını modül olarak yükler (<code>webapp/index.html:406</code>).</li>
+<li>Sunucu <code>index.html</code> dosyasını varlık damgası doldurulmuş olarak döndürür (92f8051 commit'inde <code>src/cluster_erp/server/app.py:1616-1625</code>). Sayfa <code>js/main.js</code> dosyasını modül olarak yükler (<code>webapp/index.html:406</code>).</li>
 <li><code>boot()</code>, tema ve yoğunluk için <code>initPrefs()</code>, erişilebilirlik ayarları için <code>initA11y()</code> çağırır; ikisi de ilk boyamadan öncedir (<code>webapp/js/main.js:212-213</code>).</li>
 <li><code>initI18n()</code> <code>i18n/languages.json</code> dosyasını okur, bir dil seçer ve sözlüğünü yükler. <code>apply()</code> statik işaretlemeyi çevirir (<code>webapp/js/main.js:218-221</code>). Bkz. <a href="i18n-and-languages.tr.html">uluslararasılaştırma ve diller</a>.</li>
 <li>Açılış çevrimdışı şeridini, giriş formunu, üyelik girişini, çıkış işleyicisini, ana ekran çoğaltma düğmesini, özel seçim kutusu yükseltmesini ve tablo başlığı hizalamasını kurar (<code>webapp/js/main.js:222-231</code>).</li>
@@ -450,7 +450,7 @@
 </ul>
 <h2 id="diğer-parçalarla-etkileşim">Diğer parçalarla etkileşim<a class="headerlink" href="#diğer-parçalarla-etkileşim">¶</a></h2>
 <ul>
-<li><code>GET /api/v1/_meta</code> ve <code>GET /api/v1/_switches</code> uçlarını <code>src/cluster_erp/server/app.py:1518-1572</code> sunar (7793ff4 commit'inde). <code>GET /api/v1/_overlay</code> ucunu <code>src/cluster_erp/server/routes/tenant_fields.py:446</code> sunar.</li>
+<li><code>GET /api/v1/_meta</code> ve <code>GET /api/v1/_switches</code> uçlarını <code>src/cluster_erp/server/app.py:1518-1572</code> sunar (92f8051 commit'inde). <code>GET /api/v1/_overlay</code> ucunu <code>src/cluster_erp/server/routes/tenant_fields.py:446</code> sunar.</li>
 <li><code>GET /api/v1/app_store/registry</code> ucunu <code>src/cluster_erp/modules/app_store/routes.py:18-40</code> sunar. Bkz. <a href="../modules/app_store.tr.html">uygulama mağazası modülü</a>.</li>
 <li>Etiketler, pasif listeler ve yeniden etkinleştirme için kullanılan kayıt uçları <code>records</code> modülüne aittir; bkz. <a href="../modules/records.tr.html">kayıtlar modülü</a>.</li>
 </ul>
@@ -503,9 +503,9 @@
 <li><a href="../identity-access/authentication-and-sessions.tr.html">Kimlik doğrulama ve oturumlar</a></li>
 </ul>
 <hr>
-<p>7793ff4 numaralı commit ile 2026-11-09 tarihinde doğrulandı.</p>
+<p>92f8051 numaralı commit ile 2026-11-13 tarihinde doğrulandı.</p>
     </article>
-    <footer class="page-foot"><span class="verified">Doğrulanan commit <code>7793ff4</code> · 2026-11-09</span></footer>
+    <footer class="page-foot"><span class="verified">Doğrulanan commit <code>92f8051</code> · 2026-11-13</span></footer>
     <nav class="pager" aria-label="Pager"><a class="prev" href="../web-app/assistant-and-chat-ui.tr.html"><span class="eyebrow">Önceki</span><span>Asistan ve sohbet ekranları</span></a><a class="next" href="../web-app/data-refresh-and-change-signals.tr.html"><span class="eyebrow">Sonraki</span><span>Veri tazeleme ve değişiklik sinyalleri</span></a></nav>
   </main>
   <aside class="rail">
@@ -528,6 +528,6 @@
 </ul>
   </aside>
 </div>
-<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span class="stamp">Cluster ERP v0.1.37 · Dokümantasyon 2026-11-10</span><span>docs/wiki altındaki Markdown kaynaklarından derlendi</span></footer>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span class="stamp">Cluster ERP v0.1.37 · Dokümantasyon 2026-11-13</span><span>docs/wiki altındaki Markdown kaynaklarından derlendi</span></footer>
 </body>
 </html>
