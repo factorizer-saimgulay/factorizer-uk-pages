@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="doc-version" content="v0.1.37"><meta name="doc-date" content="2026-11-13">
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="doc-version" content="v0.1.37"><meta name="doc-date" content="2026-11-14">
 <title>Coding rules · Cluster ERP Wiki</title>
 <meta name="description" content="The project&#x27;s written engineering rules for Cluster ERP, each restated with the code or test that enforces it, or marked as not enforced by code.">
 <link rel="stylesheet" href="../assets/site.css">
@@ -476,9 +476,9 @@
 <td>Browser suites such as <code>web-client/_e2e_action_sheet.mjs</code>; no pytest test</td>
 </tr>
 <tr>
-<td>The duplicate-home button stays in front and is never hidden.</td>
-<td><code>initTiles</code> binds the button (<code>webapp/js/tiles.js:116-124</code>).</td>
-<td>Not determined from code; see the discrepancy below</td>
+<td>The duplicate-home button exists on the PC device class only and, where it exists, stays in front and is never hidden.</td>
+<td><code>tilesAllowed()</code> limits split screen to the <code>pc</code> class and <code>syncDupHome</code> hides the button elsewhere (<code>webapp/js/tiles.js:60-64</code>, <code>webapp/js/tiles.js:130-137</code>); the style sheet keeps it above the dock band (<code>webapp/css/tiles.css:5-12</code>).</td>
+<td><code>web-client/_e2e_dup_home_tiles.mjs</code> (PC) and <code>web-client/_e2e_mobile_app.mjs</code> (phone, tablet); no pytest test</td>
 </tr>
 <tr>
 <td>A module is one app; its pages are tabs of that app.</td>
@@ -590,7 +590,6 @@
 <p>The tests above run in two places. <code>pytest</code> collects <code>tests/</code> (<code>pyproject.toml:151-153</code>), and CI runs it with live tests switched off (<code>.github/workflows/ci.yml:99</code>, <code>.github/workflows/ci.yml:124</code>). The browser rules run only in the e2e battery, which CI does not run (<code>.github/workflows/ci.yml:21-22</code>). See <a href="python-tests.html">Python tests</a> and <a href="e2e-battery.html">e2e battery</a>.</p>
 <h2 id="discrepancies">Discrepancies<a class="headerlink" href="#discrepancies">¶</a></h2>
 <aside class="adm adm-warning" role="note"><p class="adm-title">Warning</p><p>Discrepancy. The project's written engineering rules make every primary key a ULID stored as <code>UUID</code>. The control-plane classes <code>Operator</code> and <code>OperatorAction</code> default their key to <code>uuid.uuid4</code> (<code>src/cluster_erp/core/tenancy.py:138</code>, <code>src/cluster_erp/core/tenancy.py:163</code>). <code>ControlRetentionRun</code>, <code>RetentionRun</code>, and one analytics table use an auto-incrementing <code>BigInteger</code> key (<code>src/cluster_erp/core/tenancy.py:194</code>, <code>src/cluster_erp/modules/records/retention/models.py:44</code>, <code>src/cluster_erp/modules/analytics/models.py:123</code>). This page documents the code.</p>
-<p><strong>Warning:</strong> Discrepancy. The project's written engineering rules say the duplicate-home button is never hidden. Inside a duplicated home tile the button is removed, because a duplicated home never duplicates further (<code>webapp/js/tiles.js:119-122</code>). This page documents the code.</p>
 </aside>
 <h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages">¶</a></h2>
 <ul>
@@ -601,9 +600,9 @@
 <li><a href="../reference/glossary.html">Glossary</a></li>
 </ul>
 <hr>
-<p>Verified against commit 92f8051 on 2026-11-13.</p>
+<p>Verified against commit c0d3217 on 2026-11-14.</p>
     </article>
-    <footer class="page-foot"><span class="verified">Verified against commit <code>92f8051</code> · 2026-11-13</span></footer>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>c0d3217</code> · 2026-11-14</span></footer>
     <nav class="pager" aria-label="Pager"><a class="prev" href="../contributing/architecture-boundaries.html"><span class="eyebrow">Previous</span><span>Architecture boundaries</span></a><a class="next" href="../contributing/developer-tools-and-scripts.html"><span class="eyebrow">Next</span><span>Developer tools and scripts</span></a></nav>
   </main>
   <aside class="rail">
@@ -622,6 +621,6 @@
 </ul>
   </aside>
 </div>
-<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span class="stamp">Cluster ERP v0.1.37 · Documentation 2026-11-13</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span class="stamp">Cluster ERP v0.1.37 · Documentation 2026-11-14</span><span>Built from the Markdown sources in docs/wiki</span></footer>
 </body>
 </html>

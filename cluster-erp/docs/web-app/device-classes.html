@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="doc-version" content="v0.1.37"><meta name="doc-date" content="2026-11-13">
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="doc-version" content="v0.1.37"><meta name="doc-date" content="2026-11-14">
 <title>Device classes · Cluster ERP Wiki</title>
 <meta name="description" content="How device-class.js classifies a screen as pc, tablet, or phone, and how that sets the home grid, dock, floating button, and layout key.">
 <link rel="stylesheet" href="../assets/site.css">
@@ -346,6 +346,7 @@
 <li>If it matches, the class is <code>pc</code> (<code>webapp/js/device-class.js:31</code>).</li>
 <li>Otherwise the class is <code>phone</code> when <code>window.innerWidth</code> is at most <code>PHONE_MAX_WIDTH</code> (640), else <code>tablet</code> (<code>webapp/js/device-class.js:20</code>, <code>webapp/js/device-class.js:32</code>).</li>
 <li><code>isPcPointer()</code> adds the width test <code>PC_MIN_WIDTH</code> (900). The dock mounts only when it is true and the page is not a duplicated tile (<code>webapp/js/device-class.js:19</code>, <code>webapp/js/device-class.js:36</code>, <code>webapp/js/app-wheel.js:87-93</code>).</li>
+<li>Split screen (the duplicate-home <strong>+</strong>) exists on the <code>pc</code> class only: <code>tilesAllowed()</code> tests the class, <code>syncDupHome</code> hides the button and collapses tiles on the other classes and on every class change (<code>webapp/js/tiles.js:60-64</code>, <code>webapp/js/tiles.js:130-137</code>, <code>webapp/js/tiles.js:148</code>).</li>
 </ol>
 <h3 id="what-each-class-sets">What each class sets<a class="headerlink" href="#what-each-class-sets">¶</a></h3>
 <table>
@@ -356,6 +357,7 @@
 <th>Server layout key</th>
 <th>Local cache key</th>
 <th>Dock possible</th>
+<th>Split screen</th>
 <th>Source</th>
 </tr>
 </thead>
@@ -366,7 +368,8 @@
 <td><code>springboard</code></td>
 <td><code>cluster_springboard</code></td>
 <td>yes, from 900 px</td>
-<td><code>webapp/js/device-class.js:23</code></td>
+<td>yes</td>
+<td><code>webapp/js/device-class.js:23</code>, <code>webapp/js/tiles.js:61</code></td>
 </tr>
 <tr>
 <td><code>tablet</code></td>
@@ -374,7 +377,8 @@
 <td><code>springboard_tablet</code></td>
 <td><code>cluster_springboard_tablet</code></td>
 <td>no</td>
-<td><code>webapp/js/device-class.js:24</code></td>
+<td>no</td>
+<td><code>webapp/js/device-class.js:24</code>, <code>webapp/js/tiles.js:61</code></td>
 </tr>
 <tr>
 <td><code>phone</code></td>
@@ -382,7 +386,8 @@
 <td><code>springboard_phone</code></td>
 <td><code>cluster_springboard_phone</code></td>
 <td>no</td>
-<td><code>webapp/js/device-class.js:25</code></td>
+<td>no</td>
+<td><code>webapp/js/device-class.js:25</code>, <code>webapp/js/tiles.js:61</code></td>
 </tr>
 </tbody>
 </table>
@@ -465,9 +470,9 @@
 <li><a href="themes-tokens-and-accessibility.html">Themes, tokens, and accessibility</a></li>
 </ul>
 <hr>
-<p>Verified against commit 92f8051 on 2026-11-13.</p>
+<p>Verified against commit c0d3217 on 2026-11-14.</p>
     </article>
-    <footer class="page-foot"><span class="verified">Verified against commit <code>92f8051</code> · 2026-11-13</span></footer>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>c0d3217</code> · 2026-11-14</span></footer>
     <nav class="pager" aria-label="Pager"><a class="prev" href="../web-app/data-refresh-and-change-signals.html"><span class="eyebrow">Previous</span><span>Data refresh and change signals</span></a><a class="next" href="../web-app/gated-app-bundles.html"><span class="eyebrow">Next</span><span>Gated app bundles</span></a></nav>
   </main>
   <aside class="rail">
@@ -487,6 +492,6 @@
 </ul>
   </aside>
 </div>
-<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span class="stamp">Cluster ERP v0.1.37 · Documentation 2026-11-13</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span class="stamp">Cluster ERP v0.1.37 · Documentation 2026-11-14</span><span>Built from the Markdown sources in docs/wiki</span></footer>
 </body>
 </html>

@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="doc-version" content="v0.1.37"><meta name="doc-date" content="2026-11-13">
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="doc-version" content="v0.1.37"><meta name="doc-date" content="2026-11-14">
 <title>Ana ekran, dock ve başlatıcı · Cluster ERP Wiki</title>
 <meta name="description" content="home.js, tiles.js, app-wheel.js ve touch-gate.js ana ekranı, dock&#x27;u, yüzen tuşu, açık uygulamaları ve çoğaltmayı nasıl kurar.">
 <link rel="stylesheet" href="../assets/site.css">
@@ -329,7 +329,7 @@
 <li>Yeni bir hesap, kalıcı Uygulamalar kitaplığı kutucuğu dışında boş bir ana ekranla başlar (<code>webapp/js/home.js:696-707</code>).</li>
 <li>Yeri olan bir PC'de bir dock kullanıcının sabitlediği uygulamaları ve çalışan uygulamaları gösterir; sabitlemeler kullanıcı hesabında saklanır (<code>webapp/js/app-wheel.js:1-26</code>, <code>webapp/js/home.js:977-1022</code>).</li>
 <li>Yüzen bir tuş tek dokunuşta ana ekrana döner, çift dokunuşta açık uygulamalar ekranını açar (<code>webapp/js/home.js:2993-3014</code>).</li>
-<li><strong>+</strong> düğmesi (<code>tiles.duplicate</code>) pencereyi en çok dört bağımsız ana ekrana böler (<code>webapp/js/tiles.js:1-11</code>).</li>
+<li><strong>+</strong> düğmesi (<code>tiles.duplicate</code>) pencereyi yalnız <code>pc</code> cihaz sınıfında en çok dört bağımsız ana ekrana böler; telefon ve tablette çoklu ekran yoktur (<code>webapp/js/tiles.js:1-11</code>, <code>webapp/js/tiles.js:60-64</code>).</li>
 </ul>
 <h2 id="nasıl-çalışır">Nasıl çalışır<a class="headerlink" href="#nasıl-çalışır">¶</a></h2>
 <h3 id="sayfalar-ve-öğeler">Sayfalar ve öğeler<a class="headerlink" href="#sayfalar-ve-öğeler">¶</a></h3>
@@ -426,8 +426,8 @@
 </table>
 <p>Tuş yalnız dock'a sabitlendiğinde ve bir dock varsa gizlenir; telefonlarda, tabletlerde, dar pencerelerde ve bölünmüş bölmelerde her zaman kalır (<code>webapp/js/home.js:1040-1047</code>). Açık uygulamalar ekranı her çalışan uygulama için küçük resimli bir kart gösterir, bir uygulamayı son görünümünde sürdürür, bir uygulamayı veya tümünü kapatır (<code>webapp/js/home.js:3249-3426</code>). Bölünmüş bölmeler çalışan uygulamalarını <code>cluster-tasks</code> kanalında <code>postMessage</code> ile üst pencereye bildirir; böylece tek bir açık uygulamalar ekranı tüm bölmeleri kapsar (<code>webapp/js/home.js:3097-3220</code>).</p>
 <h3 id="ana-ekranı-çoğaltma-düğmesi-ve-kutular">Ana ekranı çoğaltma düğmesi ve kutular<a class="headerlink" href="#ana-ekranı-çoğaltma-düğmesi-ve-kutular">¶</a></h3>
-<p><strong>+</strong> düğmesi (<code>tiles.duplicate</code>) yalnız üst pencerenin ana ekranında gösterilir ve bir kutunun içinde kaldırılır (<code>webapp/js/main.js:38-39</code>, <code>webapp/js/tiles.js:116-124</code>). Her basış, temel ana ekran dahil en çok dörde kadar bir kutu ekler. Bir kutu, sürüklenebilir bir ayırıcısı olan, uygulamanın kendisinin aynı kökenli bir çerçevesidir; her kutunun en küçük genişliği 260 px'tir (<code>webapp/js/tiles.js:10-108</code>). Çıkış tüm kutuları kapatır (<code>webapp/js/main.js:166</code>). Tema, yoğunluk, erişilebilirlik ve dil değişiklikleri depolama olaylarıyla her kutuya ulaşır (<code>webapp/js/prefs.js:116-125</code>, <code>webapp/js/a11y.js:90-105</code>, <code>webapp/js/i18n.js:63-71</code>).</p>
-<p>Projenin yazılı mühendislik kuralları <strong>+</strong> düğmesinin her zaman önde olduğunu ve hiç gizlenmediğini belirtir. Stil sayfası onu dock bandının üstüne yerleştirir (<code>webapp/css/tiles.css:5-12</code>).</p>
+<p><strong>+</strong> düğmesi (<code>tiles.duplicate</code>) yalnız üst pencerenin ana ekranında ve yalnız <code>pc</code> cihaz sınıfında gösterilir; bir kutunun içinde kaldırılır (<code>webapp/js/main.js:38</code>, <code>webapp/js/tiles.js:124-149</code>). <code>syncDupHome</code> telefon ve tablette düğmeyi gizler, belgeyi <code>body.no-tiles</code> ile işaretler ve cihaz sınıfı <code>pc</code> olmaktan çıkınca açık bir bölünmeyi tek ana ekrana indirir (<code>webapp/js/tiles.js:130-137</code>, <code>webapp/js/tiles.js:148</code>); <code>addTile</code> <code>pc</code> sınıfı dışında reddeder (<code>webapp/js/tiles.js:63-64</code>). Her basış, temel ana ekran dahil en çok dörde kadar bir kutu ekler. Bir kutu, sürüklenebilir bir ayırıcısı olan, uygulamanın kendisinin aynı kökenli bir çerçevesidir; her kutunun en küçük genişliği 260 px'tir (<code>webapp/js/tiles.js:10-108</code>). Çıkış tüm kutuları kapatır (<code>webapp/js/main.js:166</code>). Tema, yoğunluk, erişilebilirlik ve dil değişiklikleri depolama olaylarıyla her kutuya ulaşır (<code>webapp/js/prefs.js:116-125</code>, <code>webapp/js/a11y.js:90-105</code>, <code>webapp/js/i18n.js:63-71</code>).</p>
+<p>Projenin yazılı mühendislik kuralları <strong>+</strong> düğmesinin yalnız PC sınıfında var olduğunu ve var olduğu yerde her zaman önde olup hiç gizlenmediğini belirtir. Stil sayfası onu dock bandının üstüne yerleştirir (<code>webapp/css/tiles.css:5-12</code>). Dar pencerelerde uygulama içeriği ve modül sekme çubuğu sağ alt köşeyi onun için yalnız belge <code>body.no-tiles</code> ile işaretli değilken ayırır (<code>webapp/css/app.css:5264-5271</code>, <code>webapp/css/gen.css:5166-5173</code>).</p>
 <h3 id="dokunma-kapısı">Dokunma kapısı<a class="headerlink" href="#dokunma-kapısı">¶</a></h3>
 <p><code>createTouchGate(e, opts)</code> uygulama paketlerindeki sürüklenebilir yüzeylere tek bir kural verir: fare hemen sürükler, parmak önce 450 ms tutmalıdır ve bundan önce hareket eden parmak en yakın kaydırma kabını kaydırır (<code>webapp/js/touch-gate.js:1-40</code>). Paketler bunu platform bağlamı üzerinden alır (<code>webapp/js/custom-widgets.js:57-60</code>). Ana ekran aynı 450 ms tutmayla kendi sürümünü kullanır (<code>webapp/js/home.js:80-82</code>).</p>
 <h2 id="neden-böyle-kurulu">Neden böyle kurulu<a class="headerlink" href="#neden-böyle-kurulu">¶</a></h2>
@@ -440,7 +440,7 @@
 <ul>
 <li>Düzen, dock sabitlemeleri, dock kenarı, otomatik gizleme ve yüzen tuşun dock'taki durumu kullanıcı hesabına aittir. Bkz. <a href="user-ui-state.tr.html">kullanıcı arayüz durumu</a>.</li>
 <li>Projenin yazılı mühendislik kuralları PC deneyiminin başlatıcı olduğunu ve mobil ile tablet tasarımının ayrıca tanımlandığını belirtir. Bkz. <a href="device-classes.tr.html">cihaz sınıfları</a>.</li>
-<li>Tarayıcı testleri: <code>web-client/_e2e_app_wheel.mjs</code>, <code>web-client/_e2e_dock_pins.mjs</code>, <code>web-client/_e2e_dock_close_all.mjs</code>, <code>web-client/_e2e_switcher.mjs</code>, <code>web-client/_e2e_switcher_dock.mjs</code>, <code>web-client/_e2e_dup_home_tiles.mjs</code>, <code>web-client/_e2e_mobile_home.mjs</code>, <code>web-client/_e2e_widget_move.mjs</code>.</li>
+<li>Tarayıcı testleri: <code>web-client/_e2e_app_wheel.mjs</code>, <code>web-client/_e2e_dock_pins.mjs</code>, <code>web-client/_e2e_dock_close_all.mjs</code>, <code>web-client/_e2e_switcher.mjs</code>, <code>web-client/_e2e_switcher_dock.mjs</code>, <code>web-client/_e2e_dup_home_tiles.mjs</code>, <code>web-client/_e2e_mobile_home.mjs</code>, <code>web-client/_e2e_mobile_app.mjs</code>, <code>web-client/_e2e_widget_move.mjs</code>.</li>
 </ul>
 <h2 id="diğer-parçalarla-etkileşim">Diğer parçalarla etkileşim<a class="headerlink" href="#diğer-parçalarla-etkileşim">¶</a></h2>
 <ul>
@@ -510,9 +510,9 @@
 <li><a href="module-apps-and-app-scope.tr.html">Modül uygulamaları ve uygulama kapsamı</a></li>
 </ul>
 <hr>
-<p>92f8051 numaralı commit ile 2026-11-13 tarihinde doğrulandı.</p>
+<p>c0d3217 numaralı commit ile 2026-11-14 tarihinde doğrulandı.</p>
     </article>
-    <footer class="page-foot"><span class="verified">Doğrulanan commit <code>92f8051</code> · 2026-11-13</span></footer>
+    <footer class="page-foot"><span class="verified">Doğrulanan commit <code>c0d3217</code> · 2026-11-14</span></footer>
     <nav class="pager" aria-label="Pager"><a class="prev" href="../web-app/generic-tree-and-settings.tr.html"><span class="eyebrow">Önceki</span><span>Genel ağaç ve ayar ekranları</span></a><a class="next" href="../web-app/home-widgets.tr.html"><span class="eyebrow">Sonraki</span><span>Ana ekran bileşenleri</span></a></nav>
   </main>
   <aside class="rail">
@@ -536,6 +536,6 @@
 </ul>
   </aside>
 </div>
-<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span class="stamp">Cluster ERP v0.1.37 · Dokümantasyon 2026-11-13</span><span>docs/wiki altındaki Markdown kaynaklarından derlendi</span></footer>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span class="stamp">Cluster ERP v0.1.37 · Dokümantasyon 2026-11-14</span><span>docs/wiki altındaki Markdown kaynaklarından derlendi</span></footer>
 </body>
 </html>

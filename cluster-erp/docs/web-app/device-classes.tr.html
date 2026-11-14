@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="doc-version" content="v0.1.37"><meta name="doc-date" content="2026-11-13">
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="doc-version" content="v0.1.37"><meta name="doc-date" content="2026-11-14">
 <title>Cihaz sınıfları · Cluster ERP Wiki</title>
 <meta name="description" content="device-class.js ekranı nasıl pc, tablet veya phone olarak sınıflandırır ve bu seçim ızgarayı, dock&#x27;u ve düzen anahtarını nasıl belirler.">
 <link rel="stylesheet" href="../assets/site.css">
@@ -346,6 +346,7 @@
 <li>Eşleşirse sınıf <code>pc</code> olur (<code>webapp/js/device-class.js:31</code>).</li>
 <li>Aksi hâlde <code>window.innerWidth</code> en çok <code>PHONE_MAX_WIDTH</code> (640) ise sınıf <code>phone</code>, değilse <code>tablet</code> olur (<code>webapp/js/device-class.js:20</code>, <code>webapp/js/device-class.js:32</code>).</li>
 <li><code>isPcPointer()</code> <code>PC_MIN_WIDTH</code> (900) genişlik sınamasını ekler. Dock yalnız bu doğruysa ve sayfa çoğaltılmış bir kutu değilse kurulur (<code>webapp/js/device-class.js:19</code>, <code>webapp/js/device-class.js:36</code>, <code>webapp/js/app-wheel.js:87-93</code>).</li>
+<li>Çoklu ekran (ana ekranı çoğaltan <strong>+</strong>) yalnız <code>pc</code> sınıfında vardır: <code>tilesAllowed()</code> sınıfı sınar, <code>syncDupHome</code> diğer sınıflarda ve her sınıf değişiminde düğmeyi gizler ve kutuları kapatır (<code>webapp/js/tiles.js:60-64</code>, <code>webapp/js/tiles.js:130-137</code>, <code>webapp/js/tiles.js:148</code>).</li>
 </ol>
 <h3 id="her-sınıfın-belirledikleri">Her sınıfın belirledikleri<a class="headerlink" href="#her-sınıfın-belirledikleri">¶</a></h3>
 <table>
@@ -356,6 +357,7 @@
 <th>Sunucu düzen anahtarı</th>
 <th>Yerel önbellek anahtarı</th>
 <th>Dock mümkün</th>
+<th>Çoklu ekran</th>
 <th>Kaynak</th>
 </tr>
 </thead>
@@ -366,7 +368,8 @@
 <td><code>springboard</code></td>
 <td><code>cluster_springboard</code></td>
 <td>evet, 900 px'ten itibaren</td>
-<td><code>webapp/js/device-class.js:23</code></td>
+<td>evet</td>
+<td><code>webapp/js/device-class.js:23</code>, <code>webapp/js/tiles.js:61</code></td>
 </tr>
 <tr>
 <td><code>tablet</code></td>
@@ -374,7 +377,8 @@
 <td><code>springboard_tablet</code></td>
 <td><code>cluster_springboard_tablet</code></td>
 <td>hayır</td>
-<td><code>webapp/js/device-class.js:24</code></td>
+<td>hayır</td>
+<td><code>webapp/js/device-class.js:24</code>, <code>webapp/js/tiles.js:61</code></td>
 </tr>
 <tr>
 <td><code>phone</code></td>
@@ -382,7 +386,8 @@
 <td><code>springboard_phone</code></td>
 <td><code>cluster_springboard_phone</code></td>
 <td>hayır</td>
-<td><code>webapp/js/device-class.js:25</code></td>
+<td>hayır</td>
+<td><code>webapp/js/device-class.js:25</code>, <code>webapp/js/tiles.js:61</code></td>
 </tr>
 </tbody>
 </table>
@@ -465,9 +470,9 @@
 <li><a href="themes-tokens-and-accessibility.tr.html">Temalar, belirteçler ve erişilebilirlik</a></li>
 </ul>
 <hr>
-<p>92f8051 numaralı commit ile 2026-11-13 tarihinde doğrulandı.</p>
+<p>c0d3217 numaralı commit ile 2026-11-14 tarihinde doğrulandı.</p>
     </article>
-    <footer class="page-foot"><span class="verified">Doğrulanan commit <code>92f8051</code> · 2026-11-13</span></footer>
+    <footer class="page-foot"><span class="verified">Doğrulanan commit <code>c0d3217</code> · 2026-11-14</span></footer>
     <nav class="pager" aria-label="Pager"><a class="prev" href="../web-app/data-refresh-and-change-signals.tr.html"><span class="eyebrow">Önceki</span><span>Veri tazeleme ve değişiklik sinyalleri</span></a><a class="next" href="../web-app/gated-app-bundles.tr.html"><span class="eyebrow">Sonraki</span><span>Kapılı uygulama paketleri</span></a></nav>
   </main>
   <aside class="rail">
@@ -487,6 +492,6 @@
 </ul>
   </aside>
 </div>
-<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span class="stamp">Cluster ERP v0.1.37 · Dokümantasyon 2026-11-13</span><span>docs/wiki altındaki Markdown kaynaklarından derlendi</span></footer>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span class="stamp">Cluster ERP v0.1.37 · Dokümantasyon 2026-11-14</span><span>docs/wiki altındaki Markdown kaynaklarından derlendi</span></footer>
 </body>
 </html>

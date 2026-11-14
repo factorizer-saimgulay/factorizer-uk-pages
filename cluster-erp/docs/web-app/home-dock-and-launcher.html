@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="doc-version" content="v0.1.37"><meta name="doc-date" content="2026-11-13">
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="doc-version" content="v0.1.37"><meta name="doc-date" content="2026-11-14">
 <title>Home screen, dock, and launcher · Cluster ERP Wiki</title>
 <meta name="description" content="How home.js, tiles.js, app-wheel.js, and touch-gate.js build the home screen, dock, floating button, app switcher, and home duplication.">
 <link rel="stylesheet" href="../assets/site.css">
@@ -329,7 +329,7 @@
 <li>A new account starts with an empty home screen except the permanent Apps library tile (<code>webapp/js/home.js:696-707</code>).</li>
 <li>On a PC with room for it, a dock shows the user's pinned apps and the running apps; pins are stored in the user account (<code>webapp/js/app-wheel.js:1-26</code>, <code>webapp/js/home.js:977-1022</code>).</li>
 <li>A floating button returns to the home screen on a single tap and opens the app switcher on a double tap (<code>webapp/js/home.js:2993-3014</code>).</li>
-<li>The <strong>+</strong> button (<code>tiles.duplicate</code>) splits the window into up to four independent home screens (<code>webapp/js/tiles.js:1-11</code>).</li>
+<li>The <strong>+</strong> button (<code>tiles.duplicate</code>) splits the window into up to four independent home screens on the <code>pc</code> device class only; a phone or tablet has no split screen (<code>webapp/js/tiles.js:1-11</code>, <code>webapp/js/tiles.js:60-64</code>).</li>
 </ul>
 <h2 id="how-it-works">How it works<a class="headerlink" href="#how-it-works">¶</a></h2>
 <h3 id="pages-and-items">Pages and items<a class="headerlink" href="#pages-and-items">¶</a></h3>
@@ -426,8 +426,8 @@
 </table>
 <p>The button is hidden only when it is docked and a dock exists; on phones, tablets, narrow windows, and split panes it always stays (<code>webapp/js/home.js:1040-1047</code>). The switcher shows a card per running app with a thumbnail, resumes an app at its last view, closes one app, or closes all (<code>webapp/js/home.js:3249-3426</code>). Split panes report their running apps to the top window by <code>postMessage</code> on the channel <code>cluster-tasks</code>, so one switcher covers all panes (<code>webapp/js/home.js:3097-3220</code>).</p>
 <h3 id="duplicate-home-button-and-tiles">Duplicate-home button and tiles<a class="headerlink" href="#duplicate-home-button-and-tiles">¶</a></h3>
-<p>The <strong>+</strong> button (<code>tiles.duplicate</code>) is shown on the home screen of the top window only and removed inside a tile (<code>webapp/js/main.js:38-39</code>, <code>webapp/js/tiles.js:116-124</code>). Each press adds a tile, up to four including the base home. A tile is a same-origin frame of the app itself with a draggable divider; each tile has a minimum width of 260 px (<code>webapp/js/tiles.js:10-108</code>). Logout collapses all tiles (<code>webapp/js/main.js:166</code>). Theme, density, accessibility, and language changes reach every tile through storage events (<code>webapp/js/prefs.js:116-125</code>, <code>webapp/js/a11y.js:90-105</code>, <code>webapp/js/i18n.js:63-71</code>).</p>
-<p>The project's written engineering rules state that the <strong>+</strong> is always in front and never hidden. The style sheet places it above the dock band (<code>webapp/css/tiles.css:5-12</code>).</p>
+<p>The <strong>+</strong> button (<code>tiles.duplicate</code>) is shown on the home screen of the top window only, on the <code>pc</code> device class only, and removed inside a tile (<code>webapp/js/main.js:38</code>, <code>webapp/js/tiles.js:124-149</code>). <code>syncDupHome</code> hides the button on a phone or tablet, marks the document with <code>body.no-tiles</code>, and collapses an active split when the device class leaves <code>pc</code> (<code>webapp/js/tiles.js:130-137</code>, <code>webapp/js/tiles.js:148</code>); <code>addTile</code> refuses outside the <code>pc</code> class (<code>webapp/js/tiles.js:63-64</code>). Each press adds a tile, up to four including the base home. A tile is a same-origin frame of the app itself with a draggable divider; each tile has a minimum width of 260 px (<code>webapp/js/tiles.js:10-108</code>). Logout collapses all tiles (<code>webapp/js/main.js:166</code>). Theme, density, accessibility, and language changes reach every tile through storage events (<code>webapp/js/prefs.js:116-125</code>, <code>webapp/js/a11y.js:90-105</code>, <code>webapp/js/i18n.js:63-71</code>).</p>
+<p>The project's written engineering rules state that the <strong>+</strong> exists on the PC class only and, where it exists, is always in front and never hidden. The style sheet places it above the dock band (<code>webapp/css/tiles.css:5-12</code>). On narrow windows the app content and the module tab bar reserve the bottom-right corner for it only while the document is not marked <code>body.no-tiles</code> (<code>webapp/css/app.css:5264-5271</code>, <code>webapp/css/gen.css:5166-5173</code>).</p>
 <h3 id="touch-gate">Touch gate<a class="headerlink" href="#touch-gate">¶</a></h3>
 <p><code>createTouchGate(e, opts)</code> gives drag surfaces in app bundles one rule: a mouse drags at once, a finger must hold for 450 ms first, and a finger that moves before that scrolls the nearest scroll container (<code>webapp/js/touch-gate.js:1-40</code>). Bundles receive it through the platform context (<code>webapp/js/custom-widgets.js:57-60</code>). The home screen uses its own version with the same 450 ms hold (<code>webapp/js/home.js:80-82</code>).</p>
 <h2 id="why-it-is-built-this-way">Why it is built this way<a class="headerlink" href="#why-it-is-built-this-way">¶</a></h2>
@@ -440,7 +440,7 @@
 <ul>
 <li>Layout, dock pins, dock edge, auto-hide, and the docked state of the floating button belong to the user account. See <a href="user-ui-state.html">user UI state</a>.</li>
 <li>The project's written engineering rules state that the PC experience is the launcher and that the mobile and tablet design is defined separately. See <a href="device-classes.html">device classes</a>.</li>
-<li>Browser tests: <code>web-client/_e2e_app_wheel.mjs</code>, <code>web-client/_e2e_dock_pins.mjs</code>, <code>web-client/_e2e_dock_close_all.mjs</code>, <code>web-client/_e2e_switcher.mjs</code>, <code>web-client/_e2e_switcher_dock.mjs</code>, <code>web-client/_e2e_dup_home_tiles.mjs</code>, <code>web-client/_e2e_mobile_home.mjs</code>, <code>web-client/_e2e_widget_move.mjs</code>.</li>
+<li>Browser tests: <code>web-client/_e2e_app_wheel.mjs</code>, <code>web-client/_e2e_dock_pins.mjs</code>, <code>web-client/_e2e_dock_close_all.mjs</code>, <code>web-client/_e2e_switcher.mjs</code>, <code>web-client/_e2e_switcher_dock.mjs</code>, <code>web-client/_e2e_dup_home_tiles.mjs</code>, <code>web-client/_e2e_mobile_home.mjs</code>, <code>web-client/_e2e_mobile_app.mjs</code>, <code>web-client/_e2e_widget_move.mjs</code>.</li>
 </ul>
 <h2 id="interaction-with-other-parts">Interaction with other parts<a class="headerlink" href="#interaction-with-other-parts">¶</a></h2>
 <ul>
@@ -510,9 +510,9 @@
 <li><a href="module-apps-and-app-scope.html">Module apps and app scope</a></li>
 </ul>
 <hr>
-<p>Verified against commit 92f8051 on 2026-11-13.</p>
+<p>Verified against commit c0d3217 on 2026-11-14.</p>
     </article>
-    <footer class="page-foot"><span class="verified">Verified against commit <code>92f8051</code> · 2026-11-13</span></footer>
+    <footer class="page-foot"><span class="verified">Verified against commit <code>c0d3217</code> · 2026-11-14</span></footer>
     <nav class="pager" aria-label="Pager"><a class="prev" href="../web-app/generic-tree-and-settings.html"><span class="eyebrow">Previous</span><span>Generic tree and settings screens</span></a><a class="next" href="../web-app/home-widgets.html"><span class="eyebrow">Next</span><span>Home widgets</span></a></nav>
   </main>
   <aside class="rail">
@@ -536,6 +536,6 @@
 </ul>
   </aside>
 </div>
-<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span class="stamp">Cluster ERP v0.1.37 · Documentation 2026-11-13</span><span>Built from the Markdown sources in docs/wiki</span></footer>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span class="stamp">Cluster ERP v0.1.37 · Documentation 2026-11-14</span><span>Built from the Markdown sources in docs/wiki</span></footer>
 </body>
 </html>

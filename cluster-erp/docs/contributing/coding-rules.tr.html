@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="doc-version" content="v0.1.37"><meta name="doc-date" content="2026-11-13">
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="doc-version" content="v0.1.37"><meta name="doc-date" content="2026-11-14">
 <title>Kodlama kuralları · Cluster ERP Wiki</title>
 <meta name="description" content="Cluster ERP için projenin yazılı mühendislik kuralları; her biri onu uygulayan kod veya testle birlikte ya da kodla uygulanmadığı belirtilerek yeniden anlatılır.">
 <link rel="stylesheet" href="../assets/site.css">
@@ -476,9 +476,9 @@
 <td><code>web-client/_e2e_action_sheet.mjs</code> gibi tarayıcı süitleri; pytest testi yok</td>
 </tr>
 <tr>
-<td>Çoğaltılmış ana ekran düğmesi önde kalır ve asla gizlenmez.</td>
-<td><code>initTiles</code> düğmeyi bağlar (<code>webapp/js/tiles.js:116-124</code>).</td>
-<td>Koddan belirlenemedi; aşağıdaki tutarsızlığa bakın</td>
+<td>Çoğaltılmış ana ekran düğmesi yalnız PC cihaz sınıfında vardır ve var olduğu yerde önde kalır, asla gizlenmez.</td>
+<td><code>tilesAllowed()</code> çoklu ekranı <code>pc</code> sınıfıyla sınırlar ve <code>syncDupHome</code> düğmeyi başka yerde gizler (<code>webapp/js/tiles.js:60-64</code>, <code>webapp/js/tiles.js:130-137</code>); stil sayfası onu dock bandının üstünde tutar (<code>webapp/css/tiles.css:5-12</code>).</td>
+<td><code>web-client/_e2e_dup_home_tiles.mjs</code> (PC) ve <code>web-client/_e2e_mobile_app.mjs</code> (telefon, tablet); pytest testi yok</td>
 </tr>
 <tr>
 <td>Bir modül tek bir uygulamadır; sayfaları o uygulamanın sekmeleridir.</td>
@@ -590,7 +590,6 @@
 <p>Yukarıdaki testler iki yerde çalışır. <code>pytest</code> <code>tests/</code> klasörünü toplar (<code>pyproject.toml:151-153</code>) ve CI onu canlı testler kapalıyken çalıştırır (<code>.github/workflows/ci.yml:99</code>, <code>.github/workflows/ci.yml:124</code>). Tarayıcı kuralları yalnız CI'ın çalıştırmadığı e2e bataryasında çalışır (<code>.github/workflows/ci.yml:21-22</code>). Bkz. <a href="python-tests.tr.html">Python testleri</a> ve <a href="e2e-battery.tr.html">e2e bataryası</a>.</p>
 <h2 id="tutarsızlıklar">Tutarsızlıklar<a class="headerlink" href="#tutarsızlıklar">¶</a></h2>
 <aside class="adm adm-warning" role="note"><p class="adm-title">Uyarı</p><p>Tutarsızlık. Projenin yazılı mühendislik kuralları her birincil anahtarı <code>UUID</code> olarak saklanan bir ULID yapar. Kontrol düzlemi sınıfları <code>Operator</code> ve <code>OperatorAction</code> anahtarlarının varsayılanını <code>uuid.uuid4</code> yapar (<code>src/cluster_erp/core/tenancy.py:138</code>, <code>src/cluster_erp/core/tenancy.py:163</code>). <code>ControlRetentionRun</code>, <code>RetentionRun</code> ve bir analitik tablosu kendiliğinden artan bir <code>BigInteger</code> anahtar kullanır (<code>src/cluster_erp/core/tenancy.py:194</code>, <code>src/cluster_erp/modules/records/retention/models.py:44</code>, <code>src/cluster_erp/modules/analytics/models.py:123</code>). Bu sayfa kodu belgeler.</p>
-<p><strong>Uyarı:</strong> Tutarsızlık. Projenin yazılı mühendislik kuralları çoğaltılmış ana ekran düğmesinin asla gizlenmediğini söyler. Çoğaltılmış bir ana ekran kutucuğunun içinde düğme kaldırılır, çünkü çoğaltılmış bir ana ekran kendini bir daha çoğaltmaz (<code>webapp/js/tiles.js:119-122</code>). Bu sayfa kodu belgeler.</p>
 </aside>
 <h2 id="i̇lgili-sayfalar">İlgili sayfalar<a class="headerlink" href="#i̇lgili-sayfalar">¶</a></h2>
 <ul>
@@ -601,9 +600,9 @@
 <li><a href="../reference/glossary.tr.html">Sözlük</a></li>
 </ul>
 <hr>
-<p>92f8051 numaralı commit ile 2026-11-13 tarihinde doğrulandı.</p>
+<p>c0d3217 numaralı commit ile 2026-11-14 tarihinde doğrulandı.</p>
     </article>
-    <footer class="page-foot"><span class="verified">Doğrulanan commit <code>92f8051</code> · 2026-11-13</span></footer>
+    <footer class="page-foot"><span class="verified">Doğrulanan commit <code>c0d3217</code> · 2026-11-14</span></footer>
     <nav class="pager" aria-label="Pager"><a class="prev" href="../contributing/architecture-boundaries.tr.html"><span class="eyebrow">Önceki</span><span>Mimari sınırlar</span></a><a class="next" href="../contributing/developer-tools-and-scripts.tr.html"><span class="eyebrow">Sonraki</span><span>Geliştirici araçları ve betikleri</span></a></nav>
   </main>
   <aside class="rail">
@@ -622,6 +621,6 @@
 </ul>
   </aside>
 </div>
-<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span class="stamp">Cluster ERP v0.1.37 · Dokümantasyon 2026-11-13</span><span>docs/wiki altındaki Markdown kaynaklarından derlendi</span></footer>
+<footer class="sitefoot"><span>© Factorizer · Cluster ERP</span><span class="stamp">Cluster ERP v0.1.37 · Dokümantasyon 2026-11-14</span><span>docs/wiki altındaki Markdown kaynaklarından derlendi</span></footer>
 </body>
 </html>
